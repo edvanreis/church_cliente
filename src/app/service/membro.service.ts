@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
 
 
 @Injectable()
@@ -13,9 +14,9 @@ PATH = "membro/";
   
   carregarSexo() {
     console.log(environment.baseUrl + this.PATH + "sexo");
-    return this.http.get(environment.baseUrl + this.PATH + "sexo", { responseType: 'arraybuffer' })
-    .map((res: any) => res)
-    .catch(this._errorHandler);
+    return this.http.get(environment.baseUrl + this.PATH + "sexo").pipe(
+      tap((response: any) => response)
+    );
   }
 
   

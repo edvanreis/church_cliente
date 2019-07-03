@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class CadastroMembroComponent implements OnInit {
 
-  public carregarSexo = [];
-  // carregarSexo$: Observable<any[]>;
+ // public carregarSexo = [];
+  carregarSexo$: Observable<any[]>;
   public maskDate = [ /\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
   public maskCPF  = [ /\d/, /\d/,/\d/, '.', /\d/, /\d/,/\d/, '.', /\d/, /\d/, /\d/,'.', /\d/,/\d/]
   public maskRG  = [ /\d/, /\d/, '.', /\d/, /\d/,/\d/, '.', /\d/, /\d/, /\d/,'.', /\d/]
@@ -22,9 +22,7 @@ export class CadastroMembroComponent implements OnInit {
   }
 
   getComboSexo(){
-     this._membroService.carregarSexo().subscribe(item=>{
-        console.log(item);
-     });
+    this.carregarSexo$ = this._membroService.carregarSexo();
   }
 
 }

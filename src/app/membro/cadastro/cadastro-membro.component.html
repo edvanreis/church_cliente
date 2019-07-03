@@ -30,7 +30,7 @@
             <mat-form-field>
               <mat-label>Sexo</mat-label>
               <mat-select>
-                <mat-option *ngFor="let item of carregarSexo" [value]="item">
+                <mat-option *ngFor="let item of carregarSexo$ | async" [value]="item">
                   {{item}}
                 </mat-option>
               </mat-select>
