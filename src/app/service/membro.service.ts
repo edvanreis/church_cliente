@@ -13,10 +13,13 @@ PATH = "membro/";
 
   
   carregarSexo() {
-    console.log(environment.baseUrl + this.PATH + "sexo");
-    return this.http.get(environment.baseUrl + this.PATH + "sexo").pipe(
-      tap((response: any) => response)
-    );
+    return this.http.get(environment.baseUrl + this.PATH + "sexo")
+    .pipe(tap((response: any) => response));
+  }
+
+  carregarEstadoCivil() {
+    return this.http.get(environment.baseUrl + this.PATH + "estadoCivil")
+    .pipe(tap((response: any) => response));
   }
 
   

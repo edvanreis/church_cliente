@@ -26,7 +26,12 @@
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Data Nascimento"  [textMask]="{mask: maskDate}" >
-            </mat-form-field> 
+            </mat-form-field>     
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Nacionalidade">
+            </mat-form-field>      
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">          
             <mat-form-field>
               <mat-label>Sexo</mat-label>
               <mat-select>
@@ -35,6 +40,27 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
+            <mat-form-field>
+              <mat-label>Estado Civil</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let item of carregarEstadoCivil$  | async" [value]="item">
+                  {{item}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+            <mat-form-field>
+              <mat-label>Escolaridade</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let item of carregarEstadoCivil$  | async" [value]="item">
+                  {{item}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+            <mat-checkbox>Dizimista</mat-checkbox>
           </div>
           <mat-divider></mat-divider>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">

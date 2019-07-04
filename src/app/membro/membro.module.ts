@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { CadastroMembroComponent } from './cadastro/cadastro-membro.component';
-import { MatToolbarModule, MatCardModule, MatInputModule, MatFormFieldModule, MatDividerModule, MatIconModule, MatButtonModule, MatOptionModule, MatSelectModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MembroService } from '../service/membro.service';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatSelectModule, MatToolbarModule } from '@angular/material';
+import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
-import { HttpClientModule } from '@angular/common/http';
+import { MembroService } from '../service/membro.service';
+import { CadastroMembroComponent } from './cadastro/cadastro-membro.component';
 
 
 const routes: Routes = [
@@ -30,6 +30,7 @@ const routes: Routes = [
     HttpClientModule,
     MatOptionModule,
     MatSelectModule,
+    MatCheckboxModule,
     RouterModule.forChild(routes)
   ],
   exports: [

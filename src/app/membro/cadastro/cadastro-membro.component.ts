@@ -9,8 +9,8 @@ import { Observable } from 'rxjs';
 })
 export class CadastroMembroComponent implements OnInit {
 
- // public carregarSexo = [];
   carregarSexo$: Observable<any[]>;
+  carregarEstadoCivil$: Observable<any[]>;
   public maskDate = [ /\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
   public maskCPF  = [ /\d/, /\d/,/\d/, '.', /\d/, /\d/,/\d/, '.', /\d/, /\d/, /\d/,'.', /\d/,/\d/]
   public maskRG  = [ /\d/, /\d/, '.', /\d/, /\d/,/\d/, '.', /\d/, /\d/, /\d/,'.', /\d/]
@@ -19,10 +19,15 @@ export class CadastroMembroComponent implements OnInit {
 
   ngOnInit() {
     this.getComboSexo();
+    this.getComboEstadoCivil();
   }
 
   getComboSexo(){
     this.carregarSexo$ = this._membroService.carregarSexo();
+  }
+
+  getComboEstadoCivil(){
+    this.carregarEstadoCivil$ = this._membroService.carregarEstadoCivil();
   }
 
 }
