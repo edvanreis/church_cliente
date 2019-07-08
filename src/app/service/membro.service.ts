@@ -22,6 +22,11 @@ PATH = "membro/";
     .pipe(tap((response: any) => response));
   }
 
+  carregarTiposContatos() {
+    return this.http.get(environment.baseUrl + this.PATH + "tipoContato")
+    .pipe(tap((response: any) => response));
+  }
+
   
   _errorHandler(error: Response) {
     return Observable.throw(error || "Internal server error");
