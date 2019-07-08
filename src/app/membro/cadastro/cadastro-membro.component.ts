@@ -3,6 +3,13 @@ import { MembroService } from '../../service/membro.service';
 import { Observable } from 'rxjs';
 import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
+import { ExampleDatabase, ExampleDataSource } from '../../tables/fixed-table/helpers.data';
+
+
+export interface tableElement {
+  tipo: string;
+  descricao: string;
+}
 
 @Component({
   selector: 'app-cadastro',
@@ -22,12 +29,15 @@ export class CadastroMembroComponent implements OnInit {
 
   public form: FormGroup;
   public contatos = [];
+  public displayedColumns: string[] = ['tipo', 'descricao'];   
+  public dataSource; 
 
   ngOnInit() {
     this.getComboSexo();
     this.getComboEstadoCivil();
     this.getComboContatos();
     this._buildForm();
+    
   }
 
   getComboSexo(){
@@ -50,11 +60,15 @@ export class CadastroMembroComponent implements OnInit {
 
   }
   adicionarContato(){
-    this.contatos.push({
-                          tipo:this.form.controls['contatos'].value,
-                          descricao:this.form.controls['descContato'].value
-                        });                
+    
+    this.contatos.push({tipo:this.form.controls['contatos'].value,descricao:this.form.controls['descContato'].value});  
+    let data : tableElement[] = this.contatos;
+    console.log(data);
+    this.dataSource = data;
+                                
   }
+
+  
 
 
 }
