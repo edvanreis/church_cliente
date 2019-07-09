@@ -5,9 +5,12 @@
       <h1 class="mat-headline center-align">Cadastro</h1>
     </mat-toolbar>
     <div class="input-container">
-        <h1 class="mat-headline center-align">Dados pessoais</h1>
       <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
         <form form [formGroup]="form">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+            <i class="material-icons">face</i>
+            <h1 class="mat-subheading-2 center-align">Dados Pessoais</h1>
+          </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Nome">
@@ -43,23 +46,10 @@
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field>
-              <mat-label>Escolaridade</mat-label>
-              <mat-select>
-                <mat-option *ngFor="let item of carregarEstadoCivil$  | async" [value]="item">
-                  {{item}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nacionalidade">
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-checkbox>Dizimista</mat-checkbox>
           </div>
-          <br/>
-          <br/>
+          <br />
+          <br />
           <mat-divider></mat-divider>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
             <i class="material-icons">portrait</i>
@@ -80,7 +70,45 @@
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <div class="table-responsive">
-              <table class="" style="color: blue;font-size: 14px">
+              <table>
+                <thead class="text-primary">
+                  <th>Tipo</th>
+                  <th>Descrição</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of contatos">
+                    <td>{{ item.tipo}}</td>
+                    <td>{{ item.descricao }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
+            <i class="material-icons">add</i>adicionar</button>
+          <br /><br />
+          <mat-divider></mat-divider>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+            <i class="material-icons">book</i>
+            <h1 class="mat-subheading-2 center-align">Escolaridade</h1>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+            <mat-form-field>
+              <mat-label>Escolaridade</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let item of carregarEstadoCivil$  | async" [value]="item">
+                  {{item}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Nacionalidade">
+            </mat-form-field>
+            <input matInput placeholder="Descrição" formControlName="descContato" id="descContato">
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+            <div class="table-responsive">
+              <table>
                 <thead class="text-primary">
                   <th>Tipo</th>
                   <th>Descrição</th>
