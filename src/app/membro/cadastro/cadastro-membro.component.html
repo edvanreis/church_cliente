@@ -15,8 +15,8 @@
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Nome" formControlName="nome" id="nome">
             </mat-form-field>
-            <mat-form-field class="example-full-width"  formControlName="dataNascimento" id="dataNascimento" >
-              <input matInput placeholder="Data Nascimento" [textMask]="{mask: maskDate}">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Data Nascimento" [textMask]="{mask: maskDate}" formControlName="dataNascimento" id="dataNascimento"  >
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -50,7 +50,7 @@
               <input matInput placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" >
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Célula">
+              <input matInput placeholder="Célula" formControlName="celula" >
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -73,7 +73,7 @@
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
               <mat-label>Tipos</mat-label>
-              <mat-select formControlName="contatos" id="contatos" (change)="tipo($event)">
+              <mat-select formControlName="contatos" id="contatos"  (selectionChange)="tipo($event)">
                 <mat-option *ngFor="let item of carregarTipoContatos$  | async" [value]="item">
                   {{item}}
                 </mat-option>
@@ -110,7 +110,7 @@
           <br /><br />
           <mat-divider></mat-divider>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <i class="material-icons">book</i>
+            <i class="material-icons">school</i>
             <h1 class="mat-subheading-2 center-align">Escolaridade</h1>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">

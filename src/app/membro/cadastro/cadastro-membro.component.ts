@@ -1,20 +1,7 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MembroService } from '../../service/membro.service';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { FormGroup, FormControl } from '@angular/forms';
-import { ExampleDatabase, ExampleDataSource } from '../../tables/fixed-table/helpers.data';
-
-export interface ContatoElement {
-  tipo: string;
-  contato: string;
-  whatsapp:string;
-}
-
-export interface EscolaridadeElement {
-  escolaridade: string;
-  curso: string;
-}
+import { MembroService } from '../../service/membro.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -38,12 +25,11 @@ export class CadastroMembroComponent implements OnInit {
 
   public form: FormGroup;
   public contatos=[];
-  public contato:ContatoElement;
-  public escolaridade:EscolaridadeElement;
   public escolaridades = [];
   public isContato:boolean = true;
   public isCelular:boolean = false;
   public isTelefone:boolean = false;
+
 
   ngOnInit() {
     this.getComboSexo();
@@ -86,20 +72,23 @@ export class CadastroMembroComponent implements OnInit {
       'sexo': new FormControl(''),
       'estadoCivil': new FormControl(''),
       'nacionalidade': new FormControl(''),
+      'celula': new FormControl(''),
     });
 
   }
   adicionarContato(){
-    this.contato.tipo = this.form.controls['contatos'].value;
-    this.contato.contato = this.form.controls['contato'].value;
-    this.contato.whatsapp = this.form.controls['whatsapp'].value;
-    this.contatos.push(this.contato);                                
+    let contato = {} as any;
+    contato.tipo = this.form.controls['contatos'].value;
+    contato.contato = this.form.controls['contato'].value;
+    contato.whatsapp = this.form.controls['whatsapp'].value;
+    this.contatos.push(this.contatos);                                
   }
 
   adicionarEscolaridade(){
-    this.escolaridade.escolaridade = this.form.controls['escolaridade'].value;
-    this.escolaridade.curso = this.form.controls['curso'].value;
-    this.contatos.push(this.escolaridade);                                 
+    let escolaridade = {} as any;
+    escolaridade.escolaridade = this.form.controls['escolaridade'].value;
+    escolaridade.curso = this.form.controls['curso'].value;
+    this.contatos.push(escolaridade);                                 
   }
 
   tipo(event){
