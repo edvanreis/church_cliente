@@ -72,8 +72,8 @@
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
-              <mat-label>Tipos</mat-label>
-              <mat-select formControlName="contatos" id="contatos"  (selectionChange)="tipo($event)">
+              <mat-label>Selecione...</mat-label>
+              <mat-select formControlName="contatos" id="contatos"  (selectionChange)="tipo($event)" >
                 <mat-option *ngFor="let item of carregarTipoContatos$  | async" [value]="item">
                   {{item}}
                 </mat-option>
@@ -115,7 +115,7 @@
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
-              <mat-label>Escolaridade</mat-label>
+              <mat-label>Selecione...</mat-label>
               <mat-select formControlName="escolaridades" id="escolaridades">
                 <mat-option *ngFor="let item of carregarEscolariade$  | async" [value]="item">
                   {{item}}
