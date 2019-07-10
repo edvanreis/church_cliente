@@ -13,24 +13,24 @@
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nome">
+              <input matInput placeholder="Nome" formControlName="nome" id="nome">
             </mat-form-field>
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="example-full-width"  formControlName="dataNascimento" id="dataNascimento" >
               <input matInput placeholder="Data Nascimento" [textMask]="{mask: maskDate}">
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="RG" [textMask]="{mask: maskRG}">
+              <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg">
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}">
+              <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf">
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
               <mat-label>Sexo</mat-label>
-              <mat-select>
+              <mat-select formControlName="sexo" id="sexo" >
                 <mat-option *ngFor="let item of carregarSexo$ | async" [value]="item">
                   {{item}}
                 </mat-option>
@@ -38,7 +38,7 @@
             </mat-form-field>
             <mat-form-field>
               <mat-label>Estado Civil</mat-label>
-              <mat-select>
+              <mat-select formControlName="estadoCivil" id="estadoCivil" >
                 <mat-option *ngFor="let item of carregarEstadoCivil$  | async" [value]="item">
                   {{item}}
                 </mat-option>
@@ -47,7 +47,7 @@
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nacionalidade">
+              <input matInput placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" >
             </mat-form-field>
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Célula">
@@ -60,21 +60,34 @@
           <br />
           <mat-divider></mat-divider>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <i class="material-icons">portrait</i>
+            <i class="material-icons">store_mall_directory</i>
+            <h1 class="mat-subheading-2 center-align">Endereço</h1>
+          </div>
+          <br />
+          <br />
+          <mat-divider></mat-divider>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+            <i class="material-icons">headset_mic</i>
             <h1 class="mat-subheading-2 center-align">Contatos</h1>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
               <mat-label>Tipos</mat-label>
-              <mat-select formControlName="contatos" id="contatos">
+              <mat-select formControlName="contatos" id="contatos" (change)="tipo($event)">
                 <mat-option *ngFor="let item of carregarTipoContatos$  | async" [value]="item">
                   {{item}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Descrição" formControlName="descContato" id="descContato">
+              <input matInput placeholder="Contato" formControlName="contato" id="contato"
+                *ngIf="!isCelular || !isTelefone">
+              <input matInput placeholder="Contato" formControlName="contatoTelefone" [textMask]="{mask: maskTelefone}"
+                id="contatoTelefone" *ngIf="isTelefone">
+              <input matInput placeholder="Contato" formControlName="contatoCelular" [textMask]="{mask: maskCelular}"
+                id="contatoCelular" *ngIf="isCelular">
             </mat-form-field>
+            <mat-checkbox formControlName="whatsapp" *ngIf="isCelular || isTelefone">Whatsapp</mat-checkbox>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0">
             <div class="table-responsive">
@@ -86,7 +99,7 @@
                 <tbody>
                   <tr *ngFor="let item of contatos">
                     <td>{{ item.tipo}}</td>
-                    <td>{{ item.descricao }}</td>
+                    <td>{{ item.contato }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -103,39 +116,33 @@
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
               <mat-label>Escolaridade</mat-label>
-              <mat-select>
-                <mat-option *ngFor="let item of carregarEstadoCivil$  | async" [value]="item">
+              <mat-select formControlName="escolaridades" id="escolaridades">
+                <mat-option *ngFor="let item of carregarEscolariade$  | async" [value]="item">
                   {{item}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <input matInput placeholder="Descrição" formControlName="descContato" id="descContato">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Curso" formControlName="curso" id="curso">
+            </mat-form-field>
           </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="escolaridades.length > 0">
             <div class="table-responsive">
               <table>
                 <thead class="text-primary">
-                  <th>Tipo</th>
-                  <th>Descrição</th>
+                  <th>Escolaridade</th>
+                  <th>Curso</th>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of escolaridades">
-                    <td>{{ item.tipo}}</td>
-                    <td>{{ item.descricao }}</td>
+                    <td>{{ item.escolaridade}}</td>
+                    <td>{{ item.curso }}</td>
                   </tr>
                 </tbody>
               </table>
             </div>
           </div>
           <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
-            <i class="material-icons">add</i>adicionar</button>
-          <br /><br />
-          <mat-divider></mat-divider>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <i class="material-icons">store_mall_directory</i>
-            <h1 class="mat-subheading-2 center-align">Endereço</h1>
-          </div>
-          <button mat-raised-button color="primary" type="submit">
             <i class="material-icons">add</i>adicionar</button>
           <br /><br />
           <mat-divider></mat-divider>
