@@ -27,6 +27,11 @@ PATH = "membro/";
     .pipe(tap((response: any) => response));
   }
 
+  carregarEscolaridade() {
+    return this.http.get(environment.baseUrl + this.PATH + "escolaridade")
+    .pipe(tap((response: any) => response));
+  }
+
   
   _errorHandler(error: Response) {
     return Observable.throw(error || "Internal server error");

@@ -5,7 +5,6 @@ import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ExampleDatabase, ExampleDataSource } from '../../tables/fixed-table/helpers.data';
 
-
 @Component({
   selector: 'app-cadastro',
   templateUrl: './cadastro-membro.component.html',
@@ -13,9 +12,10 @@ import { ExampleDatabase, ExampleDataSource } from '../../tables/fixed-table/hel
 })
 export class CadastroMembroComponent implements OnInit {
 
-  carregarSexo$: Observable<any[]>;
-  carregarEstadoCivil$: Observable<any[]>;
-  carregarTipoContatos$: Observable<any[]>;
+  public carregarSexo$: Observable<any[]>;
+  public carregarEstadoCivil$: Observable<any[]>;
+  public carregarTipoContatos$: Observable<any[]>;
+  public carregarEscolariade$: Observable<any[]>;
   public maskDate = [ /\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
   public maskCPF  = [ /\d/, /\d/,/\d/, '.', /\d/, /\d/,/\d/, '.', /\d/, /\d/, /\d/,'.', /\d/,/\d/]
   public maskRG  = [ /\d/, /\d/, '.', /\d/, /\d/,/\d/, '.', /\d/, /\d/, /\d/,'.', /\d/]
@@ -23,12 +23,14 @@ export class CadastroMembroComponent implements OnInit {
   constructor(private _membroService:MembroService) { }
 
   public form: FormGroup;
-  public contatos = [];
+  public contatos=[];
+  public escolaridades = [];
 
   ngOnInit() {
     this.getComboSexo();
     this.getComboEstadoCivil();
     this.getComboContatos();
+    this.getComboEscolaridade();
     this._buildForm();
     
   }
@@ -45,6 +47,10 @@ export class CadastroMembroComponent implements OnInit {
     this.carregarTipoContatos$ = this._membroService.carregarTiposContatos();
   }
 
+  getComboEscolaridade(){
+    this.carregarEscolariade$ = this._membroService.carregarEscolaridade();
+  }
+
   private _buildForm(): void {
     this.form = new FormGroup({
       'contatos': new FormControl(''),
@@ -54,6 +60,10 @@ export class CadastroMembroComponent implements OnInit {
   }
   adicionarContato(){
     this.contatos.push({tipo:this.form.controls['contatos'].value,descricao:this.form.controls['descContato'].value});                                
+  }
+
+  adicionarEscolaridade(){
+    this.escolaridades.push({tipo:this.form.controls['escolaridade'].value,descricao:this.form.controls['descEscolaridade'].value});                                
   }
 
   

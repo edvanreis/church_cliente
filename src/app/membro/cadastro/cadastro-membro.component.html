@@ -46,6 +46,14 @@
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Nacionalidade">
+            </mat-form-field>
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Célula">
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-checkbox>Dizimista</mat-checkbox>
           </div>
           <br />
@@ -68,7 +76,7 @@
               <input matInput placeholder="Descrição" formControlName="descContato" id="descContato">
             </mat-form-field>
           </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0">
             <div class="table-responsive">
               <table>
                 <thead class="text-primary">
@@ -101,9 +109,6 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nacionalidade">
-            </mat-form-field>
             <input matInput placeholder="Descrição" formControlName="descContato" id="descContato">
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -114,7 +119,7 @@
                   <th>Descrição</th>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of contatos">
+                  <tr *ngFor="let item of escolaridades">
                     <td>{{ item.tipo}}</td>
                     <td>{{ item.descricao }}</td>
                   </tr>
