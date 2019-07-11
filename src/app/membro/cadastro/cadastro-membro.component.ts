@@ -14,21 +14,24 @@ export class CadastroMembroComponent implements OnInit {
   public carregarEstadoCivil$: Observable<any[]>;
   public carregarTipoContatos$: Observable<any[]>;
   public carregarEscolariade$: Observable<any[]>;
-  public maskDate = [ /\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
-  public maskCPF  = [ /\d/, /\d/,/\d/, '.', /\d/, /\d/,/\d/, '.', /\d/, /\d/, /\d/,'.', /\d/,/\d/]
-  public maskRG  = [ /\d/, /\d/, '.', /\d/, /\d/,/\d/, '.', /\d/, /\d/, /\d/,'.', /\d/]
-  public maskTelefone  = [ '(', /\d/, /\d/,')',/\d/,/\d/,/\d/,/\d/,'-',/\d/,/\d/,/\d/,/\d/,]
-  public maskCelular  = [ '(', /\d/, /\d/,')',/\d/,/\d/,/\d/,/\d/,/\d/,'-',/\d/,/\d/,/\d/,/\d/]
-  public maskCep  = [ /\d/, /\d/,'.',/\d/,/\d/,/\d/,'.',/\d/,/\d/,/\d/]
+  public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
+  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/]
+  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
+  public maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/,]
+  public maskCelular = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
+  public maskCep = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/]
 
-  constructor(private _membroService:MembroService) { }
+  constructor(private _membroService: MembroService) { }
 
   public form: FormGroup;
-  public contatos=[];
+  public contatos = [];
   public escolaridades = [];
-  public isContato:boolean = true;
-  public isCelular:boolean = false;
-  public isTelefone:boolean = false;
+  public isContato: boolean = true;
+  public isCelular: boolean = false;
+  public isTelefone: boolean = false;
+  public isFacebook: boolean = false;
+  public isEmail: boolean = false;
+
 
 
   ngOnInit() {
@@ -37,22 +40,22 @@ export class CadastroMembroComponent implements OnInit {
     this.getComboContatos();
     this.getComboEscolaridade();
     this._buildForm();
-    
+
   }
 
-  getComboSexo(){
+  getComboSexo() {
     this.carregarSexo$ = this._membroService.carregarSexo();
   }
 
-  getComboEstadoCivil(){
+  getComboEstadoCivil() {
     this.carregarEstadoCivil$ = this._membroService.carregarEstadoCivil();
   }
 
-  getComboContatos(){
+  getComboContatos() {
     this.carregarTipoContatos$ = this._membroService.carregarTiposContatos();
   }
 
-  getComboEscolaridade(){
+  getComboEscolaridade() {
     this.carregarEscolariade$ = this._membroService.carregarEscolaridade();
   }
 
@@ -76,26 +79,69 @@ export class CadastroMembroComponent implements OnInit {
     });
 
   }
-  adicionarContato(){
-    let contato = {} as any;
-    contato.tipo = this.form.controls['contatos'].value;
-    contato.contato = this.form.controls['contato'].value;
-    contato.whatsapp = this.form.controls['whatsapp'].value;
-    this.contatos.push(this.contatos);                                
+  adicionarContato() {
+    let contato: any;
+    if (this.form.controls['contato'].value) {
+      contato = this.form.controls['contato'].value;
+    } else if (this.form.controls['contatoTelefone'].value) {
+      contato = this.form.controls['contatoTelefone'].value;
+    } else if (this.form.controls['contatoCelular'].value) {
+      contato = this.form.controls['contatoCelular'].value;
+    }
+    console.log(contato);
+    this.contatos.push({
+      tipo: this.form.controls['contatos'].value,
+      contato: contato,
+      whatsapp: this.form.controls['whatsapp'].value,
+      facebook: this.isFacebook,
+      email: this.isEmail,
+      telefone: this.isTelefone,
+      celular: this.isCelular
+    });
   }
 
-  adicionarEscolaridade(){
-    let escolaridade = {} as any;
-    escolaridade.escolaridade = this.form.controls['escolaridade'].value;
-    escolaridade.curso = this.form.controls['curso'].value;
-    this.contatos.push(escolaridade);                                 
+  adicionarEscolaridade() {
+    this.contatos.push({
+      tipo: this.form.controls['escolaridade'].value,
+      contato: this.form.controls['curso'].value,
+    });
   }
 
-  tipo(event){
-      console.log(event);
+  tipo(event) {
+    console.log(event);
+    if (event.value == 'Celular' || event.value == 'Celular do trabalho') {
+      this.isCelular = true;
+      this.isTelefone = false;
+      this.isContato = false;
+    } else if (event.value == 'Telefone' || event.value == 'Telefone do trabalho') {
+      this.isCelular = false;
+      this.isTelefone = true;
+      this.isContato = false;
+    } else {
+      this.isCelular = false;
+      this.isTelefone = false;
+      this.isContato = true;
+    }
+    if (event.value == 'Facebook') {
+      this.isFacebook = true
+      this.form.controls['whatsapp'].patchValue(false);
+    } else if (event.value == 'E-mail') {
+      this.isEmail = true
+      this.form.controls['whatsapp'].patchValue(false);
+    } else {
+      this.isEmail = false;
+      this.isFacebook = false;
+    }
+
   }
 
-  
+
+  //  remove uma linha da grid
+  removerContato(index): void {
+    this.contatos.splice(index, 1)
+  }
+
+
 
 
 }

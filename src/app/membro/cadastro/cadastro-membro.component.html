@@ -81,32 +81,40 @@
             </mat-form-field>
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Contato" formControlName="contato" id="contato"
-                *ngIf="!isCelular || !isTelefone">
+                *ngIf="isContato" >
               <input matInput placeholder="Contato" formControlName="contatoTelefone" [textMask]="{mask: maskTelefone}"
                 id="contatoTelefone" *ngIf="isTelefone">
               <input matInput placeholder="Contato" formControlName="contatoCelular" [textMask]="{mask: maskCelular}"
                 id="contatoCelular" *ngIf="isCelular">
             </mat-form-field>
-            <mat-checkbox formControlName="whatsapp" *ngIf="isCelular || isTelefone">Whatsapp</mat-checkbox>
+            <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
           </div>
+          <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
+            <i class="material-icons">add</i>adicionar</button>
+          <br /><br />
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0">
             <div class="table-responsive">
               <table>
                 <thead class="text-primary">
                   <th>Tipo</th>
-                  <th>Descrição</th>
+                  <th>Descrição</th>                 
+                  <th></th>
+                  <th>Remover</th>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of contatos">
                     <td>{{ item.tipo}}</td>
-                    <td>{{ item.contato }}</td>
-                  </tr>
+                    <td>{{ item.contato }}</td>                  
+                    <td><img src="./assets/whatsapp.png" width="20px" *ngIf="item.whatsapp && item.celular">
+                    <img src="./assets/images/facebook_circle.png" width="20px" *ngIf="item.facebook">
+                    <span style="color: #1d68a5"  *ngIf="item.email"><i class="material-icons">mail</i></span>
+                    <span style="color: #1d68a5"  *ngIf="item.telefone"><i class="material-icons">call</i></span></td>
+                    <td><span style="color: #1d68a5;cursor: pointer" (click)="removerContato(i)" ><i class="material-icons">delete</i></span></td>
+                  </tr>                 
                 </tbody>
               </table>
             </div>
           </div>
-          <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
-            <i class="material-icons">add</i>adicionar</button>
           <br /><br />
           <mat-divider></mat-divider>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
@@ -126,6 +134,9 @@
               <input matInput placeholder="Curso" formControlName="curso" id="curso">
             </mat-form-field>
           </div>
+          <button mat-raised-button color="primary" type="submit" (click)="adicionarEscolaridade()">
+            <i class="material-icons">add</i>adicionar</button>
+          <br /><br />
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="escolaridades.length > 0">
             <div class="table-responsive">
               <table>
@@ -142,8 +153,6 @@
               </table>
             </div>
           </div>
-          <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
-            <i class="material-icons">add</i>adicionar</button>
           <br /><br />
           <mat-divider></mat-divider>
           <button mat-raised-button color="primary" type="submit">
