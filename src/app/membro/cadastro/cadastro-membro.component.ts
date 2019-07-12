@@ -76,6 +76,7 @@ export class CadastroMembroComponent implements OnInit {
       'estadoCivil': new FormControl(''),
       'nacionalidade': new FormControl(''),
       'celula': new FormControl(''),
+      'profissao': new FormControl(''),
     });
 
   }
