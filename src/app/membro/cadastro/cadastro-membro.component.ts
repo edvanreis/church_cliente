@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MembroService } from '../../service/membro.service';
+import { HelperChurch } from '../../helper/helper-church';
+import { AlertType } from '../../model/alert-type';
 
 @Component({
   selector: 'app-cadastro',
@@ -77,18 +79,26 @@ export class CadastroMembroComponent implements OnInit {
       'nacionalidade': new FormControl(''),
       'celula': new FormControl(''),
       'profissao': new FormControl(''),
+      'email': new FormControl(''),
     });
 
   }
   adicionarContato() {
-    let contato: any;
-    if (this.form.controls['contato'].value) {
-      contato = this.form.controls['contato'].value;
-    } else if (this.form.controls['contatoTelefone'].value) {
-      contato = this.form.controls['contatoTelefone'].value;
-    } else if (this.form.controls['contatoCelular'].value) {
-      contato = this.form.controls['contatoCelular'].value;
+    let contato: string;
+    let email:string;
+    contato = this.preecherContato();
+    email = this.form.controls['email'].value;
+    let pattern = new RegExp("^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"); 
+
+    if (!contato) {
+      HelperChurch.showNotification('Por favor preencha o campo contato!', AlertType.Success);
+      return false;
     }
+    if (!pattern.test(email)) {
+      HelperChurch.showNotification('Por favor digite um email válido!', AlertType.Success);
+      return false;
+    }
+
     console.log(contato);
     this.contatos.push({
       tipo: this.form.controls['contatos'].value,
@@ -101,7 +111,23 @@ export class CadastroMembroComponent implements OnInit {
     });
   }
 
+  preecherContato() {
+    let contato: string;
+    if (this.form.controls['contato'].value) {
+      contato = this.form.controls['contato'].value;
+    } else if (this.form.controls['contatoTelefone'].value) {
+      contato = this.form.controls['contatoTelefone'].value;
+    } else if (this.form.controls['contatoCelular'].value) {
+      contato = this.form.controls['contatoCelular'].value;
+    }
+    return contato;
+  }
+
   adicionarEscolaridade() {
+    if (!this.form.controls['curso'].value) {
+      HelperChurch.showNotification('Por favor preencha o campo curso!', AlertType.Success);
+      return false;
+    }
     this.contatos.push({
       tipo: this.form.controls['escolaridade'].value,
       contato: this.form.controls['curso'].value,
@@ -114,26 +140,34 @@ export class CadastroMembroComponent implements OnInit {
       this.isCelular = true;
       this.isTelefone = false;
       this.isContato = false;
+      this.isEmail = false;
+      this.isFacebook = false;
     } else if (event.value == 'Telefone' || event.value == 'Telefone do trabalho') {
-      this.isCelular = false;
       this.isTelefone = true;
+      this.isCelular = false;
       this.isContato = false;
+      this.isEmail = false;
+      this.isFacebook = false;
+      this.form.controls['whatsapp'].patchValue(false);
+    } else if (event.value == 'Facebook') {
+      this.isFacebook = true
+      this.isContato = true;
+      this.isCelular = false;
+      this.isTelefone = false;
+      this.isEmail = false
+      this.form.controls['whatsapp'].patchValue(false);
+    } else if (event.value == 'E-mail') {
+      this.isEmail = true
+      this.isContato = true;
+      this.isFacebook = false;
+      this.isCelular = false;
+      this.isTelefone = false;
+      this.form.controls['whatsapp'].patchValue(false);
     } else {
       this.isCelular = false;
       this.isTelefone = false;
       this.isContato = true;
     }
-    if (event.value == 'Facebook') {
-      this.isFacebook = true
-      this.form.controls['whatsapp'].patchValue(false);
-    } else if (event.value == 'E-mail') {
-      this.isEmail = true
-      this.form.controls['whatsapp'].patchValue(false);
-    } else {
-      this.isEmail = false;
-      this.isFacebook = false;
-    }
-
   }
 
 
@@ -141,8 +175,5 @@ export class CadastroMembroComponent implements OnInit {
   removerContato(index): void {
     this.contatos.splice(index, 1)
   }
-
-
-
 
 }

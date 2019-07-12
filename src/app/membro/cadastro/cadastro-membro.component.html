@@ -91,6 +91,7 @@
                 id="contatoTelefone" *ngIf="isTelefone">
               <input matInput placeholder="Contato" formControlName="contatoCelular" [textMask]="{mask: maskCelular}"
                 id="contatoCelular" *ngIf="isCelular">
+                <input matInput placeholder="Contato" formControlName="email" id="email" *ngIf="isEmail">
             </mat-form-field>
             <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
           </div>
