@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { MembroService } from '../../service/membro.service';
 import { HelperChurch } from '../../helper/helper-church';
 import { AlertType } from '../../model/alert-type';
+import { NotifierService } from 'angular-notifier';
 
 @Component({
   selector: 'app-cadastro',
@@ -21,9 +22,9 @@ export class CadastroMembroComponent implements OnInit {
   public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
   public maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/,]
   public maskCelular = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-  public maskCep = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/]
+  public cepMask = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
-  constructor(private _membroService: MembroService) { }
+  constructor(private _membroService: MembroService, private _notifierService: NotifierService) { }
 
   public form: FormGroup;
   public contatos = [];
@@ -42,6 +43,7 @@ export class CadastroMembroComponent implements OnInit {
     this.getComboContatos();
     this.getComboEscolaridade();
     this._buildForm();
+
 
   }
 
@@ -80,26 +82,36 @@ export class CadastroMembroComponent implements OnInit {
       'celula': new FormControl(''),
       'profissao': new FormControl(''),
       'email': new FormControl(''),
+      'cep': new FormControl(''),
+      'numero': new FormControl(''),
+      'bairro': new FormControl(''),
+      'complemento': new FormControl(''),
+      'logradouro': new FormControl(''),
+      'cidade': new FormControl(''),
+      'estado': new FormControl(''),
     });
 
   }
   adicionarContato() {
     let contato: string;
-    let email:string;
+    let email: string;
     contato = this.preecherContato();
     email = this.form.controls['email'].value;
-    let pattern = new RegExp("^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"); 
+    let pattern = new RegExp("^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$");
 
-    if (!contato) {
-      HelperChurch.showNotification('Por favor preencha o campo contato!', AlertType.Success);
+    if (this.isContato && !contato) {
+      this._notifierService.notify('error', 'Por favor preencha o campo contato!');
       return false;
     }
-    if (!pattern.test(email)) {
-      HelperChurch.showNotification('Por favor digite um email válido!', AlertType.Success);
+    if (this.isEmail && !email) {
+      this._notifierService.notify('error', 'Por favor preencha o campo email!');
+      return false;
+    }
+    if (this.isEmail && !pattern.test(email)) {
+      this._notifierService.notify('error', 'O email possui formato invalido!');
       return false;
     }
 
-    console.log(contato);
     this.contatos.push({
       tipo: this.form.controls['contatos'].value,
       contato: contato,
@@ -158,7 +170,7 @@ export class CadastroMembroComponent implements OnInit {
       this.form.controls['whatsapp'].patchValue(false);
     } else if (event.value == 'E-mail') {
       this.isEmail = true
-      this.isContato = true;
+      this.isContato = false;
       this.isFacebook = false;
       this.isCelular = false;
       this.isTelefone = false;
@@ -174,6 +186,17 @@ export class CadastroMembroComponent implements OnInit {
   //  remove uma linha da grid
   removerContato(index): void {
     this.contatos.splice(index, 1)
+  }
+
+  consultarCEP(event){
+    console.log(event.target.value);
+    let cep = event.target.value;
+      if(cep){
+        let validarCep = /^[0-9]{8}$/;
+        if(validarCep.test(cep)){
+          this._membroService.carregarEndereco(cep);
+        }
+      }
   }
 
 }
