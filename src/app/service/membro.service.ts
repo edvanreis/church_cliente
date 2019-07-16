@@ -35,8 +35,7 @@ PATH = "membro/";
 
   carregarEndereco(cep) {
     return this.host.get(`//viacep.com.br/ws/${cep}/json`)
-    .map(dados =>dados.json())
-    .subscribe(dados=>console.log(dados));
+    .pipe(tap((response: any) => response));
   }
 
 

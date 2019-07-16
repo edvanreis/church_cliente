@@ -88,7 +88,9 @@ export class CadastroMembroComponent implements OnInit {
       'complemento': new FormControl(''),
       'logradouro': new FormControl(''),
       'cidade': new FormControl(''),
-      'estado': new FormControl(''),
+      'uf': new FormControl(''),
+      'batizado': new FormControl(''),
+      'dizimista': new FormControl(''),
     });
 
   }
@@ -190,13 +192,21 @@ export class CadastroMembroComponent implements OnInit {
 
   consultarCEP(event){
     console.log(event.target.value);
-    let cep = event.target.value;
+    let cep:string = event.target.value;
       if(cep){
+        cep = cep.replace("-","").trim();
         let validarCep = /^[0-9]{8}$/;
         if(validarCep.test(cep)){
-          this._membroService.carregarEndereco(cep);
+          let obj;
+          this._membroService.carregarEndereco(cep).subscribe(item=>{
+            obj = JSON.parse(item._body);
+            console.log(obj);
+            this.form.controls['logradouro'].patchValue(obj.logradouro);
+            this.form.controls['cidade'].patchValue(obj.localidade);
+            this.form.controls['uf'].patchValue(obj.uf);
+            this.form.controls['bairro'].patchValue(obj.bairro);
+          });
         }
       }
   }
-
 }

@@ -59,8 +59,9 @@
               <input matInput placeholder="Profissão" formControlName="profissao" id="profissao" >
             </mat-form-field>
           </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-checkbox>Dizimista</mat-checkbox>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" >
+            <mat-checkbox  formControlName="batizado" >Batizado</mat-checkbox>
+            <mat-checkbox  formControlName="dizimista">Dizimista</mat-checkbox>
           </div>
           <br />
           <br />
@@ -95,7 +96,7 @@
               <input matInput placeholder="Cidade" formControlName="cidade" id="cidade" >
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Estado" formControlName="estado" id="estado" >
+              <input matInput placeholder="UF" formControlName="uf" id="uf" >
             </mat-form-field>
           </div>
           <br />
