@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { HttpClient } from '@angular/common/http';
-import { Http } from '@angular/http';
 import { tap } from 'rxjs/operators';
 
 
@@ -10,7 +9,7 @@ import { tap } from 'rxjs/operators';
 export class MembroService {
 PATH = "membro/";
 
-  constructor(public http: HttpClient,public host:Http) { }
+  constructor(public http: HttpClient) { }
 
   
   carregarSexo() {
@@ -34,7 +33,12 @@ PATH = "membro/";
   }
 
   carregarEndereco(cep) {
-    return this.host.get(`//viacep.com.br/ws/${cep}/json`)
+    return this.http.get(`//viacep.com.br/ws/${cep}/json`)
+    .pipe(tap((response: any) => response));
+  }
+
+  carregarEstados() {
+    return this.http.get(environment.baseUrl + this.PATH + "estados")
     .pipe(tap((response: any) => response));
   }
 

@@ -1,11 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NotifierModule, NotifierOptions } from 'angular-notifier';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { LazyLoadModule } from './lazy-load/lazy-load.module';
 import { MembroModule } from './membro/membro.module';
-import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { KeyValuePipe } from '@angular/common';
 
 /**
  * Custom angular notifier options
@@ -54,8 +55,7 @@ const customNotifierOptions: NotifierOptions = {
 
 @NgModule({
   declarations: [
-    AppComponent
-    
+    AppComponent,
   ],
   imports: [
     BrowserModule,

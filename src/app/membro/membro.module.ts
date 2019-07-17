@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, KeyValuePipe } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -76,14 +76,13 @@ const routes: Routes = [
     MatSortModule,
     MatTableModule,
     MatPaginatorModule,
-    HttpModule,
     RouterModule.forChild(routes),
   ],
   exports: [
-    RouterModule
+    RouterModule,
 ],
   declarations: [
-    CadastroMembroComponent,
+    CadastroMembroComponent
   ],
   providers: [
     MembroService

@@ -34,6 +34,7 @@ export class CadastroMembroComponent implements OnInit {
   public isTelefone: boolean = false;
   public isFacebook: boolean = false;
   public isEmail: boolean = false;
+  public estados = [];
 
 
 
@@ -43,6 +44,7 @@ export class CadastroMembroComponent implements OnInit {
     this.getComboContatos();
     this.getComboEscolaridade();
     this._buildForm();
+    this.getComboUF();
 
 
   }
@@ -61,6 +63,12 @@ export class CadastroMembroComponent implements OnInit {
 
   getComboEscolaridade() {
     this.carregarEscolariade$ = this._membroService.carregarEscolaridade();
+  }
+  getComboUF() {
+    this._membroService.carregarEstados().subscribe(item=>{
+      this.estados = item;
+      console.log(item);
+    });
   }
 
   private _buildForm(): void {
@@ -199,12 +207,10 @@ export class CadastroMembroComponent implements OnInit {
         if(validarCep.test(cep)){
           let obj;
           this._membroService.carregarEndereco(cep).subscribe(item=>{
-            obj = JSON.parse(item._body);
-            console.log(obj);
-            this.form.controls['logradouro'].patchValue(obj.logradouro);
-            this.form.controls['cidade'].patchValue(obj.localidade);
-            this.form.controls['uf'].patchValue(obj.uf);
-            this.form.controls['bairro'].patchValue(obj.bairro);
+            this.form.controls['logradouro'].patchValue(item.logradouro);
+            this.form.controls['cidade'].patchValue(item.localidade);
+            this.form.controls['uf'].patchValue(item.uf);
+            this.form.controls['bairro'].patchValue(item.bairro);
           });
         }
       }
