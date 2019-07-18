@@ -13,10 +13,7 @@ import { NotifierService } from 'angular-notifier';
 })
 export class CadastroMembroComponent implements OnInit {
 
-  public carregarSexo$: Observable<any[]>;
-  public carregarEstadoCivil$: Observable<any[]>;
-  public carregarTipoContatos$: Observable<any[]>;
-  public carregarEscolariade$: Observable<any[]>;
+
   public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
   public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/]
   public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
@@ -34,7 +31,11 @@ export class CadastroMembroComponent implements OnInit {
   public isTelefone: boolean = false;
   public isFacebook: boolean = false;
   public isEmail: boolean = false;
-  public estados = [];
+  public comboEstados = [];
+  public comboSexo = [];
+  public comboEstadoCivil = [];
+  public comboTipoContatos = [];
+  public comboEscolaridade = []
 
 
 
@@ -50,23 +51,35 @@ export class CadastroMembroComponent implements OnInit {
   }
 
   getComboSexo() {
-    this.carregarSexo$ = this._membroService.carregarSexo();
+    this._membroService.carregarSexo().subscribe(item=>{
+      this.comboSexo = item;
+      console.log(item);
+    });
   }
 
   getComboEstadoCivil() {
-    this.carregarEstadoCivil$ = this._membroService.carregarEstadoCivil();
+    this._membroService.carregarEstadoCivil().subscribe(item=>{
+      this.comboEstadoCivil = item;
+      console.log(item);
+    });
   }
 
   getComboContatos() {
-    this.carregarTipoContatos$ = this._membroService.carregarTiposContatos();
+    this._membroService.carregarTiposContatos().subscribe(item=>{
+      this.comboTipoContatos = item;
+      console.log(item);
+    });
   }
 
   getComboEscolaridade() {
-    this.carregarEscolariade$ = this._membroService.carregarEscolaridade();
+    this._membroService.carregarEscolaridade().subscribe(item=>{
+      this.comboEscolaridade = item;
+      console.log(item);
+    });
   }
   getComboUF() {
     this._membroService.carregarEstados().subscribe(item=>{
-      this.estados = item;
+      this.comboEstados = item;
       console.log(item);
     });
   }
@@ -157,7 +170,8 @@ export class CadastroMembroComponent implements OnInit {
   }
 
   tipo(event) {
-    console.log(event);
+    // console.log(event);
+    // console.log(this.comboTipoContatos);
     if (event.value == 'Celular' || event.value == 'Celular do trabalho') {
       this.isCelular = true;
       this.isTelefone = false;
