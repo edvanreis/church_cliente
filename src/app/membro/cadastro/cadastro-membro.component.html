@@ -32,16 +32,16 @@
             <mat-form-field>
               <mat-label>Sexo</mat-label>
               <mat-select formControlName="sexo" id="sexo">
-                <mat-option *ngFor="let item of carregarSexo$ | async" [value]="item">
-                  {{item}}
+                <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
+                  {{item.value}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Estado Civil</mat-label>
               <mat-select formControlName="estadoCivil" id="estadoCivil">
-                <mat-option *ngFor="let item of carregarEstadoCivil$  | async" [value]="item">
-                  {{item}}
+                <mat-option *ngFor="let item of comboEstadoCivil | keyValue" [value]="item.key">
+                  {{item.value}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -98,7 +98,7 @@
             <mat-form-field>
               <mat-label>Selecione...</mat-label>
               <mat-select formControlName="uf" id="uf">
-                <mat-option *ngFor="let item of estados | keyValue" [value]="item.key">
+                <mat-option *ngFor="let item of comboEstados | keyValue" [value]="item.key">
                   {{item.value}}
                 </mat-option>
               </mat-select>
@@ -115,8 +115,8 @@
             <mat-form-field>
               <mat-label>Selecione...</mat-label>
               <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
-                <mat-option *ngFor="let item of carregarTipoContatos$  | async" [value]="item">
-                  {{item}}
+                <mat-option *ngFor="let item of comboTipoContatos " [value]="item.tipo">
+                  {{item.desTipoContato}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -143,7 +143,7 @@
                   <th>Remover</th>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of contatos">
+                  <tr *ngFor="let item of contatosGrid">
                     <td>{{ item.tipo}}</td>
                     <td>{{ item.contato }}</td>
                     <td><img src="./assets/whatsapp.png" width="20px" *ngIf="item.whatsapp && item.celular">
@@ -167,8 +167,8 @@
             <mat-form-field>
               <mat-label>Selecione...</mat-label>
               <mat-select formControlName="escolaridades" id="escolaridades">
-                <mat-option *ngFor="let item of carregarEscolariade$  | async" [value]="item">
-                  {{item}}
+                <mat-option *ngFor="let item of comboEscolaridade | keyValue" [value]="item.key">
+                  {{item.value}}
                 </mat-option>
               </mat-select>
             </mat-form-field>

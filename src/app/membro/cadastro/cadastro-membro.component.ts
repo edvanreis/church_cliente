@@ -5,6 +5,7 @@ import { MembroService } from '../../service/membro.service';
 import { HelperChurch } from '../../helper/helper-church';
 import { AlertType } from '../../model/alert-type';
 import { NotifierService } from 'angular-notifier';
+import { Contatos } from '../../model/contatos';
 
 @Component({
   selector: 'app-cadastro',
@@ -13,10 +14,7 @@ import { NotifierService } from 'angular-notifier';
 })
 export class CadastroMembroComponent implements OnInit {
 
-  public carregarSexo$: Observable<any[]>;
-  public carregarEstadoCivil$: Observable<any[]>;
-  public carregarTipoContatos$: Observable<any[]>;
-  public carregarEscolariade$: Observable<any[]>;
+
   public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
   public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/]
   public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
@@ -27,6 +25,7 @@ export class CadastroMembroComponent implements OnInit {
   constructor(private _membroService: MembroService, private _notifierService: NotifierService) { }
 
   public form: FormGroup;
+  public contatosGrid = [];
   public contatos = [];
   public escolaridades = [];
   public isContato: boolean = true;
@@ -34,7 +33,11 @@ export class CadastroMembroComponent implements OnInit {
   public isTelefone: boolean = false;
   public isFacebook: boolean = false;
   public isEmail: boolean = false;
-  public estados = [];
+  public comboEstados = [];
+  public comboSexo = [];
+  public comboEstadoCivil = [];
+  public comboTipoContatos = [];
+  public comboEscolaridade = []
 
 
 
@@ -50,23 +53,35 @@ export class CadastroMembroComponent implements OnInit {
   }
 
   getComboSexo() {
-    this.carregarSexo$ = this._membroService.carregarSexo();
+    this._membroService.carregarSexo().subscribe(item => {
+      this.comboSexo = item;
+      console.log(item);
+    });
   }
 
   getComboEstadoCivil() {
-    this.carregarEstadoCivil$ = this._membroService.carregarEstadoCivil();
+    this._membroService.carregarEstadoCivil().subscribe(item => {
+      this.comboEstadoCivil = item;
+      console.log(item);
+    });
   }
 
   getComboContatos() {
-    this.carregarTipoContatos$ = this._membroService.carregarTiposContatos();
+    this._membroService.carregarTiposContatos().subscribe(item => {
+      this.comboTipoContatos = item;
+      console.log(item);
+    });
   }
 
   getComboEscolaridade() {
-    this.carregarEscolariade$ = this._membroService.carregarEscolaridade();
+    this._membroService.carregarEscolaridade().subscribe(item => {
+      this.comboEscolaridade = item;
+      console.log(item);
+    });
   }
   getComboUF() {
-    this._membroService.carregarEstados().subscribe(item=>{
-      this.estados = item;
+    this._membroService.carregarEstados().subscribe(item => {
+      this.comboEstados = item;
       console.log(item);
     });
   }
@@ -107,7 +122,7 @@ export class CadastroMembroComponent implements OnInit {
     let email: string;
     contato = this.preecherContato();
     email = this.form.controls['email'].value;
-    let pattern = new RegExp("^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$");
+    let pattern = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
 
     if (this.isContato && !contato) {
       this._notifierService.notify('error', 'Por favor preencha o campo contato!');
@@ -122,8 +137,17 @@ export class CadastroMembroComponent implements OnInit {
       return false;
     }
 
-    this.contatos.push({
-      tipo: this.form.controls['contatos'].value,
+    let tipo: string;
+    let tipoSelected: string = this.form.controls['contatos'].value;
+
+    this.comboTipoContatos.forEach(item => {
+      if (tipoSelected == item.tipo) {
+        tipo = item.desTipoContato;
+      }
+    });
+
+    this.contatosGrid.push({
+      tipo: tipo,
       contato: contato,
       whatsapp: this.form.controls['whatsapp'].value,
       facebook: this.isFacebook,
@@ -131,6 +155,11 @@ export class CadastroMembroComponent implements OnInit {
       telefone: this.isTelefone,
       celular: this.isCelular
     });
+    let obj = new Contatos();
+    obj.tipoContato = tipoSelected;
+    obj.descricao = contato;
+    obj.isWhatsapp = this.form.controls['whatsapp'].value;
+    this.contatos.push(obj);
   }
 
   preecherContato() {
@@ -157,29 +186,28 @@ export class CadastroMembroComponent implements OnInit {
   }
 
   tipo(event) {
-    console.log(event);
-    this.getComboContatos
-    if (event.value == 'Celular' || event.value == 'Celular do trabalho') {
+    console.log(event.value);
+    if (event.value == 'CELULAR' || event.value == 'CELULAR_TRABALHO') {
       this.isCelular = true;
       this.isTelefone = false;
       this.isContato = false;
       this.isEmail = false;
       this.isFacebook = false;
-    } else if (event.value == 'Telefone' || event.value == 'Telefone do trabalho') {
+    } else if (event.value == 'TELEFONE' || event.value == 'TELEFONE_TRABALHO') {
       this.isTelefone = true;
       this.isCelular = false;
       this.isContato = false;
       this.isEmail = false;
       this.isFacebook = false;
       this.form.controls['whatsapp'].patchValue(false);
-    } else if (event.value == 'Facebook') {
+    } else if (event.value == 'FACEBOOK') {
       this.isFacebook = true
       this.isContato = true;
       this.isCelular = false;
       this.isTelefone = false;
       this.isEmail = false
       this.form.controls['whatsapp'].patchValue(false);
-    } else if (event.value == 'E-mail') {
+    } else if (event.value == 'EMAIL') {
       this.isEmail = true
       this.isContato = false;
       this.isFacebook = false;
@@ -196,23 +224,24 @@ export class CadastroMembroComponent implements OnInit {
 
   //  remove uma linha da grid
   removerContato(index): void {
-    this.contatos.splice(index, 1)
+    this.contatos.splice(index, 1);
+    this.contatosGrid.splice(index, 1)
   }
 
-  consultarCEP(event){
+  consultarCEP(event) {
     console.log(event.target.value);
-    let cep:string = event.target.value;
-      if(cep){
-        cep = cep.replace("-","").trim();
-        let validarCep = /^[0-9]{8}$/;
-        if(validarCep.test(cep)){
-          this._membroService.carregarEndereco(cep).subscribe(item=>{
-            this.form.controls['logradouro'].patchValue(item.logradouro);
-            this.form.controls['cidade'].patchValue(item.localidade);
-            this.form.controls['uf'].patchValue(item.uf);
-            this.form.controls['bairro'].patchValue(item.bairro);
-          });
-        }
+    let cep: string = event.target.value;
+    if (cep) {
+      cep = cep.replace("-", "").trim();
+      let validarCep = /^[0-9]{8}$/;
+      if (validarCep.test(cep)) {
+        this._membroService.carregarEndereco(cep).subscribe(item => {
+          this.form.controls['logradouro'].patchValue(item.logradouro);
+          this.form.controls['cidade'].patchValue(item.localidade);
+          this.form.controls['uf'].patchValue(item.uf);
+          this.form.controls['bairro'].patchValue(item.bairro);
+        });
       }
+    }
   }
 }
