@@ -158,6 +158,7 @@ export class CadastroMembroComponent implements OnInit {
 
   tipo(event) {
     console.log(event);
+    this.getComboContatos
     if (event.value == 'Celular' || event.value == 'Celular do trabalho') {
       this.isCelular = true;
       this.isTelefone = false;
@@ -205,7 +206,6 @@ export class CadastroMembroComponent implements OnInit {
         cep = cep.replace("-","").trim();
         let validarCep = /^[0-9]{8}$/;
         if(validarCep.test(cep)){
-          let obj;
           this._membroService.carregarEndereco(cep).subscribe(item=>{
             this.form.controls['logradouro'].patchValue(item.logradouro);
             this.form.controls['cidade'].patchValue(item.localidade);

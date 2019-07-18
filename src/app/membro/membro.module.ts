@@ -1,15 +1,14 @@
-import { CommonModule, KeyValuePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatSelectModule, MatToolbarModule, MatExpansionModule, MatSortModule, MatTableModule, MatPaginator, MatPaginatorModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MembroService } from '../service/membro.service';
 import { CadastroMembroComponent } from './cadastro/cadastro-membro.component';
-import { NotifierModule, NotifierOptions } from 'angular-notifier';
-import { HttpModule } from '@angular/http';
+import { KeyValuePipe } from '../pipes/key-value.pipe';
 
 // const customNotifierOptions: NotifierOptions = {
 //   position: {
@@ -80,9 +79,11 @@ const routes: Routes = [
   ],
   exports: [
     RouterModule,
+    KeyValuePipe
 ],
   declarations: [
-    CadastroMembroComponent
+    CadastroMembroComponent,
+    KeyValuePipe
   ],
   providers: [
     MembroService
