@@ -83,7 +83,7 @@
               <input matInput placeholder="Complemento" formControlName="complemento" id="complemento">
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Bairro" formControlName="bairro" id="bairro">
+              <input matInput placeholder="Bairro" formControlName="bairro" id="bairro"  >
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
@@ -116,7 +116,7 @@
               <mat-label>Selecione...</mat-label>
               <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
                 <mat-option *ngFor="let item of comboTipoContatos " [value]="item.tipo">
-                  {{item.desTipoContato}}
+                  {{item.descTipoContato}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -166,9 +166,9 @@
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
               <mat-label>Selecione...</mat-label>
-              <mat-select formControlName="escolaridades" id="escolaridades">
-                <mat-option *ngFor="let item of comboEscolaridade | keyValue" [value]="item.key">
-                  {{item.value}}
+              <mat-select formControlName="escolaridade" id="escolaridade" (selectionChange)="tipo($event)">
+                <mat-option *ngFor="let item of comboEscolaridade" [value]="item.tipo">
+                  {{item.descricao}}
                 </mat-option>
               </mat-select>
             </mat-form-field>
@@ -185,11 +185,14 @@
                 <thead class="text-primary">
                   <th>Escolaridade</th>
                   <th>Curso</th>
+                  <th>Remover</th>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let item of escolaridades">
-                    <td>{{ item.escolaridade}}</td>
+                  <tr *ngFor="let item of escolaridadesGrid">
+                    <td>{{ item.tipo}}</td>
                     <td>{{ item.curso }}</td>
+                    <td><span style="color: #1d68a5;cursor: pointer" (click)="removerEscolaridade(i)"><i
+                          class="material-icons">delete</i></span></td>
                   </tr>
                 </tbody>
               </table>

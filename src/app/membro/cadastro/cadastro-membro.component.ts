@@ -28,6 +28,7 @@ export class CadastroMembroComponent implements OnInit {
   public contatosGrid = [];
   public contatos = [];
   public escolaridades = [];
+  public escolaridadesGrid = [];
   public isContato: boolean = true;
   public isCelular: boolean = false;
   public isTelefone: boolean = false;
@@ -38,6 +39,7 @@ export class CadastroMembroComponent implements OnInit {
   public comboEstadoCivil = [];
   public comboTipoContatos = [];
   public comboEscolaridade = []
+  public disableFieldEnd:boolean = false
 
 
 
@@ -95,7 +97,7 @@ export class CadastroMembroComponent implements OnInit {
       'contatoTelefone': new FormControl(''),
       'contatoCelular': new FormControl(''),
       'whatsapp': new FormControl(''),
-      'escolaridades': new FormControl(''),
+      'escolaridade': new FormControl(''),
       'curso': new FormControl(''),
       'rg': new FormControl(''),
       'cpf': new FormControl(''),
@@ -125,15 +127,15 @@ export class CadastroMembroComponent implements OnInit {
     let pattern = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
 
     if (this.isContato && !contato) {
-      this._notifierService.notify('error', 'Por favor preencha o campo contato!');
+      this._notifierService.notify(AlertType.Error, 'Por favor preencha o campo contato!');
       return false;
     }
     if (this.isEmail && !email) {
-      this._notifierService.notify('error', 'Por favor preencha o campo email!');
+      this._notifierService.notify(AlertType.Error, 'Por favor preencha o campo email!');
       return false;
     }
     if (this.isEmail && !pattern.test(email)) {
-      this._notifierService.notify('error', 'O email possui formato invalido!');
+      this._notifierService.notify(AlertType.Error, 'O email possui formato invalido!');
       return false;
     }
 
@@ -175,18 +177,30 @@ export class CadastroMembroComponent implements OnInit {
   }
 
   adicionarEscolaridade() {
-    if (!this.form.controls['curso'].value) {
-      HelperChurch.showNotification('Por favor preencha o campo curso!', AlertType.Success);
-      return false;
-    }
-    this.contatos.push({
-      tipo: this.form.controls['escolaridade'].value,
-      contato: this.form.controls['curso'].value,
+    // if (!this.form.controls['curso'].value) {
+    //   HelperChurch.showNotification('Por favor preencha o campo curso!', AlertType.Success);
+    //   return false;
+    // }
+    let tipoSelected: string = this.form.controls['escolaridade'].value;
+    let tipo: string;
+    this.comboEscolaridade.forEach(item => {
+      if (tipoSelected == item.tipo) {
+        tipo = item.descricao;
+      }
     });
+    this.escolaridades.push({
+      tipo: this.form.controls['escolaridade'].value,
+      curso: this.form.controls['curso'].value,
+    });
+    this.escolaridadesGrid.push({
+      tipo: tipo,
+      curso: this.form.controls['curso'].value,
+    });
+    console.log(this.escolaridadesGrid);
   }
 
   tipo(event) {
-    console.log(event.value);
+    // console.log(event.value);
     if (event.value == 'CELULAR' || event.value == 'CELULAR_TRABALHO') {
       this.isCelular = true;
       this.isTelefone = false;
@@ -228,6 +242,11 @@ export class CadastroMembroComponent implements OnInit {
     this.contatosGrid.splice(index, 1)
   }
 
+  removerEscolaridade(index){
+    this.escolaridades.splice(index, 1);
+    this.escolaridadesGrid.splice(index, 1)
+  }
+
   consultarCEP(event) {
     console.log(event.target.value);
     let cep: string = event.target.value;
@@ -236,10 +255,16 @@ export class CadastroMembroComponent implements OnInit {
       let validarCep = /^[0-9]{8}$/;
       if (validarCep.test(cep)) {
         this._membroService.carregarEndereco(cep).subscribe(item => {
-          this.form.controls['logradouro'].patchValue(item.logradouro);
-          this.form.controls['cidade'].patchValue(item.localidade);
-          this.form.controls['uf'].patchValue(item.uf);
-          this.form.controls['bairro'].patchValue(item.bairro);
+          if(item){
+            this.form.controls['logradouro'].patchValue(item.logradouro);
+            this.form.controls['cidade'].patchValue(item.localidade);
+            this.form.controls['uf'].patchValue(item.uf);
+            this.form.controls['bairro'].patchValue(item.bairro);
+            this.disableFieldEnd = true;
+          }     
+        }, error => {
+          this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
+          this.disableFieldEnd = false;
         });
       }
     }
