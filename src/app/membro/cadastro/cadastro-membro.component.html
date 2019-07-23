@@ -83,7 +83,7 @@
               <input matInput placeholder="Complemento" formControlName="complemento" id="complemento">
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Bairro" formControlName="bairro" id="bairro"  >
+              <input matInput placeholder="Bairro" formControlName="bairro" id="bairro">
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
@@ -114,7 +114,7 @@
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
               <mat-label>Selecione...</mat-label>
-              <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
+              <mat-select formControlName="v" id="contatos" (selectionChange)="tipo($event)">
                 <mat-option *ngFor="let item of comboTipoContatos " [value]="item.tipo">
                   {{item.descTipoContato}}
                 </mat-option>
