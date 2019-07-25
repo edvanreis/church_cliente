@@ -14,18 +14,21 @@
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Nome" formControlName="nome" id="nome">
+              <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Data Nascimento" [textMask]="{mask: maskDate}"
-                formControlName="dataNascimento" id="dataNascimento">
+              <input matInput placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome">
+              <mat-error *ngIf="!form.controls.sobrenome.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
               <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg">
+              <mat-error *ngIf="!form.controls.rg.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
             <mat-form-field class="example-full-width">
               <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf">
+              <mat-error *ngIf="!form.controls.cpf.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -36,6 +39,7 @@
                   {{item.value}}
                 </mat-option>
               </mat-select>
+              <mat-error *ngIf="!form.controls.sexo.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
             <mat-form-field>
               <mat-label>Estado Civil</mat-label>
@@ -48,13 +52,18 @@
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade">
+              <input matInput placeholder="Data Nascimento" [textMask]="{mask: maskDate}"
+                formControlName="dataNascimento" id="dataNascimento">
+                <mat-error *ngIf="!form.controls.dataNascimento.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Célula" formControlName="celula">
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+            <mat-form-field class="example-full-width">
+              <input matInput placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade">
+            </mat-form-field>
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Profissão" formControlName="profissao" id="profissao">
             </mat-form-field>
@@ -114,7 +123,7 @@
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
               <mat-label>Selecione...</mat-label>
-              <mat-select formControlName="v" id="contatos" (selectionChange)="tipo($event)">
+              <mat-select formControlName="contato" id="contatos" (selectionChange)="tipo($event)">
                 <mat-option *ngFor="let item of comboTipoContatos " [value]="item.tipo">
                   {{item.descTipoContato}}
                 </mat-option>

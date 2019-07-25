@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient ,HttpErrorResponse} from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 
 @Injectable()
@@ -42,8 +43,13 @@ PATH = "membro/";
     .pipe(tap((response: any) => response));
   }
 
+  save(membro){
+    return this.http.post(environment.baseUrl+this.PATH ,membro)
+      .pipe(map((response: Response) => HttpErrorResponse))
+      .catch(this._errorHandler);
+  }
 
-  
+
   _errorHandler(error: Response) {
     return Observable.throw(error || "Internal server error");
   }

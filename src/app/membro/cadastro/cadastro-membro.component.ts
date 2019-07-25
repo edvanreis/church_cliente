@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { MembroService } from '../../service/membro.service';
 import { HelperChurch } from '../../helper/helper-church';
@@ -90,8 +90,9 @@ export class CadastroMembroComponent implements OnInit {
 
   private _buildForm(): void {
     this.form = new FormGroup({
-      'nome': new FormControl(''),
-      'dataNascimento': new FormControl(''),
+      'nome': new FormControl('',Validators.required),
+      'sobrenome': new FormControl('',Validators.required),
+      'dataNascimento': new FormControl('',Validators.required),
       'contatos': new FormControl(''),
       'contato': new FormControl(''),
       'contatoTelefone': new FormControl(''),
@@ -99,11 +100,11 @@ export class CadastroMembroComponent implements OnInit {
       'whatsapp': new FormControl(''),
       'escolaridade': new FormControl(''),
       'curso': new FormControl(''),
-      'rg': new FormControl(''),
-      'cpf': new FormControl(''),
-      'sexo': new FormControl(''),
+      'rg': new FormControl('',Validators.required),
+      'cpf': new FormControl('',Validators.required),
+      'sexo': new FormControl('',Validators.required),
       'estadoCivil': new FormControl(''),
-      'nacionalidade': new FormControl(''),
+      'nacionalidade': new FormControl('',Validators.required),
       'celula': new FormControl(''),
       'profissao': new FormControl(''),
       'email': new FormControl(''),
@@ -124,7 +125,7 @@ export class CadastroMembroComponent implements OnInit {
     let email: string;
     contato = this.preecherContato();
     email = this.form.controls['email'].value;
-    let pattern = /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i;
+    let pattern = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$");
 
     if (this.isContato && !contato) {
       this._notifierService.notify(AlertType.Error, 'Por favor preencha o campo contato!');
