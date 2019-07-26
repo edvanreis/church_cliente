@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { MembroService } from '../../service/membro.service';
-import { HelperChurch } from '../../helper/helper-church';
-import { AlertType } from '../../model/alert-type';
 import { NotifierService } from 'angular-notifier';
+import { AlertType } from '../../model/alert-type';
 import { Contatos } from '../../model/contatos';
+import { MembroService } from '../../service/membro.service';
+import { Membro } from '../../model/Membro';
 
 @Component({
   selector: 'app-cadastro',
@@ -39,7 +38,8 @@ export class CadastroMembroComponent implements OnInit {
   public comboEstadoCivil = [];
   public comboTipoContatos = [];
   public comboEscolaridade = []
-  public disableFieldEnd:boolean = false
+  public disableFieldEnd: boolean = false
+  public membro: Membro;
 
 
 
@@ -90,9 +90,9 @@ export class CadastroMembroComponent implements OnInit {
 
   private _buildForm(): void {
     this.form = new FormGroup({
-      'nome': new FormControl('',Validators.required),
-      'sobrenome': new FormControl('',Validators.required),
-      'dataNascimento': new FormControl('',Validators.required),
+      'nome': new FormControl('', Validators.required),
+      'sobrenome': new FormControl('', Validators.required),
+      'dataNascimento': new FormControl('', Validators.required),
       'contatos': new FormControl(''),
       'contato': new FormControl(''),
       'contatoTelefone': new FormControl(''),
@@ -100,15 +100,15 @@ export class CadastroMembroComponent implements OnInit {
       'whatsapp': new FormControl(''),
       'escolaridade': new FormControl(''),
       'curso': new FormControl(''),
-      'rg': new FormControl('',Validators.required),
-      'cpf': new FormControl('',Validators.required),
-      'sexo': new FormControl('',Validators.required),
+      'rg': new FormControl('', Validators.required),
+      'cpf': new FormControl('', Validators.required),
+      'sexo': new FormControl('', Validators.required),
       'estadoCivil': new FormControl(''),
-      'nacionalidade': new FormControl('',Validators.required),
+      'nacionalidade': new FormControl('', Validators.required),
       'celula': new FormControl(''),
       'profissao': new FormControl(''),
       'email': new FormControl(''),
-      'cep': new FormControl(''),
+      'cep': new FormControl('', Validators.required),
       'numero': new FormControl(''),
       'bairro': new FormControl(''),
       'complemento': new FormControl(''),
@@ -243,7 +243,7 @@ export class CadastroMembroComponent implements OnInit {
     this.contatosGrid.splice(index, 1)
   }
 
-  removerEscolaridade(index){
+  removerEscolaridade(index) {
     this.escolaridades.splice(index, 1);
     this.escolaridadesGrid.splice(index, 1)
   }
@@ -256,18 +256,52 @@ export class CadastroMembroComponent implements OnInit {
       let validarCep = /^[0-9]{8}$/;
       if (validarCep.test(cep)) {
         this._membroService.carregarEndereco(cep).subscribe(item => {
-          if(item){
+          if (item) {
             this.form.controls['logradouro'].patchValue(item.logradouro);
             this.form.controls['cidade'].patchValue(item.localidade);
             this.form.controls['uf'].patchValue(item.uf);
             this.form.controls['bairro'].patchValue(item.bairro);
             this.disableFieldEnd = true;
-          }     
+          }
         }, error => {
           this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
           this.disableFieldEnd = false;
         });
       }
     }
+  }
+
+  fillMembros(): Membro {
+    this.membro = new Membro();
+    this.membro.nome = this.form.controls['nome'].value;
+    this.membro.sobreNome = this.form.controls['sobrenome'].value;
+    this.membro.rg = this.form.controls['rg'].value;
+    this.membro.cpf = this.form.controls['cpf'].value;
+    this.membro.sexo = this.form.controls['sexo'].value;
+    this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
+    this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
+    // this.membro.idCelula = this.form.controls['celula'].value;
+    this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
+    this.membro.profissao = this.form.controls['profissao'].value;
+    this.membro.batizado = this.form.controls['batizado'].value;
+    this.membro.dizimista = this.form.controls['dizimista'].value;
+
+    return this.membro;
+  }
+
+  salvar() {
+    if (!this.form.valid) {
+      this._notifierService.notify(AlertType.Success, "Preencha todos os campos obrigatórios!");
+      return false;
+    }
+    this.membro = this.fillMembros();
+    // console.log(this.membro);
+    this._membroService.save(this.membro).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, "Salvo com sucesso!");
+    }, error => {
+      console.log(error);
+      // this._notifierService.notify(AlertType.Error, error.error.message);
+
+    });
   }
 }

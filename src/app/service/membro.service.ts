@@ -44,13 +44,11 @@ PATH = "membro/";
   }
 
   save(membro){
+    console.log(membro);
     return this.http.post(environment.baseUrl+this.PATH ,membro)
-      .pipe(map((response: Response) => HttpErrorResponse))
-      .catch(this._errorHandler);
+      .pipe(map((response: any) => response))
   }
-
-
-  _errorHandler(error: Response) {
-    return Observable.throw(error || "Internal server error");
-  }
+  // _errorHandler(error: Response) {
+  //   return Observable.throw(error || "Internal server error");
+  // }
 }

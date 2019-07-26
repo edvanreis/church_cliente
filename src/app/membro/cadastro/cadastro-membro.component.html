@@ -82,6 +82,7 @@
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
             <mat-form-field class="example-full-width">
               <input matInput placeholder="CEP" formControlName="cep" id="cep" (blur)="consultarCEP($event)">
+              <mat-error *ngIf="!form.controls.cep.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Número" formControlName="numero" id="numero">
@@ -209,7 +210,7 @@
           </div>
           <br /><br />
           <mat-divider></mat-divider>
-          <button mat-raised-button color="primary" type="submit">
+          <button mat-raised-button color="primary" type="submit" (click)="salvar()">
             <i class="material-icons">save</i>Salvar</button>
         </form>
       </div>
