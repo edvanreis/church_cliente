@@ -290,10 +290,10 @@ export class CadastroMembroComponent implements OnInit {
   }
 
   salvar() {
-    if (!this.form.valid) {
-      this._notifierService.notify(AlertType.Success, "Preencha todos os campos obrigatórios!");
-      return false;
-    }
+    // if (!this.form.valid) {
+    //   this._notifierService.notify(AlertType.Success, "Preencha todos os campos obrigatórios!");
+    //   return false;
+    // }
     this.membro = this.fillMembros();
     // console.log(this.membro);
     this._membroService.save(this.membro).subscribe(item => {
