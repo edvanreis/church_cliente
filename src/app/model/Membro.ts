@@ -1,4 +1,4 @@
-import { Pessoa } from "./Pessoa";
+import { Pessoa } from "./pessoa";
 
 export class Membro extends Pessoa {
     // public id:number;

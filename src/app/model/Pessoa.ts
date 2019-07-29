@@ -1,3 +1,5 @@
+import { Endereco } from "./Endereco";
+
 export class Pessoa  {
     public id:number;
     public nome:string;
@@ -12,5 +14,5 @@ export class Pessoa  {
     public contato=[];
     public observacao:string;
     public profissao:string;
-
+    public endereco:Endereco = new Endereco();
 }

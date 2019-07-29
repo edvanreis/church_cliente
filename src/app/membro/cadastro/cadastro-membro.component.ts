@@ -4,7 +4,7 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../model/alert-type';
 import { Contatos } from '../../model/contatos';
 import { MembroService } from '../../service/membro.service';
-import { Membro } from '../../model/Membro';
+import { Membro } from '../../model/membro';
 
 @Component({
   selector: 'app-cadastro',
@@ -19,7 +19,7 @@ export class CadastroMembroComponent implements OnInit {
   public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
   public maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/,]
   public maskCelular = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-  public cepMask = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
+  public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
   constructor(private _membroService: MembroService, private _notifierService: NotifierService) { }
 
@@ -38,7 +38,6 @@ export class CadastroMembroComponent implements OnInit {
   public comboEstadoCivil = [];
   public comboTipoContatos = [];
   public comboEscolaridade = []
-  public disableFieldEnd: boolean = false
   public membro: Membro;
 
 
@@ -110,11 +109,11 @@ export class CadastroMembroComponent implements OnInit {
       'email': new FormControl(''),
       'cep': new FormControl('', Validators.required),
       'numero': new FormControl(''),
-      'bairro': new FormControl(''),
+      'bairro': new FormControl({value: '', disabled: true}),
       'complemento': new FormControl(''),
-      'logradouro': new FormControl(''),
+      'logradouro': new FormControl({value: '', disabled: true}),
       'cidade': new FormControl(''),
-      'uf': new FormControl(''),
+      'uf': new FormControl({value: '', disabled: true}),
       'batizado': new FormControl(''),
       'dizimista': new FormControl(''),
     });
@@ -261,11 +260,9 @@ export class CadastroMembroComponent implements OnInit {
             this.form.controls['cidade'].patchValue(item.localidade);
             this.form.controls['uf'].patchValue(item.uf);
             this.form.controls['bairro'].patchValue(item.bairro);
-            this.disableFieldEnd = true;
           }
         }, error => {
           this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
-          this.disableFieldEnd = false;
         });
       }
     }
@@ -273,6 +270,7 @@ export class CadastroMembroComponent implements OnInit {
 
   fillMembros(): Membro {
     this.membro = new Membro();
+    // // dados pessoais
     this.membro.nome = this.form.controls['nome'].value;
     this.membro.sobreNome = this.form.controls['sobrenome'].value;
     this.membro.rg = this.form.controls['rg'].value;
@@ -285,6 +283,16 @@ export class CadastroMembroComponent implements OnInit {
     this.membro.profissao = this.form.controls['profissao'].value;
     this.membro.batizado = this.form.controls['batizado'].value;
     this.membro.dizimista = this.form.controls['dizimista'].value;
+    // endereço
+    this.membro.endereco.cep = this.form.controls['cep'].value;
+    this.membro.endereco.numero = this.form.controls['numero'].value;
+    this.membro.endereco.complemento = this.form.controls['complemento'].value;
+    this.membro.endereco.bairro = this.form.controls['bairro'].value;
+    this.membro.endereco.logradouro = this.form.controls['logradouro'].value;
+    this.membro.endereco.uf = this.form.controls['uf'].value; 
+    this.membro.endereco.cidade = this.form.controls['cidade'].value;
+    
+
 
     return this.membro;
   }
@@ -295,7 +303,7 @@ export class CadastroMembroComponent implements OnInit {
     //   return false;
     // }
     this.membro = this.fillMembros();
-    // console.log(this.membro);
+    console.log(this.membro);
     this._membroService.save(this.membro).subscribe(item => {
       this._notifierService.notify(AlertType.Success, "Salvo com sucesso!");
     }, error => {

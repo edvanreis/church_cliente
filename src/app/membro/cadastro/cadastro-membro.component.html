@@ -81,7 +81,7 @@
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="CEP" formControlName="cep" id="cep" (blur)="consultarCEP($event)">
+              <input matInput placeholder="CEP" formControlName="cep" id="cep" (blur)="consultarCEP($event)" [textMask]="{mask: maskCEP}">
               <mat-error *ngIf="!form.controls.cep.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
             <mat-form-field class="example-full-width">
