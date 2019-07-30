@@ -9,9 +9,9 @@ export class Pessoa  {
     public cpf:string;
     public dataNascimento:any;
     public nacionalidade:string;
-    public escolaridade=[];
+    public escolaridades=[];
     public estadoCivil:string;
-    public contato=[];
+    public contatos=[];
     public observacao:string;
     public profissao:string;
     public endereco:Endereco = new Endereco();

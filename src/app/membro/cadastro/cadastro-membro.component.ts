@@ -143,8 +143,9 @@ export class CadastroMembroComponent implements OnInit {
     let tipoSelected: string = this.form.controls['contatos'].value;
 
     this.comboTipoContatos.forEach(item => {
+      console.log(item);
       if (tipoSelected == item.tipo) {
-        tipo = item.desTipoContato;
+        tipo = item.descTipoContato;
       }
     });
 
@@ -157,8 +158,9 @@ export class CadastroMembroComponent implements OnInit {
       telefone: this.isTelefone,
       celular: this.isCelular
     });
+    console.log(tipo);
     let obj = new Contatos();
-    obj.tipoContato = tipoSelected;
+    obj.tipo = tipoSelected;
     obj.descricao = contato;
     obj.isWhatsapp = this.form.controls['whatsapp'].value;
     this.contatos.push(obj);
@@ -291,7 +293,9 @@ export class CadastroMembroComponent implements OnInit {
     this.membro.endereco.logradouro = this.form.controls['logradouro'].value;
     this.membro.endereco.uf = this.form.controls['uf'].value; 
     this.membro.endereco.cidade = this.form.controls['cidade'].value;
-    
+    //contatos
+    this.membro.contatos = this.contatos;
+    this.membro.escolaridades = this.escolaridades;    
 
 
     return this.membro;

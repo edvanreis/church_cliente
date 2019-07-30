@@ -1,5 +1,5 @@
 export class Contatos {
-    tipoContato: string;
+    tipo: string;
     descricao: string;
     isWhatsapp: boolean;
 }
