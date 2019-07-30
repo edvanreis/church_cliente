@@ -162,7 +162,7 @@ export class CadastroMembroComponent implements OnInit {
     let obj = new Contatos();
     obj.tipo = tipoSelected;
     obj.descricao = contato;
-    obj.isWhatsapp = this.form.controls['whatsapp'].value;
+    obj.whatsapp = this.form.controls['whatsapp'].value;
     this.contatos.push(obj);
   }
 
@@ -286,13 +286,13 @@ export class CadastroMembroComponent implements OnInit {
     this.membro.batizado = this.form.controls['batizado'].value;
     this.membro.dizimista = this.form.controls['dizimista'].value;
     // endereço
-    this.membro.endereco.cep = this.form.controls['cep'].value;
-    this.membro.endereco.numero = this.form.controls['numero'].value;
-    this.membro.endereco.complemento = this.form.controls['complemento'].value;
-    this.membro.endereco.bairro = this.form.controls['bairro'].value;
-    this.membro.endereco.logradouro = this.form.controls['logradouro'].value;
-    this.membro.endereco.uf = this.form.controls['uf'].value; 
-    this.membro.endereco.cidade = this.form.controls['cidade'].value;
+    // this.membro.endereco.cep = this.form.controls['cep'].value;
+    // this.membro.endereco.numero = this.form.controls['numero'].value;
+    // this.membro.endereco.complemento = this.form.controls['complemento'].value;
+    // this.membro.endereco.bairro = this.form.controls['bairro'].value;
+    // this.membro.endereco.logradouro = this.form.controls['logradouro'].value;
+    // this.membro.endereco.uf = this.form.controls['uf'].value; 
+    // this.membro.endereco.cidade = this.form.controls['cidade'].value;
     //contatos
     this.membro.contatos = this.contatos;
     this.membro.escolaridades = this.escolaridades;    
@@ -315,5 +315,13 @@ export class CadastroMembroComponent implements OnInit {
       // this._notifierService.notify(AlertType.Error, error.error.message);
 
     });
+  }
+
+  clear(){
+    this.form.reset();
+    this.contatos = [];
+    this.contatosGrid = [];
+    this.escolaridades = [];
+    this.escolaridadesGrid = [];
   }
 }
