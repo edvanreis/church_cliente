@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'cdk-login',
@@ -8,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 
 export class LoginComponent implements OnInit {
 
-  constructor() { }
+  public returnUrl: string;
+
+  constructor(private _route: ActivatedRoute,
+              private _router: Router, ) { }
 
   ngOnInit() {
+    this.returnUrl = this._route.snapshot.queryParams['returnUrl'] || '/';
   }
 
 }

@@ -9,10 +9,12 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { MembroService } from '../service/membro.service';
 import { CadastroMembroComponent } from './cadastro/cadastro-membro.component';
 import { KeyValuePipe } from '../pipes/key-value.pipe';
+import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
 
 
 const routes: Routes = [
-  { path: 'cadastro', component:  CadastroMembroComponent , data: { animation: 'buttons' }}
+  { path: 'cadastro', component:  CadastroMembroComponent , data: { animation: 'buttons' }},
+  { path: 'pesquisar', component:  PesquisarMembroComponent , data: { animation: 'buttons' }}
 ];
 @NgModule({
   imports: [
@@ -43,7 +45,8 @@ const routes: Routes = [
 ],
   declarations: [
     CadastroMembroComponent,
-    KeyValuePipe
+    KeyValuePipe,
+    PesquisarMembroComponent
   ],
   providers: [
     MembroService
