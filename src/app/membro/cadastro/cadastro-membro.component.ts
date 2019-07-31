@@ -56,34 +56,34 @@ export class CadastroMembroComponent implements OnInit {
   getComboSexo() {
     this._membroService.carregarSexo().subscribe(item => {
       this.comboSexo = item;
-      console.log(item);
+      // console.log(item);
     });
   }
 
   getComboEstadoCivil() {
     this._membroService.carregarEstadoCivil().subscribe(item => {
       this.comboEstadoCivil = item;
-      console.log(item);
+      // console.log(item);
     });
   }
 
   getComboContatos() {
     this._membroService.carregarTiposContatos().subscribe(item => {
       this.comboTipoContatos = item;
-      console.log(item);
+      // console.log(item);
     });
   }
 
   getComboEscolaridade() {
     this._membroService.carregarEscolaridade().subscribe(item => {
       this.comboEscolaridade = item;
-      console.log(item);
+      // console.log(item);
     });
   }
   getComboUF() {
     this._membroService.carregarEstados().subscribe(item => {
       this.comboEstados = item;
-      console.log(item);
+      // console.log(item);
     });
   }
 
@@ -112,7 +112,7 @@ export class CadastroMembroComponent implements OnInit {
       'bairro': new FormControl({value: '', disabled: true}),
       'complemento': new FormControl(''),
       'logradouro': new FormControl({value: '', disabled: true}),
-      'cidade': new FormControl(''),
+      'cidade': new FormControl({value: '', disabled: true}),
       'uf': new FormControl({value: '', disabled: true}),
       'batizado': new FormControl(''),
       'dizimista': new FormControl(''),
@@ -143,7 +143,7 @@ export class CadastroMembroComponent implements OnInit {
     let tipoSelected: string = this.form.controls['contatos'].value;
 
     this.comboTipoContatos.forEach(item => {
-      console.log(item);
+      // console.log(item);
       if (tipoSelected == item.tipo) {
         tipo = item.descTipoContato;
       }
@@ -158,10 +158,10 @@ export class CadastroMembroComponent implements OnInit {
       telefone: this.isTelefone,
       celular: this.isCelular
     });
-    console.log(tipo);
+    // console.log(tipo);
     let obj = new Contatos();
     obj.tipo = tipoSelected;
-    obj.descricao = contato;
+    obj.contato = contato;
     obj.whatsapp = this.form.controls['whatsapp'].value;
     this.contatos.push(obj);
   }
@@ -198,7 +198,7 @@ export class CadastroMembroComponent implements OnInit {
       tipo: tipo,
       curso: this.form.controls['curso'].value,
     });
-    console.log(this.escolaridadesGrid);
+    // console.log(this.escolaridadesGrid);
   }
 
   tipo(event) {
@@ -309,10 +309,11 @@ export class CadastroMembroComponent implements OnInit {
     this.membro = this.fillMembros();
     console.log(this.membro);
     this._membroService.save(this.membro).subscribe(item => {
+      this.clear();
       this._notifierService.notify(AlertType.Success, "Salvo com sucesso!");
     }, error => {
-      console.log(error);
-      // this._notifierService.notify(AlertType.Error, error.error.message);
+      // console.log(error);
+      this._notifierService.notify(AlertType.Error, error.message);
 
     });
   }

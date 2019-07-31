@@ -1,5 +1,5 @@
 export class Contatos {
     tipo: string;
-    descricao: string;
+    contato: string;
     whatsapp: boolean;
 }

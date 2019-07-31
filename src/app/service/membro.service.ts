@@ -45,7 +45,6 @@ PATH = "membro/";
   }
 
   save(membro){
-    console.log(membro);
     return this.http.post(environment.baseUrl+this.PATH ,membro)
       .pipe(map((response: any) => response))
   }

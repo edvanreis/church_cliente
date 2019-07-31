@@ -106,7 +106,7 @@
               <input matInput placeholder="Cidade" formControlName="cidade" id="cidade">
             </mat-form-field>
             <mat-form-field>
-              <mat-label>Selecione...</mat-label>
+              <mat-label>Estado</mat-label>
               <mat-select formControlName="uf" id="uf">
                 <mat-option *ngFor="let item of comboEstados | keyValue" [value]="item.key">
                   {{item.value}}
