@@ -3,17 +3,17 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule, MatExpansionModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MembroService } from '../service/membro.service';
-import { CadastroMembroComponent } from './cadastro/cadastro-membro.component';
+import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { KeyValuePipe } from '../pipes/key-value.pipe';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
 
 
 const routes: Routes = [
-  { path: 'cadastro', component:  CadastroMembroComponent , data: { animation: 'buttons' }},
+  { path: 'cadastrar', component:  CadastrarMembroComponent , data: { animation: 'buttons' }},
   { path: 'pesquisar', component:  PesquisarMembroComponent , data: { animation: 'buttons' }}
 ];
 @NgModule({
@@ -37,6 +37,7 @@ const routes: Routes = [
     MatSortModule,
     MatTableModule,
     MatPaginatorModule,
+    MatExpansionModule,
     RouterModule.forChild(routes)
   ],
   exports: [
@@ -44,7 +45,7 @@ const routes: Routes = [
     KeyValuePipe
 ],
   declarations: [
-    CadastroMembroComponent,
+    CadastrarMembroComponent,
     KeyValuePipe,
     PesquisarMembroComponent
   ],

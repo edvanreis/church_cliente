@@ -8,10 +8,10 @@ import { Membro } from '../../model/membro';
 
 @Component({
   selector: 'app-cadastro',
-  templateUrl: './cadastro-membro.component.html',
-  styleUrls: ['./cadastro-membro.component.scss']
+  templateUrl: './cadastrar-membro.component.html',
+  styleUrls: ['./cadastrar-membro.component.scss']
 })
-export class CadastroMembroComponent implements OnInit {
+export class CadastrarMembroComponent implements OnInit {
 
 
   public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]

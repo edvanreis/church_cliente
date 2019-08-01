@@ -14,7 +14,7 @@ export const menus = [
         'sub': [
             {
                 'name': 'Cadastrar',
-                'link': 'membro/cadastro',
+                'link': 'membro/cadastrar',
                 'icon': 'person_add',
                 'chip': false,
                 'open': false,
@@ -36,7 +36,7 @@ export const menus = [
         'sub': [
             {
                 'name': 'Cadastrar',
-                'link': 'membro/cadastro',
+                'link': 'membro/cadastrar',
                 'icon': 'person_add',
                 'chip': false,
                 'open': false,
