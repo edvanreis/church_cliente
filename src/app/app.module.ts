@@ -7,6 +7,7 @@ import { CoreModule } from './core/core.module';
 import { LazyLoadModule } from './lazy-load/lazy-load.module';
 import { MembroModule } from './membro/membro.module';
 import { KeyValuePipe } from '@angular/common';
+import { DadosPessoaisComponent } from './pessoa/dados-pessoais/dados-pessoais.component';
 
 /**
  * Custom angular notifier options

@@ -12,8 +12,8 @@
               <span style="color:#1d68a5"><i class="material-icons">face</i></span>
               Dados pessoais
             </mat-expansion-panel-header>
+            <app-dados-pessoais></app-dados-pessoais>
           </mat-expansion-panel>
-          
           <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <span style="color:#1d68a5"><i class="material-icons">store_mall_directory</i></span>
@@ -32,6 +32,10 @@
               Escolaridade
             </mat-expansion-panel-header>
           </mat-expansion-panel>
+          <br />
+          <br />
+          <button mat-raised-button color="primary" type="submit" (click)="buscar()">
+            <i class="material-icons">search</i>Buscar</button>
         </form>
       </div>
     </div>

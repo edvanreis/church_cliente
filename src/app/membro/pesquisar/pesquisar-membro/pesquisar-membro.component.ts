@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { take } from 'rxjs/operators';
+import { Membro } from '../../../model/membro';
 
 @Component({
   selector: 'app-pesquisar-membro',
@@ -7,9 +10,52 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PesquisarMembroComponent implements OnInit {
 
-  constructor() { }
+
+  constructor(private _emitirEventoService: EmitirEventoService) { }
+
+  public membro:any;
+  public dadosPessoais: any;
 
   ngOnInit() {
+    // this.setEmiter();
+    this.getEmiter();
+  }
+
+
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'dadosPessoais') {
+        this.dadosPessoais = item.data;
+      }
+
+    });
+  }
+
+  // setEmiter(): void {
+  //   this._emitirEventoService.emitir("dadosPessoais", "pesquisar");
+  // }
+
+  buscar() {
+    console.log(this.fillMembro());
+  }
+
+  fillMembro(): Membro {
+    //dados pessoais
+    console.log(this.dadosPessoais);
+    this.membro = new Membro();
+    this.membro.nome = this.dadosPessoais.nome;
+    this.membro.sobreNome = this.dadosPessoais.sobreNome;
+    this.membro.rg = this.dadosPessoais.rg;
+    this.membro.cpf = this.dadosPessoais.cpf;
+    this.membro.sexo = this.dadosPessoais.sexo;
+    this.membro.estadoCivil = this.dadosPessoais.estadoCivil;
+    this.membro.dataNascimento = this.dadosPessoais.dataNascimento;
+    this.membro.idCelula =this.dadosPessoais.idCelula;
+    this.membro.nacionalidade = this.dadosPessoais.nacionalidade;
+    this.membro.profissao = this.dadosPessoais.profissao;
+    this.membro.batizado = this.dadosPessoais.batizado;
+    this.membro.dizimista =this.dadosPessoais.dizimista;
+    return this.membro;
   }
 
 }

@@ -10,6 +10,8 @@ import { MembroService } from '../service/membro.service';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { KeyValuePipe } from '../pipes/key-value.pipe';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
+import { DadosPessoaisComponent } from '../pessoa/dados-pessoais/dados-pessoais.component';
+import { EmitirEventoService } from '../service/emitir-evento.service';
 
 
 const routes: Routes = [
@@ -47,10 +49,12 @@ const routes: Routes = [
   declarations: [
     CadastrarMembroComponent,
     KeyValuePipe,
-    PesquisarMembroComponent
+    PesquisarMembroComponent,
+    DadosPessoaisComponent
   ],
   providers: [
-    MembroService
+    MembroService,
+    EmitirEventoService
   ]
 })
 export class MembroModule { }
