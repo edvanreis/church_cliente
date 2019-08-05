@@ -6,12 +6,12 @@
     </mat-toolbar>
     <div class="input-container">
       <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
-        <form form [formGroup]="form">
+        <!-- <form form [formGroup]="form"> -->
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
             <i class="material-icons">face</i>
             <h1 class="mat-subheading-2 center-align">Dados Pessoais</h1>
           </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <!-- <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Nome" formControlName="nome" id="nome">
               <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
@@ -113,7 +113,9 @@
                 </mat-option>
               </mat-select>
             </mat-form-field>
-          </div>
+          </div> -->
+          <app-dados-pessoais></app-dados-pessoais>
+          <form form [formGroup]="form">
           <br />
           <br />
           <mat-divider></mat-divider>

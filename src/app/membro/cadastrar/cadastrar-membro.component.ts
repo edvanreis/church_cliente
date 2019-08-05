@@ -5,6 +5,7 @@ import { AlertType } from '../../model/alert-type';
 import { Contatos } from '../../model/contatos';
 import { MembroService } from '../../service/membro.service';
 import { Membro } from '../../model/membro';
+import { EmitirEventoService } from '../../service/emitir-evento.service';
 
 @Component({
   selector: 'app-cadastro',
@@ -21,7 +22,7 @@ export class CadastrarMembroComponent implements OnInit {
   public maskCelular = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
   public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
-  constructor(private _membroService: MembroService, private _notifierService: NotifierService) { }
+  constructor(private _membroService: MembroService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
 
   public form: FormGroup;
   public contatosGrid = [];
@@ -39,6 +40,7 @@ export class CadastrarMembroComponent implements OnInit {
   public comboTipoContatos = [];
   public comboEscolaridade = []
   public membro: Membro;
+  public dadosPessoais: any;
 
 
 
@@ -49,8 +51,15 @@ export class CadastrarMembroComponent implements OnInit {
     this.getComboEscolaridade();
     this._buildForm();
     this.getComboUF();
+  }
 
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'dadosPessoais') {
+        this.dadosPessoais = item.data;
+      }
 
+    });
   }
 
   getComboSexo() {
@@ -109,11 +118,11 @@ export class CadastrarMembroComponent implements OnInit {
       'email': new FormControl(''),
       'cep': new FormControl('', Validators.required),
       'numero': new FormControl(''),
-      'bairro': new FormControl({value: '', disabled: true}),
+      'bairro': new FormControl({ value: '', disabled: true }),
       'complemento': new FormControl(''),
-      'logradouro': new FormControl({value: '', disabled: true}),
-      'cidade': new FormControl({value: '', disabled: true}),
-      'uf': new FormControl({value: '', disabled: true}),
+      'logradouro': new FormControl({ value: '', disabled: true }),
+      'cidade': new FormControl({ value: '', disabled: true }),
+      'uf': new FormControl({ value: '', disabled: true }),
       'batizado': new FormControl(''),
       'dizimista': new FormControl(''),
     });
@@ -280,7 +289,7 @@ export class CadastrarMembroComponent implements OnInit {
     this.membro.sexo = this.form.controls['sexo'].value;
     this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
     this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
-    // this.membro.idCelula = this.form.controls['celula'].value;
+    this.membro.idCelula = this.form.controls['celula'].value;
     this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
     this.membro.profissao = this.form.controls['profissao'].value;
     this.membro.batizado = this.form.controls['batizado'].value;
@@ -295,7 +304,7 @@ export class CadastrarMembroComponent implements OnInit {
     // this.membro.endereco.cidade = this.form.controls['cidade'].value;
     //contatos
     this.membro.contatos = this.contatos;
-    this.membro.escolaridades = this.escolaridades;    
+    this.membro.escolaridades = this.escolaridades;
 
 
     return this.membro;
@@ -318,7 +327,7 @@ export class CadastrarMembroComponent implements OnInit {
     });
   }
 
-  clear(){
+  clear() {
     this.form.reset();
     this.contatos = [];
     this.contatosGrid = [];
