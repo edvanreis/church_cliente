@@ -7,6 +7,28 @@ export const menus = [
         'chip': { 'value': 1, 'color': 'accent' },
     },
     {
+        'name': 'Visitannte',
+        'icon': 'person',
+        'open': false,
+        'link': false,
+        'sub': [
+            {
+                'name': 'Cadastrar',
+                'link': 'membro/cadastrar',
+                'icon': 'person_add',
+                'chip': false,
+                'open': false,
+            },
+            {
+                'name': 'Pesquisar',
+                'link': 'membro/pesquisar',
+                'icon': 'search',
+                'chip': false,
+                'open': false,
+            },
+        ]
+    },
+    {
         'name': 'Membros',
         'icon': 'person',
         'link': false,
@@ -14,18 +36,19 @@ export const menus = [
         'sub': [
             {
                 'name': 'Cadastrar',
-                'link': 'membro/cadastro',
+                'link': 'membro/cadastrar',
                 'icon': 'person_add',
                 'chip': false,
                 'open': false,
             },
             {
                 'name': 'Pesquisar',
-                'link': 'membro/pesquisa',
+                'link': 'membro/pesquisar',
                 'icon': 'search',
                 'chip': false,
                 'open': false,
             },
+
             // {
 
             //     'name': 'Stepper',
@@ -135,26 +158,47 @@ export const menus = [
             // },
         ]
     },
-    // {
-    //     'name'   : 'Forms',
-    //     'icon'   : 'mode_edit',
-    //     'open'   : false,
-    //     'link'   : false,
-    //     'sub'    :  [
-    //                     {
-    //                         'name': 'Template Driven',
-    //                         'icon': 'mode_edit',
-    //                         'open'   : false,
-    //                         'link':'forms/template_forms'
-    //                     },
-    //                     {
-    //                         'name': 'Reactive Forms',
-    //                         'icon': 'text_fields',
-    //                         'open'   : false,
-    //                         'link':'forms/reactive_forms'
-    //                     }
-    //                 ]
-    // },
+    {
+        'name': 'Célula',
+        'icon': 'group',
+        'open': false,
+        'link': false,
+        'sub': [
+            {
+                'name': 'Cadastrar',
+                'icon': 'group_add',
+                'open': false,
+                'link': 'forms/template_forms'
+            },
+            //                     {
+            //                         'name': 'Reactive Forms',
+            //                         'icon': 'text_fields',
+            //                         'open'   : false,
+            //                         'link':'forms/reactive_forms'
+            //                     }
+        ]
+    },
+    {
+        'name': 'Igreja',
+        'icon': 'account_balance',
+        'open': false,
+        'link': false,
+        'sub': [
+            {
+                'name': 'Cadastrar',
+                'icon': 'add_box',
+                'open': false,
+                'link': 'forms/template_forms'
+            },
+            //                     {
+            //                         'name': 'Reactive Forms',
+            //                         'icon': 'text_fields',
+            //                         'open'   : false,
+            //                         'link':'forms/reactive_forms'
+            //                     }
+        ]
+    },
+
     // {
     //     'name': 'Tables',
     //     'icon': 'list',
