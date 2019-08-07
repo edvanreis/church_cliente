@@ -3,7 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatSelectModule, MatToolbarModule, MatExpansionModule, MatSortModule, MatTableModule, MatPaginator, MatPaginatorModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatSelectModule, MatToolbarModule, MatExpansionModule, MatSortModule, MatTableModule, MatPaginator, MatPaginatorModule, MatSnackBarModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MembroService } from '../service/membro.service';
@@ -34,6 +34,7 @@ const routes: Routes = [
     MatSortModule,
     MatTableModule,
     MatPaginatorModule,
+    MatSnackBarModule,
     RouterModule.forChild(routes)
   ],
   exports: [

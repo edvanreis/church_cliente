@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { MembroService } from '../../service/membro.service';
 import { HelperChurch } from '../../helper/helper-church';
 import { AlertType } from '../../model/alert-type';
+import { MatSnackBar } from '@angular/material';
 
 @Component({
   selector: 'app-cadastro',
@@ -23,7 +24,7 @@ export class CadastroMembroComponent implements OnInit {
   public maskCelular = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
   public maskCep = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/]
 
-  constructor(private _membroService: MembroService) { }
+  constructor(private _membroService: MembroService, public snackBar: MatSnackBar) { }
 
   public form: FormGroup;
   public contatos = [];
@@ -84,6 +85,7 @@ export class CadastroMembroComponent implements OnInit {
 
   }
   adicionarContato() {
+
     let contato: string;
     let email:string;
     contato = this.preecherContato();
@@ -91,11 +93,17 @@ export class CadastroMembroComponent implements OnInit {
     let pattern = new RegExp("^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$"); 
 
     if (!contato) {
-      HelperChurch.showNotification('Por favor preencha o campo contato!', AlertType.Success);
+      this.snackBar.open('Por favor preencha o campo contato!', '', {
+        duration: 2000,
+      });
+      // HelperChurch.showNotification('Por favor preencha o campo contato!', AlertType.Success);
       return false;
     }
     if (!pattern.test(email)) {
-      HelperChurch.showNotification('Por favor digite um email válido!', AlertType.Success);
+      this.snackBar.open('Por favor digite um email válido!', '', {
+        duration: 2000,
+      });
+      // HelperChurch.showNotification('Por favor digite um email válido!', AlertType.Success);
       return false;
     }
 
