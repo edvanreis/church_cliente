@@ -7,32 +7,33 @@ import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class MembroService {
-PATH = "membro/";
+
+  private _url = environment.url+"membro/";
 
   constructor(public http: HttpClient) { }
 
-  
+
   carregarSexo() {
-    return this.http.get(environment.baseUrl + this.PATH + "sexo")
-    .pipe(tap((response: any) => response));
+    return this.http.get(this._url+ "sexo")
+      .pipe(tap((response: any) => response));
   }
 
   carregarEstadoCivil() {
-    return this.http.get(environment.baseUrl + this.PATH + "estadoCivil")
-    .pipe(tap((response: any) => response));
+    return this.http.get(this._url + "estadoCivil")
+      .pipe(tap((response: any) => response));
   }
 
   carregarTiposContatos() {
-    return this.http.get(environment.baseUrl + this.PATH + "tipoContato")
-    .pipe(tap((response: any) => response));
+    return this.http.get(this._url + "tipoContato")
+      .pipe(tap((response: any) => response));
   }
 
   carregarEscolaridade() {
-    return this.http.get(environment.baseUrl + this.PATH + "escolaridade")
-    .pipe(tap((response: any) => response));
+    return this.http.get(this._url + "escolaridade")
+      .pipe(tap((response: any) => response));
   }
 
-  
+
   _errorHandler(error: Response) {
     return Observable.throw(error || "Internal server error");
   }
