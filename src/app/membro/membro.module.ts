@@ -12,6 +12,7 @@ import { KeyValuePipe } from '../pipes/key-value.pipe';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
 import { DadosPessoaisComponent } from '../pessoa/dados-pessoais/dados-pessoais.component';
 import { EmitirEventoService } from '../service/emitir-evento.service';
+import { EnderecoComponent } from '../pessoa/endereco/endereco.component';
 
 
 const routes: Routes = [
@@ -50,7 +51,8 @@ const routes: Routes = [
     CadastrarMembroComponent,
     KeyValuePipe,
     PesquisarMembroComponent,
-    DadosPessoaisComponent
+    DadosPessoaisComponent,
+    EnderecoComponent
   ],
   providers: [
     MembroService,
