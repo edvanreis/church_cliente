@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { take } from 'rxjs/operators';
 import { Membro } from '../../../model/membro';
+import { MembroService } from '../../../service/membro.service';
 
 @Component({
   selector: 'app-pesquisar-membro',
@@ -11,11 +12,13 @@ import { Membro } from '../../../model/membro';
 export class PesquisarMembroComponent implements OnInit {
 
 
-  constructor(private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _emitirEventoService: EmitirEventoService,private _membroService: MembroService) { }
 
   public membro: any;
   public dadosPessoais: any;
   public endereco: any;
+  public comboTipoContatos = [];
+  public comboEscolaridade = []
 
   ngOnInit() {
     // this.setEmiter();
@@ -34,11 +37,7 @@ export class PesquisarMembroComponent implements OnInit {
 
     });
   }
-
-  // setEmiter(): void {
-  //   this._emitirEventoService.emitir("dadosPessoais", "pesquisar");
-  // }
-
+  
   buscar() {
     console.log(this.fillMembro());
   }
