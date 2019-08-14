@@ -1,0 +1,15 @@
+<form form [formGroup]="form">
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+      <mat-form-field>
+        <mat-label>Selecione...</mat-label>
+        <mat-select formControlName="escolaridade" id="escolaridade" (selectionChange)="tipo($event)">
+          <mat-option *ngFor="let item of comboEscolaridade" [value]="item.tipo">
+            {{item.descricao}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Curso" formControlName="curso" id="curso">
+      </mat-form-field>
+    </div>
+</form>

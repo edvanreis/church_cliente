@@ -34,8 +34,6 @@ export class EnderecoComponent implements OnInit {
       'logradouro': new FormControl({ value: '', disabled: true }),
       'cidade': new FormControl({ value: '', disabled: true }),
       'uf': new FormControl({ value: '', disabled: true }),
-      'batizado': new FormControl(''),
-      'dizimista': new FormControl(''),
     });
   }
 

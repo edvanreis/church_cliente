@@ -6,7 +6,11 @@ import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { LazyLoadModule } from './lazy-load/lazy-load.module';
 import { MembroModule } from './membro/membro.module';
-import { EnderecoComponent } from './pessoa/endereco/endereco.component';
+import { AppRoutingModule } from './app-routing.module';
+import { LoginModule } from './login/login.module';
+
+
+
 
 /**
  * Custom angular notifier options
@@ -55,7 +59,7 @@ const customNotifierOptions: NotifierOptions = {
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +67,9 @@ const customNotifierOptions: NotifierOptions = {
     CoreModule,
     BrowserAnimationsModule,
     MembroModule,
-    NotifierModule.withConfig(customNotifierOptions)
+    NotifierModule.withConfig(customNotifierOptions),
+    AppRoutingModule,
+    LoginModule
     
   ],
   providers: [],

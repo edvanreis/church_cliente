@@ -1,0 +1,21 @@
+<form form [formGroup]="form">
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+    <mat-form-field>
+      <mat-label>Selecione...</mat-label>
+      <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
+        <mat-option *ngFor="let item of comboTipoContatos " [value]="item.tipo">
+          {{item.descTipoContato}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
+      <input matInput placeholder="Contato" formControlName="contato" id="contato" *ngIf="isContato">
+      <input matInput placeholder="Contato" formControlName="contatoTelefone" [textMask]="{mask: maskTelefone}"
+        id="contatoTelefone" *ngIf="isTelefone">
+      <input matInput placeholder="Contato" formControlName="contatoCelular" [textMask]="{mask: maskCelular}"
+        id="contatoCelular" *ngIf="isCelular">
+      <input matInput placeholder="Contato" formControlName="email" id="email" *ngIf="isEmail">
+    </mat-form-field>
+    <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
+  </div>
+</form>
