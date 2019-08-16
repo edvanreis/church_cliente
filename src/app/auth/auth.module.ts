@@ -22,6 +22,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 import { DashboardCrmModule } from '../dashboard-crm/dashboard-crm.module';
 
 import { CoreModule } from '../core/core.module';
+import { LoginModule } from '../pages/login/login.module';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { CoreModule } from '../core/core.module';
         CoreModule,
         MatSidenavModule,
         PerfectScrollbarModule,
+        LoginModule 
     ],
     declarations: [AuthComponent],
     providers: [

@@ -1,81 +1,73 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-// import { AuthService } from '../../core/auth.service';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, Compiler } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { AuthService } from '../../service/auth.service';
+import { TokenService } from '../../service/token.service';
+import { UserService } from '../../service/user.service';
+
 @Component({
-  selector: 'app-login',
+  selector: 'cdk-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
+
 export class LoginComponent implements OnInit {
 
-  userForm: FormGroup;
-  formErrors = {
-    'email': '',
-    'password': ''
-  };
-  validationMessages = {
-    'email': {
-      'required': 'Please enter your email',
-      'email': 'please enter your vaild email'
-    },
-    'password': {
-      'required': 'please enter your password',
-      'pattern': 'The password must contain numbers and letters',
-      'minlength': 'Please enter more than 4 characters',
-      'maxlength': 'Please enter less than 25 characters',
-    }
-  };
+  formlogin: FormGroup;
 
-  constructor(private router: Router,
-              private fb: FormBuilder) {
-  }
+  usuario: string = '';
+  senha: string = '';
+
+  returnUrl: string;
+
+  constructor(private route: ActivatedRoute, private router: Router, private _compiler: Compiler,
+    private _auth: AuthService, private _tokenService: TokenService, private _userData: UserService) { }
 
   ngOnInit() {
-    this.buildForm();
+    this._buildForm();
+    this._auth.logout();
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+    this._compiler.clearCache();
   }
 
-  buildForm() {
-    this.userForm = this.fb.group({
-      'email': ['', [
-        Validators.required,
-        Validators.email
-      ]
-      ],
-      'password': ['', [
-        Validators.pattern('^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$'),
-        Validators.minLength(6),
-        Validators.maxLength(25)
-      ]
-      ],
-    });
-
-    this.userForm.valueChanges.subscribe(data => this.onValueChanged(data));
-    this.onValueChanged();
-  }
-
-  onValueChanged(data?: any) {
-    // if (!this.userForm) {
-    //   return;
-    // }
-    // const form = this.userForm;
-    // for (const field in this.formErrors) {
-    //   if (Object.prototype.hasOwnProperty.call(this.formErrors, field)) {
-    //     this.formErrors[field] = '';
-    //     const control = form.get(field);
-    //     if (control && control.dirty && !control.valid) {
-    //       const messages = this.validationMessages[field];
-    //       for (const key in control.errors) {
-    //         if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
-    //           this.formErrors[field] += messages[key] + ' ';
-    //         }
-    //       }
-    //     }
-    //   }
-    // }
-  }
   login() {
-    this.router.navigate(['/']);
-  }
-}
 
+    if (!this.formlogin.valid) {
+      // this._helper.showMessageWarn("Todos os campos são obrigatórios");
+      return;
+    }
+
+    let obj = { username: this.formlogin.value.login, password: this.formlogin.value.password }
+
+    this._auth.login(obj.username, obj.password).subscribe(user => {
+      this._storeToken(user);
+      this._storeUser();
+    }, erro => {
+      // this._helper.showMessageError(erro.error.error_description);
+    })
+
+  }
+
+  private _storeToken(user){
+    const token = user.access_token;
+    const expires_in = user.expires_in;
+    this._tokenService.storeToken(token);
+    this._tokenService.storeTokenExpire(expires_in);
+  }
+
+  private _storeUser(){
+    this._auth.user().subscribe(user=>{
+      this._userData.storeuser(user.userAuthentication);
+      this.router.navigate([this.returnUrl]);
+    })
+  }
+
+  private _buildForm() {
+
+    this.formlogin = new FormGroup({
+      'login': new FormControl('', Validators.required),
+      'password': new FormControl('', Validators.required),
+    });
+  }
+
+}

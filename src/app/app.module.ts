@@ -7,7 +7,7 @@ import { CoreModule } from './core/core.module';
 import { LazyLoadModule } from './lazy-load/lazy-load.module';
 import { MembroModule } from './membro/membro.module';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginModule } from './login/login.module';
+import { LoginModule } from './pages/login/login.module';
 
 
 
