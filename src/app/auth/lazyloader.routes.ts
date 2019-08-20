@@ -1,12 +1,13 @@
 import { Routes } from '@angular/router';
 import { DashboardCrmComponent } from '../dashboard-crm/dashboard-crm.component';
 import { AuthComponent } from './auth.component';
+import { AuthGuardService } from '../service/auth-guard.service';
 
 export const appRoutes: Routes = [{
     path: '', component: AuthComponent, children: [
         { path: 'dashboard', component: DashboardCrmComponent },
-        { path: 'material-widgets', loadChildren: '../material-widgets/material-widgets.module#MaterialWidgetsModule' },
-        { path: 'membro', loadChildren: '../membro/membro.module#MembroModule' },
+        // { path: 'material-widgets', loadChildren: '../material-widgets/material-widgets.module#MaterialWidgetsModule' },
+        { path: 'membro', loadChildren: '../membro/membro.module#MembroModule', data: { role: 'acessoBancoDeHoras' }, canActivate: [AuthGuardService], },
         // { path: 'tables', loadChildren: '../tables/tables.module#TablesModule' },
         // { path: 'maps', loadChildren: '../maps/maps.module#MapsModule' },
         // { path: 'charts', loadChildren: '../charts/charts.module#ChartsModule' },
