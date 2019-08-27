@@ -7,11 +7,7 @@ export const appRoutes: Routes = [{
         path: '', component: AuthComponent, children: [
         { path: 'dashboard', component: DashboardCrmComponent },
         // { path: 'material-widgets', loadChildren: '../material-widgets/material-widgets.module#MaterialWidgetsModule' },
-<<<<<<< HEAD
-        { path: 'membro', loadChildren: '../membro/membro.module#MembroModule'},
-=======
-        { path: 'membro', loadChildren: '../membro/membro.module#MembroModule', data: { role: 'acessoBancoDeHoras' }, canActivate: [AuthGuardService], },
->>>>>>> 53600ade1367a5d04d87867d0cbf560569ce16f1
+        { path: 'membro', loadChildren: '../membro/membro.module#MembroModule' },
         // { path: 'tables', loadChildren: '../tables/tables.module#TablesModule' },
         // { path: 'maps', loadChildren: '../maps/maps.module#MapsModule' },
         // { path: 'charts', loadChildren: '../charts/charts.module#ChartsModule' },

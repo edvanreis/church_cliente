@@ -7,7 +7,7 @@ const routes: Routes = [
     {path: 'auth', loadChildren: '../auth/auth.module#AuthModule',canActivate: [AuthGuardService]},
     // {path: 'register', loadChildren: '../register/register.module#RegisterModule'},
     {path: 'login', loadChildren: '../pages/login/login.module#LoginModule'},
-    {path: 'membro', loadChildren: '../membro/membro.module#MembroModule',canActivate: [AuthGuardService]},
+    {path: 'membro', loadChildren: '../membro/membro.module#MembroModule',data: { role: 'acessoBancoDeHoras' }, canActivate: [AuthGuardService]},
     // {path: 'editor', loadChildren: '../editor/editor.module#EditorModule'},
 
     {path: '**', redirectTo: 'auth/dashboard' ,canActivate: [AuthGuardService]},
