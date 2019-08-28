@@ -8,6 +8,8 @@ import { LazyLoadModule } from './lazy-load/lazy-load.module';
 import { MembroModule } from './membro/membro.module';
 import { AppRoutingModule } from './app-routing.module';
 import { LoginModule } from './pages/login/login.module';
+import { InterceptorService } from './service/interceptor.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 
@@ -72,7 +74,7 @@ const customNotifierOptions: NotifierOptions = {
     LoginModule
     
   ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
