@@ -1,18 +1,19 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
-import { PessoaModule } from '../pessoa/pessoa.module';
-import { PipeModule } from '../pipe/pipe/pipe.module';
-import { EmitirEventoService } from '../service/emitir-evento.service';
-import { MembroService } from '../service/membro.service';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
-import { EscolaridadeComponent } from '../pessoa/escolaridade/escolaridade.component';
+import { PessoaModule } from '../../pessoa/pessoa.module';
+import { PipeModule } from '../../pipe/pipe/pipe.module';
+import { MembroService } from '../../service/membro.service';
+import { EmitirEventoService } from '../../service/emitir-evento.service';
+import { InterceptorService } from '../../service/interceptor.service';
+
 
 
 const routes: Routes = [
@@ -54,7 +55,8 @@ const routes: Routes = [
   ],
   providers: [
     MembroService,
-    EmitirEventoService
+    EmitirEventoService,
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ]
 })
 export class MembroModule { }

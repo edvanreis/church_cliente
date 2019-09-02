@@ -11,6 +11,7 @@ export class TokenService {
   private tokenExpire: string = 'expires_in';
 
   public storeToken(content: Object) {
+    console.log(content);
     localStorage.setItem(this.tokenKey, JSON.stringify(content));
   }
   public storeTokenExpire(tokenExpire) {

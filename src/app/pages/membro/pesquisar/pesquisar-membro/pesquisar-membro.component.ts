@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { take } from 'rxjs/operators';
-import { Membro } from '../../../model/membro';
-import { MembroService } from '../../../service/membro.service';
+import { EmitirEventoService } from '../../../../service/emitir-evento.service';
+import { MembroService } from '../../../../service/membro.service';
+import { Membro } from '../../../../model/membro';
+
 
 @Component({
   selector: 'app-pesquisar-membro',

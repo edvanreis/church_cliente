@@ -14,6 +14,7 @@ export class InterceptorService {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
 
     const token = this._tokenService.retrieveToken();
+    console.log("token");
     console.log(token);
     if (token) {
       const authReq = req.clone({
