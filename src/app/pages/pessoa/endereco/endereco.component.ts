@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MembroService } from '../../service/membro.service';
+import { MembroService } from '../../../service/membro.service';
 import { NotifierService } from 'angular-notifier';
-import { EmitirEventoService } from '../../service/emitir-evento.service';
-import { AlertType } from '../../model/alert-type';
-import { Pessoa } from '../../model/pessoa';
+import { Pessoa } from '../../../model/pessoa';
+import { AlertType } from '../../../model/alert-type';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+
 
 @Component({
   selector: 'app-endereco',

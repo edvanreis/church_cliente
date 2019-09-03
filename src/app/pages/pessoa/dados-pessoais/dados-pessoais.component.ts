@@ -1,8 +1,10 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { EmitirEventoService } from '../../service/emitir-evento.service';
-import { Pessoa } from '../../model/pessoa';
-import { MembroService } from '../../service/membro.service';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { MembroService } from '../../../service/membro.service';
+import { Pessoa } from '../../../model/pessoa';
+
+
 
 @Component({
   selector: 'app-dados-pessoais',

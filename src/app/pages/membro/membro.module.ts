@@ -8,11 +8,12 @@ import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
-import { PessoaModule } from '../../pessoa/pessoa.module';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { MembroService } from '../../service/membro.service';
 import { EmitirEventoService } from '../../service/emitir-evento.service';
 import { InterceptorService } from '../../service/interceptor.service';
+import { PessoaModule } from '../pessoa/pessoa.module';
+
 
 
 

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MembroService } from '../../service/membro.service';
+import { MembroService } from '../../../service/membro.service';
+
 
 @Component({
   selector: 'app-contato',
@@ -23,6 +24,7 @@ export class ContatoComponent implements OnInit {
 
   ngOnInit() {
     this._buildForm();
+    this.getComboContatos();
   }
 
   private _buildForm(): void {
@@ -39,7 +41,7 @@ export class ContatoComponent implements OnInit {
   getComboContatos() {
     this._membroService.carregarTiposContatos().subscribe(item => {
       this.comboTipoContatos = item;
-      // console.log(item);
+      console.log(item);
     });
   }
 

@@ -2,7 +2,7 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
       <mat-form-field>
         <mat-label>Selecione...</mat-label>
-        <mat-select formControlName="escolaridade" id="escolaridade" (selectionChange)="tipo($event)">
+        <mat-select formControlName="escolaridade" id="escolaridade">
           <mat-option *ngFor="let item of comboEscolaridade" [value]="item.tipo">
             {{item.descricao}}
           </mat-option>
