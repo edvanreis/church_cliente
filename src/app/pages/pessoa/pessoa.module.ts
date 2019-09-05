@@ -11,6 +11,7 @@ import { EscolaridadeComponent } from './escolaridade/escolaridade.component';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { MembroService } from '../../service/membro.service';
 import { EmitirEventoService } from '../../service/emitir-evento.service';
+import { NgxViacepModule, NgxViacepService } from '@brunoc/ngx-viacep';
 
 @NgModule({
   imports: [
@@ -33,7 +34,8 @@ import { EmitirEventoService } from '../../service/emitir-evento.service';
     MatTableModule,
     MatPaginatorModule,
     MatExpansionModule,
-    PipeModule
+    PipeModule,
+    NgxViacepModule
   ],
   exports: [
     DadosPessoaisComponent,
@@ -49,7 +51,8 @@ import { EmitirEventoService } from '../../service/emitir-evento.service';
   ],
   providers: [
     MembroService,
-    EmitirEventoService
+    EmitirEventoService,
+    NgxViacepService
   ]
 })
 export class PessoaModule { }

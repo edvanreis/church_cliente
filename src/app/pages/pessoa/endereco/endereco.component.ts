@@ -5,6 +5,8 @@ import { NotifierService } from 'angular-notifier';
 import { Pessoa } from '../../../model/pessoa';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { NgxViacepService, ErroCep, Endereco } from '@brunoc/ngx-viacep';
+
 
 
 @Component({
@@ -19,7 +21,10 @@ export class EnderecoComponent implements OnInit {
   public comboEstados = [];
   public pessoa;
 
-  constructor(private _membroService: MembroService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _membroService: MembroService, 
+              private _notifierService: NotifierService, 
+              private _emitirEventoService: EmitirEventoService,
+              private _viacep: NgxViacepService ) { }
 
   ngOnInit() {
     this._buildForm();
@@ -45,16 +50,28 @@ export class EnderecoComponent implements OnInit {
       cep = cep.replace("-", "").trim();
       let validarCep = /^[0-9]{8}$/;
       if (validarCep.test(cep)) {
-        this._membroService.carregarEndereco(cep).subscribe(item => {
-          if (item) {
-            this.form.controls['logradouro'].patchValue(item.logradouro);
-            this.form.controls['cidade'].patchValue(item.localidade);
-            this.form.controls['uf'].patchValue(item.uf);
-            this.form.controls['bairro'].patchValue(item.bairro);
-          }
-        }, error => {
-          this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
-        });
+
+
+        this._viacep.buscarPorCep(cep)
+         .then( (  endereco: Endereco  ) => {
+          // Endereço retornado :)
+          console.log(endereco);
+         }).catch( (error: ErroCep) => {
+          // Alguma coisa deu errado :/
+          console.log(error.message);
+         });
+
+
+      //   this._membroService.carregarEndereco(cep).subscribe(item => {
+      //     if (item) {
+      //       this.form.controls['logradouro'].patchValue(item.logradouro);
+      //       this.form.controls['cidade'].patchValue(item.localidade);
+      //       this.form.controls['uf'].patchValue(item.uf);
+      //       this.form.controls['bairro'].patchValue(item.bairro);
+      //     }
+      //   }, error => {
+      //     this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
+      //   });
       }
     }
   }
