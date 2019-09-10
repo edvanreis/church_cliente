@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MembroService } from '../../../service/membro.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
-import { Pessoa } from '../../../model/pessoa';
 import { AlertType } from '../../../model/alert-type';
+import { Pessoa } from '../../../model/pessoa';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { NgxViacepService, ErroCep, Endereco } from '@brunoc/ngx-viacep';
+import { EnderecoService } from '../../../service/endereco.service';
+import { MembroService } from '../../../service/membro.service';
 
 
 
@@ -24,7 +24,7 @@ export class EnderecoComponent implements OnInit {
   constructor(private _membroService: MembroService, 
               private _notifierService: NotifierService, 
               private _emitirEventoService: EmitirEventoService,
-              private _viacep: NgxViacepService ) { }
+              private _enderecoService: EnderecoService ) { }
 
   ngOnInit() {
     this._buildForm();
@@ -38,7 +38,7 @@ export class EnderecoComponent implements OnInit {
       'bairro': new FormControl({ value: '', disabled: true }),
       'complemento': new FormControl(''),
       'logradouro': new FormControl({ value: '', disabled: true }),
-      'cidade': new FormControl({ value: '', disabled: true }),
+      'localidade': new FormControl({ value: '', disabled: true }),
       'uf': new FormControl({ value: '', disabled: true }),
     });
   }
@@ -50,28 +50,17 @@ export class EnderecoComponent implements OnInit {
       cep = cep.replace("-", "").trim();
       let validarCep = /^[0-9]{8}$/;
       if (validarCep.test(cep)) {
-
-
-        this._viacep.buscarPorCep(cep)
-         .then( (  endereco: Endereco  ) => {
-          // Endereço retornado :)
-          console.log(endereco);
-         }).catch( (error: ErroCep) => {
-          // Alguma coisa deu errado :/
-          console.log(error.message);
-         });
-
-
-      //   this._membroService.carregarEndereco(cep).subscribe(item => {
-      //     if (item) {
-      //       this.form.controls['logradouro'].patchValue(item.logradouro);
-      //       this.form.controls['cidade'].patchValue(item.localidade);
-      //       this.form.controls['uf'].patchValue(item.uf);
-      //       this.form.controls['bairro'].patchValue(item.bairro);
-      //     }
-      //   }, error => {
-      //     this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
-      //   });
+        this._enderecoService.carregarEndereco(cep).subscribe(item => {
+          if (item) {
+            console.log(item);
+            this.form.controls['logradouro'].patchValue(item.logradouro);
+            this.form.controls['localidade'].patchValue(item.localidade);
+            this.form.controls['uf'].patchValue(item.uf);
+            this.form.controls['bairro'].patchValue(item.bairro);
+          }
+        }, error => {
+          this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
+        });
       }
     }
   }
@@ -99,7 +88,7 @@ export class EnderecoComponent implements OnInit {
     this.pessoa.complemento = this.form.controls['complemento'].value;
     this.pessoa.bairro = this.form.controls['bairro'].value;
     this.pessoa.logradouro = this.form.controls['logradouro'].value;
-    this.pessoa.cidade = this.form.controls['cidade'].value;
+    this.pessoa.cidade = this.form.controls['localidade'].value;
     this.pessoa.uf = this.form.controls['uf'].value;
    
     return this.pessoa;

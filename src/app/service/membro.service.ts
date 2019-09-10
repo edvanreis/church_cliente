@@ -35,7 +35,7 @@ export class MembroService {
 
   
   carregarEndereco(cep) {
-    return this.http.get(`//viacep.com.br/ws/${cep}/json`)
+    return this.http.get(this._url+cep+"/obterEndereco")
     .pipe(tap((response: any) => response));
   }
 

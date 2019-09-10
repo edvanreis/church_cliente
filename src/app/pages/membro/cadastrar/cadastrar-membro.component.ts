@@ -260,24 +260,24 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   consultarCEP(event) {
-    console.log(event.target.value);
-    let cep: string = event.target.value;
-    if (cep) {
-      cep = cep.replace("-", "").trim();
-      let validarCep = /^[0-9]{8}$/;
-      if (validarCep.test(cep)) {
-        this._membroService.carregarEndereco(cep).subscribe(item => {
-          if (item) {
-            this.form.controls['logradouro'].patchValue(item.logradouro);
-            this.form.controls['cidade'].patchValue(item.localidade);
-            this.form.controls['uf'].patchValue(item.uf);
-            this.form.controls['bairro'].patchValue(item.bairro);
-          }
-        }, error => {
-          this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
-        });
-      }
-    }
+    // console.log(event.target.value);
+    // let cep: string = event.target.value;
+    // if (cep) {
+    //   cep = cep.replace("-", "").trim();
+    //   let validarCep = /^[0-9]{8}$/;
+    //   if (validarCep.test(cep)) {
+    //     this._membroService.carregarEndereco(cep).subscribe(item => {
+    //       if (item) {
+    //         this.form.controls['logradouro'].patchValue(item.logradouro);
+    //         this.form.controls['cidade'].patchValue(item.localidade);
+    //         this.form.controls['uf'].patchValue(item.uf);
+    //         this.form.controls['bairro'].patchValue(item.bairro);
+    //       }
+    //     }, error => {
+    //       this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
+    //     });
+    //   }
+    // }
   }
 
   fillMembros(): Membro {
