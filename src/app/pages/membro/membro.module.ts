@@ -6,13 +6,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
-import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
-import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
-import { MembroService } from '../../service/membro.service';
 import { EmitirEventoService } from '../../service/emitir-evento.service';
 import { InterceptorService } from '../../service/interceptor.service';
+import { MembroService } from '../../service/membro.service';
 import { PessoaModule } from '../pessoa/pessoa.module';
+import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
+import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
 
 
 
