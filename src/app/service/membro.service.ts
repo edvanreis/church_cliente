@@ -33,12 +33,6 @@ export class MembroService {
       .pipe(tap((response: any) => response));
   }
 
-  
-  carregarEndereco(cep) {
-    return this.http.get(this._url+cep+"/obterEndereco")
-    .pipe(tap((response: any) => response));
-  }
-
   carregarEstados() {
     return this.http.get(this._url + "estados")
     .pipe(tap((response: any) => response));

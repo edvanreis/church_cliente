@@ -29,6 +29,7 @@ export class EnderecoComponent implements OnInit {
   ngOnInit() {
     this._buildForm();
     this.setEmiter();
+    this.getComboUF();
   }
 
   private _buildForm(): void {
