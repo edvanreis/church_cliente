@@ -46,13 +46,15 @@ export class CadastrarMembroComponent implements OnInit {
 
 
   ngOnInit() {
-    this.getComboSexo();
-    this.getComboEstadoCivil();
+    // this.getComboSexo();
+    // this.getComboEstadoCivil();
     this.getComboContatos();
     this.getComboEscolaridade();
     this._buildForm();
-    this.getComboUF();
+    // this.getComboUF();
+    this.getEmiter();
   }
+
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
@@ -99,9 +101,9 @@ export class CadastrarMembroComponent implements OnInit {
 
   private _buildForm(): void {
     this.form = new FormGroup({
-      'nome': new FormControl('', Validators.required),
-      'sobrenome': new FormControl('', Validators.required),
-      'dataNascimento': new FormControl('', Validators.required),
+      // 'nome': new FormControl('', Validators.required),
+      // 'sobrenome': new FormControl('', Validators.required),
+      // 'dataNascimento': new FormControl('', Validators.required),
       'contatos': new FormControl(''),
       'contato': new FormControl(''),
       'contatoTelefone': new FormControl(''),
@@ -109,13 +111,13 @@ export class CadastrarMembroComponent implements OnInit {
       'whatsapp': new FormControl(''),
       'escolaridade': new FormControl(''),
       'curso': new FormControl(''),
-      'rg': new FormControl('', Validators.required),
-      'cpf': new FormControl('', Validators.required),
+      // 'rg': new FormControl('', Validators.required),
+      // 'cpf': new FormControl('', Validators.required),
       'sexo': new FormControl('', Validators.required),
       'estadoCivil': new FormControl(''),
-      'nacionalidade': new FormControl('', Validators.required),
-      'celula': new FormControl(''),
-      'profissao': new FormControl(''),
+      // 'nacionalidade': new FormControl('', Validators.required),
+      // 'celula': new FormControl(''),
+      // 'profissao': new FormControl(''),
       'email': new FormControl(''),
       'cep': new FormControl('', Validators.required),
       'numero': new FormControl(''),
@@ -124,8 +126,8 @@ export class CadastrarMembroComponent implements OnInit {
       'logradouro': new FormControl({ value: '', disabled: true }),
       'cidade': new FormControl({ value: '', disabled: true }),
       'uf': new FormControl({ value: '', disabled: true }),
-      'batizado': new FormControl(''),
-      'dizimista': new FormControl(''),
+      // 'batizado': new FormControl(''),
+      // 'dizimista': new FormControl(''),
     });
 
   }
@@ -259,42 +261,42 @@ export class CadastrarMembroComponent implements OnInit {
     this.escolaridadesGrid.splice(index, 1)
   }
 
-  consultarCEP(event) {
-    // console.log(event.target.value);
-    // let cep: string = event.target.value;
-    // if (cep) {
-    //   cep = cep.replace("-", "").trim();
-    //   let validarCep = /^[0-9]{8}$/;
-    //   if (validarCep.test(cep)) {
-    //     this._membroService.carregarEndereco(cep).subscribe(item => {
-    //       if (item) {
-    //         this.form.controls['logradouro'].patchValue(item.logradouro);
-    //         this.form.controls['cidade'].patchValue(item.localidade);
-    //         this.form.controls['uf'].patchValue(item.uf);
-    //         this.form.controls['bairro'].patchValue(item.bairro);
-    //       }
-    //     }, error => {
-    //       this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
-    //     });
-    //   }
-    // }
-  }
+  // consultarCEP(event) {
+  // console.log(event.target.value);
+  // let cep: string = event.target.value;
+  // if (cep) {
+  //   cep = cep.replace("-", "").trim();
+  //   let validarCep = /^[0-9]{8}$/;
+  //   if (validarCep.test(cep)) {
+  //     this._membroService.carregarEndereco(cep).subscribe(item => {
+  //       if (item) {
+  //         this.form.controls['logradouro'].patchValue(item.logradouro);
+  //         this.form.controls['cidade'].patchValue(item.localidade);
+  //         this.form.controls['uf'].patchValue(item.uf);
+  //         this.form.controls['bairro'].patchValue(item.bairro);
+  //       }
+  //     }, error => {
+  //       this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
+  //     });
+  //   }
+  // }
+  // }
 
   fillMembros(): Membro {
+    console.log(this.dadosPessoais);
     this.membro = new Membro();
-    // // dados pessoais
-    this.membro.nome = this.form.controls['nome'].value;
-    this.membro.sobreNome = this.form.controls['sobrenome'].value;
-    this.membro.rg = this.form.controls['rg'].value;
-    this.membro.cpf = this.form.controls['cpf'].value;
-    this.membro.sexo = this.form.controls['sexo'].value;
-    this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
-    this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
-    this.membro.idCelula = this.form.controls['celula'].value;
-    this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
-    this.membro.profissao = this.form.controls['profissao'].value;
-    this.membro.batizado = this.form.controls['batizado'].value;
-    this.membro.dizimista = this.form.controls['dizimista'].value;
+    this.membro.nome = this.dadosPessoais.nome;
+    this.membro.sobreNome = this.dadosPessoais.sobreNome;
+    this.membro.rg = this.dadosPessoais.rg;
+    this.membro.cpf = this.dadosPessoais.cpf;
+    this.membro.sexo = this.dadosPessoais.sexo;
+    this.membro.estadoCivil = this.dadosPessoais.estadoCivil;
+    this.membro.dataNascimento = this.dadosPessoais.dataNascimento;
+    this.membro.idCelula = this.dadosPessoais.idCelula;
+    this.membro.nacionalidade = this.dadosPessoais.nacionalidade;
+    this.membro.profissao = this.dadosPessoais.profissao;
+    this.membro.batizado = this.dadosPessoais.batizado;
+    this.membro.dizimista = this.dadosPessoais.dizimista;
     // endereço
     // this.membro.endereco.cep = this.form.controls['cep'].value;
     // this.membro.endereco.numero = this.form.controls['numero'].value;
