@@ -6,6 +6,7 @@ import { Pessoa } from '../../../model/pessoa';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { EnderecoService } from '../../../service/endereco.service';
 import { MembroService } from '../../../service/membro.service';
+import { Endereco } from '../../../model/Endereco';
 
 
 
@@ -19,7 +20,7 @@ export class EnderecoComponent implements OnInit {
   public form: FormGroup;
   public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
   public comboEstados = [];
-  public pessoa;
+  public endereco;
 
   constructor(private _membroService: MembroService, 
               private _notifierService: NotifierService, 
@@ -53,11 +54,13 @@ export class EnderecoComponent implements OnInit {
       if (validarCep.test(cep)) {
         this._enderecoService.carregarEndereco(cep).subscribe(item => {
           if (item) {
-            console.log(item);
+            // console.log(item);
             this.form.controls['logradouro'].patchValue(item.logradouro);
             this.form.controls['localidade'].patchValue(item.localidade);
             this.form.controls['uf'].patchValue(item.uf);
             this.form.controls['bairro'].patchValue(item.bairro);
+            this.prencherEndereco(item);
+            this.setEmiter();
           }
         }, error => {
           this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
@@ -78,21 +81,23 @@ export class EnderecoComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir("endereco", this.fillPessoa());
+    this._emitirEventoService.emitir("endereco", this.endereco);
   }
 
-  
-  fillPessoa(): Pessoa {
-    this.pessoa = new Pessoa();
-    this.pessoa.cep = this.form.controls['cep'].value;
-    this.pessoa.numero = this.form.controls['numero'].value;
-    this.pessoa.complemento = this.form.controls['complemento'].value;
-    this.pessoa.bairro = this.form.controls['bairro'].value;
-    this.pessoa.logradouro = this.form.controls['logradouro'].value;
-    this.pessoa.cidade = this.form.controls['localidade'].value;
-    this.pessoa.uf = this.form.controls['uf'].value;
+
+
+  prencherEndereco(endereco): Endereco {
+    this.endereco = new Endereco();
+    this.endereco.cep = endereco.cep;
+    this.endereco.numero = endereco.numero;
+    this.endereco.complemento =endereco.complemento;
+    this.endereco.bairro = endereco.bairro;
+    this.endereco.logradouro = endereco.logradouro;
+    this.endereco.cidade = endereco.cidade;
+    this.endereco.uf = endereco.uf;
+    this.endereco.numero =this.form.controls['numero'].value;
    
-    return this.pessoa;
+    return this.endereco;
   }
 
 }

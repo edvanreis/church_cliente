@@ -42,6 +42,7 @@ export class CadastrarMembroComponent implements OnInit {
   public comboEscolaridade = []
   public membro: Membro;
   public dadosPessoais: any;
+  public endereco: any;
 
 
 
@@ -58,8 +59,13 @@ export class CadastrarMembroComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
+      console.log(item.type);
       if (item.type == 'dadosPessoais') {
         this.dadosPessoais = item.data;
+      }
+      if (item.type == 'endereco') {
+        this.endereco = item.data;
+        console.log(this.endereco);
       }
 
     });
@@ -113,19 +119,19 @@ export class CadastrarMembroComponent implements OnInit {
       'curso': new FormControl(''),
       // 'rg': new FormControl('', Validators.required),
       // 'cpf': new FormControl('', Validators.required),
-      'sexo': new FormControl('', Validators.required),
-      'estadoCivil': new FormControl(''),
+      // 'sexo': new FormControl('', Validators.required),
+      // 'estadoCivil': new FormControl(''),
       // 'nacionalidade': new FormControl('', Validators.required),
       // 'celula': new FormControl(''),
       // 'profissao': new FormControl(''),
       'email': new FormControl(''),
-      'cep': new FormControl('', Validators.required),
-      'numero': new FormControl(''),
-      'bairro': new FormControl({ value: '', disabled: true }),
-      'complemento': new FormControl(''),
-      'logradouro': new FormControl({ value: '', disabled: true }),
-      'cidade': new FormControl({ value: '', disabled: true }),
-      'uf': new FormControl({ value: '', disabled: true }),
+      // 'cep': new FormControl('', Validators.required),
+      // 'numero': new FormControl(''),
+      // 'bairro': new FormControl({ value: '', disabled: true }),
+      // 'complemento': new FormControl(''),
+      // 'logradouro': new FormControl({ value: '', disabled: true }),
+      // 'cidade': new FormControl({ value: '', disabled: true }),
+      // 'uf': new FormControl({ value: '', disabled: true }),
       // 'batizado': new FormControl(''),
       // 'dizimista': new FormControl(''),
     });
@@ -298,13 +304,12 @@ export class CadastrarMembroComponent implements OnInit {
     this.membro.batizado = this.dadosPessoais.batizado;
     this.membro.dizimista = this.dadosPessoais.dizimista;
     // endereço
-    // this.membro.endereco.cep = this.form.controls['cep'].value;
-    // this.membro.endereco.numero = this.form.controls['numero'].value;
-    // this.membro.endereco.complemento = this.form.controls['complemento'].value;
-    // this.membro.endereco.bairro = this.form.controls['bairro'].value;
-    // this.membro.endereco.logradouro = this.form.controls['logradouro'].value;
-    // this.membro.endereco.uf = this.form.controls['uf'].value; 
-    // this.membro.endereco.cidade = this.form.controls['cidade'].value;
+    this.membro.endereco.cep = this.endereco.cep;
+    this.membro.endereco.numero = this.endereco.numero;
+    this.membro.endereco.complemento = this.endereco.complemento;
+    this.membro.endereco.bairro = this.endereco.bairro;
+    this.membro.endereco.logradouro = this.endereco.logradouro;
+    this.membro.endereco.uf = this.endereco.uf; 
     //contatos
     this.membro.contatos = this.contatos;
     this.membro.escolaridades = this.escolaridades;

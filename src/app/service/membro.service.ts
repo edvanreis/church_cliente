@@ -42,7 +42,5 @@ export class MembroService {
     return this.http.post(this._url ,membro)
       .pipe(map((response: any) => response))
   }
-  // _errorHandler(error: Response) {
-  //   return Observable.throw(error || "Internal server error");
-  // }
+
 }
