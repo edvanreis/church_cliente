@@ -59,6 +59,7 @@ export class CadastrarMembroComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
+      console.log(item.type);
       if (item.type == 'dadosPessoais') {
         this.dadosPessoais = item.data;
       }
@@ -117,8 +118,8 @@ export class CadastrarMembroComponent implements OnInit {
       'curso': new FormControl(''),
       // 'rg': new FormControl('', Validators.required),
       // 'cpf': new FormControl('', Validators.required),
-      'sexo': new FormControl('', Validators.required),
-      'estadoCivil': new FormControl(''),
+      // 'sexo': new FormControl('', Validators.required),
+      // 'estadoCivil': new FormControl(''),
       // 'nacionalidade': new FormControl('', Validators.required),
       // 'celula': new FormControl(''),
       // 'profissao': new FormControl(''),
