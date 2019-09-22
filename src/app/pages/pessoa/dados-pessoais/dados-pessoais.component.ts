@@ -28,6 +28,7 @@ export class DadosPessoaisComponent implements OnInit {
     this.setEmiter();
     this.getComboSexo();
     this.getComboEstadoCivil();
+    this.getEmiter();
   }
 
   getComboSexo() {
@@ -62,19 +63,18 @@ export class DadosPessoaisComponent implements OnInit {
 
 
   setEmiter(): void {
-    this._emitirEventoService.emitir("dadosPessoais", this.fillPessoa());
+    this._emitirEventoService.emitir("dadosPessoais", this.carregarObjeto());
   }
 
-  // getEmiter(): void {
-  //   this._emitirEventoService.mensagem.subscribe(item => {
-  //     console.log(item.type);
-  //     if(item.type =='dadosPessoais'){
-  //       this.setEmiter();
-  //     }
-  //   });
-  // }
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'save-ok') {
+        this.form.reset();
+      }
+    });
+  }
 
-  fillPessoa(): Pessoa {
+  carregarObjeto(): Pessoa {
     this.pessoa = new Pessoa();
     this.pessoa.nome = this.form.controls['nome'].value;
     this.pessoa.sobreNome = this.form.controls['sobrenome'].value;

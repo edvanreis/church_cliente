@@ -265,28 +265,7 @@ export class CadastrarMembroComponent implements OnInit {
     this.escolaridadesGrid.splice(index, 1)
   }
 
-  // consultarCEP(event) {
-  // console.log(event.target.value);
-  // let cep: string = event.target.value;
-  // if (cep) {
-  //   cep = cep.replace("-", "").trim();
-  //   let validarCep = /^[0-9]{8}$/;
-  //   if (validarCep.test(cep)) {
-  //     this._membroService.carregarEndereco(cep).subscribe(item => {
-  //       if (item) {
-  //         this.form.controls['logradouro'].patchValue(item.logradouro);
-  //         this.form.controls['cidade'].patchValue(item.localidade);
-  //         this.form.controls['uf'].patchValue(item.uf);
-  //         this.form.controls['bairro'].patchValue(item.bairro);
-  //       }
-  //     }, error => {
-  //       this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
-  //     });
-  //   }
-  // }
-  // }
-
-  fillMembros(): Membro {
+  carregarObjeto(): Membro {
     console.log(this.dadosPessoais);
     this.membro = new Membro();
     this.membro.nome = this.dadosPessoais.nome;
@@ -322,7 +301,7 @@ export class CadastrarMembroComponent implements OnInit {
     //   this._notifierService.notify(AlertType.Success, "Preencha todos os campos obrigatórios!");
     //   return false;
     // }
-    this.membro = this.fillMembros();
+    this.membro = this.carregarObjeto();
     console.log(this.membro);
     this._membroService.save(this.membro).subscribe(item => {
       this.clear();
@@ -335,10 +314,14 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   clear() {
-    this.form.reset();
+    this.setEmiter();
     this.contatos = [];
     this.contatosGrid = [];
     this.escolaridades = [];
     this.escolaridadesGrid = [];
+  }
+
+  setEmiter(): void {
+    this._emitirEventoService.emitir("save-ok", "save-ok");
   }
 }

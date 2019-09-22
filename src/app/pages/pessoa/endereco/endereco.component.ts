@@ -22,15 +22,16 @@ export class EnderecoComponent implements OnInit {
   public comboEstados = [];
   public endereco;
 
-  constructor(private _membroService: MembroService, 
-              private _notifierService: NotifierService, 
-              private _emitirEventoService: EmitirEventoService,
-              private _enderecoService: EnderecoService ) { }
+  constructor(private _membroService: MembroService,
+    private _notifierService: NotifierService,
+    private _emitirEventoService: EmitirEventoService,
+    private _enderecoService: EnderecoService) { }
 
   ngOnInit() {
     this._buildForm();
     this.setEmiter();
     this.getComboUF();
+    this.getEmiter()
   }
 
   private _buildForm(): void {
@@ -54,11 +55,13 @@ export class EnderecoComponent implements OnInit {
       if (validarCep.test(cep)) {
         this._enderecoService.carregarEndereco(cep).subscribe(item => {
           if (item) {
-            console.log(item);
+            // console.log(item);
             this.form.controls['logradouro'].patchValue(item.logradouro);
             this.form.controls['localidade'].patchValue(item.localidade);
             this.form.controls['uf'].patchValue(item.uf);
             this.form.controls['bairro'].patchValue(item.bairro);
+            this.carregarEndereco(item);
+            this.setEmiter();
           }
         }, error => {
           this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
@@ -79,21 +82,31 @@ export class EnderecoComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir("endereco", this.fillEndereco());
+    this._emitirEventoService.emitir("endereco", this.endereco);
   }
 
-  
-  fillEndereco(): Endereco {
+
+  carregarEndereco(endereco): Endereco {
     this.endereco = new Endereco();
-    this.endereco.cep = this.form.controls['cep'].value;
-    this.endereco.numero = this.form.controls['numero'].value;
+    this.endereco.cep = endereco.cep;
+    this.endereco.numero = endereco.numero;
     this.endereco.complemento = this.form.controls['complemento'].value;
-    this.endereco.bairro = this.form.controls['bairro'].value;
-    this.endereco.logradouro = this.form.controls['logradouro'].value;
-    this.endereco.localiade = this.form.controls['localidade'].value;
-    this.endereco.uf = this.form.controls['uf'].value;
-   
+    this.endereco.bairro = endereco.bairro;
+    this.endereco.logradouro = endereco.logradouro;
+    this.endereco.localiade = endereco.localiade;
+    this.endereco.uf = endereco.uf;
+
     return this.endereco;
   }
+
+
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'save-ok') {
+        this.form.reset();
+      }
+    });
+  }
+
 
 }
