@@ -130,11 +130,8 @@
           <i class="material-icons">headset_mic</i>
           <h1 class="mat-subheading-2 center-align">Contatos</h1>
         </div>
-        <app-contato></app-contato>
-        <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
-          <i class="material-icons">add</i>adicionar</button>
         <form form [formGroup]="form">
-          <!-- <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
               <mat-label>Selecione...</mat-label>
               <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
@@ -155,7 +152,7 @@
           </div>
           <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
             <i class="material-icons">add</i>adicionar</button>
-          <br /><br /> -->
+          <br /><br />
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0">
             <div class="table-responsive">
               <table>
@@ -222,7 +219,7 @@
             </div>
           </div>
           <br /><br />
-          <mat-divider></mat-divider> 
+          <mat-divider></mat-divider>
           <button mat-raised-button color="primary" type="submit" (click)="salvar()">
             <i class="material-icons">save</i>Salvar</button>
         </form>

@@ -42,7 +42,7 @@ export class CadastrarMembroComponent implements OnInit {
   public comboEscolaridade = []
   public membro: Membro;
   public dadosPessoais: any;
-  public endereco:any;
+  public endereco: any;
 
 
 
@@ -287,13 +287,12 @@ export class CadastrarMembroComponent implements OnInit {
     this.membro.endereco.complemento = this.endereco.complemento;
     this.membro.endereco.bairro = this.endereco.bairro;
     this.membro.endereco.logradouro = this.endereco.logradouro;
-    this.membro.endereco.uf = this.endereco.uf; 
+    this.membro.endereco.uf = this.endereco.uf;
     this.membro.endereco.localidade = this.endereco.cidade;
     //contatos
-    // this.membro.contatos = this.contatos;
-    // this.membro.escolaridades = this.escolaridades;
-
-
+    this.membro.contatos = this.contatos;
+    //escolaridade
+    this.membro.escolaridades = this.escolaridades;
     return this.membro;
   }
 
@@ -305,10 +304,11 @@ export class CadastrarMembroComponent implements OnInit {
     this.membro = this.carregarObjeto();
     console.log(this.membro);
     this._membroService.save(this.membro).subscribe(item => {
+      console.log(item);
       this.clear();
       this._notifierService.notify(AlertType.Success, "Salvo com sucesso!");
     }, error => {
-      // console.log(error);
+      console.log(error);
       this._notifierService.notify(AlertType.Error, error.message);
 
     });

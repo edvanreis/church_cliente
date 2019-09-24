@@ -36,13 +36,13 @@ export class EnderecoComponent implements OnInit {
 
   private _buildForm(): void {
     this.form = new FormGroup({
-      'cep': new FormControl('', Validators.required),
+      'cep': new FormControl(''),
       'numero': new FormControl(''),
-      'bairro': new FormControl({ value: '', disabled: true }),
+      'bairro': new FormControl('',Validators.required),
       'complemento': new FormControl(''),
-      'logradouro': new FormControl({ value: '', disabled: true }),
-      'localidade': new FormControl({ value: '', disabled: true }),
-      'uf': new FormControl({ value: '', disabled: true }),
+      'logradouro': new FormControl('',Validators.required),
+      'localidade': new FormControl('',Validators.required),
+      'uf': new FormControl('',Validators.required),
     });
   }
 
