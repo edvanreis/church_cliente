@@ -267,7 +267,7 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   carregarObjeto(): Membro {
-    console.log(this.dadosPessoais);
+    // console.log(this.dadosPessoais);
     this.membro = new Membro();
     this.membro.nome = this.dadosPessoais.nome;
     this.membro.sobreNome = this.dadosPessoais.sobreNome;
@@ -302,11 +302,10 @@ export class CadastrarMembroComponent implements OnInit {
     //   return false;
     // }
     this.membro = this.carregarObjeto();
-    console.log(this.membro);
     this._membroService.save(this.membro).subscribe(item => {
-      console.log(item);
       this.clear();
-      this._notifierService.notify(AlertType.Success, "Salvo com sucesso!");
+      this.setEmiter();
+      this._notifierService.notify(AlertType.Success,item);
     }, error => {
       console.log(error);
       this._notifierService.notify(AlertType.Error, error.message);

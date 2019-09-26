@@ -43,7 +43,7 @@ export class InterceptorService {
             if( err.error.message ){
             }else{
             }
-            console.log(err.error.message, err.error.title)
+            console.log(err)
           } catch (e) {
             console.log(e)
           }
