@@ -16,12 +16,12 @@ import { Contatos } from '../../../model/contatos';
 export class CadastrarMembroComponent implements OnInit {
 
 
-  public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
-  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/]
-  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
+  // public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
+  // public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/]
+  // public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
   public maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/,]
   public maskCelular = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-  public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
+  // public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
   constructor(private _membroService: MembroService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
 
@@ -181,6 +181,7 @@ export class CadastrarMembroComponent implements OnInit {
     obj.contato = contato;
     obj.whatsapp = this.form.controls['whatsapp'].value;
     this.contatos.push(obj);
+    this.clearInputContato();
   }
 
   preecherContato() {
@@ -194,12 +195,19 @@ export class CadastrarMembroComponent implements OnInit {
     }
     return contato;
   }
+  
+  clearInputContato(){
+    this.form.controls['contato'].patchValue('');
+    this.form.controls['contatoTelefone'].patchValue('');
+    this.form.controls['contatoCelular'].patchValue('');
+    this.form.controls['whatsapp'].patchValue('');
+  }
 
   adicionarEscolaridade() {
-    // if (!this.form.controls['curso'].value) {
-    //   HelperChurch.showNotification('Por favor preencha o campo curso!', AlertType.Success);
-    //   return false;
-    // }
+    if (!this.form.controls['curso'].value) {
+      this._notifierService.notify(AlertType.Error,'Por favor preencha o campo curso!');
+      return false;
+    }
     let tipoSelected: string = this.form.controls['escolaridade'].value;
     let tipo: string;
     this.comboEscolaridade.forEach(item => {
@@ -215,6 +223,7 @@ export class CadastrarMembroComponent implements OnInit {
       tipo: tipo,
       curso: this.form.controls['curso'].value,
     });
+    this.form.controls['curso'].patchValue('');
     // console.log(this.escolaridadesGrid);
   }
 
@@ -297,17 +306,18 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   salvar() {
-    // if (!this.form.valid) {
-    //   this._notifierService.notify(AlertType.Success, "Preencha todos os campos obrigatórios!");
-    //   return false;
-    // }
+    if (!this.form.valid) {
+      this._notifierService.notify(AlertType.Success, "Preencha todos os campos obrigatórios!");
+      return false;
+    }
     this.membro = this.carregarObjeto();
     this._membroService.save(this.membro).subscribe(item => {
+      // console.log(item.value);
       this.clear();
       this.setEmiter();
-      this._notifierService.notify(AlertType.Success,item);
+      this._notifierService.notify(AlertType.Success,item.value);
     }, error => {
-      console.log(error);
+      // console.log(error);
       this._notifierService.notify(AlertType.Error, error.message);
 
     });
@@ -319,6 +329,8 @@ export class CadastrarMembroComponent implements OnInit {
     this.contatosGrid = [];
     this.escolaridades = [];
     this.escolaridadesGrid = [];
+    this.form.controls['escolaridade'].patchValue('');
+    this.form.controls['contatos'].patchValue('');
   }
 
   setEmiter(): void {

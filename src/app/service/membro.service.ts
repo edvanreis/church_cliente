@@ -8,13 +8,13 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class MembroService {
 
-  private _url = environment.url+"membro/";
+  private _url = environment.url + "membro/";
 
   constructor(public http: HttpClient) { }
 
 
   carregarSexo() {
-    return this.http.get(this._url+ "sexo")
+    return this.http.get(this._url + "sexo")
       .pipe(tap((response: any) => response));
   }
 
@@ -35,11 +35,17 @@ export class MembroService {
 
   carregarEstados() {
     return this.http.get(this._url + "estados")
-    .pipe(tap((response: any) => response));
+      .pipe(tap((response: any) => response));
   }
 
-  save(membro){
-    return this.http.post(this._url ,membro)
+  save(membro) {
+    return this.http.post(this._url, membro)
+      .pipe(map((response: any) => response))
+  }
+  
+  pesquisar(membro) {
+    console.log(this._url + "pesquisar"+membro);
+    return this.http.post(this._url + "pesquisar", membro)
       .pipe(map((response: any) => response))
   }
 
