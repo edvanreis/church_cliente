@@ -6,6 +6,7 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { Membro } from '../../../model/membro';
 import { AlertType } from '../../../model/alert-type';
 import { Contatos } from '../../../model/contatos';
+import { take } from 'rxjs/operators';
 
 
 @Component({
@@ -311,7 +312,7 @@ export class CadastrarMembroComponent implements OnInit {
       return false;
     }
     this.membro = this.carregarObjeto();
-    this._membroService.save(this.membro).subscribe(item => {
+    this._membroService.save(this.membro).pipe(take(1)).subscribe(item => {
       // console.log(item.value);
       this.clear();
       this.setEmiter();

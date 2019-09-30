@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { EmitirEventoService } from '../../../../service/emitir-evento.service';
 import { MembroService } from '../../../../service/membro.service';
 import { Membro } from '../../../../model/membro';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../../model/alert-type';
+import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 
 
 @Component({
@@ -22,10 +23,18 @@ export class PesquisarMembroComponent implements OnInit {
   public endereco: any;
   public comboTipoContatos = [];
   public comboEscolaridade = []
+  @ViewChild(MatSort) sort: MatSort;
+  public displayedColumns: string[] = [];
+  public columnNames;
+  public dados = new MatTableDataSource();
+  @ViewChild('paginator') paginator: MatPaginator;
+  public pageIndex: number = 0;
+  public loading:boolean = false;
 
   ngOnInit() {
     // this.setEmiter();
     this.getEmiter();
+    this.columns();
   }
 
 
@@ -35,7 +44,7 @@ export class PesquisarMembroComponent implements OnInit {
         this.dadosPessoais = item.data;
       } else if (item.type == 'endereco') {
         this.endereco = item.data;
-        console.log(item.data)
+        // console.log(item.data)
       }
 
     });
@@ -43,8 +52,11 @@ export class PesquisarMembroComponent implements OnInit {
 
   pesquisar() {
     this.preencherObjeto();
-    this._membroService.pesquisar(this.membro).subscribe(item => {
-      console.log(item.value);
+    this._membroService.pesquisar(this.membro).pipe(take(1)).subscribe(item => {
+      console.log(item);
+      this.dados = new MatTableDataSource(item);
+      this.dados.sort = this.sort;
+      this.dados.paginator = this.paginator;
     }, error => {
       // console.log(error);
       this._notifierService.notify(AlertType.Error, error.message);
@@ -84,5 +96,23 @@ export class PesquisarMembroComponent implements OnInit {
     console.log(this.membro);
     return this.membro;
   }
+
+  
+  columns() {
+    this.columnNames = [
+      { id: 'nome', value: 'Nome' },
+      { id: 'id', value: 'Ação' }
+    ];
+    this.displayedColumns = this.columnNames.map(x => x.id);
+  }
+
+  paginatorEvent(event) {
+    this.pageIndex = event.pageIndex;
+  }
+
+  applyFilter(value) {
+    this.dados.filter = value.trim().toLowerCase();
+  }
+
 
 }

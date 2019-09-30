@@ -40,6 +40,26 @@
           <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
             <i class="material-icons">search</i>Buscar</button>
         </form>
+        <div [hidden]="!loading" align="center" style="width: 100%">
+          <h4>Buscando...</h4>
+          <mat-spinner [diameter]="40"></mat-spinner>
+        </div>
+        <div *ngIf="dados.length > 0">
+          <mat-form-field>
+            <input matInput (keyup)="applyFilterTrabalhando($event.target.value)" placeholder="Filtrar">
+          </mat-form-field>
+          <mat-table #table [dataSource]="dados" matSort>
+            <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
+              <mat-cell *matCellDef="let element"> {{element[column.id]}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+
+          </mat-table>
+          <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons></mat-paginator>
+        </div>
       </div>
     </div>
   </div>
