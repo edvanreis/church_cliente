@@ -44,7 +44,7 @@ export class PesquisarMembroComponent implements OnInit {
         this.dadosPessoais = item.data;
       } else if (item.type == 'endereco') {
         this.endereco = item.data;
-        // console.log(item.data)
+        // console.log(item.data) 
       }
 
     });
