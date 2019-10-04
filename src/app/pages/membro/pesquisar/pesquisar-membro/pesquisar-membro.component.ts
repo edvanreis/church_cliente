@@ -6,6 +6,7 @@ import { Membro } from '../../../../model/membro';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../../model/alert-type';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import { ExcelService } from '../../../../service/excel.service';
 
 
 @Component({
@@ -16,7 +17,10 @@ import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 export class PesquisarMembroComponent implements OnInit {
 
 
-  constructor(private _emitirEventoService: EmitirEventoService, private _membroService: MembroService,private _notifierService: NotifierService) { }
+  constructor(private _emitirEventoService: EmitirEventoService, 
+              private _membroService: MembroService,
+              private _notifierService: NotifierService,
+              private _excelService: ExcelService) { }
 
   public membro: any;
   public dadosPessoais: any;
@@ -30,6 +34,7 @@ export class PesquisarMembroComponent implements OnInit {
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
   public loading:boolean = false;
+  public lista = [];
 
   ngOnInit() {
     // this.setEmiter();
@@ -44,7 +49,7 @@ export class PesquisarMembroComponent implements OnInit {
         this.dadosPessoais = item.data;
       } else if (item.type == 'endereco') {
         this.endereco = item.data;
-        // console.log(item.data) 
+        console.log(item.data)
       }
 
     });
@@ -52,14 +57,18 @@ export class PesquisarMembroComponent implements OnInit {
 
   pesquisar() {
     this.preencherObjeto();
+    this.loading = true;
     this._membroService.pesquisar(this.membro).pipe(take(1)).subscribe(item => {
       console.log(item);
-      this.dados = new MatTableDataSource(item);
+      this.lista = item;
+      this.dados = new MatTableDataSource(this.lista);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;
+      this.loading = false;
     }, error => {
       // console.log(error);
-      this._notifierService.notify(AlertType.Error, error.message);
+      this.loading = false;
+      this._notifierService.notify(AlertType.Error, error.errors.message);
 
     });
   }
@@ -101,6 +110,13 @@ export class PesquisarMembroComponent implements OnInit {
   columns() {
     this.columnNames = [
       { id: 'nome', value: 'Nome' },
+      { id: 'sobreNome', value: 'Sobre Nome' },
+      { id: 'dataNasciemento', value: 'Data Nascimento' },
+      { id: 'rg', value: 'RG' },
+      { id: 'cpf', value: 'CPF' },
+      { id: 'estadoCivil', value: 'Estado Civil' },
+      { id: 'sexo', value: 'Sexo' },
+      { id: 'profissao', value: 'profissao' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
@@ -112,6 +128,24 @@ export class PesquisarMembroComponent implements OnInit {
 
   applyFilter(value) {
     this.dados.filter = value.trim().toLowerCase();
+  }
+
+  exportAsXLSX() {
+    let dados = [];
+    this.lista.forEach(i => {
+      dados.push({
+        "Nome": i.nome,
+        "Sobre nome": i.sobreNome,
+        "Data Nascimento": i.dataNasciemento,
+        "dataAtualizacao": i.descSituacaoHorario,
+        "rg": i.rg,
+        "cpf": i.cpf,
+        "Estado Civil": i.estadoCivil,
+        "Sexo Civil": i.sexo,
+        "Profissao": i.profissao,
+      });
+    });
+    this._excelService.exportAsExcelFile(dados, "pesquisa");
   }
 
 

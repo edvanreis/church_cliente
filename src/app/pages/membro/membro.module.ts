@@ -13,6 +13,7 @@ import { MembroService } from '../../service/membro.service';
 import { PessoaModule } from '../pessoa/pessoa.module';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
+import { ExcelService } from '../../service/excel.service';
 
 
 
@@ -58,6 +59,7 @@ const routes: Routes = [
   providers: [
     MembroService,
     EmitirEventoService,
+    ExcelService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ]
 })

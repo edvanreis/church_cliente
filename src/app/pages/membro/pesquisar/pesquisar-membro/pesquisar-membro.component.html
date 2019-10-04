@@ -5,7 +5,7 @@
       <h1 class="mat-headline center-align">Pesquisar</h1>
     </mat-toolbar>
     <div class="input-container">
-      <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+      <div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100">
         <form>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -44,9 +44,11 @@
           <h4>Buscando...</h4>
           <mat-spinner [diameter]="40"></mat-spinner>
         </div>
-        <div *ngIf="dados.length > 0">
+        <br />
+        <br />
+        <div *ngIf="lista.length > 0 && !loading">
           <mat-form-field>
-            <input matInput (keyup)="applyFilterTrabalhando($event.target.value)" placeholder="Filtrar">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
           </mat-form-field>
           <mat-table #table [dataSource]="dados" matSort>
             <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
@@ -60,6 +62,8 @@
           <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
             showFirstLastButtons></mat-paginator>
         </div>
+        <button mat-raised-button color="primary" (click)="exportAsXLSX()"
+            *ngIf="lista.length > 0  && !loading">Exportar XLSX</button>
       </div>
     </div>
   </div>

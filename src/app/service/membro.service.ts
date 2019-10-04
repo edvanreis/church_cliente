@@ -33,11 +33,6 @@ export class MembroService {
       .pipe(tap((response: any) => response));
   }
 
-  carregarEstados() {
-    return this.http.get(this._url + "estados")
-      .pipe(tap((response: any) => response));
-  }
-
   save(membro) {
     return this.http.post(this._url, membro)
       .pipe(map((response: any) => response))

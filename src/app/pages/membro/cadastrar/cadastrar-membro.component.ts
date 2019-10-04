@@ -7,6 +7,7 @@ import { Membro } from '../../../model/membro';
 import { AlertType } from '../../../model/alert-type';
 import { Contatos } from '../../../model/contatos';
 import { take } from 'rxjs/operators';
+import { EnderecoService } from '../../../service/endereco.service';
 
 
 @Component({
@@ -24,7 +25,10 @@ export class CadastrarMembroComponent implements OnInit {
   public maskCelular = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
   // public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
-  constructor(private _membroService: MembroService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _membroService: MembroService, 
+              private _notifierService: NotifierService, 
+              private _emitirEventoService: EmitirEventoService,
+              private _enderecoService:EnderecoService) { }
 
   public form: FormGroup;
   public contatosGrid = [];
@@ -99,7 +103,7 @@ export class CadastrarMembroComponent implements OnInit {
     });
   }
   getComboUF() {
-    this._membroService.carregarEstados().subscribe(item => {
+    this._enderecoService.carregarEstados().subscribe(item => {
       this.comboEstados = item;
       // console.log(item);
     });

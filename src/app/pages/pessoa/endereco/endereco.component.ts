@@ -38,11 +38,11 @@ export class EnderecoComponent implements OnInit {
     this.form = new FormGroup({
       'cep': new FormControl(''),
       'numero': new FormControl(''),
-      'bairro': new FormControl('',Validators.required),
+      'bairro': new FormControl(''),
       'complemento': new FormControl(''),
-      'logradouro': new FormControl('',Validators.required),
-      'localidade': new FormControl('',Validators.required),
-      'uf': new FormControl('',Validators.required),
+      'logradouro': new FormControl(''),
+      'localidade': new FormControl(''),
+      'uf': new FormControl(''),
     });
   }
 
@@ -60,7 +60,7 @@ export class EnderecoComponent implements OnInit {
             this.form.controls['localidade'].patchValue(item.localidade);
             this.form.controls['uf'].patchValue(item.uf);
             this.form.controls['bairro'].patchValue(item.bairro);
-            this.carregarEndereco(item);
+            this.carregarEnderecoParam(item);
             this.setEmiter();
           }
         }, error => {
@@ -71,13 +71,14 @@ export class EnderecoComponent implements OnInit {
   }
 
   getComboUF() {
-    this._membroService.carregarEstados().subscribe(item => {
+    this._enderecoService.carregarEstados().subscribe(item => {
       this.comboEstados = item;
       // console.log(item);
     });
   }
 
   change() {
+    this.carregarEndereco();
     this.setEmiter();
   }
 
@@ -86,7 +87,7 @@ export class EnderecoComponent implements OnInit {
   }
 
 
-  carregarEndereco(endereco): Endereco {
+  carregarEnderecoParam(endereco) {
     this.endereco = new Endereco();
     this.endereco.cep = endereco.cep;
     this.endereco.numero = endereco.numero;
@@ -95,9 +96,18 @@ export class EnderecoComponent implements OnInit {
     this.endereco.logradouro = endereco.logradouro;
     this.endereco.localiade = endereco.localiade;
     this.endereco.uf = endereco.uf;
-
-    return this.endereco;
   }
+
+  carregarEndereco() {
+    this.endereco = new Endereco();
+    this.endereco.numero = this.form.controls['numero'].value;
+    this.endereco.complemento = this.form.controls['complemento'].value;
+    this.endereco.bairro = this.form.controls['bairro'].value;
+    this.endereco.logradouro = this.form.controls['logradouro'].value;
+    this.endereco.localiade =this.form.controls['localidade'].value;
+    this.endereco.uf = this.form.controls['uf'].value;
+  }
+
 
 
   getEmiter(): void {

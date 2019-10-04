@@ -46,18 +46,18 @@ export class DadosPessoaisComponent implements OnInit {
   }
   private _buildForm(): void {
     this.form = new FormGroup({
-      'nome': new FormControl('', Validators.required),
-      'sobrenome': new FormControl('', Validators.required),
-      'dataNascimento': new FormControl('', Validators.required),
-      'rg': new FormControl('', Validators.required),
-      'cpf': new FormControl('', Validators.required),
-      'sexo': new FormControl('', Validators.required),
+      'nome': new FormControl(''),
+      'sobrenome': new FormControl(''),
+      'dataNascimento': new FormControl(''),
+      'rg': new FormControl(''),
+      'cpf': new FormControl(''),
+      'sexo': new FormControl(''),
       'estadoCivil': new FormControl(''),
-      'nacionalidade': new FormControl('', Validators.required),
+      'nacionalidade': new FormControl(''),
       'profissao': new FormControl(''),
       'batizado': new FormControl(''),
       'dizimista': new FormControl(''),
-      'celula': new FormControl('', Validators.required),
+      'celula': new FormControl(''),
     });
   }
 
