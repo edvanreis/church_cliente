@@ -62,8 +62,8 @@
           <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
             showFirstLastButtons></mat-paginator>
         </div>
-        <button mat-raised-button color="primary" (click)="exportAsXLSX()"
-            *ngIf="lista.length > 0  && !loading">Exportar XLSX</button>
+        <button mat-raised-button color="success" (click)="exportAsXLSX()"
+            *ngIf="lista.length > 0  && !loading"><i class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
       </div>
     </div>
   </div>
