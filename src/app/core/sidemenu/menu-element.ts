@@ -58,7 +58,7 @@ export const menus = [
         'sub': [
             {
                 'name': 'Permissões',
-                'link': 'configuracoes/permissoes',
+                'link': 'configuracoes/permissoes/pesquisar',
                 'icon': 'vpn_key',
                 'chip': false,
                 'open': false,

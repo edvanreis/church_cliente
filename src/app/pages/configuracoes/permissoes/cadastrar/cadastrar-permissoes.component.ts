@@ -3,10 +3,10 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-permissoes',
-  templateUrl: './add-permissoes.component.html',
-  styleUrls: ['./add-permissoes.component.scss']
+  templateUrl: './cadastrar-permissoes.component.html',
+  styleUrls: ['./cadastrar-permissoes.component.scss']
 })
-export class AddPermissoesComponent implements OnInit {
+export class CadastrarPermissoesComponent implements OnInit {
 
   public form: FormGroup;
 
