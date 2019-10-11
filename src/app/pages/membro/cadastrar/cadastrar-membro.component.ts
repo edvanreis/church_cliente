@@ -17,13 +17,9 @@ import { EnderecoService } from '../../../service/endereco.service';
 })
 export class CadastrarMembroComponent implements OnInit {
 
-
-  // public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
-  // public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/]
-  // public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
   public maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/,]
   public maskCelular = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-  // public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
+  
 
   constructor(private _membroService: MembroService, 
               private _notifierService: NotifierService, 
@@ -111,9 +107,6 @@ export class CadastrarMembroComponent implements OnInit {
 
   private _buildForm(): void {
     this.form = new FormGroup({
-      // 'nome': new FormControl('', Validators.required),
-      // 'sobrenome': new FormControl('', Validators.required),
-      // 'dataNascimento': new FormControl('', Validators.required),
       'contatos': new FormControl(''),
       'contato': new FormControl(''),
       'contatoTelefone': new FormControl(''),
@@ -121,23 +114,7 @@ export class CadastrarMembroComponent implements OnInit {
       'whatsapp': new FormControl(''),
       'escolaridade': new FormControl(''),
       'curso': new FormControl(''),
-      // 'rg': new FormControl('', Validators.required),
-      // 'cpf': new FormControl('', Validators.required),
-      // 'sexo': new FormControl('', Validators.required),
-      // 'estadoCivil': new FormControl(''),
-      // 'nacionalidade': new FormControl('', Validators.required),
-      // 'celula': new FormControl(''),
-      // 'profissao': new FormControl(''),
       'email': new FormControl(''),
-      // 'cep': new FormControl('', Validators.required),
-      // 'numero': new FormControl(''),
-      // 'bairro': new FormControl({ value: '', disabled: true }),
-      // 'complemento': new FormControl(''),
-      // 'logradouro': new FormControl({ value: '', disabled: true }),
-      // 'cidade': new FormControl({ value: '', disabled: true }),
-      // 'uf': new FormControl({ value: '', disabled: true }),
-      // 'batizado': new FormControl(''),
-      // 'dizimista': new FormControl(''),
     });
 
   }

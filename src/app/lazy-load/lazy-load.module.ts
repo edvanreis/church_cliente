@@ -5,11 +5,9 @@ import { AuthGuardService } from '../service/auth-guard.service';
 
 const routes: Routes = [
     { path: 'auth', loadChildren: '../auth/auth.module#AuthModule', data: { role: 'master' }, canActivate: [AuthGuardService] },
-    // {path: 'register', loadChildren: '../register/register.module#RegisterModule'},
     { path: 'login', loadChildren: '../pages/login/login.module#LoginModule' },
     { path: 'membro', loadChildren: '../pages/membro/membro.module#MembroModule', data: { role: 'master' }, canActivate: [AuthGuardService] },
-    // {path: 'editor', loadChildren: '../editor/editor.module#EditorModule'},
-
+    { path: 'configuracoes', loadChildren: '../pages/configuracoes/configuracoes.module#ConfiguracoesModule', data: { role: 'master' }, canActivate: [AuthGuardService] },
     { path: '**', redirectTo: 'auth/dashboard', canActivate: [AuthGuardService] },
 ]
 
