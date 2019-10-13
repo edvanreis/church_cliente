@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
-  selector: 'app-permissoes',
+  selector: 'app-cadastrar-permissoes',
   templateUrl: './cadastrar-permissoes.component.html',
   styleUrls: ['./cadastrar-permissoes.component.scss']
 })

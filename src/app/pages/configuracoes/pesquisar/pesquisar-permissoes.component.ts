@@ -4,7 +4,7 @@ import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'pesquisar-permissoes',
+  selector: 'app-pesquisar-permissoes',
   templateUrl: './pesquisar-permissoes.component.html',
   styleUrls: ['./pesquisar-permissoes.component.scss']
 })
@@ -51,7 +51,7 @@ export class PesquisarPermissoesComponent implements OnInit {
 
 
   add() {
-    this._router.navigate(['cadastrar-permissoes'], {
+    this._router.navigate(['/auth/configuracoes/cadastrar-permissoes'],{
       queryParams: {
         janela: 'Novo',
       },

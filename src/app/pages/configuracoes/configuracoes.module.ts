@@ -1,22 +1,19 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Routes, RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
-import { PesquisarPermissoesComponent } from './permissoes/pesquisar-permissoes/pesquisar-permissoes.component';
-import { CadastrarPermissoesComponent } from './permissoes/cadastrar-permissoes/cadastrar-permissoes.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { RouterModule, Routes } from '@angular/router';
 import { InterceptorService } from '../../service/interceptor.service';
-import { AppComponent } from '../../app.component';
-import { providers } from 'ng2-dnd';
-import { CadastrarComponent } from './perfil/cadastrar/cadastrar.component';
+import { PesquisarPermissoesComponent } from './permissoes/pesquisar/pesquisar-permissoes.component';
+import { CadastrarPermissoesComponent } from './permissoes/cadastrar/cadastrar-permissoes.component';
+
 
 
 const routes: Routes = [
-  { path: 'permissoes', component:  PesquisarPermissoesComponent , data: { animation: 'buttons' }},
-  { path: 'add-permissoes', component:  CadastrarPermissoesComponent , data: { animation: 'buttons' }},
-  { path: ':id/add-permissoes', component:  CadastrarPermissoesComponent , data: { animation: 'buttons' }},
+  { path: 'pesquisar', component:  PesquisarPermissoesComponent , data: { animation: 'buttons' }},
+  { path: 'cadastrar', component:  CadastrarPermissoesComponent , data: { animation: 'buttons' }},
 ];
 
 @NgModule({
@@ -38,11 +35,10 @@ const routes: Routes = [
 ],
   declarations: [
     PesquisarPermissoesComponent,
-    CadastrarPermissoesComponent,
-    CadastrarPermissoesComponent,
-    CadastrarComponent
+    CadastrarPermissoesComponent
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
-  bootstrap: [AppComponent]
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+  ]
 })
 export class ConfiguracoesModule { }

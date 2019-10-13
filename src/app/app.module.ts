@@ -10,6 +10,7 @@ import { LoginModule } from './pages/login/login.module';
 import { InterceptorService } from './service/interceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MembroModule } from './pages/membro/membro.module';
+import { ConfiguracoesModule } from './pages/configuracoes/configuracoes.module';
 
 
 
@@ -72,7 +73,8 @@ const customNotifierOptions: NotifierOptions = {
     MembroModule,
     NotifierModule.withConfig(customNotifierOptions),
     AppRoutingModule,
-    LoginModule
+    LoginModule,
+    ConfiguracoesModule
     
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
