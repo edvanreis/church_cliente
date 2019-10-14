@@ -6,15 +6,14 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTableModule, MatToolbarModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { InterceptorService } from '../../service/interceptor.service';
-import { PesquisarPermissoesComponent } from './permissoes/pesquisar/pesquisar-permissoes.component';
-import { CadastrarPermissoesComponent } from './permissoes/cadastrar/cadastrar-permissoes.component';
 
 
 
-const routes: Routes = [
-  { path: 'pesquisar', component:  PesquisarPermissoesComponent , data: { animation: 'buttons' }},
-  { path: 'cadastrar', component:  CadastrarPermissoesComponent , data: { animation: 'buttons' }},
-];
+
+// const routes: Routes = [
+//   { path: 'pesquisar', component:  PesquisarPermissoesComponent , data: { animation: 'buttons' }},
+//   { path: 'cadastrar', component:  CadastrarPermissoesComponent , data: { animation: 'buttons' }},
+// ];
 
 @NgModule({
   imports: [
@@ -28,14 +27,13 @@ const routes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    RouterModule.forChild(routes)
+    // RouterModule.forChild(routes)
   ],
   exports: [
     RouterModule,
 ],
   declarations: [
-    PesquisarPermissoesComponent,
-    CadastrarPermissoesComponent
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
