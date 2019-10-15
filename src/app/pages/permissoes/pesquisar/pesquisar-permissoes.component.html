@@ -6,15 +6,8 @@
     </mat-toolbar>
     <div class="input-container">
       <div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100">
-        <button mat-raised-button color="primary" type="submit" (click)="add()">
+        <button mat-raised-button color="primary" type="submit" (click)="cadastrar()">
           <i class="material-icons">add</i>Novo</button>
-        <form form [formGroup]="form">
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="100px">
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nome" formControlName="nome" id="nome">
-            </mat-form-field>
-          </div>
-        </form>
         <div>
           <mat-form-field>
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
@@ -22,7 +15,10 @@
           <mat-table #table [dataSource]="dados" matSort>
             <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
               <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element[column.id]}} </mat-cell>
+              <mat-cell *matCellDef="let element">
+                <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
+                <span *ngIf="column.id=='id'" style="cursor: pointer" (click)="editar(element.id)"><i class="material-icons">create</i></span>
+              </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>

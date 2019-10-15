@@ -7,7 +7,7 @@ export const appRoutes: Routes = [{
         path: '', component: AuthComponent, children: [
         { path: 'dashboard', component: DashboardCrmComponent },
         { path: 'membro', loadChildren: '../pages/membro/membro.module#MembroModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
-        { path: 'configuracoes', loadChildren: '../pages/permissoes/permissoes.module#PermissoesModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
+        { path: 'permissoes', loadChildren: '../pages/permissoes/permissoes.module#PermissoesModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
         
     ]
 }];

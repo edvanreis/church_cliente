@@ -2,6 +2,10 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
 import { Router } from '@angular/router';
+import { PermissoesService } from '../../../service/permissoes.service';
+import { take } from 'rxjs/operators';
+import { NotifierService } from 'angular-notifier';
+import { AlertType } from '../../../model/alert-type';
 
 @Component({
   selector: 'app-pesquisar-permissoes',
@@ -18,18 +22,14 @@ export class PesquisarPermissoesComponent implements OnInit {
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
 
-  constructor(private _router: Router) { }
+  constructor(private _router: Router,
+              private _permissoesService: PermissoesService,
+              private _notifierService: NotifierService) { }
 
 
   ngOnInit() {
-    this._buildForm();
     this.columns();
-  }
-
-  private _buildForm(): void {
-    this.form = new FormGroup({
-      'nome': new FormControl(''),
-    });
+    this.getList() 
   }
 
   applyFilter(value) {
@@ -50,20 +50,33 @@ export class PesquisarPermissoesComponent implements OnInit {
   }
 
 
-  add() {
-    this._router.navigate(['/auth/configuracoes/cadastrar-permissoes'],{
+  cadastrar() {
+    this._router.navigate(['/auth/permissoes/cadastrar'],{
       queryParams: {
         janela: 'Novo',
       },
       skipLocationChange: true
     });
   }
-  edit(id) {
-    this._router.navigate([id+'/cadastrar-permissoes'], {
+  editar(id) {
+    this._router.navigate(['/auth/permissoes/cadastrar'], {
       queryParams: {
         janela: 'Editar',
+        id:id
       },
       skipLocationChange: true
+    });
+  }
+
+  getList() {
+    this._permissoesService.getList().pipe(take(1)).subscribe(item => {
+      console.log(item);
+      this.dados = new MatTableDataSource(item);
+      this.dados.sort = this.sort;
+      this.dados.paginator = this.paginator;
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+
     });
   }
 
