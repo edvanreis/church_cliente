@@ -14,8 +14,9 @@ import { take } from 'rxjs/operators';
 export class CadastrarPermissoesComponent implements OnInit {
 
   public form: FormGroup;
-  public id:any;
-  public titulo:any;
+  public id: any;
+  public titulo: any;
+  public obj = {} as any;
 
   constructor(private _router: Router,
     private _notifierService: NotifierService,
@@ -35,15 +36,10 @@ export class CadastrarPermissoesComponent implements OnInit {
   }
 
   voltar() {
-    this._router.navigate(['/auth/permissoes/pesquisar'], {
-      queryParams: {
-        janela: 'Novo',
-      },
-      skipLocationChange: true
-    });
+    this._router.navigate(['/auth/permissoes/pesquisar']);
   }
 
-  getParams(){
+  getParams() {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
       this.getPermissao(this.id);
@@ -54,18 +50,13 @@ export class CadastrarPermissoesComponent implements OnInit {
   }
 
 
-  salvar() {
+  edit() {
     if (!this.form.valid) {
       this._notifierService.notify(AlertType.Error, "Preencha todos os campos obrigatórios!");
       return false;
     }
-    let obj = {
-      id:this.id,
-      nome: this.form.controls['nome'].value,
-      descricao: this.form.controls['descricao'].value
-    }
-    // console.log(obj);
-    this._permissoesService.update(obj).pipe(take(1)).subscribe(item => {
+    this.setObj();
+    this._permissoesService.save(this.obj).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
       this.voltar();
     }, error => {
@@ -73,14 +64,43 @@ export class CadastrarPermissoesComponent implements OnInit {
     });
   }
 
+  save() {
+    if (!this.form.valid) {
+      this._notifierService.notify(AlertType.Error, "Preencha todos os campos obrigatórios!");
+      return false;
+    }
+    this.setObj();
+    this._permissoesService.save(this.obj).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+      this.voltar();
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+  setObj() {
+    this.obj.nome = this.form.controls['nome'].value;
+    this.obj.descricao = this.form.controls['descricao'].value;
+    if (this.id) {
+      this.obj.id = this.id;
+    }
+  }
+
   getPermissao(id) {
     this._permissoesService.getPermissao(id).pipe(take(1)).subscribe(item => {
-      // console.log(item);
       this.form.controls['nome'].patchValue(item.nome);
       this.form.controls['descricao'].patchValue(item.descricao);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });
+  }
+
+  saveOrEdit() {
+    if (this.id) {
+      this.edit();
+    } else {
+      this.save();
+    }
   }
 
 
