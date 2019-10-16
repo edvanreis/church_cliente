@@ -87,17 +87,18 @@ export class PesquisarPermissoesComponent implements OnInit {
 
   remover(id) {
     const dialogRef = this._dialog.open(DialogRemoverComponent, {
-      width: '800px',
+      width: '600px',
       data: {
         id: id,
-        tela:'permissoes'
+        tela:'permissoes',
+        panelClass: 'components-container-gt-xs'
       }
     });
   }
 
   emiter(): void {
     this._emitirEventoService.mensagem.subscribe(obj => {
-      if (obj.data == 'remover') {
+      if (obj.data == 'remove') {
         this.getList();
       }
     });
