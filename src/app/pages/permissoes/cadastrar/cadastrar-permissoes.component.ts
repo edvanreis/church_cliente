@@ -56,7 +56,7 @@ export class CadastrarPermissoesComponent implements OnInit {
       return false;
     }
     this.setObj();
-    this._permissoesService.save(this.obj).pipe(take(1)).subscribe(item => {
+    this._permissoesService.update(this.obj).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
       this.voltar();
     }, error => {

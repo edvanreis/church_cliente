@@ -12,6 +12,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MembroModule } from './pages/membro/membro.module';
 import { ConfiguracoesModule } from './pages/configuracoes/configuracoes.module';
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
+import { DialogRemoverComponent } from './pages/dialog/dialog-remover/dialog-remover.component';
+import { MatDialogModule } from '@angular/material';
 
 
 
@@ -76,7 +78,8 @@ const customNotifierOptions: NotifierOptions = {
     AppRoutingModule,
     LoginModule,
     ConfiguracoesModule,
-    PermissoesModule
+    PermissoesModule,
+    MatDialogModule
     
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],

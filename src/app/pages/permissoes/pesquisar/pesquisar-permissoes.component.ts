@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { PermissoesService } from '../../../service/permissoes.service';
 import { take } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
+import { DialogRemoverComponent } from '../../dialog/dialog-remover/dialog-remover.component';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
 
 @Component({
   selector: 'app-pesquisar-permissoes',
@@ -23,13 +25,16 @@ export class PesquisarPermissoesComponent implements OnInit {
   public pageIndex: number = 0;
 
   constructor(private _router: Router,
-              private _permissoesService: PermissoesService,
-              private _notifierService: NotifierService) { }
+    private _permissoesService: PermissoesService,
+    private _notifierService: NotifierService,
+    private _dialog: MatDialog,
+    private _emitirEventoService: EmitirEventoService) { }
 
 
   ngOnInit() {
     this.columns();
-    this.getList() 
+    this.getList();
+    this.emiter();
   }
 
   applyFilter(value) {
@@ -51,7 +56,7 @@ export class PesquisarPermissoesComponent implements OnInit {
 
 
   cadastrar() {
-    this._router.navigate(['/auth/permissoes/cadastrar'],{
+    this._router.navigate(['/auth/permissoes/cadastrar'], {
       queryParams: {
         janela: 'Novo',
       },
@@ -62,7 +67,7 @@ export class PesquisarPermissoesComponent implements OnInit {
     this._router.navigate(['/auth/permissoes/cadastrar'], {
       queryParams: {
         janela: 'Editar',
-        id:id
+        id: id
       },
       skipLocationChange: true
     });
@@ -77,6 +82,24 @@ export class PesquisarPermissoesComponent implements OnInit {
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
 
+    });
+  }
+
+  remover(id) {
+    const dialogRef = this._dialog.open(DialogRemoverComponent, {
+      width: '800px',
+      data: {
+        id: id,
+        tela:'permissoes'
+      }
+    });
+  }
+
+  emiter(): void {
+    this._emitirEventoService.mensagem.subscribe(obj => {
+      if (obj.data == 'remover') {
+        this.getList();
+      }
     });
   }
 

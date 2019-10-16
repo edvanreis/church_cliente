@@ -8,6 +8,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
+import { DialogRemoverComponent } from '../dialog/dialog-remover/dialog-remover.component';
+import { DialogRemoverModule } from '../dialog/dialog-remover/dialog-remover.module';
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarPermissoesComponent , data: { animation: 'buttons' }},
@@ -26,6 +28,7 @@ const routes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
+    DialogRemoverModule,
     RouterModule.forChild(routes)
   ],
   exports: [
