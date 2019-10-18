@@ -58,7 +58,7 @@ export class PesquisarPermissoesComponent implements OnInit {
   cadastrar() {
     this._router.navigate(['/auth/permissoes/cadastrar'], {
       queryParams: {
-        janela: 'Novo',
+        janela: 'Nova',
       },
       skipLocationChange: true
     });

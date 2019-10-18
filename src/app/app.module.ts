@@ -14,6 +14,9 @@ import { ConfiguracoesModule } from './pages/configuracoes/configuracoes.module'
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { DialogRemoverComponent } from './pages/dialog/dialog-remover/dialog-remover.component';
 import { MatDialogModule } from '@angular/material';
+import { PerfilComponent } from './pages/perfil/perfil.component';
+import { PesquisarComponent } from './pages/perfil/pesquisar/pesquisar.component';
+import { CadastrarComponent } from './pages/perfil/cadastrar/cadastrar.component';
 
 
 
@@ -66,7 +69,10 @@ const customNotifierOptions: NotifierOptions = {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    PerfilComponent,
+    PesquisarComponent,
+    CadastrarComponent
   ],
   imports: [
     BrowserModule,
