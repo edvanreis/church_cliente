@@ -6,6 +6,7 @@ import { PesquisarPermissoesComponent } from '../../permissoes/pesquisar/pesquis
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule, MatButtonModule } from '@angular/material';
+import { PesquisarPerfilComponent } from '../../perfil/pesquisar/pesquisar-perfil.component';
 
 @NgModule({
   imports: [

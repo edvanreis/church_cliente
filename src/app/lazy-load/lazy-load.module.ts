@@ -11,7 +11,7 @@ const routes: Routes = [
     { path: 'permissoes', loadChildren: '../pages/permissoes/permissoes.module#PermissoesModule', data: { role: 'master' }, canActivate: [AuthGuardService] },
     { path: '**', redirectTo: 'auth/dashboard', canActivate: [AuthGuardService] },
 ]
-
+ 
 @NgModule({
     imports: [RouterModule.forRoot(routes)],
     exports: [RouterModule]

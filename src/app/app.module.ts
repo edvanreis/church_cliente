@@ -1,22 +1,19 @@
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { MatDialogModule } from '@angular/material';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotifierModule, NotifierOptions } from 'angular-notifier';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { LazyLoadModule } from './lazy-load/lazy-load.module';
-import { AppRoutingModule } from './app-routing.module';
 import { LoginModule } from './pages/login/login.module';
-import { InterceptorService } from './service/interceptor.service';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MembroModule } from './pages/membro/membro.module';
-import { ConfiguracoesModule } from './pages/configuracoes/configuracoes.module';
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
-import { DialogRemoverComponent } from './pages/dialog/dialog-remover/dialog-remover.component';
-import { MatDialogModule } from '@angular/material';
-import { PerfilComponent } from './pages/perfil/perfil.component';
-import { PesquisarComponent } from './pages/perfil/pesquisar/pesquisar.component';
-import { CadastrarComponent } from './pages/perfil/cadastrar/cadastrar.component';
+import { InterceptorService } from './service/interceptor.service';
+import { PerfilModule } from './pages/perfil/perfil.module';
+
 
 
 
@@ -69,10 +66,7 @@ const customNotifierOptions: NotifierOptions = {
 
 @NgModule({
   declarations: [
-    AppComponent,
-    PerfilComponent,
-    PesquisarComponent,
-    CadastrarComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -83,9 +77,9 @@ const customNotifierOptions: NotifierOptions = {
     NotifierModule.withConfig(customNotifierOptions),
     AppRoutingModule,
     LoginModule,
-    ConfiguracoesModule,
     PermissoesModule,
-    MatDialogModule
+    MatDialogModule,
+    PerfilModule
     
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],

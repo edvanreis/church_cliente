@@ -10,6 +10,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
 import { DialogRemoverComponent } from '../dialog/dialog-remover/dialog-remover.component';
 import { DialogRemoverModule } from '../dialog/dialog-remover/dialog-remover.module';
+import { PesquisarPerfilComponent } from '../perfil/pesquisar/pesquisar-perfil.component';
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarPermissoesComponent , data: { animation: 'buttons' }},
@@ -33,6 +34,7 @@ const routes: Routes = [
   ],
   exports: [
     RouterModule,
+    PesquisarPermissoesComponent
 ],
   declarations: [
     PesquisarPermissoesComponent,

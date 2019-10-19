@@ -75,7 +75,7 @@ export class PesquisarPermissoesComponent implements OnInit {
 
   getList() {
     this._permissoesService.getList().pipe(take(1)).subscribe(item => {
-      console.log(item);
+      // console.log(item);
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;

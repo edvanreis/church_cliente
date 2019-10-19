@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { CadastrarPermissoesComponent } from '../permissoes/cadastrar/cadastrar-permissoes.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
-import { Routes, RouterModule } from '@angular/router';
-import { DialogRemoverModule } from '../dialog/dialog-remover/dialog-remover.module';
-import { PesquisarPerfilComponent } from './pesquisar/pesquisar-perfil.component';
-import { CadastrarPerfilComponent } from './cadastrar/cadastrar-perfil.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatButtonModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule, MatAutocompleteModule } from '@angular/material';
+import { RouterModule, Routes } from '@angular/router';
 import { InterceptorService } from '../../service/interceptor.service';
+import { CadastrarPerfilComponent } from './cadastrar/cadastrar-perfil.component';
+import { PesquisarPerfilComponent } from './pesquisar/pesquisar-perfil.component';
+
+
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarPerfilComponent , data: { animation: 'buttons' }},
@@ -28,7 +28,9 @@ const routes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    DialogRemoverModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatAutocompleteModule,
     RouterModule.forChild(routes)
   ],
   exports: [
@@ -36,10 +38,10 @@ const routes: Routes = [
 ],
   declarations: [
     PesquisarPerfilComponent,
-    CadastrarPerfilComponent
+    CadastrarPerfilComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ]
-})
+})    
 export class PerfilModule { }
