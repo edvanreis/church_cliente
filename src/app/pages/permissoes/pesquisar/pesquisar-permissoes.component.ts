@@ -6,8 +6,8 @@ import { PermissoesService } from '../../../service/permissoes.service';
 import { take } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
-import { DialogRemoverComponent } from '../../dialog/dialog-remover/dialog-remover.component';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { DialogRemoverPermissaoComponent } from '../../dialog/dialog-remover-permissao/dialog-remover-permissao.component';
 
 @Component({
   selector: 'app-pesquisar-permissoes',
@@ -86,7 +86,7 @@ export class PesquisarPermissoesComponent implements OnInit {
   }
 
   remover(id) {
-    const dialogRef = this._dialog.open(DialogRemoverComponent, {
+    const dialogRef = this._dialog.open(DialogRemoverPermissaoComponent, {
       width: '600px',
       data: {
         id: id,

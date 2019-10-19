@@ -8,12 +8,12 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 
 @Component({
   selector: 'app-dialog-remover',
-  templateUrl: './dialog-remover.component.html',
-  styleUrls: ['./dialog-remover.component.scss']
+  templateUrl: './dialog-remover-permissao.component.html',
+  styleUrls: ['./dialog-remover-permissao.component.scss']
 })
-export class DialogRemoverComponent implements OnInit {
+export class DialogRemoverPermissaoComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<DialogRemoverComponent>,
+  constructor(public dialogRef: MatDialogRef<DialogRemoverPermissaoComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     private _permissoesService:PermissoesService,
     private _notifierService: NotifierService,

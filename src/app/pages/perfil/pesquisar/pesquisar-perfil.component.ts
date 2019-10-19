@@ -7,6 +7,7 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { PerfilService } from '../../../service/perfil.service';
 import { take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
+import { DialogRemoverPerfilComponent } from '../../dialog/dialog-remover-perfil/dialog-remover-perfil.component';
 
 @Component({
   selector: 'app-pesquisar-perfil',
@@ -35,7 +36,7 @@ export class PesquisarPerfilComponent implements OnInit {
   ngOnInit() {
     this.columns();
     this.getList();
-    // this.emiter();
+    this.emiter();
   }
 
   applyFilter(value) {
@@ -86,24 +87,24 @@ export class PesquisarPerfilComponent implements OnInit {
     });
   }
 
-  // remover(id) {
-  //   const dialogRef = this._dialog.open(DialogRemoverComponent, {
-  //     width: '600px',
-  //     data: {
-  //       id: id,
-  //       tela:'permissoes',
-  //       panelClass: 'components-container-gt-xs'
-  //     }
-  //   });
-  // }
+  remover(id) {
+    const dialogRef = this._dialog.open(DialogRemoverPerfilComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        tela:'permissoes',
+        panelClass: 'components-container-gt-xs'
+      }
+    });
+  }
 
-  // emiter(): void {
-  //   this._emitirEventoService.mensagem.subscribe(obj => {
-  //     if (obj.data == 'remove') {
-  //       this.getList();
-  //     }
-  //   });
-  // }
+  emiter(): void {
+    this._emitirEventoService.mensagem.subscribe(obj => {
+      if (obj.data == 'remove') {
+        this.getList();
+      }
+    });
+  }
 
 
 }

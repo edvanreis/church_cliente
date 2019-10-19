@@ -13,6 +13,7 @@ import { MembroModule } from './pages/membro/membro.module';
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { InterceptorService } from './service/interceptor.service';
 import { PerfilModule } from './pages/perfil/perfil.module';
+import { DialogRemoverPerfilComponent } from './pages/dialog/dialog-remover-perfil/dialog-remover-perfil.component';
 
 
 

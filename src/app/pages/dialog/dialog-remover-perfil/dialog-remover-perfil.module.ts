@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DialogRemoverComponent } from './dialog-remover.component';
-import { PermissoesService } from '../../../service/permissoes.service';
-import { PesquisarPermissoesComponent } from '../../permissoes/pesquisar/pesquisar-permissoes.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule, MatButtonModule } from '@angular/material';
+import { DialogRemoverPerfilComponent } from './dialog-remover-perfil.component';
+import { PerfilService } from '../../../service/perfil.service';
 import { PesquisarPerfilComponent } from '../../perfil/pesquisar/pesquisar-perfil.component';
 
 @NgModule({
@@ -18,11 +17,11 @@ import { PesquisarPerfilComponent } from '../../perfil/pesquisar/pesquisar-perfi
     MatButtonModule
   ],
   declarations: [
-    DialogRemoverComponent
+    DialogRemoverPerfilComponent
   ],
   providers: [
-    PermissoesService
+    PerfilService
 ],
-entryComponents: [DialogRemoverComponent,PesquisarPermissoesComponent]
+entryComponents: [DialogRemoverPerfilComponent,PesquisarPerfilComponent]  
 })
-export class DialogRemoverModule { }
+export class DialogRemoverPerfilModule { }

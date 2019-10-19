@@ -8,6 +8,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { InterceptorService } from '../../service/interceptor.service';
 import { CadastrarPerfilComponent } from './cadastrar/cadastrar-perfil.component';
 import { PesquisarPerfilComponent } from './pesquisar/pesquisar-perfil.component';
+import { DialogRemoverPerfilModule } from '../dialog/dialog-remover-perfil/dialog-remover-perfil.module';
 
 
 
@@ -31,6 +32,7 @@ const routes: Routes = [
     MatOptionModule,
     MatSelectModule,
     MatAutocompleteModule,
+    DialogRemoverPerfilModule,
     RouterModule.forChild(routes)
   ],
   exports: [
