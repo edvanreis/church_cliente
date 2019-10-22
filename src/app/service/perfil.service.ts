@@ -33,8 +33,9 @@ export class PerfilService {
       .pipe(map((response: any) => response))
   }
 
-  getPermissao(id) {
-    return this.http.get(this._url+id)
+  getPerfil(id) {
+    console.log(this._url+id+"/getPerfil");
+    return this.http.get(this._url+id+"/getPerfil")
       .pipe(map((response: any) => response))
   }
 }

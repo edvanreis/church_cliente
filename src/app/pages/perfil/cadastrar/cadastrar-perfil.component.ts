@@ -49,7 +49,7 @@ export class CadastrarPerfilComponent implements OnInit {
   getParams() {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
-      this.getPermissao(this.id);
+      this.getPerfil(this.id);
     }
     if (this._avRoute.snapshot.queryParamMap.get("janela")) {
       this.titulo = this._avRoute.snapshot.queryParamMap.get("janela");
@@ -94,8 +94,8 @@ export class CadastrarPerfilComponent implements OnInit {
     }
   }
 
-  getPermissao(id) {
-    this._perfilService.getPermissao(id).pipe(take(1)).subscribe(item => {
+  getPerfil(id) {
+    this._perfilService.getPerfil(id).pipe(take(1)).subscribe(item => {
       this.form.controls['nome'].patchValue(item.nome);
       this.form.controls['descricao'].patchValue(item.descricao);
       this.permissoes = item.permissoes;
