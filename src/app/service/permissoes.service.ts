@@ -30,10 +30,9 @@ export class PermissoesService {
   }
 
   remove(id) {
-    return this.http.delete(this._url+id)
+    return this.http.delete(this._url+id+"/removerPermissoes")
       .pipe(map((response: any) => response))
   }
-
   getPermissao(id) {
     return this.http.get(this._url+id)
       .pipe(map((response: any) => response))

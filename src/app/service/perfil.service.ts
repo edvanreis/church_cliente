@@ -29,12 +29,11 @@ export class PerfilService {
   }
 
   remove(id) {
-    return this.http.delete(this._url+id)
+    return this.http.delete(this._url+id+"/removerPerfil")
       .pipe(map((response: any) => response))
   }
 
   getPerfil(id) {
-    console.log(this._url+id+"/getPerfil");
     return this.http.get(this._url+id+"/getPerfil")
       .pipe(map((response: any) => response))
   }
