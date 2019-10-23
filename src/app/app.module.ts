@@ -13,10 +13,7 @@ import { MembroModule } from './pages/membro/membro.module';
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { InterceptorService } from './service/interceptor.service';
 import { PerfilModule } from './pages/perfil/perfil.module';
-import { DialogRemoverPerfilComponent } from './pages/dialog/dialog-remover-perfil/dialog-remover-perfil.component';
-import { UsuarioComponent } from './pages/usuario/usuario.component';
-import { PesquisarUsuarioComponent } from './pages/usuario/pesquisar-usuario/pesquisar-usuario.component';
-import { CadastrarUsuarioComponent } from './pages/usuario/cadastrar-usuario/cadastrar-usuario.component';
+
 
 
 
@@ -25,55 +22,52 @@ import { CadastrarUsuarioComponent } from './pages/usuario/cadastrar-usuario/cad
 
 /**
  * Custom angular notifier options
- */
-const customNotifierOptions: NotifierOptions = {
-  position: {
-		horizontal: {
-			position: 'left',
-			distance: 12
-		},
-		vertical: {
-			position: 'bottom',
-			distance: 12,
-			gap: 10
-		}
-	},
-  theme: 'material',
-  behaviour: {
-    autoHide: 5000,
-    onClick: 'hide',
-    onMouseover: 'pauseAutoHide',
-    showDismissButton: true,
-    stacking: 4
-  },
-  animations: {
-    enabled: true,
-    show: {
-      preset: 'slide',
-      speed: 300,
-      easing: 'ease'
-    },
-    hide: {
-      preset: 'fade',
-      speed: 300,
-      easing: 'ease',
-      offset: 50
-    },
-    shift: {
-      speed: 300,
-      easing: 'ease'
-    },
-    overlap: 150
-  }
-};
+//  */
+// const customNotifierOptions: NotifierOptions = {
+//   position: {
+// 		horizontal: {
+// 			position: 'left',
+// 			distance: 12
+// 		},
+// 		vertical: {
+// 			position: 'bottom',
+// 			distance: 12,
+// 			gap: 10
+// 		}
+// 	},
+//   theme: 'material',
+//   behaviour: {
+//     autoHide: 5000,
+//     onClick: 'hide',
+//     onMouseover: 'pauseAutoHide',
+//     showDismissButton: true,
+//     stacking: 4
+//   },
+//   animations: {
+//     enabled: true,
+//     show: {
+//       preset: 'slide',
+//       speed: 300,
+//       easing: 'ease'
+//     },
+//     hide: {
+//       preset: 'fade',
+//       speed: 300,
+//       easing: 'ease',
+//       offset: 50
+//     },
+//     shift: {
+//       speed: 300,
+//       easing: 'ease'
+//     },
+//     overlap: 150
+//   }
+// };
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    UsuarioComponent,
-    PesquisarUsuarioComponent,
-    CadastrarUsuarioComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -81,7 +75,7 @@ const customNotifierOptions: NotifierOptions = {
     CoreModule,
     BrowserAnimationsModule,
     MembroModule,
-    NotifierModule.withConfig(customNotifierOptions),
+    NotifierModule ,//.withConfig(customNotifierOptions),
     AppRoutingModule,
     LoginModule,
     PermissoesModule,

@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl } from '@angular/forms';
+import { MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
+import { Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { UsuarioService } from '../../../service/usuario.service';
 
 @Component({
   selector: 'app-pesquisar-usuario',
@@ -7,9 +13,101 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PesquisarUsuarioComponent implements OnInit {
 
-  constructor() { }
+
+  public form: FormGroup;
+  @ViewChild(MatSort) sort: MatSort;
+  public displayedColumns: string[] = [];
+  public columnNames;
+  public dados = new MatTableDataSource();
+  @ViewChild('paginator') paginator: MatPaginator;
+  public pageIndex: number = 0;
+  
+
+  constructor(private _router: Router,
+    private _usuarioService:UsuarioService,
+    private _notifierService: NotifierService,
+    private _dialog: MatDialog,
+    private _emitirEventoService: EmitirEventoService) { }
+
 
   ngOnInit() {
+    this.columns();
+    // this.getList();
+    this.emiter();
   }
+builForm(){
+  this.form = new FormGroup({
+    'nome': new FormControl(''),
+    'login': new FormControl(''),
+  });
+}
+
+  applyFilter(value) {
+    this.dados.filter = value.trim().toLowerCase();
+  }
+
+  paginatorEvent(event) {
+    this.pageIndex = event.pageIndex;
+  }
+
+  columns() {
+    this.columnNames = [
+      { id: 'login', value: 'login' },
+      { id: 'Nome', value: 'nome' },
+      { id: 'id', value: 'Ação' }
+    ];
+    this.displayedColumns = this.columnNames.map(x => x.id);
+  }
+
+
+  cadastrar() {
+    this._router.navigate(['/auth/permissoes/cadastrar'], {
+      queryParams: {
+        janela: 'Nova',
+      },
+      skipLocationChange: true
+    });
+  }
+  editar(id) {
+    this._router.navigate(['/auth/permissoes/cadastrar'], {
+      queryParams: {
+        janela: 'Editar',
+        id: id
+      },
+      skipLocationChange: true
+    });
+  }
+
+  pesquisar() {
+    // this._permissoesService.getList().pipe(take(1)).subscribe(item => {
+    //   // console.log(item);
+    //   this.dados = new MatTableDataSource(item);
+    //   this.dados.sort = this.sort;
+    //   this.dados.paginator = this.paginator;
+    // }, error => {
+    //   this._notifierService.notify(AlertType.Error, error.errors.message);
+
+    // });
+  }
+
+  // remover(id) {
+  //   const dialogRef = this._dialog.open(DialogRemoverPermissaoComponent, {
+  //     width: '600px',
+  //     data: {
+  //       id: id,
+  //       tela:'permissoes',
+  //       panelClass: 'components-container-gt-xs'
+  //     }
+  //   });
+  // }
+
+  emiter(): void {
+    this._emitirEventoService.mensagem.subscribe(obj => {
+      if (obj.data == 'remove') {
+        // this.getList();
+      }
+    });
+  }
+
 
 }

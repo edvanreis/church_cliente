@@ -1,10 +1,43 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PesquisarUsuarioComponent } from './pesquisar/pesquisar-usuario.component';
+import { CadastrarUsuarioComponent } from './cadastrar/cadastrar-usuario.component';
+import { Routes, RouterModule } from '@angular/router';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatProgressSpinnerModule } from '@angular/material';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { InterceptorService } from '../../service/interceptor.service';
+
+const routes: Routes = [
+  { path: 'pesquisar', component:  PesquisarUsuarioComponent , data: { animation: 'buttons' }},
+  { path: 'cadastrar', component:  CadastrarUsuarioComponent , data: { animation: 'buttons' }},
+];
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    FlexLayoutModule,
+    MatToolbarModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatProgressSpinnerModule,
+    RouterModule.forChild(routes)
   ],
-  declarations: []
+  exports: [
+    RouterModule,
+],
+  declarations: [
+    PesquisarUsuarioComponent,
+    CadastrarUsuarioComponent
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+  ]
 })
 export class UsuarioModule { }

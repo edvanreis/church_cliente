@@ -57,6 +57,13 @@ export const menus = [
         'link': false,
         'sub': [
             {
+                'name': 'Usuario',
+                'link': 'usuario/pesquisar', 
+                'icon': 'person',
+                'chip': false,
+                'open': false,
+            },
+            {
                 'name': 'Perfil',
                 'link': 'perfil/pesquisar', 
                 'icon': 'people',
