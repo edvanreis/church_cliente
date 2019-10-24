@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { UserService } from '../../../service/user.service';
+import { AlertType } from '../../../model/alert-type';
+import { take } from 'rxjs/operators';
 
 
 @Component({
@@ -27,7 +29,7 @@ export class PesquisarUsuarioComponent implements OnInit {
   
 
   constructor(private _router: Router,
-    private _usuarioService:UserService,
+    private _userService:UserService,
     private _notifierService: NotifierService,
     private _dialog: MatDialog,
     private _emitirEventoService: EmitirEventoService) { }
@@ -83,15 +85,25 @@ builForm(){
   }
 
   pesquisar() {
-    // this._permissoesService.getList().pipe(take(1)).subscribe(item => {
-    //   // console.log(item);
-    //   this.dados = new MatTableDataSource(item);
-    //   this.dados.sort = this.sort;
-    //   this.dados.paginator = this.paginator;
-    // }, error => {
-    //   this._notifierService.notify(AlertType.Error, error.errors.message);
+    this.loading = true;
+    this._userService.pesquisar(this.obj()).pipe(take(1)).subscribe(item => {
+      console.log(item);
+      this.dados = new MatTableDataSource(item);
+      this.dados.sort = this.sort;
+      this.dados.paginator = this.paginator;
+      this.loading = false;
+    }, error => {
+      this.loading = false;
+      this._notifierService.notify(AlertType.Error, error.errors.message);
 
-    // });
+    });
+  }
+
+  obj(){
+    return {
+      nome:this.form.controls['nome'].value,
+      login:this.form.controls['login'].value
+    }
   }
 
   // remover(id) {

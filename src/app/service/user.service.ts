@@ -1,17 +1,23 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  autenticadoEmitter = new EventEmitter<any>();
-  
-  constructor() { }
+  private _url = environment.url + "user/";
+  public autenticadoEmitter = new EventEmitter<any>();
+
+
+  constructor(public http: HttpClient) { }
 
   isLogged() {
     const user = localStorage.getItem("currentuser");
-    if( user ){
+    if (user) {
       this.autenticadoEmitter.emit(user);
     }
     return JSON.parse(user);
@@ -57,5 +63,15 @@ export class UserService {
 
   clear() {
     localStorage.removeItem("currentuser")
+  }
+
+  pesquisar(obj) {
+    return this.http.post(this._url + "pesquisar", obj)
+      .pipe(map((response: any) => response))
+  }
+
+  save(ususario) {
+    return this.http.post(this._url, ususario)
+      .pipe(map((response: any) => response))
   }
 }
