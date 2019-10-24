@@ -29,15 +29,15 @@
         <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
           <i class="material-icons">search</i>Buscar</button>
         <div [hidden]="!loading" align="center" style="width: 100%">
-        </div>
         <h4>Buscando...</h4>
         <mat-spinner [diameter]="40"></mat-spinner>
       </div>
-      <div class="example-header" style="padding: 0 20px;">
+      <div class="example-header" style="padding: 0 20px;" *ngIf="lista.length > 0 && !loading" >
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
         </mat-form-field>
       </div>
+    <div *ngIf="lista.length > 0 && !loading"> 
       <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;">
         <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>

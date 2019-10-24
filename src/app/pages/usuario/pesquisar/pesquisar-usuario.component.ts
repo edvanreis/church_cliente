@@ -4,7 +4,8 @@ import { MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/m
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { UsuarioService } from '../../../service/usuario.service';
+import { UserService } from '../../../service/user.service';
+
 
 @Component({
   selector: 'app-pesquisar-usuario',
@@ -21,10 +22,12 @@ export class PesquisarUsuarioComponent implements OnInit {
   public dados = new MatTableDataSource();
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
+  public loading:boolean = false;
+  public lista = [];
   
 
   constructor(private _router: Router,
-    private _usuarioService:UsuarioService,
+    private _usuarioService:UserService,
     private _notifierService: NotifierService,
     private _dialog: MatDialog,
     private _emitirEventoService: EmitirEventoService) { }
@@ -34,6 +37,7 @@ export class PesquisarUsuarioComponent implements OnInit {
     this.columns();
     // this.getList();
     this.emiter();
+    this.builForm();
   }
 builForm(){
   this.form = new FormGroup({
