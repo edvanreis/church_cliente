@@ -37,7 +37,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   ngOnInit() {
     this._buildForm();
     this.getParams();
-    // this.carregarComboPerfis();
+    this.carregarComboPerfis();
     this.carregarComboMembro(); 
   }
 
@@ -85,7 +85,8 @@ export class CadastrarUsuarioComponent implements OnInit {
       return false;
     }
     this.setObj();
-    this._perfilService.save(this.obj).pipe(take(1)).subscribe(item => {
+    console.log(this.obj)
+    this._userService.save(this.obj).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
       this.voltar();
     }, error => {
@@ -94,7 +95,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   }
 
   setObj() {
-    this.obj.nome = this.form.controls['nome'].value;
+    this.obj.membro = this.membro
     this.obj.login = this.form.controls['login'].value;
     this.obj.perfis = this.perfis;
     if (this.id) {
@@ -104,6 +105,7 @@ export class CadastrarUsuarioComponent implements OnInit {
 
   getUsuario(id) {
     this._userService.getUser(id).pipe(take(1)).subscribe(item => {
+      console.log(item)
       this.form.controls['login'].patchValue(item.login);
       // this.perfis = item.perfis;
     }, error => {
@@ -151,6 +153,10 @@ export class CadastrarUsuarioComponent implements OnInit {
 
   onSelectionChangedPerfil($event: MatAutocompleteSelectedEvent,option) {
     this.perfilUsuario = option;
+  }
+
+  onSelectionChangedMembro($event: MatAutocompleteSelectedEvent,option) {
+    this.membro = option;
   }
 
   carregarComboMembro() {

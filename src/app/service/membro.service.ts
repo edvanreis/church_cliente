@@ -37,15 +37,16 @@ export class MembroService {
     return this.http.post(this._url, membro)
       .pipe(map((response: any) => response))
   }
-  
+
   pesquisar(membro) {
-    console.log(this._url + "pesquisar"+membro);
+    console.log(this._url + "pesquisar" + membro);
     return this.http.post(this._url + "pesquisar", membro)
       .pipe(map((response: any) => response))
   }
 
   getList() {
-    return this.http.get(this._url)
+    console.log(this._url + "lista");
+    return this.http.get(this._url + "lista")
       .pipe(map((response: any) => response))
   }
 }

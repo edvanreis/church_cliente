@@ -70,8 +70,8 @@ export class UserService {
       .pipe(map((response: any) => response))
   }
 
-  save(ususario) {
-    return this.http.post(this._url, ususario)
+  save(user) {
+    return this.http.post(this._url, user)
       .pipe(map((response: any) => response))
   }
 
