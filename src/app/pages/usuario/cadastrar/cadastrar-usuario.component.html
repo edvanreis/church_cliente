@@ -16,31 +16,41 @@
           </div>
           <div>
             <mat-form-field class="example-full-width">
-              <textarea matInput placeholder="Descrição" formControlName="descricao"></textarea>
-              <mat-error *ngIf="!form.controls.descricao.valid">Campo Obrigatório</mat-error>
+              <input matInput placeholder="senha" formControlName="senha" id="senha">
+              <mat-error *ngIf="!form.controls.senha.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
           </div>
           <div>
             <mat-form-field>
-              <mat-label>Permissões</mat-label>
-              <mat-select formControlName="permissao" id="permissao">
-                <mat-option *ngFor="let item of comboPermissao" [value]="item">
-                  {{item.nome}}
-                </mat-option>
-              </mat-select>
+              <label>Nome</label>
+              <input type="text" matInput formControlName="nome" [matAutocomplete]="auto">
             </mat-form-field>
-            <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option (onSelectionChange)="onSelectionChanged($event,option)" *ngFor="let option of comboMembro"
+                [value]="option.nome">{{option.nome}}</mat-option>
+            </mat-autocomplete>
+          </div>
+          <div>
+            <!-- <mat-form-field>
+                <label>Perfil</label>
+                <input type="text" matInput formControlName="perfil" [matAutocomplete]="auto">
+              </mat-form-field>
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option (onSelectionChange)="onSelectionChangedPerfil($event,option)" *ngFor="let option of comboPerfil"
+                  [value]="option.nome">{{option.nome}}</mat-option>
+              </mat-autocomplete> -->
+            <button mat-raised-button color="primary" type="button" (click)="adicionar()">
               <i class="material-icons">add</i>adicionar</button>
           </div>
         </form>
-        <div class="table-responsive" *ngIf="permissoes.length > 0">
+        <div class="table-responsive" *ngIf="perfis.length > 0">
           <table>
             <thead class="text-primary">
               <th>Nome</th>
               <th>Remover</th>
             </thead>
             <tbody>
-              <tr *ngFor="let item of permissoes">
+              <tr *ngFor="let item of perfis">
                 <td>{{ item.nome}}</td>
                 <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(item)"><i
                       class="material-icons">delete</i></span></td>
@@ -48,9 +58,9 @@
             </tbody>
           </table>
         </div>
+        <br />
+        <br />
         <div>
-          <br />
-          <br />
           <button mat-raised-button color="primary" type="submit" (click)="saveOrEdit()">
             <i class="material-icons">save</i>Salvar</button>
           <div fxFlex></div>

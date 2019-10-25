@@ -6,6 +6,8 @@ import { UserService } from '../../../service/user.service';
 import { PerfilService } from '../../../service/perfil.service';
 import { AlertType } from '../../../model/alert-type';
 import { take } from 'rxjs/operators';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MembroService } from '../../../service/membro.service';
 
 @Component({
   selector: 'app-cadastrar-usuario',
@@ -18,26 +20,32 @@ export class CadastrarUsuarioComponent implements OnInit {
   public id: any;
   public titulo: any;
   public obj = {} as any;
-  public comboPrtfil = [];
+  public comboPerfil = [];
+  public comboMembro = [];
   public perfis = [];
+  public membro:any;
+  public perfilUsuario:any;
 
 
   constructor(private _router: Router,
     private _notifierService: NotifierService,
     private _userService: UserService,
     private _avRoute: ActivatedRoute,
-    private _perfilService: PerfilService) { }
+    private _perfilService: PerfilService,
+    private _membroService: MembroService) { }
 
   ngOnInit() {
     this._buildForm();
     this.getParams();
-    this.carregarPermissao();
+    // this.carregarComboPerfis();
+    this.carregarComboMembro(); 
   }
 
   private _buildForm(): void {
     this.form = new FormGroup({
       'nome': new FormControl('', Validators.required),
       'login': new FormControl('', Validators.required),
+      'senha': new FormControl('', Validators.required),
       'perfil': new FormControl(''),
     });
   }
@@ -49,7 +57,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   getParams() {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
-      this.getPerfil(this.id);
+      this.getUsuario(this.id);
     }
     if (this._avRoute.snapshot.queryParamMap.get("janela")) {
       this.titulo = this._avRoute.snapshot.queryParamMap.get("janela");
@@ -94,11 +102,10 @@ export class CadastrarUsuarioComponent implements OnInit {
     }
   }
 
-  getPerfil(id) {
-    this._perfilService.getPerfil(id).pipe(take(1)).subscribe(item => {
-      this.form.controls['nome'].patchValue(item.nome);
-      this.form.controls['login'].patchValue(item.descricao);
-      this.perfis = item.perfis;
+  getUsuario(id) {
+    this._userService.getUser(id).pipe(take(1)).subscribe(item => {
+      this.form.controls['login'].patchValue(item.login);
+      // this.perfis = item.perfis;
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });
@@ -112,9 +119,9 @@ export class CadastrarUsuarioComponent implements OnInit {
     }
   }
 
-  carregarPermissao() {
+  carregarComboPerfis() {
     this._perfilService.getList().pipe(take(1)).subscribe(item => {
-      this.comboPrtfil = item;
+      this.comboPerfil = item;
       console.log(item);
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar as permissões!");
@@ -122,13 +129,37 @@ export class CadastrarUsuarioComponent implements OnInit {
   }
 
   adicionar() {
-    console.log(this.form.controls['permissao'].value);
-    this.perfis.push(this.form.controls['permissao'].value);
+    let adicionada: boolean = false;
+    this.perfis.forEach(element => {
+      if (element.id == this.perfilUsuario.id) {
+        adicionada = true;
+      }
+    });
+    if (adicionada) {
+      this._notifierService.notify(AlertType.Error, "Permissão já adicionada!");
+      return false;
+    } else {
+      this.perfis.push(this.perfilUsuario);
+      this.form.controls['perfil'].patchValue('');
+    }
   }
 
   //  remove uma linha da grid
   remover(index): void {
     this.perfis.splice(index, 1);
+  }
+
+  onSelectionChangedPerfil($event: MatAutocompleteSelectedEvent,option) {
+    this.perfilUsuario = option;
+  }
+
+  carregarComboMembro() {
+    this._membroService.getList().pipe(take(1)).subscribe(item => {
+      this.comboMembro = item;
+      console.log(item);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+    });
   }
 
 }

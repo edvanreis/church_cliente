@@ -21,15 +21,22 @@
             </mat-form-field>
           </div>
           <div>
-            <mat-form-field>
+            <!-- <mat-form-field>
               <mat-label>Permissões</mat-label>
-              <mat-select formControlName="permissao" id="permissao">
+             <-- <mat-select formControlName="permissao" id="permissao">
                 <mat-option *ngFor="let item of comboPermissao" [value]="item">
                   {{item.nome}}
                 </mat-option>
               </mat-select>
-            </mat-form-field>
-            <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
+            </mat-form-field> -->
+            <mat-form-field>
+                <mat-label>Permissões</mat-label>
+              <input type="text" matInput formControlName="permissao" [matAutocomplete]="auto" >
+            </mat-form-field>        
+            <mat-autocomplete #auto="matAutocomplete" >
+              <mat-option (onSelectionChange)="onSelectionChanged($event,option)" *ngFor="let option of comboPermissao" [value]="option.nome" >{{option.nome}}</mat-option>
+            </mat-autocomplete>
+            <button mat-raised-button color="primary" type="button" (click)="adicionar()">
               <i class="material-icons">add</i>adicionar</button>
           </div>
         </form>
@@ -48,9 +55,9 @@
             </tbody>
           </table>
         </div>
+        <br />
+        <br />
         <div>
-          <br />
-          <br />
           <button mat-raised-button color="primary" type="submit" (click)="saveOrEdit()">
             <i class="material-icons">save</i>Salvar</button>
           <div fxFlex></div>

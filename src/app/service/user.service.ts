@@ -74,4 +74,9 @@ export class UserService {
     return this.http.post(this._url, ususario)
       .pipe(map((response: any) => response))
   }
+
+  getUser(id) {
+    return this.http.get(this._url+id+"/getUser")
+      .pipe(map((response: any) => response))
+  }
 }

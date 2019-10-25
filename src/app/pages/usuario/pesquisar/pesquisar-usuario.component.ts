@@ -67,15 +67,15 @@ builForm(){
 
 
   cadastrar() {
-    this._router.navigate(['/auth/permissoes/cadastrar'], {
+    this._router.navigate(['/auth/usuario/cadastrar'], {
       queryParams: {
-        janela: 'Nova',
+        janela: 'Novo',
       },
       skipLocationChange: true
     });
   }
   editar(id) {
-    this._router.navigate(['/auth/permissoes/cadastrar'], {
+    this._router.navigate(['/auth/usuario/cadastrar'], {
       queryParams: {
         janela: 'Editar',
         id: id

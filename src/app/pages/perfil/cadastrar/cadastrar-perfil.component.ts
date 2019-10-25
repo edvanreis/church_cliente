@@ -6,6 +6,7 @@ import { PerfilService } from '../../../service/perfil.service';
 import { AlertType } from '../../../model/alert-type';
 import { take } from 'rxjs/operators';
 import { PermissoesService } from '../../../service/permissoes.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'app-cadastrar-perfil',
@@ -20,7 +21,7 @@ export class CadastrarPerfilComponent implements OnInit {
   public obj = {} as any;
   public comboPermissao = [];
   public permissoes = [];
-  public permissoesGrid = [];
+  public permissao: any;
 
   constructor(private _router: Router,
     private _notifierService: NotifierService,
@@ -122,13 +123,28 @@ export class CadastrarPerfilComponent implements OnInit {
   }
 
   adicionar() {
-    console.log(this.form.controls['permissao'].value);
-    this.permissoes.push(this.form.controls['permissao'].value);
+    let adicionada: boolean = false;
+    this.permissoes.forEach(element => {
+      if (element.id == this.permissao.id) {
+        adicionada = true;
+      }
+    });
+    if (adicionada) {
+      this._notifierService.notify(AlertType.Error, "Permissão já adicionada!");
+      return false;
+    } else {
+      this.permissoes.push(this.permissao);
+      this.form.controls['permissao'].patchValue('');
+    }
   }
 
   //  remove uma linha da grid
   remover(index): void {
     this.permissoes.splice(index, 1);
+  }
+
+  onSelectionChanged($event: MatAutocompleteSelectedEvent, option) {
+    this.permissao = option;
   }
 
 }

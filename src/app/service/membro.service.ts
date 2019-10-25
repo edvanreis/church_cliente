@@ -44,4 +44,8 @@ export class MembroService {
       .pipe(map((response: any) => response))
   }
 
+  getList() {
+    return this.http.get(this._url)
+      .pipe(map((response: any) => response))
+  }
 }
