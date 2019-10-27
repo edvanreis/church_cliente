@@ -97,6 +97,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   setObj() {
     this.obj.membro = this.membro
     this.obj.login = this.form.controls['login'].value;
+    this.obj.senha = this.form.controls['senha'].value;
     this.obj.perfis = this.perfis;
     if (this.id) {
       this.obj.id = this.id;
@@ -107,7 +108,7 @@ export class CadastrarUsuarioComponent implements OnInit {
     this._userService.getUser(id).pipe(take(1)).subscribe(item => {
       console.log(item)
       this.form.controls['login'].patchValue(item.login);
-      // this.perfis = item.perfis;
+      this.perfis = item.perfis;
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });
@@ -124,7 +125,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   carregarComboPerfis() {
     this._perfilService.getList().pipe(take(1)).subscribe(item => {
       this.comboPerfil = item;
-      console.log(item);
+      // console.log(item);
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar as permissões!");
     });
