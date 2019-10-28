@@ -108,9 +108,21 @@ export class CadastrarUsuarioComponent implements OnInit {
     this._userService.getUser(id).pipe(take(1)).subscribe(item => {
       console.log(item)
       this.form.controls['login'].patchValue(item.login);
+      this.form.controls['senha'].patchValue(item.login);
+      this.getNome(item.idMembro);
       this.perfis = item.perfis;
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  getNome(id){
+    this.comboMembro.forEach(element => {
+      console.log(element);
+        if(element.id = id){
+          console.log(element);
+          this.form.controls['nome'].patchValue(element.nome);
+        }
     });
   }
 

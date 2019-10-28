@@ -58,8 +58,8 @@ builForm(){
 
   columns() {
     this.columnNames = [
-      { id: 'login', value: 'login' },
-      { id: 'Nome', value: 'nome' },
+      { id: 'login', value: 'Login' },
+      { id: 'nome', value: 'Nome' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
