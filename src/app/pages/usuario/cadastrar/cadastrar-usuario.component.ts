@@ -19,6 +19,9 @@ export class CadastrarUsuarioComponent implements OnInit {
   public form: FormGroup;
   public id: any;
   public titulo: any;
+  public nome: string;
+  public login: string;
+  public cpf: string;
   public obj = {} as any;
   public comboPerfil = [];
   public comboMembro = [];
@@ -46,12 +49,20 @@ export class CadastrarUsuarioComponent implements OnInit {
       'nome': new FormControl('', Validators.required),
       'login': new FormControl('', Validators.required),
       'senha': new FormControl('', Validators.required),
+      'cpf': new FormControl('', Validators.required),
       'perfil': new FormControl(''),
     });
   }
 
   voltar() {
-    this._router.navigate(['/auth/usuario/pesquisar']);
+    this._router.navigate(['/auth/usuario/pesquisar'],{
+      queryParams: {
+        login: this.login,
+        nome: this.nome,
+        cpf: this.cpf,
+      },
+      skipLocationChange: true
+    });
   }
 
   getParams() {
@@ -61,6 +72,15 @@ export class CadastrarUsuarioComponent implements OnInit {
     }
     if (this._avRoute.snapshot.queryParamMap.get("janela")) {
       this.titulo = this._avRoute.snapshot.queryParamMap.get("janela");
+    }
+    if (this._avRoute.snapshot.queryParamMap.get("login")) {
+      this.login = this._avRoute.snapshot.queryParamMap.get("login");
+    }
+    if (this._avRoute.snapshot.queryParamMap.get("nome")) {
+      this.nome = this._avRoute.snapshot.queryParamMap.get("nome");
+    }
+    if (this._avRoute.snapshot.queryParamMap.get("cpf")) {
+      this.cpf = this._avRoute.snapshot.queryParamMap.get("cpf");
     }
   }
 
@@ -106,23 +126,14 @@ export class CadastrarUsuarioComponent implements OnInit {
 
   getUsuario(id) {
     this._userService.getUser(id).pipe(take(1)).subscribe(item => {
-      console.log(item)
+      // console.log(item)
       this.form.controls['login'].patchValue(item.login);
       this.form.controls['senha'].patchValue(item.login);
-      this.getNome(item.idMembro);
+      this.form.controls['nome'].patchValue(item.nome);
+      this.form.controls['cpf'].patchValue(item.cpf);
       this.perfis = item.perfis;
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
-    });
-  }
-
-  getNome(id){
-    this.comboMembro.forEach(element => {
-      console.log(element);
-        if(element.id = id){
-          console.log(element);
-          this.form.controls['nome'].patchValue(element.nome);
-        }
     });
   }
 
@@ -168,14 +179,20 @@ export class CadastrarUsuarioComponent implements OnInit {
     this.perfilUsuario = option;
   }
 
-  onSelectionChangedMembro($event: MatAutocompleteSelectedEvent,option) {
+  onSelectionChangedMembroNome($event: MatAutocompleteSelectedEvent,option) {
     this.membro = option;
+    this.form.controls['cpf'].patchValue(option.cpf);
+  }
+
+  onSelectionChangedMembroCpf($event: MatAutocompleteSelectedEvent,option) {
+    this.membro = option;
+    this.form.controls['nome'].patchValue(option.nome);
   }
 
   carregarComboMembro() {
     this._membroService.getList().pipe(take(1)).subscribe(item => {
       this.comboMembro = item;
-      console.log(item);
+      // console.log(item);
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
     });

@@ -13,13 +13,16 @@
         <div>
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Nome" formControlName="nome" id="nome">
-            <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
         <div>
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Login" formControlName="login" id="login">
-            <mat-error *ngIf="!form.controls.login.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="CPF" formControlName="cpf" id="cpf">
           </mat-form-field>
         </div>
       </form>

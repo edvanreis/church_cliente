@@ -8,26 +8,32 @@
     <div class="cdk-container">
       <div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100">
         <form form [formGroup]="form">
-          <div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
               <input matInput placeholder="login" formControlName="login" id="login">
               <mat-error *ngIf="!form.controls.login.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
-          </div>
-          <div>
             <mat-form-field class="example-full-width">
               <input matInput placeholder="senha" formControlName="senha" id="senha"  type="password">
               <mat-error *ngIf="!form.controls.senha.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
           </div>
-          <div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
               <label>Nome</label>
               <input type="text" matInput formControlName="nome" [matAutocomplete]="auto">
             </mat-form-field>
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option (onSelectionChange)="onSelectionChangedMembro($event,option)" *ngFor="let option of comboMembro"
+              <mat-option (onSelectionChange)="onSelectionChangedMembroNome($event,option)" *ngFor="let option of comboMembro"
                 [value]="option.nome">{{option.nome}}</mat-option>
+            </mat-autocomplete>
+            <mat-form-field>
+              <label>CPF</label>
+              <input type="text" matInput formControlName="cpf" [matAutocomplete]="au">
+            </mat-form-field>
+            <mat-autocomplete #au="matAutocomplete">
+              <mat-option (onSelectionChange)="onSelectionChangedMembroCpf($event,option)" *ngFor="let option of comboMembro"
+                [value]="option.cpf">{{option.cpf}}</mat-option>
             </mat-autocomplete>
           </div>
           <div>

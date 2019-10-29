@@ -77,6 +77,10 @@ export class CadastrarPerfilComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Preencha todos os campos obrigatórios!");
       return false;
     }
+    if(this.nameValid(this.form.controls['nome'].value)){
+      this._notifierService.notify(AlertType.Error, "O nome não deve possuir espaços!");
+      return false;
+    }
     this.setObj();
     this._perfilService.save(this.obj).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
@@ -145,6 +149,14 @@ export class CadastrarPerfilComponent implements OnInit {
 
   onSelectionChanged($event: MatAutocompleteSelectedEvent, option) {
     this.permissao = option;
+  }
+
+  nameValid(name): boolean {
+    if (name.indexOf(' ') != -1) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
 }
