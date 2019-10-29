@@ -10,20 +10,26 @@
           <i class="material-icons">add</i>Novo</button>
       </div>
       <form form [formGroup]="form">
-        <div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Nome" formControlName="nome" id="nome">
           </mat-form-field>
-        </div>
-        <div>
           <mat-form-field class="example-full-width">
             <input matInput placeholder="Login" formControlName="login" id="login">
           </mat-form-field>
         </div>
-        <div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" > 
           <mat-form-field class="example-full-width">
             <input matInput placeholder="CPF" formControlName="cpf" id="cpf">
           </mat-form-field>
+        <mat-form-field>
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status" id="status"> 
+            <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
+              {{item.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         </div>
       </form>
       <br />

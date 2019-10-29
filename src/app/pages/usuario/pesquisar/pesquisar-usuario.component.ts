@@ -9,6 +9,13 @@ import { AlertType } from '../../../model/alert-type';
 import { take } from 'rxjs/operators';
 
 
+const ELEMENT_DATA = [
+  { codigo: 'A', value: 'Ativo' },
+  { codigo: 'I', value: 'Inativo' },
+  { codigo: null, value: 'Todas' },
+];
+
+
 @Component({
   selector: 'app-pesquisar-usuario',
   templateUrl: './pesquisar-usuario.component.html',
@@ -29,6 +36,7 @@ export class PesquisarUsuarioComponent implements OnInit {
   public nome: string;
   public login: string;
   public cpf: string;
+  public comboStatus = ELEMENT_DATA;
 
 
   constructor(private _router: Router,
@@ -44,12 +52,14 @@ export class PesquisarUsuarioComponent implements OnInit {
     this.emiter();
     this.builForm();
     this.getParams();
+
   }
   builForm() {
     this.form = new FormGroup({
       'nome': new FormControl(''),
       'login': new FormControl(''),
       'cpf': new FormControl(''),
+      'status': new FormControl('')
     });
   }
 
@@ -67,6 +77,12 @@ export class PesquisarUsuarioComponent implements OnInit {
     }
     if (this._avRoute.snapshot.queryParamMap.get("cpf")) {
       let cpf = this._avRoute.snapshot.queryParamMap.get("cpf");
+      this.form.controls['cpf'].patchValue(cpf);
+      editar = true;
+    }
+    if (this._avRoute.snapshot.queryParamMap.get("status")) {
+      let status = this._avRoute.snapshot.queryParamMap.get("status");
+      this.form.controls['status'].patchValue(status);
       editar = true;
     }
     if (editar) {
@@ -87,6 +103,7 @@ export class PesquisarUsuarioComponent implements OnInit {
       { id: 'login', value: 'Login' },
       { id: 'nome', value: 'Nome' },
       { id: 'cpf', value: 'CPF' },
+      { id: 'status', value: 'Status' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
@@ -108,7 +125,8 @@ export class PesquisarUsuarioComponent implements OnInit {
         id: id,
         login: this.form.controls['login'].value,
         nome: this.form.controls['nome'].value,
-        cpf: this.form.controls['cpf'].value
+        cpf: this.form.controls['cpf'].value,
+        status: this.form.controls['status'].value
       },
       skipLocationChange: true
     });
@@ -123,7 +141,7 @@ export class PesquisarUsuarioComponent implements OnInit {
       this.dados.paginator = this.paginator;
       this.loading = false;
     }, error => {
-      console.log(error);
+      // console.log(error);
       this.loading = false;
       this._notifierService.notify(AlertType.Error, error.message);
 
@@ -134,7 +152,8 @@ export class PesquisarUsuarioComponent implements OnInit {
     return {
       nome: this.form.controls['nome'].value,
       login: this.form.controls['login'].value,
-      cpf: this.form.controls['cpf'].value
+      cpf: this.form.controls['cpf'].value,
+      status: this.form.controls['status'].value
     }
   }
 
@@ -157,6 +176,19 @@ export class PesquisarUsuarioComponent implements OnInit {
     });
   }
 
+  alterarSenha(id) {
+    this._router.navigate(['/auth/usuario/senha'], {
+      queryParams: {
+        janela: 'Editar',
+        id: id,
+        login: this.form.controls['login'].value,
+        nome: this.form.controls['nome'].value,
+        cpf: this.form.controls['cpf'].value,
+        status: this.form.controls['status'].value
+      },
+      skipLocationChange: true
+    });
+  }
 
 
 }

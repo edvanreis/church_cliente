@@ -9,6 +9,12 @@ import { take } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { MembroService } from '../../../service/membro.service';
 
+const ELEMENT_DATA = [
+  { codigo: 'A', value: 'Ativo' },
+  { codigo: 'I', value: 'Inativo' },
+  { codigo: null, value: 'Todas' },
+];
+
 @Component({
   selector: 'app-cadastrar-usuario',
   templateUrl: './cadastrar-usuario.component.html',
@@ -28,6 +34,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   public perfis = [];
   public membro:any;
   public perfilUsuario:any;
+  public status:any;
 
 
   constructor(private _router: Router,
@@ -48,7 +55,8 @@ export class CadastrarUsuarioComponent implements OnInit {
     this.form = new FormGroup({
       'nome': new FormControl('', Validators.required),
       'login': new FormControl('', Validators.required),
-      'senha': new FormControl('', Validators.required),
+      'senha': new FormControl(''),
+      'status': new FormControl(''),
       'cpf': new FormControl('', Validators.required),
       'perfil': new FormControl(''),
     });
@@ -60,6 +68,7 @@ export class CadastrarUsuarioComponent implements OnInit {
         login: this.login,
         nome: this.nome,
         cpf: this.cpf,
+        status:this.status
       },
       skipLocationChange: true
     });
@@ -82,18 +91,22 @@ export class CadastrarUsuarioComponent implements OnInit {
     if (this._avRoute.snapshot.queryParamMap.get("cpf")) {
       this.cpf = this._avRoute.snapshot.queryParamMap.get("cpf");
     }
+    if (this._avRoute.snapshot.queryParamMap.get("status")) {
+      this.status = this._avRoute.snapshot.queryParamMap.get("status");
+    }
   }
 
 
   edit() {
-    if (!this.form.valid) {
-      this._notifierService.notify(AlertType.Error, "Preencha todos os campos obrigatórios!");
-      return false;
-    }
+    // if (!this.form.valid) {
+    //   this._notifierService.notify(AlertType.Error, "Preencha todos os campos obrigatórios!");
+    //   return false;
+    // }
     this.setObj();
-    this._perfilService.update(this.obj).pipe(take(1)).subscribe(item => {
+    console.log(this.obj)
+    this._userService.update(this.obj).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
-      this.voltar();
+      // this.voltar();
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
     });
@@ -119,6 +132,7 @@ export class CadastrarUsuarioComponent implements OnInit {
     this.obj.login = this.form.controls['login'].value;
     this.obj.senha = this.form.controls['senha'].value;
     this.obj.perfis = this.perfis;
+    this.obj.status = this.form.controls['status'].value;
     if (this.id) {
       this.obj.id = this.id;
     }
@@ -128,9 +142,9 @@ export class CadastrarUsuarioComponent implements OnInit {
     this._userService.getUser(id).pipe(take(1)).subscribe(item => {
       // console.log(item)
       this.form.controls['login'].patchValue(item.login);
-      this.form.controls['senha'].patchValue(item.login);
       this.form.controls['nome'].patchValue(item.nome);
       this.form.controls['cpf'].patchValue(item.cpf);
+      this.form.controls['status'].patchValue(item.status);
       this.perfis = item.perfis;
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);

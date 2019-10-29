@@ -79,4 +79,10 @@ export class UserService {
     return this.http.get(this._url+id+"/getUser")
       .pipe(map((response: any) => response))
   }
+
+  update(user) {
+    return this.http.put(this._url, user)
+      .pipe(map((response: any) => response))
+  }
+  
 }

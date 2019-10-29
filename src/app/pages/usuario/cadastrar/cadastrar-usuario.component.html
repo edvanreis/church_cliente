@@ -13,9 +13,17 @@
               <input matInput placeholder="login" formControlName="login" id="login">
               <mat-error *ngIf="!form.controls.login.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="example-full-width" [hidden]="titulo=='Editar'">
               <input matInput placeholder="senha" formControlName="senha" id="senha"  type="password">
               <mat-error *ngIf="!form.controls.senha.valid">Campo Obrigatório</mat-error>
+            </mat-form-field>
+            <mat-form-field [hidden]="titulo!='Editar'">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status" id="status"> 
+                <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
+                  {{item.value}}
+                </mat-option>
+              </mat-select>
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
