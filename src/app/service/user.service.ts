@@ -39,11 +39,10 @@ export class UserService {
     if (user) {
       const permissoes = this.permissions();
       if (permissoes) {
-        permissoes.forEach(map => {
-          if (map == permissao) {
-            temPermissao = true;
-          }
-        });
+        let tem = permissoes.filter((item: any) => item.authority == permissao);
+        if (tem.length) {
+          temPermissao = true;
+        }
       }
     }
 
