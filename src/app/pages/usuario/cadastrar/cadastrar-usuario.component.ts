@@ -5,9 +5,10 @@ import { NotifierService } from 'angular-notifier';
 import { UserService } from '../../../service/user.service';
 import { PerfilService } from '../../../service/perfil.service';
 import { AlertType } from '../../../model/alert-type';
-import { take } from 'rxjs/operators';
+import { take, startWith, map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { MembroService } from '../../../service/membro.service';
+import { Observable } from 'rxjs';
 
 const ELEMENT_DATA = [
   { codigo: 'A', value: 'Ativo' },
@@ -35,6 +36,11 @@ export class CadastrarUsuarioComponent implements OnInit {
   public membro:any;
   public perfilUsuario:any;
   public status:any;
+  public filteredMembro: Observable<string[]>;
+  public filteredPerfil: Observable<string[]>;
+  public myControlMembro = new FormControl();
+  public myControlPerfil = new FormControl();
+  public ngPerfil;
 
 
   constructor(private _router: Router,
@@ -55,10 +61,8 @@ export class CadastrarUsuarioComponent implements OnInit {
     this.form = new FormGroup({
       'nome': new FormControl('', Validators.required),
       'login': new FormControl('', Validators.required),
-      'senha': new FormControl(''),
       'status': new FormControl(''),
-      'cpf': new FormControl('', Validators.required),
-      'perfil': new FormControl(''),
+      'cpf': new FormControl('', Validators.required)
     });
   }
 
@@ -130,7 +134,6 @@ export class CadastrarUsuarioComponent implements OnInit {
   setObj() {
     this.obj.membro = this.membro
     this.obj.login = this.form.controls['login'].value;
-    this.obj.senha = this.form.controls['senha'].value;
     this.obj.perfis = this.perfis;
     this.obj.status = this.form.controls['status'].value;
     if (this.id) {
@@ -162,7 +165,11 @@ export class CadastrarUsuarioComponent implements OnInit {
   carregarComboPerfis() {
     this._perfilService.getList().pipe(take(1)).subscribe(item => {
       this.comboPerfil = item;
-      // console.log(item);
+      this.filteredPerfil = this.myControlPerfil.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value, this.comboPerfil))
+      );
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar as permissões!");
     });
@@ -180,7 +187,7 @@ export class CadastrarUsuarioComponent implements OnInit {
       return false;
     } else {
       this.perfis.push(this.perfilUsuario);
-      this.form.controls['perfil'].patchValue('');
+      this.ngPerfil='';
     }
   }
 
@@ -206,10 +213,20 @@ export class CadastrarUsuarioComponent implements OnInit {
   carregarComboMembro() {
     this._membroService.getList().pipe(take(1)).subscribe(item => {
       this.comboMembro = item;
-      // console.log(item);
+      this.filteredMembro = this.myControlMembro.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value, this.comboMembro))
+        );
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
     });
   }
+
+  private _filter(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
 
 }

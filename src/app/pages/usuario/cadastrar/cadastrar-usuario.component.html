@@ -15,31 +15,28 @@
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field>
-              <label>Nome</label>
-              <input type="text" matInput formControlName="nome" [matAutocomplete]="auto">
+            <mat-form-field class="example-full-width">
+              <input type="text" placeholder="Membro" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nome" 
+                (onSelectionChange)="onSelectionChangedMembroNome($event,option)">
+                  {{option.nome}}
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option (onSelectionChange)="onSelectionChangedMembroNome($event,option)"
-                *ngFor="let option of comboMembro" [value]="option.nome">{{option.nome}}</mat-option>
-            </mat-autocomplete>
-            <mat-form-field>
-              <label>CPF</label>
-              <input type="text" matInput formControlName="cpf" [matAutocomplete]="au">
-            </mat-form-field>
-            <mat-autocomplete #au="matAutocomplete">
-              <mat-option (onSelectionChange)="onSelectionChangedMembroCpf($event,option)"
-                *ngFor="let option of comboMembro" [value]="option.cpf">{{option.cpf}}</mat-option>
-            </mat-autocomplete>
-          </div>
-          <div [hidden]="titulo=='Editar'">
-            <mat-form-field class="example-full-width" [hidden]="titulo=='Editar'">
-              <input matInput placeholder="senha" formControlName="senha" id="senha" type="password">
-              <mat-error *ngIf="!form.controls.senha.valid">Campo Obrigatório</mat-error>
+
+            <mat-form-field class="example-full-width">
+              <input type="text" placeholder="CPF" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="aut">
+              <mat-autocomplete #aut="matAutocomplete">
+                <mat-option *ngFor="let option of filteredMembro | async" [value]="option.cpf" 
+                (onSelectionChange)="onSelectionChangedMembroCpf($event,option)">
+                  {{option.cpf}}
+                </mat-option>
+              </mat-autocomplete>
             </mat-form-field>
           </div>
           <div [hidden]="titulo=='Novo'">
-            <mat-form-field [hidden]="titulo!='Editar'">
+            <mat-form-field>
               <mat-label>Status</mat-label>
               <mat-select formControlName="status" id="status">
                 <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
@@ -49,14 +46,15 @@
             </mat-form-field>
           </div>
           <div>
-            <mat-form-field>
-              <label>Perfil</label>
-              <input type="text" matInput formControlName="perfil" [matAutocomplete]="aut">
-            </mat-form-field>
-            <mat-autocomplete #aut="matAutocomplete">
-              <mat-option (onSelectionChange)="onSelectionChangedPerfil($event,option)"
-                *ngFor="let option of comboPerfil" [value]="option.nome">{{option.nome}}</mat-option>
-            </mat-autocomplete>
+            <mat-form-field class="example-full-width">
+              <input type="text" [(ngModel)]="ngPerfil"  placeholder="Perfil" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="at">
+              <mat-autocomplete #at="matAutocomplete">
+                <mat-option *ngFor="let option of filteredPerfil | async" [value]="option.nome" 
+                (onSelectionChange)="onSelectionChangedPerfil($event,option)">
+                  {{option.nome}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>   
             <button mat-raised-button color="primary" type="button" (click)="adicionar()">
               <i class="material-icons">add</i>adicionar</button>
           </div>

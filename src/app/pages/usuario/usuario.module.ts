@@ -8,13 +8,11 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatProgressSpinnerModule, MatSelectModule, MatOption, MatOptionModule, MatAutocompleteModule } from '@angular/material';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
-import { AlterarSenhaComponent } from './senha/alterar-senha.component';
 
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarUsuarioComponent , data: { animation: 'buttons' }},
   { path: 'cadastrar', component:  CadastrarUsuarioComponent , data: { animation: 'buttons' }},
-  { path: 'senha', component:  AlterarSenhaComponent , data: { animation: 'buttons' }},
 ];
 
 @NgModule({
@@ -40,8 +38,7 @@ const routes: Routes = [
 ],
   declarations: [
     PesquisarUsuarioComponent,
-    CadastrarUsuarioComponent,
-    AlterarSenhaComponent
+    CadastrarUsuarioComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }

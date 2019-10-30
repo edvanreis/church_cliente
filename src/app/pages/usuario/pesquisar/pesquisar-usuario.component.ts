@@ -49,7 +49,6 @@ export class PesquisarUsuarioComponent implements OnInit {
 
   ngOnInit() {
     this.columns();
-    this.emiter();
     this.builForm();
     this.getParams();
 
@@ -152,29 +151,23 @@ export class PesquisarUsuarioComponent implements OnInit {
     return {
       nome: this.form.controls['nome'].value,
       login: this.form.controls['login'].value,
-      cpf: this.form.controls['cpf'].value,
+      cpf: this.retirarFormatacaoCPF(this.form.controls['cpf'].value),
       status: this.form.controls['status'].value
     }
   }
 
-  // remover(id) {
-  //   const dialogRef = this._dialog.open(DialogRemoverPermissaoComponent, {
-  //     width: '600px',
-  //     data: {
-  //       id: id,
-  //       tela:'permissoes',
-  //       panelClass: 'components-container-gt-xs'
-  //     }
-  //   });
-  // }
-
-  emiter(): void {
-    this._emitirEventoService.mensagem.subscribe(obj => {
-      if (obj.data == 'remove') {
-        // this.getList();
-      }
-    });
+  retirarFormatacaoCPF(cpf): string {
+    if (cpf) {
+      cpf = cpf.replace(".", "");
+      cpf = cpf.replace(".", "");
+      cpf = cpf.replace("-", "");
+      console.log(cpf)
+      return cpf;
+    } else {
+      return null
+    }
   }
+
 
   alterarSenha(id) {
     this._router.navigate(['/auth/usuario/senha'], {
