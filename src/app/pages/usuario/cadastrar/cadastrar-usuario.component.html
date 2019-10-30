@@ -13,18 +13,6 @@
               <input matInput placeholder="login" formControlName="login" id="login">
               <mat-error *ngIf="!form.controls.login.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
-            <mat-form-field class="example-full-width" [hidden]="titulo=='Editar'">
-              <input matInput placeholder="senha" formControlName="senha" id="senha"  type="password">
-              <mat-error *ngIf="!form.controls.senha.valid">Campo Obrigatório</mat-error>
-            </mat-form-field>
-            <mat-form-field [hidden]="titulo!='Editar'">
-              <mat-label>Status</mat-label>
-              <mat-select formControlName="status" id="status"> 
-                <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
-                  {{item.value}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
@@ -32,27 +20,43 @@
               <input type="text" matInput formControlName="nome" [matAutocomplete]="auto">
             </mat-form-field>
             <mat-autocomplete #auto="matAutocomplete">
-              <mat-option (onSelectionChange)="onSelectionChangedMembroNome($event,option)" *ngFor="let option of comboMembro"
-                [value]="option.nome">{{option.nome}}</mat-option>
+              <mat-option (onSelectionChange)="onSelectionChangedMembroNome($event,option)"
+                *ngFor="let option of comboMembro" [value]="option.nome">{{option.nome}}</mat-option>
             </mat-autocomplete>
             <mat-form-field>
               <label>CPF</label>
               <input type="text" matInput formControlName="cpf" [matAutocomplete]="au">
             </mat-form-field>
             <mat-autocomplete #au="matAutocomplete">
-              <mat-option (onSelectionChange)="onSelectionChangedMembroCpf($event,option)" *ngFor="let option of comboMembro"
-                [value]="option.cpf">{{option.cpf}}</mat-option>
+              <mat-option (onSelectionChange)="onSelectionChangedMembroCpf($event,option)"
+                *ngFor="let option of comboMembro" [value]="option.cpf">{{option.cpf}}</mat-option>
             </mat-autocomplete>
+          </div>
+          <div [hidden]="titulo=='Editar'">
+            <mat-form-field class="example-full-width" [hidden]="titulo=='Editar'">
+              <input matInput placeholder="senha" formControlName="senha" id="senha" type="password">
+              <mat-error *ngIf="!form.controls.senha.valid">Campo Obrigatório</mat-error>
+            </mat-form-field>
+          </div>
+          <div [hidden]="titulo=='Novo'">
+            <mat-form-field [hidden]="titulo!='Editar'">
+              <mat-label>Status</mat-label>
+              <mat-select formControlName="status" id="status">
+                <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
+                  {{item.value}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
           <div>
             <mat-form-field>
-                <label>Perfil</label>
-                <input type="text" matInput formControlName="perfil" [matAutocomplete]="aut">
-              </mat-form-field>
-              <mat-autocomplete #aut="matAutocomplete">
-                <mat-option (onSelectionChange)="onSelectionChangedPerfil($event,option)" *ngFor="let option of comboPerfil"
-                  [value]="option.nome">{{option.nome}}</mat-option>
-              </mat-autocomplete>
+              <label>Perfil</label>
+              <input type="text" matInput formControlName="perfil" [matAutocomplete]="aut">
+            </mat-form-field>
+            <mat-autocomplete #aut="matAutocomplete">
+              <mat-option (onSelectionChange)="onSelectionChangedPerfil($event,option)"
+                *ngFor="let option of comboPerfil" [value]="option.nome">{{option.nome}}</mat-option>
+            </mat-autocomplete>
             <button mat-raised-button color="primary" type="button" (click)="adicionar()">
               <i class="material-icons">add</i>adicionar</button>
           </div>
