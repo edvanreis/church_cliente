@@ -1,10 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { SenhaComponent } from './senha.component';
 
 @NgModule({
   imports: [
     CommonModule
   ],
-  declarations: []
+  declarations: [
+    SenhaComponent
+  ]
 })
-export class AlterarSenhaModule { }
+export class SenhaModule { }

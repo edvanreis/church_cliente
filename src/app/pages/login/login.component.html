@@ -24,8 +24,12 @@ background-size: cover; ">
                         <mat-error *ngIf="!formlogin.controls.password.valid">Campo Obrigatório</mat-error>
                         <!-- <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid" (click)="login()">log in</button> -->
                         <button mat-raised-button color="primary" type="submit" (click)="login()"><i class="material-icons">person</i>Login</button>
+                        <br />
+                        <div class="senha">
+                            <span  (click)="esqueceuSenha()">Esqueceu a senha?</span>
+                        </div>
                     </form>
-                </mat-card-content>
+                </mat-card-content>  
             </mat-card>
         </div>
     </div>

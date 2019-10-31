@@ -6,6 +6,7 @@ import { AuthGuardService } from '../service/auth-guard.service';
 export const appRoutes: Routes = [{
         path: '', component: AuthComponent, children: [
         { path: 'dashboard', component: DashboardCrmComponent },
+        { path: 'senha', loadChildren: '../pages/senha/senha.module#SenhaModule' },
         { path: 'membro', loadChildren: '../pages/membro/membro.module#MembroModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
         { path: 'usuario', loadChildren: '../pages/usuario/usuario.module#UsuarioModule', data: { role: 'master' }, canActivate: [AuthGuardService] },
         { path: 'perfil', loadChildren: '../pages/perfil/perfil.module#PerfilModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},

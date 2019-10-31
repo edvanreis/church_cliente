@@ -35,3 +35,16 @@ $prefix: 'sigin';
   margin-left: 10px;
   color: #00AAAA;
 }
+
+.senha{
+  width: 100%; 
+  text-align: left;
+  font-size: 12px;
+  
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.senha:hover{
+  text-decoration: underline;
+}

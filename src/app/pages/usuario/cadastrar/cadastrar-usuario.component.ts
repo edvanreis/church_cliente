@@ -165,6 +165,11 @@ export class CadastrarUsuarioComponent implements OnInit {
   carregarComboPerfis() {
     this._perfilService.getList().pipe(take(1)).subscribe(item => {
       this.comboPerfil = item;
+      this.comboPerfil.forEach(element => {
+        if(element.nome=='basico'){
+          this.perfis.push(element);
+        }
+      });
       this.filteredPerfil = this.myControlPerfil.valueChanges
       .pipe(
         startWith(''),

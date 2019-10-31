@@ -21,7 +21,8 @@ export class LoginComponent implements OnInit {
   returnUrl: string = '';
 
   constructor(private route: ActivatedRoute, private router: Router, private _compiler: Compiler,
-    private _auth: AuthService, private _tokenService: TokenService, private _userData: UserService) { }
+    private _auth: AuthService, private _tokenService: TokenService, private _userData: UserService,
+    private _router: Router) { }
 
   ngOnInit() {
     this._buildForm();
@@ -68,6 +69,10 @@ export class LoginComponent implements OnInit {
       'login': new FormControl('', Validators.required),
       'password': new FormControl('', Validators.required),
     });
+  }
+
+  esqueceuSenha() {
+    this._router.navigate(['/auth/senha/senha']);
   }
 
 }
