@@ -3,25 +3,14 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
+import { SenhaComponent } from './pages/senha/senha.component';
 
 
 
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'registrar-ponto',
-  //   pathMatch: 'full',
-  // },
-  // {
-  //   path: '',
-  //   component: AdminLayoutComponent,
-  //   children: [
-  //       {
-  //     path: '',
-  //     loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
-  // }]},
   { path: 'cdk-login', component: LoginComponent},
+  { path: 'senha', component: SenhaComponent},
   { path: '**', redirectTo: '' }
 ];
 

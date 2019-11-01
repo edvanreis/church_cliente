@@ -13,7 +13,7 @@ import { MembroModule } from './pages/membro/membro.module';
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { InterceptorService } from './service/interceptor.service';
 import { PerfilModule } from './pages/perfil/perfil.module';
-import { SenhaComponent } from './pages/senha/senha.component';
+import { SenhaModule } from './pages/senha/senha.module';
 
 
 
@@ -70,8 +70,7 @@ import { SenhaComponent } from './pages/senha/senha.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    SenhaComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +83,8 @@ import { SenhaComponent } from './pages/senha/senha.component';
     LoginModule,
     PermissoesModule,
     MatDialogModule,
-    PerfilModule
+    PerfilModule,
+    SenhaModule
     
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],

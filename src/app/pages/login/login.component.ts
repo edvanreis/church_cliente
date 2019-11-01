@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
   }
 
   esqueceuSenha() {
-    this._router.navigate(['/auth/senha/senha']);
+    this._router.navigate(['/senha/senha']);
   }
 
 }
