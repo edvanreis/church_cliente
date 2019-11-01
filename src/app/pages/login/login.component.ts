@@ -71,8 +71,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  esqueceuSenha() {
-    this._router.navigate(['/senha/senha']);
+  alterarSenha() {
+    this._router.navigate(['/senha/alterar-senha']);
   }
 
 }

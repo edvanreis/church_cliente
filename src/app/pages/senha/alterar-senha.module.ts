@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SenhaComponent } from './senha.component';
+import { AlterarSenhaComponent } from './alterar-senha.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule, MatInputModule, MatToolbarModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
-  {path: 'senha', component: SenhaComponent},
+  {path: 'alterar-senha', component: AlterarSenhaComponent},
 ];
 @NgModule({
   imports: [
@@ -21,7 +21,7 @@ const routes: Routes = [
       RouterModule.forChild(routes)
   ],
   declarations: [   
-      SenhaComponent,
+      AlterarSenhaComponent,
   ],
   exports: [
       RouterModule
@@ -29,4 +29,4 @@ const routes: Routes = [
   providers: [
   ]
 })
-export class SenhaModule { }
+export class AlterarSenhaModule { }

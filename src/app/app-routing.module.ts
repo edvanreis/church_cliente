@@ -3,14 +3,14 @@ import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
-import { SenhaComponent } from './pages/senha/senha.component';
+import { AlterarSenhaComponent } from './pages/senha/alterar-senha.component';
 
 
 
 
 const routes: Routes = [
   { path: 'cdk-login', component: LoginComponent},
-  { path: 'senha', component: SenhaComponent},
+  { path: 'senha', component: AlterarSenhaComponent},
   { path: '**', redirectTo: '' }
 ];
 

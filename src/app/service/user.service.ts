@@ -83,5 +83,10 @@ export class UserService {
     return this.http.put(this._url, user)
       .pipe(map((response: any) => response))
   }
+
+  alterarSenha(obj) {
+    return this.http.post(this._url + "alterarSenha", obj)
+      .pipe(map((response: any) => response))
+  }
   
 }

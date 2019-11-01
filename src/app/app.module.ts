@@ -13,7 +13,8 @@ import { MembroModule } from './pages/membro/membro.module';
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { InterceptorService } from './service/interceptor.service';
 import { PerfilModule } from './pages/perfil/perfil.module';
-import { SenhaModule } from './pages/senha/senha.module';
+import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
+
 
 
 
@@ -84,7 +85,7 @@ import { SenhaModule } from './pages/senha/senha.module';
     PermissoesModule,
     MatDialogModule,
     PerfilModule,
-    SenhaModule
+    AlterarSenhaModule
     
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
