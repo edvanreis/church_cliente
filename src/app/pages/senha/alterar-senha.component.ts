@@ -5,6 +5,7 @@ import { UserService } from '../../service/user.service';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../model/alert-type';
 import { take } from 'rxjs/operators';
+import { HelperChurch } from '../../helper/helper.church';
 
 @Component({
   selector: 'app-senha',
@@ -24,7 +25,7 @@ export class AlterarSenhaComponent implements OnInit {
   private _buildForm(): void {
     this.form = new FormGroup({
       'cpf': new FormControl('', Validators.required),
-      'senhaAual': new FormControl('', Validators.required),
+      'senhaAtual': new FormControl('', Validators.required),
       'senhaNova': new FormControl('', Validators.required),
     });
   }
@@ -35,11 +36,11 @@ export class AlterarSenhaComponent implements OnInit {
 
   obj() {
     return {
-      senha: this.form.controls['senha'].value,
-      senhaNew: this.form.controls['senhaNew'].value,
-      cpf: this.form.controls['cpf'].value
+      senha: this.form.controls['senhaAtual'].value,
+      senhaNew: this.form.controls['senhaNova'].value,
+      cpf: HelperChurch.retirarFormatacaoCPF(this.form.controls['cpf'].value)
     }
-  }
+  } 
 
   alterar(){
     if(!this.form.valid){

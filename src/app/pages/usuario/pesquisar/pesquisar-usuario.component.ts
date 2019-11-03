@@ -7,6 +7,7 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { UserService } from '../../../service/user.service';
 import { AlertType } from '../../../model/alert-type';
 import { take } from 'rxjs/operators';
+import { HelperChurch } from '../../../helper/helper.church';
 
 
 const ELEMENT_DATA = [
@@ -151,20 +152,8 @@ export class PesquisarUsuarioComponent implements OnInit {
     return {
       nome: this.form.controls['nome'].value,
       login: this.form.controls['login'].value,
-      cpf: this.retirarFormatacaoCPF(this.form.controls['cpf'].value),
+      cpf:  HelperChurch.retirarFormatacaoCPF((this.form.controls['cpf'].value)),
       status: this.form.controls['status'].value
-    }
-  }
-
-  retirarFormatacaoCPF(cpf): string {
-    if (cpf) {
-      cpf = cpf.replace(".", "");
-      cpf = cpf.replace(".", "");
-      cpf = cpf.replace("-", "");
-      console.log(cpf)
-      return cpf;
-    } else {
-      return null
     }
   }
 

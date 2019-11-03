@@ -88,5 +88,10 @@ export class UserService {
     return this.http.post(this._url + "alterarSenha", obj)
       .pipe(map((response: any) => response))
   }
+
+  esqueceuSenha(cpf) {
+    return this.http.get(this._url+cpf+"/esqueceuSenha")
+      .pipe(map((response: any) => response))
+  }
   
 }
