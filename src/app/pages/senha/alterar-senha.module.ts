@@ -8,6 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 const routes: Routes = [
   {path: 'alterar-senha', component: AlterarSenhaComponent},
+  {path: 'id:/alterar-senha', component: AlterarSenhaComponent},
 ];
 @NgModule({
   imports: [

@@ -7,13 +7,13 @@
     <div class="cdk-container">
       <div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100">
         <form form [formGroup]="form">
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="!isURLHash">
             <mat-form-field class="example-full-width">
               <input matInput placeholder="CPF" formControlName="cpf">
               <mat-error *ngIf="!form.controls.cpf.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
           </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"  *ngIf="!isURLHash">
             <mat-form-field class="example-full-width">
                 <input type="password"  class="input" placeholder="Senha Atual"
                 formControlName="senhaAtual" required matInput>
