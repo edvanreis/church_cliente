@@ -6,6 +6,12 @@ import { AlertType } from '../../../model/alert-type';
 import { PermissoesService } from '../../../service/permissoes.service';
 import { take } from 'rxjs/operators';
 
+const ELEMENT_DATA = [
+  { codigo: 'A', value: 'Ativo' },
+  { codigo: 'I', value: 'Inativo' },
+  { codigo: null, value: 'Todas' },
+];
+
 @Component({
   selector: 'app-cadastrar-permissoes',
   templateUrl: './cadastrar-permissoes.component.html',

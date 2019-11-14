@@ -5,6 +5,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatButtonModule, MatInputModule, MatToolbarModule } from '@angular/material';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TextMaskModule } from 'angular2-text-mask';
 
 const routes: Routes = [
   {path: 'alterar-senha', component: AlterarSenhaComponent},
@@ -19,6 +20,7 @@ const routes: Routes = [
       MatToolbarModule,
       FormsModule,
       ReactiveFormsModule,
+      TextMaskModule,
       RouterModule.forChild(routes)
   ],
   declarations: [   

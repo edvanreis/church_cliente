@@ -12,7 +12,61 @@
               <span style="color:#1d68a5"><i class="material-icons">face</i></span>
               Dados pessoais
             </mat-expansion-panel-header>
-            <app-dados-pessoais></app-dados-pessoais>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nome" formControlName="nome" id="nome" >
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" >
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg" >
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" >  
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+              <mat-form-field>
+                <mat-label>Sexo</mat-label>
+                <mat-select formControlName="sexo" id="sexo" > 
+                  <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
+                    {{item.value}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field>
+                <mat-label>Estado Civil</mat-label>
+                <mat-select formControlName="estadoCivil" id="estadoCivil" >
+                  <mat-option *ngFor="let item of comboEstadoCivil | keyValue" [value]="item.key">
+                    {{item.value}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Data Nascimento" [textMask]="{mask: maskDate}" formControlName="dataNascimento"
+                  id="dataNascimento" >
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Célula" formControlName="celula" >
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" >
+              </mat-form-field>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Profissão" formControlName="profissao" id="profissao">
+              </mat-form-field>
+            </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>
+              <mat-checkbox formControlName="batizado" >Batizado</mat-checkbox>
+              <mat-checkbox formControlName="dizimista" >Dizimista</mat-checkbox>
+            </div>
           </mat-expansion-panel>
           <mat-expansion-panel>
             <mat-expansion-panel-header>

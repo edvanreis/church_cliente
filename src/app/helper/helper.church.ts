@@ -6,7 +6,7 @@ export class HelperChurch{
     if (cpf) {
       cpf = cpf.replace(".", "");
       cpf = cpf.replace(".", "");
-      cpf = cpf.replace("-", "");
+      cpf = cpf.replace(".", "");
       return cpf;
     } else {
       return null

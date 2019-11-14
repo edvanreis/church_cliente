@@ -75,4 +75,14 @@ export class LoginComponent implements OnInit {
     this._router.navigate(['/senha/alterar-senha']);
   }
 
+  esqueceuSenha() {
+    this._router.navigate(['/senha/alterar-senha'], {
+      queryParams: {
+        esqueceuSenha: true,
+      },
+      skipLocationChange: true
+    });
+  }
+
+
 }

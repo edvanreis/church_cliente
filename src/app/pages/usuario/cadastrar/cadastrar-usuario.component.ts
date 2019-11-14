@@ -41,6 +41,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   public myControlMembro = new FormControl();
   public myControlPerfil = new FormControl();
   public ngPerfil;
+  public comboStatus = ELEMENT_DATA;
 
 
   constructor(private _router: Router,
@@ -143,7 +144,7 @@ export class CadastrarUsuarioComponent implements OnInit {
 
   getUsuario(id) {
     this._userService.getUser(id).pipe(take(1)).subscribe(item => {
-      // console.log(item)
+      //  console.log(item)
       this.form.controls['login'].patchValue(item.login);
       this.form.controls['nome'].patchValue(item.nome);
       this.form.controls['cpf'].patchValue(item.cpf);

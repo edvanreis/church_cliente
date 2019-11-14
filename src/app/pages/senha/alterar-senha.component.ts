@@ -14,8 +14,10 @@ import { HelperChurch } from '../../helper/helper.church';
 })
 export class AlterarSenhaComponent implements OnInit {
 
+  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/]
+
   public form: FormGroup;
-  public isURLHash: boolean = false;
+  public isEsqueceuSenha: boolean = false;
   public idHash: any;
 
   constructor(private _router: Router,
@@ -29,9 +31,8 @@ export class AlterarSenhaComponent implements OnInit {
   }
 
   avRoute() {
-    if (this._avRoute.snapshot.queryParamMap.get("id")) {
-      this.idHash = this._avRoute.snapshot.queryParamMap.get("id");
-      this.isURLHash = true;
+    if (this._avRoute.snapshot.queryParamMap.get("esqueceuSenha")) {
+      this.isEsqueceuSenha = true;
 
     }
   }
@@ -40,6 +41,7 @@ export class AlterarSenhaComponent implements OnInit {
       'cpf': new FormControl('', Validators.required),
       'senhaAtual': new FormControl('', Validators.required),
       'senhaNova': new FormControl('', Validators.required),
+      'email': new FormControl('', Validators.required),
     });
   }
 
@@ -51,25 +53,29 @@ export class AlterarSenhaComponent implements OnInit {
     return {
       senha: this.form.controls['senhaAtual'].value,
       senhaNew: this.form.controls['senhaNova'].value,
-      cpf: HelperChurch.retirarFormatacaoCPF(this.form.controls['cpf'].value),
-      hashIdCpf: this.isURLHash
+      email: this.form.controls['email'].value,
+      cpf: HelperChurch.retirarFormatacaoCPF(this.form.controls['cpf'].value)
     }
   }
 
   alterar() {
-    if (!this.form.valid) {
+    if (!this.form.controls['cpf'].value && !this.form.controls['senhaAtual'].value  && !this.form.controls['senhaNova'].value) {
       this._notifierService.notify(AlertType.Success, "Digite todos os campos obrigatórios!");
+      return false;
     }
-    this._userService.alterarSenha(this.obj()).pipe(take(1)).subscribe(item => {
+    let obj = this.obj();
+    console.log(obj);
+    this._userService.alterarSenha(obj).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
     });
   }
 
-  esqueceuSenha() {
-    if (!this.form.controls['senhaNova'].value) {
-      this._notifierService.notify(AlertType.Success, "informe á nova senha");
+  enviarEmail() {
+    if (!this.form.controls['cpf'].value && !this.form.controls['email'].value) {
+      this._notifierService.notify(AlertType.Success, "Digite todos os campos obrigatórios!");
+      return false;
     }
     this._userService.esqueceuSenha(this.obj()).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);

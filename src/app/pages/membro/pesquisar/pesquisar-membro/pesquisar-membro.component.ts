@@ -7,6 +7,7 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../../model/alert-type';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { ExcelService } from '../../../../service/excel.service';
+import { FormGroup, FormControl } from '@angular/forms';
 
 
 @Component({
@@ -20,7 +21,7 @@ export class PesquisarMembroComponent implements OnInit {
   constructor(private _emitirEventoService: EmitirEventoService, 
               private _membroService: MembroService,
               private _notifierService: NotifierService,
-              private _excelService: ExcelService) { }
+              private _excelService: ExcelService,) { }
 
   public membro: any;
   public dadosPessoais: any;
@@ -35,11 +36,33 @@ export class PesquisarMembroComponent implements OnInit {
   public pageIndex: number = 0;
   public loading:boolean = false;
   public lista = [];
+  public form: FormGroup;
+  public comboSexo = [];
+  public comboEstadoCivil = [];
 
   ngOnInit() {
-    // this.setEmiter();
     this.getEmiter();
     this.columns();
+    this._buildForm();
+    this.getComboSexo();
+    this.getComboEstadoCivil();
+  }
+
+  private _buildForm(): void {
+    this.form = new FormGroup({
+      'nome': new FormControl(''),
+      'sobrenome': new FormControl(''),
+      'dataNascimento': new FormControl(''),
+      'rg': new FormControl(''),
+      'cpf': new FormControl(''),
+      'sexo': new FormControl(''),
+      'estadoCivil': new FormControl(''),
+      'nacionalidade': new FormControl(''),
+      'profissao': new FormControl(''),
+      'batizado': new FormControl(''),
+      'dizimista': new FormControl(''),
+      'celula': new FormControl(''),
+    });
   }
 
 
@@ -49,9 +72,8 @@ export class PesquisarMembroComponent implements OnInit {
         this.dadosPessoais = item.data;
       } else if (item.type == 'endereco') {
         this.endereco = item.data;
-        console.log(item.data)
+        // console.log(item.data)
       }
-
     });
   }
 
@@ -59,7 +81,7 @@ export class PesquisarMembroComponent implements OnInit {
     this.preencherObjeto();
     this.loading = true;
     this._membroService.pesquisar(this.membro).pipe(take(1)).subscribe(item => {
-      console.log(item);
+      // console.log(item);
       this.lista = item;
       this.dados = new MatTableDataSource(this.lista);
       this.dados.sort = this.sort;
@@ -77,18 +99,18 @@ export class PesquisarMembroComponent implements OnInit {
 
     this.membro = new Membro(); 
     if (this.dadosPessoais) {
-      this.membro.nome = this.dadosPessoais.nome;
-      this.membro.sobreNome = this.dadosPessoais.sobreNome;
-      this.membro.rg = this.dadosPessoais.rg;
+      this.membro.nome = this.form.controls['nome'].value;
+      this.membro.sobreNome = this.form.controls['sobreNome'].value;
+      this.membro.rg =this.form.controls['rg'].value;
       this.membro.cpf = this.dadosPessoais.cpf;
-      this.membro.sexo = this.dadosPessoais.sexo;
-      this.membro.estadoCivil = this.dadosPessoais.estadoCivil;
-      this.membro.dataNascimento = this.dadosPessoais.dataNascimento;
-      this.membro.idCelula = this.dadosPessoais.idCelula;
-      this.membro.nacionalidade = this.dadosPessoais.nacionalidade;
-      this.membro.profissao = this.dadosPessoais.profissao;
-      this.membro.batizado = this.dadosPessoais.batizado;
-      this.membro.dizimista = this.dadosPessoais.dizimista;
+      this.membro.sexo = this.form.controls['sexo'].value;
+      this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
+      this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
+      this.membro.idCelula = this.form.controls['idCelula'].value;
+      this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
+      this.membro.profissao =this.form.controls['profissao'].value;
+      this.membro.batizado = this.form.controls['batizado'].value;
+      this.membro.dizimista =this.form.controls['dizimista'].value;
     }
     if (this.endereco) {
       this.membro.endereco.cep = this.endereco.cep;
@@ -146,6 +168,20 @@ export class PesquisarMembroComponent implements OnInit {
       });
     });
     this._excelService.exportAsExcelFile(dados, "pesquisa");
+  }
+
+  getComboSexo() {
+    this._membroService.carregarSexo().subscribe(item => {
+      this.comboSexo = item;
+      console.log(item);
+    });
+  }
+
+  getComboEstadoCivil() {
+    this._membroService.carregarEstadoCivil().subscribe(item => {
+      this.comboEstadoCivil = item;
+      console.log(item);
+    });
   }
 
 
