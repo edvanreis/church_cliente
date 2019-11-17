@@ -12,6 +12,7 @@
               <span style="color:#1d68a5"><i class="material-icons">face</i></span>
               Dados pessoais
             </mat-expansion-panel-header>
+            <form form [formGroup]="form">
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
               <mat-form-field class="example-full-width">
                 <input matInput placeholder="Nome" formControlName="nome" id="nome" >
@@ -47,13 +48,11 @@
               </mat-form-field>
             </div>
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Data Nascimento" [textMask]="{mask: maskDate}" formControlName="dataNascimento"
-                  id="dataNascimento" >
-              </mat-form-field>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Célula" formControlName="celula" >
-              </mat-form-field>
+              <mat-form-field>
+                <input matInput [matDatepicker]="picker" placeholder="Data nascimento" formControlName="dataNascimento" >
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field> 
             </div>
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
               <mat-form-field class="example-full-width">
@@ -67,6 +66,7 @@
               <mat-checkbox formControlName="batizado" >Batizado</mat-checkbox>
               <mat-checkbox formControlName="dizimista" >Dizimista</mat-checkbox>
             </div>
+          </form>
           </mat-expansion-panel>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -75,6 +75,26 @@
             </mat-expansion-panel-header>
             <app-endereco></app-endereco>
           </mat-expansion-panel>
+          <mat-expansion-panel>
+              <mat-expansion-panel-header>
+                <span style="color:#1d68a5"><i class="material-icons">calendar_today</i></span>
+                Período da virgencia do cadastro
+              </mat-expansion-panel-header>
+              <form formDate [formGroup]="formDate"> 
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                  <mat-form-field>
+                    <input matInput [matDatepicker]="picker1" placeholder="Data inicio" formControlName="dataInicio">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                  <mat-form-field>
+                    <input matInput [matDatepicker]="picker2" placeholder="Data fim" formControlName="dataFim">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </form>
+            </mat-expansion-panel>
           <br />
           <br />
           <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">

@@ -14,7 +14,7 @@ import { HelperChurch } from '../../helper/helper.church';
 })
 export class AlterarSenhaComponent implements OnInit {
 
-  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/]
+  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
 
   public form: FormGroup;
   public isEsqueceuSenha: boolean = false;
@@ -54,7 +54,7 @@ export class AlterarSenhaComponent implements OnInit {
       senha: this.form.controls['senhaAtual'].value,
       senhaNew: this.form.controls['senhaNova'].value,
       email: this.form.controls['email'].value,
-      cpf: HelperChurch.retirarFormatacaoCPF(this.form.controls['cpf'].value)
+      cpf: HelperChurch.retirarFormatacao(this.form.controls['cpf'].value)
     }
   }
 

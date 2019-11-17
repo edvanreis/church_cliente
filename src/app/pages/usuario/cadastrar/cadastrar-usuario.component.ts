@@ -39,9 +39,11 @@ export class CadastrarUsuarioComponent implements OnInit {
   public filteredMembro: Observable<string[]>;
   public filteredPerfil: Observable<string[]>;
   public myControlMembro = new FormControl();
-  public myControlPerfil = new FormControl();
-  public ngPerfil;
+  // public myControlPerfil = new FormControl();
+  public perfilValue;
   public comboStatus = ELEMENT_DATA;
+  // public cpfValue;
+  public nomeValue;
 
 
   constructor(private _router: Router,
@@ -60,10 +62,13 @@ export class CadastrarUsuarioComponent implements OnInit {
 
   private _buildForm(): void {
     this.form = new FormGroup({
-      'nome': new FormControl('', Validators.required),
+      'nome': new FormControl({value:'', disabled: true}),
+      'login-desable': new FormControl({value:'', disabled: true}),
       'login': new FormControl('', Validators.required),
       'status': new FormControl(''),
-      'cpf': new FormControl('', Validators.required)
+      'pefil': new FormControl(''),
+      'cpf': new FormControl({value:'', disabled: true}),
+      'cpfdesable': new FormControl({value:'', disabled: true})
     });
   }
 
@@ -145,7 +150,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   getUsuario(id) {
     this._userService.getUser(id).pipe(take(1)).subscribe(item => {
       //  console.log(item)
-      this.form.controls['login'].patchValue(item.login);
+      this.form.controls['login-desable'].patchValue(item.login);
       this.form.controls['nome'].patchValue(item.nome);
       this.form.controls['cpf'].patchValue(item.cpf);
       this.form.controls['status'].patchValue(item.status);
@@ -167,15 +172,16 @@ export class CadastrarUsuarioComponent implements OnInit {
     this._perfilService.getList().pipe(take(1)).subscribe(item => {
       this.comboPerfil = item;
       this.comboPerfil.forEach(element => {
-        if(element.nome=='basico'){
-          this.perfis.push(element);
+        if(element.nome=='basico' && this.perfis.length == 0){
+              this.perfis.push(element);
+              this.perfilUsuario = element;
         }
       });
-      this.filteredPerfil = this.myControlPerfil.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filter(value, this.comboPerfil))
-      );
+      // this.filteredPerfil = this.myControlPerfil.valueChanges
+      // .pipe(
+      //   startWith(''),
+      //   map(value => this._filter(value, this.comboPerfil))
+      // );
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar as permissões!");
     });
@@ -193,7 +199,7 @@ export class CadastrarUsuarioComponent implements OnInit {
       return false;
     } else {
       this.perfis.push(this.perfilUsuario);
-      this.ngPerfil='';
+      this.form.controls['perfil'].patchValue('');
     }
   }
 
@@ -202,8 +208,8 @@ export class CadastrarUsuarioComponent implements OnInit {
     this.perfis.splice(index, 1);
   }
 
-  onSelectionChangedPerfil($event: MatAutocompleteSelectedEvent,option) {
-    this.perfilUsuario = option;
+  onSelectionChangedPerfil(option) {
+    this.perfilUsuario = option.source.value;
   }
 
   onSelectionChangedMembroNome($event: MatAutocompleteSelectedEvent,option) {
@@ -211,10 +217,10 @@ export class CadastrarUsuarioComponent implements OnInit {
     this.form.controls['cpf'].patchValue(option.cpf);
   }
 
-  onSelectionChangedMembroCpf($event: MatAutocompleteSelectedEvent,option) {
-    this.membro = option;
-    this.form.controls['nome'].patchValue(option.nome);
-  }
+  // onSelectionChangedMembroCpf($event: MatAutocompleteSelectedEvent,option) {
+  //   this.membro = option;
+  //   this.nomeValue = option.nome;
+  // }
 
   carregarComboMembro() {
     this._membroService.getList().pipe(take(1)).subscribe(item => {
@@ -233,6 +239,5 @@ export class CadastrarUsuarioComponent implements OnInit {
     const filterValue = value.toLowerCase();
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
-
 
 }

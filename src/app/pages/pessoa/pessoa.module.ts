@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
 import { TextMaskModule } from 'angular2-text-mask';
 import { ContatoComponent } from './contato/contato.component';
 import { DadosPessoaisComponent } from './dados-pessoais/dados-pessoais.component';
@@ -35,7 +35,9 @@ import { NgxViacepModule, NgxViacepService } from '@brunoc/ngx-viacep';
     MatPaginatorModule,
     MatExpansionModule,
     PipeModule,
-    NgxViacepModule
+    NgxViacepModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
   ],
   exports: [
     DadosPessoaisComponent,

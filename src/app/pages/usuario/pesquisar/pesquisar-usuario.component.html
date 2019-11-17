@@ -18,18 +18,30 @@
             <input matInput placeholder="Login" formControlName="login" id="login">
           </mat-form-field>
         </div>
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" > 
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="CPF" formControlName="cpf" id="cpf">
+            <input matInput placeholder="CPF" formControlName="cpf" id="cpf" [textMask]="{mask: maskCPF}">
           </mat-form-field>
-        <mat-form-field>
-          <mat-label>Status</mat-label>
-          <mat-select formControlName="status" id="status"> 
-            <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
-              {{item.value}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+          <mat-form-field>
+            <mat-label>Status</mat-label>
+            <mat-select formControlName="status" id="status">
+              <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Data inicio" formControlName="dataInicio">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker2" placeholder="Data fim" formControlName="dataFim">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
         </div>
       </form>
       <br />
@@ -38,28 +50,28 @@
         <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
           <i class="material-icons">search</i>Buscar</button>
         <div [hidden]="!loading" align="center" style="width: 100%">
-        <h4>Buscando...</h4>
-        <mat-spinner [diameter]="40"></mat-spinner>
+          <h4>Buscando...</h4>
+          <mat-spinner [diameter]="40"></mat-spinner>
+        </div>
+        <div class="example-header" style="padding: 0 20px;" *ngIf="dados.data.length > 0 && !loading">
+          <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+          </mat-form-field>
+        </div>
+        <div *ngIf="dados.data.length > 0 && !loading">
+          <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;">
+            <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
+              <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
+                <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" (click)="editar(element.id)"><i
+                    class="material-icons">create</i></span>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
+            [pageIndex]="pageIndex" (page)="paginatorEvent($event)" showFirstLastButtons></mat-paginator>
+        </div>
       </div>
-      <div class="example-header" style="padding: 0 20px;" *ngIf="dados.data.length > 0 && !loading" >
-        <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
-          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
-        </mat-form-field>
-      </div>
-    <div *ngIf="dados.data.length > 0 && !loading"> 
-      <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;">
-        <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
-          <mat-cell *matCellDef="let element">
-            <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
-            <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" (click)="editar(element.id)"><i
-                class="material-icons">create</i></span>
-          </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
-      <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"  [pageIndex]="pageIndex"  (page) = "paginatorEvent($event)"
-        showFirstLastButtons></mat-paginator>
-    </div>
-  </div>

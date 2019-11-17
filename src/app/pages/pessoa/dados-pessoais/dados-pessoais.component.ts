@@ -3,6 +3,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { MembroService } from '../../../service/membro.service';
 import { Pessoa } from '../../../model/pessoa';
+import { HelperChurch } from '../../../helper/helper.church';
 
 
 
@@ -14,13 +15,14 @@ import { Pessoa } from '../../../model/pessoa';
 export class DadosPessoaisComponent implements OnInit {
 
   public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
-  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/]
-  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
+  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/]
 
   public form: FormGroup;
   public pessoa;
   public comboSexo = [];
   public comboEstadoCivil = [];
+  public dataNascimento;
   constructor(private _membroService: MembroService, private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
@@ -34,14 +36,14 @@ export class DadosPessoaisComponent implements OnInit {
   getComboSexo() {
     this._membroService.carregarSexo().subscribe(item => {
       this.comboSexo = item;
-      console.log(item);
+      // console.log(item);
     });
   }
 
   getComboEstadoCivil() {
     this._membroService.carregarEstadoCivil().subscribe(item => {
       this.comboEstadoCivil = item;
-      console.log(item);
+      // console.log(item);
     });
   }
   private _buildForm(): void {
@@ -54,10 +56,9 @@ export class DadosPessoaisComponent implements OnInit {
       'sexo': new FormControl('',Validators.required),
       'estadoCivil': new FormControl('',Validators.required),
       'nacionalidade': new FormControl('',Validators.required),
-      'profissao': new FormControl('',Validators.required),
-      'batizado': new FormControl('',Validators.required),
-      'dizimista': new FormControl('',Validators.required),
-      'celula': new FormControl('',Validators.required),
+      'profissao': new FormControl(''),
+      'batizado': new FormControl(''),
+      'dizimista': new FormControl(''),
     });
   }
 
@@ -79,12 +80,11 @@ export class DadosPessoaisComponent implements OnInit {
     this.pessoa = new Pessoa();
     this.pessoa.nome = this.form.controls['nome'].value;
     this.pessoa.sobreNome = this.form.controls['sobrenome'].value;
-    this.pessoa.rg = this.form.controls['rg'].value;
-    this.pessoa.cpf = this.form.controls['cpf'].value;
+    this.pessoa.rg = HelperChurch.retirarFormatacao(this.form.controls['rg'].value);
+    this.pessoa.cpf = HelperChurch.retirarFormatacao(this.form.controls['cpf'].value);
     this.pessoa.sexo = this.form.controls['sexo'].value;
     this.pessoa.estadoCivil = this.form.controls['estadoCivil'].value;
-    this.pessoa.dataNascimento = this.form.controls['dataNascimento'].value;
-    this.pessoa.idCelula = this.form.controls['celula'].value;
+    this.pessoa.dataNascimento = !this.dataNascimento?this.form.controls['dataNascimento'].value:this.dataNascimento;
     this.pessoa.nacionalidade = this.form.controls['nacionalidade'].value;
     this.pessoa.profissao = this.form.controls['profissao'].value;
     this.pessoa.batizado = this.form.controls['batizado'].value;
@@ -94,5 +94,9 @@ export class DadosPessoaisComponent implements OnInit {
 
   change() {
     this.setEmiter();
+  }
+
+  changeData(event) {
+    this.dataNascimento = event.target.value;
   }
 }

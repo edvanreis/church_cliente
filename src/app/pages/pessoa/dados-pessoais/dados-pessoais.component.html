@@ -39,15 +39,12 @@
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Data Nascimento" [textMask]="{mask: maskDate}" formControlName="dataNascimento"
-        id="dataNascimento" (change)="change()" required>
+    <mat-form-field>
+      <input matInput [matDatepicker]="picker" placeholder="Data nascimento" formControlName="dataNascimento"  (dateChange)="changeData($event)">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
       <mat-error *ngIf="!form.controls.dataNascimento.valid">Campo Obrigatório</mat-error>
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="Célula" formControlName="celula" (change)="change()" required>
-      <mat-error *ngIf="!form.controls.celula.valid">Campo Obrigatório</mat-error>
-    </mat-form-field>
+    </mat-form-field>    
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="example-full-width">
@@ -58,7 +55,7 @@
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>
-    <mat-checkbox formControlName="batizado" (change)="change()" required>Batizado</mat-checkbox>
-    <mat-checkbox formControlName="dizimista" (change)="change()" required>Dizimista</mat-checkbox>
+    <mat-checkbox formControlName="batizado" (change)="change()">Batizado</mat-checkbox>
+    <mat-checkbox formControlName="dizimista" (change)="change()">Dizimista</mat-checkbox>
   </div>
 </form>

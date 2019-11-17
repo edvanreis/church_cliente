@@ -24,7 +24,8 @@ const ELEMENT_DATA = [
 })
 export class PesquisarUsuarioComponent implements OnInit {
 
-
+  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/]
   public form: FormGroup;
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = [];
@@ -59,7 +60,9 @@ export class PesquisarUsuarioComponent implements OnInit {
       'nome': new FormControl(''),
       'login': new FormControl(''),
       'cpf': new FormControl(''),
-      'status': new FormControl('')
+      'status': new FormControl(''),
+      'dataInicio': new FormControl(''),
+      'dataFim': new FormControl('')
     });
   }
 
@@ -152,7 +155,7 @@ export class PesquisarUsuarioComponent implements OnInit {
     return {
       nome: this.form.controls['nome'].value,
       login: this.form.controls['login'].value,
-      cpf:  HelperChurch.retirarFormatacaoCPF((this.form.controls['cpf'].value)),
+      cpf:  HelperChurch.retirarFormatacao((this.form.controls['cpf'].value)),
       status: this.form.controls['status'].value
     }
   }
@@ -171,6 +174,5 @@ export class PesquisarUsuarioComponent implements OnInit {
       skipLocationChange: true
     });
   }
-
 
 }

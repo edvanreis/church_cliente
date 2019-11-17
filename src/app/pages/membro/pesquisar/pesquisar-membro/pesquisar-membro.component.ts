@@ -8,6 +8,7 @@ import { AlertType } from '../../../../model/alert-type';
 import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { ExcelService } from '../../../../service/excel.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { HelperChurch } from '../../../../helper/helper.church';
 
 
 @Component({
@@ -24,7 +25,6 @@ export class PesquisarMembroComponent implements OnInit {
               private _excelService: ExcelService,) { }
 
   public membro: any;
-  public dadosPessoais: any;
   public endereco: any;
   public comboTipoContatos = [];
   public comboEscolaridade = []
@@ -37,8 +37,11 @@ export class PesquisarMembroComponent implements OnInit {
   public loading:boolean = false;
   public lista = [];
   public form: FormGroup;
+  public formDate: FormGroup;
   public comboSexo = [];
   public comboEstadoCivil = [];
+  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/]
 
   ngOnInit() {
     this.getEmiter();
@@ -46,6 +49,7 @@ export class PesquisarMembroComponent implements OnInit {
     this._buildForm();
     this.getComboSexo();
     this.getComboEstadoCivil();
+    this._buildFormDate();
   }
 
   private _buildForm(): void {
@@ -61,16 +65,21 @@ export class PesquisarMembroComponent implements OnInit {
       'profissao': new FormControl(''),
       'batizado': new FormControl(''),
       'dizimista': new FormControl(''),
-      'celula': new FormControl(''),
+      'dataInicio': new FormControl(''),
+      'dataFim': new FormControl('')
     });
   }
 
+  private _buildFormDate(): void {
+    this.formDate = new FormGroup({
+      'dataInicio': new FormControl(''),
+      'dataFim': new FormControl('')
+    });
+  }
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      if (item.type == 'dadosPessoais') {
-        this.dadosPessoais = item.data;
-      } else if (item.type == 'endereco') {
+     if (item.type == 'endereco') {
         this.endereco = item.data;
         // console.log(item.data)
       }
@@ -98,20 +107,18 @@ export class PesquisarMembroComponent implements OnInit {
   preencherObjeto(): Membro {
 
     this.membro = new Membro(); 
-    if (this.dadosPessoais) {
       this.membro.nome = this.form.controls['nome'].value;
-      this.membro.sobreNome = this.form.controls['sobreNome'].value;
-      this.membro.rg =this.form.controls['rg'].value;
-      this.membro.cpf = this.dadosPessoais.cpf;
+      this.membro.sobreNome = this.form.controls['sobrenome'].value;
+      this.membro.rg =HelperChurch.retirarFormatacao(this.form.controls['rg'].value);
+      this.membro.cpf =  HelperChurch.retirarFormatacao(this.form.controls['cpf'].value);
       this.membro.sexo = this.form.controls['sexo'].value;
       this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
       this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
-      this.membro.idCelula = this.form.controls['idCelula'].value;
       this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
       this.membro.profissao =this.form.controls['profissao'].value;
       this.membro.batizado = this.form.controls['batizado'].value;
       this.membro.dizimista =this.form.controls['dizimista'].value;
-    }
+
     if (this.endereco) {
       this.membro.endereco.cep = this.endereco.cep;
       this.membro.endereco.numero = this.endereco.numero;
@@ -131,8 +138,7 @@ export class PesquisarMembroComponent implements OnInit {
   
   columns() {
     this.columnNames = [
-      { id: 'nome', value: 'Nome' },
-      { id: 'sobreNome', value: 'Sobre Nome' },
+      { id: 'nomeCompleto', value: 'Nome' },
       { id: 'dataNasciemento', value: 'Data Nascimento' },
       { id: 'rg', value: 'RG' },
       { id: 'cpf', value: 'CPF' },
@@ -173,14 +179,14 @@ export class PesquisarMembroComponent implements OnInit {
   getComboSexo() {
     this._membroService.carregarSexo().subscribe(item => {
       this.comboSexo = item;
-      console.log(item);
+      // console.log(item);
     });
   }
 
   getComboEstadoCivil() {
     this._membroService.carregarEstadoCivil().subscribe(item => {
       this.comboEstadoCivil = item;
-      console.log(item);
+      // console.log(item);
     });
   }
 
