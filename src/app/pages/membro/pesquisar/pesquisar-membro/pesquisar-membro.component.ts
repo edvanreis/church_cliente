@@ -9,6 +9,7 @@ import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
 import { ExcelService } from '../../../../service/excel.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { HelperChurch } from '../../../../helper/helper.church';
+import { DatePipe } from '@angular/common';
 
 
 @Component({
@@ -19,10 +20,11 @@ import { HelperChurch } from '../../../../helper/helper.church';
 export class PesquisarMembroComponent implements OnInit {
 
 
-  constructor(private _emitirEventoService: EmitirEventoService, 
-              private _membroService: MembroService,
-              private _notifierService: NotifierService,
-              private _excelService: ExcelService,) { }
+  constructor(private _emitirEventoService: EmitirEventoService,
+    private _membroService: MembroService,
+    private _notifierService: NotifierService,
+    private _excelService: ExcelService,
+    private _datePipe: DatePipe) { }
 
   public membro: any;
   public endereco: any;
@@ -34,7 +36,7 @@ export class PesquisarMembroComponent implements OnInit {
   public dados = new MatTableDataSource();
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
-  public loading:boolean = false;
+  public loading: boolean = false;
   public lista = [];
   public form: FormGroup;
   public formDate: FormGroup;
@@ -65,21 +67,21 @@ export class PesquisarMembroComponent implements OnInit {
       'profissao': new FormControl(''),
       'batizado': new FormControl(''),
       'dizimista': new FormControl(''),
-      'dataInicio': new FormControl(''),
-      'dataFim': new FormControl('')
     });
   }
 
   private _buildFormDate(): void {
     this.formDate = new FormGroup({
-      'dataInicio': new FormControl(''),
-      'dataFim': new FormControl('')
+      'dataInicioAt': new FormControl(''),
+      'dataFimAt': new FormControl(''),
+      'dataInicioIn': new FormControl(''),
+      'dataFimIn': new FormControl('')
     });
   }
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-     if (item.type == 'endereco') {
+      if (item.type == 'endereco') {
         this.endereco = item.data;
         // console.log(item.data)
       }
@@ -88,36 +90,40 @@ export class PesquisarMembroComponent implements OnInit {
 
   pesquisar() {
     this.preencherObjeto();
-    this.loading = true;
-    this._membroService.pesquisar(this.membro).pipe(take(1)).subscribe(item => {
-      // console.log(item);
-      this.lista = item;
-      this.dados = new MatTableDataSource(this.lista);
-      this.dados.sort = this.sort;
-      this.dados.paginator = this.paginator;
-      this.loading = false;
-    }, error => {
-      // console.log(error);
-      this.loading = false;
-      this._notifierService.notify(AlertType.Error, error.errors.message);
+    // this.loading = true;
+    // this._membroService.pesquisar(this.membro).pipe(take(1)).subscribe(item => {
+    //   // console.log(item);
+    //   this.lista = item;
+    //   this.dados = new MatTableDataSource(this.lista);
+    //   this.dados.sort = this.sort;
+    //   this.dados.paginator = this.paginator;
+    //   this.loading = false;
+    // }, error => {
+    //   // console.log(error);
+    //   this.loading = false;
+    //   this._notifierService.notify(AlertType.Error, error.errors.message);
 
-    });
+    // });
   }
 
   preencherObjeto(): Membro {
 
-    this.membro = new Membro(); 
-      this.membro.nome = this.form.controls['nome'].value;
-      this.membro.sobreNome = this.form.controls['sobrenome'].value;
-      this.membro.rg =HelperChurch.retirarFormatacao(this.form.controls['rg'].value);
-      this.membro.cpf =  HelperChurch.retirarFormatacao(this.form.controls['cpf'].value);
-      this.membro.sexo = this.form.controls['sexo'].value;
-      this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
-      this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
-      this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
-      this.membro.profissao =this.form.controls['profissao'].value;
-      this.membro.batizado = this.form.controls['batizado'].value;
-      this.membro.dizimista =this.form.controls['dizimista'].value;
+    this.membro = new Membro();
+    this.membro.nome = this.form.controls['nome'].value;
+    this.membro.sobreNome = this.form.controls['sobrenome'].value;
+    this.membro.rg = HelperChurch.retirarFormatacao(this.form.controls['rg'].value);
+    this.membro.cpf = HelperChurch.retirarFormatacao(this.form.controls['cpf'].value);
+    this.membro.sexo = this.form.controls['sexo'].value;
+    this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
+    this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
+    this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
+    this.membro.profissao = this.form.controls['profissao'].value;
+    this.membro.batizado = this.form.controls['batizado'].value;
+    this.membro.dizimista = this.form.controls['dizimista'].value;
+    this.membro.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
+    this.membro.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
+    this.membro.dataInativacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioIn'].value, 'yyyy-MM-dd') + " 00:00:00";
+    this.membro.dataInativacaoFim = this._datePipe.transform(this.formDate.controls['dataFimIn'].value, 'yyyy-MM-dd') + " 23:59:59";
 
     if (this.endereco) {
       this.membro.endereco.cep = this.endereco.cep;
@@ -135,7 +141,7 @@ export class PesquisarMembroComponent implements OnInit {
     return this.membro;
   }
 
-  
+
   columns() {
     this.columnNames = [
       { id: 'nomeCompleto', value: 'Nome' },

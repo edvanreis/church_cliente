@@ -9,8 +9,9 @@
         <form>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
-              <span style="color:#1d68a5"><i class="material-icons">face</i></span>
-              Dados pessoais
+              <span class="default-font-color"><i class="material-icons">face</i>
+                Dados pessoais
+              </span>
             </mat-expansion-panel-header>
             <form form [formGroup]="form">
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -70,29 +71,45 @@
           </mat-expansion-panel>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
-              <span style="color:#1d68a5"><i class="material-icons">store_mall_directory</i></span>
-              Endereço
+              <span style="color:#1d68a5"><i class="material-icons">store_mall_directory</i>
+                Endereço
+              </span>
             </mat-expansion-panel-header>
             <app-endereco></app-endereco>
           </mat-expansion-panel>
           <mat-expansion-panel>
               <mat-expansion-panel-header>
-                <span style="color:#1d68a5"><i class="material-icons">calendar_today</i></span>
-                Período da virgencia do cadastro
+              <span class="default-font-color"><i class="material-icons">calendar_today</i>
+                Períodos
+              </span>
               </mat-expansion-panel-header>
               <form formDate [formGroup]="formDate"> 
+              <div class="default-font-color"><h3>Data de criação</h3></div> 
               <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
                   <mat-form-field>
-                    <input matInput [matDatepicker]="picker1" placeholder="Data inicio" formControlName="dataInicio">
+                    <input matInput [matDatepicker]="picker1" placeholder="Data inicio" formControlName="dataInicioAt">
                     <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                     <mat-datepicker #picker1></mat-datepicker>
                   </mat-form-field>
                   <mat-form-field>
-                    <input matInput [matDatepicker]="picker2" placeholder="Data fim" formControlName="dataFim">
+                    <input matInput [matDatepicker]="picker2" placeholder="Data fim" formControlName="dataFimAt">
                     <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                     <mat-datepicker #picker2></mat-datepicker>
                   </mat-form-field>
                 </div>
+                <div class="default-font-color"><h3>Data de iniativação</h3></div> 
+                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="picker3" placeholder="Data inicio" formControlName="dataInicioIn">
+                      <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                      <mat-datepicker #picker3></mat-datepicker>
+                    </mat-form-field>
+                    <mat-form-field>
+                      <input matInput [matDatepicker]="picker4" placeholder="Data fim" formControlName="dataFimIn">
+                      <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                      <mat-datepicker #picker4></mat-datepicker>
+                    </mat-form-field>
+                  </div>
               </form>
             </mat-expansion-panel>
           <br />

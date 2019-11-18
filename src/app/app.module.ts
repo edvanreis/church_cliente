@@ -14,6 +14,8 @@ import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { InterceptorService } from './service/interceptor.service';
 import { PerfilModule } from './pages/perfil/perfil.module';
 import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
+import { DatePipe } from '@angular/common';
+
 
 
 
@@ -89,7 +91,7 @@ import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
     AlterarSenhaModule
     
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
