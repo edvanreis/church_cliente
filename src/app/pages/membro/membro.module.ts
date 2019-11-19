@@ -14,6 +14,7 @@ import { PessoaModule } from '../pessoa/pessoa.module';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
 import { ExcelService } from '../../service/excel.service';
+import { EtapaVisaoService } from '../../service/etapa-visao.service';
 
 
 
@@ -62,6 +63,7 @@ const routes: Routes = [
     MembroService,
     EmitirEventoService,
     ExcelService,
+    EtapaVisaoService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ]
 })

@@ -120,10 +120,10 @@ export class PesquisarMembroComponent implements OnInit {
     this.membro.profissao = this.form.controls['profissao'].value;
     this.membro.batizado = this.form.controls['batizado'].value;
     this.membro.dizimista = this.form.controls['dizimista'].value;
-    this.membro.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
-    this.membro.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
-    this.membro.dataInativacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioIn'].value, 'yyyy-MM-dd') + " 00:00:00";
-    this.membro.dataInativacaoFim = this._datePipe.transform(this.formDate.controls['dataFimIn'].value, 'yyyy-MM-dd') + " 23:59:59";
+    this.membro.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'dd/MM/yyyy') + " 00:00:00";
+    this.membro.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'dd/MM/yyyy') + " 23:59:59";
+    this.membro.dataInativacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioIn'].value, 'dd/MM/yyyy') + " 00:00:00";
+    this.membro.dataInativacaoFim = this._datePipe.transform(this.formDate.controls['dataFimIn'].value, 'dd/MM/yyyy') + " 23:59:59";
 
     if (this.endereco) {
       this.membro.endereco.cep = this.endereco.cep;

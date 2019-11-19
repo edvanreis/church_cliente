@@ -82,7 +82,7 @@
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field>
               <mat-label>Selecione...</mat-label>
-              <mat-select formControlName="escolaridade" id="escolaridade" (selectionChange)="tipo($event)">
+              <mat-select formControlName="escolaridade" id="escolaridade" >
                 <mat-option *ngFor="let item of comboEscolaridade" [value]="item.tipo">
                   {{item.descricao}}
                 </mat-option>
@@ -115,6 +115,41 @@
             </div>
           </div>
           <br /><br />
+          <mat-divider></mat-divider>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+            <i class="material-icons">extension</i>
+            <h1 class="mat-subheading-2 center-align">Etapa da visão</h1>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+            <mat-form-field>
+              <mat-label>Selecione...</mat-label>
+              <mat-select formControlName="etapa" id="etapa" >
+                <mat-option *ngFor="let item of etapa$ | async" [value]="item">
+                  {{item.nome}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <button mat-raised-button color="primary" type="submit" (click)="adicionarEtapa()">
+            <i class="material-icons">add</i>adicionar</button>
+          <br /><br />
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="etapas.length > 0">
+            <div class="table-responsive">
+              <table>
+                <thead class="text-primary">
+                  <th>Etapa</th>
+                  <th>Curso</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of etapas">
+                    <td>{{ item.nome}}</td>
+                    <td><span style="color: #1d68a5;cursor: pointer" (click)="removerEtapa(i)"><i
+                          class="material-icons">delete</i></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
           <mat-divider></mat-divider>
           <button mat-raised-button color="primary" type="submit" (click)="salvar()">
             <i class="material-icons">save</i>Salvar</button>

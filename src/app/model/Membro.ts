@@ -15,7 +15,7 @@ export class Membro extends Pessoa {
     // public profissao:string;
     public dizimista:boolean;
     public batizado:boolean;
-    public idCelula:number;
+    public etapas =[];
 
 
 

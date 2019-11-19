@@ -8,6 +8,8 @@ import { AlertType } from '../../../model/alert-type';
 import { Contatos } from '../../../model/contatos';
 import { take } from 'rxjs/operators';
 import { EnderecoService } from '../../../service/endereco.service';
+import { EtapaVisaoService } from '../../../service/etapa-visao.service';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -24,7 +26,8 @@ export class CadastrarMembroComponent implements OnInit {
   constructor(private _membroService: MembroService, 
               private _notifierService: NotifierService, 
               private _emitirEventoService: EmitirEventoService,
-              private _enderecoService:EnderecoService) { }
+              private _enderecoService:EnderecoService,
+              private _etapaVisao:EtapaVisaoService) { }
 
   public form: FormGroup;
   public contatosGrid = [];
@@ -44,6 +47,8 @@ export class CadastrarMembroComponent implements OnInit {
   public membro: Membro;
   public dadosPessoais: any;
   public endereco: any;
+  public etapa$: Observable<any[]>;
+  public etapas = [];
 
 
 
@@ -54,6 +59,7 @@ export class CadastrarMembroComponent implements OnInit {
     this.getComboEscolaridade();
     this._buildForm();
     // this.getComboUF();
+    this.getComboEtapaVisao();
     this.getEmiter();
   }
 
@@ -69,6 +75,10 @@ export class CadastrarMembroComponent implements OnInit {
       }
 
     });
+  }
+
+  getComboEtapaVisao() {
+    this.etapa$ = this._etapaVisao.getList();
   }
 
   getComboSexo() {
@@ -115,6 +125,7 @@ export class CadastrarMembroComponent implements OnInit {
       'escolaridade': new FormControl(''),
       'curso': new FormControl(''),
       'email': new FormControl(''),
+      'etapa': new FormControl('')
     });
 
   }
@@ -245,7 +256,13 @@ export class CadastrarMembroComponent implements OnInit {
     }
   }
 
-
+  adicionarEtapa(){
+    if(this.form.controls['etapa'].value){
+      this._notifierService.notify(AlertType.Error,"Por favor escolha uma etapa.!");
+      return false;
+    }
+    this.etapas.push(this.form.controls['etapa'].value);
+  }
   //  remove uma linha da grid
   removerContato(index): void {
     this.contatos.splice(index, 1);
@@ -255,6 +272,10 @@ export class CadastrarMembroComponent implements OnInit {
   removerEscolaridade(index) {
     this.escolaridades.splice(index, 1);
     this.escolaridadesGrid.splice(index, 1)
+  }
+
+  removerEtapa(index): void {
+    this.etapas.splice(index, 1);
   }
 
   carregarObjeto(): Membro {
@@ -267,7 +288,6 @@ export class CadastrarMembroComponent implements OnInit {
     this.membro.sexo = this.dadosPessoais.sexo;
     this.membro.estadoCivil = this.dadosPessoais.estadoCivil;
     this.membro.dataNascimento = this.dadosPessoais.dataNascimento;
-    this.membro.idCelula = this.dadosPessoais.idCelula;
     this.membro.nacionalidade = this.dadosPessoais.nacionalidade;
     this.membro.profissao = this.dadosPessoais.profissao;
     this.membro.batizado = this.dadosPessoais.batizado;
@@ -284,6 +304,8 @@ export class CadastrarMembroComponent implements OnInit {
     this.membro.contatos = this.contatos;
     //escolaridade
     this.membro.escolaridades = this.escolaridades;
+    //escolaridade
+    this.membro.etapas = this.etapas;
     return this.membro;
   }
 
