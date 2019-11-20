@@ -63,6 +63,16 @@
                 <input matInput placeholder="Profissão" formControlName="profissao" id="profissao">
               </mat-form-field>
             </div>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+              <mat-form-field>
+                <mat-label>Selecione...</mat-label>
+                <mat-select formControlName="etapa" id="etapa" >
+                  <mat-option *ngFor="let item of etapa$ | async" [value]="item">
+                    {{item.nome}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>
               <mat-checkbox formControlName="batizado" >Batizado</mat-checkbox>
               <mat-checkbox formControlName="dizimista" >Dizimista</mat-checkbox>

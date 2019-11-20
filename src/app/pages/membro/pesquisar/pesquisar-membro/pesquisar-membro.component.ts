@@ -10,6 +10,8 @@ import { ExcelService } from '../../../../service/excel.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { HelperChurch } from '../../../../helper/helper.church';
 import { DatePipe } from '@angular/common';
+import { Observable } from 'rxjs';
+import { EtapaVisaoService } from '../../../../service/etapa-visao.service';
 
 
 @Component({
@@ -24,8 +26,10 @@ export class PesquisarMembroComponent implements OnInit {
     private _membroService: MembroService,
     private _notifierService: NotifierService,
     private _excelService: ExcelService,
-    private _datePipe: DatePipe) { }
+    private _datePipe: DatePipe,
+    private _etapaVisao:EtapaVisaoService) { }
 
+  public etapa$: Observable<any[]>;
   public membro: any;
   public endereco: any;
   public comboTipoContatos = [];
@@ -67,6 +71,7 @@ export class PesquisarMembroComponent implements OnInit {
       'profissao': new FormControl(''),
       'batizado': new FormControl(''),
       'dizimista': new FormControl(''),
+      'etapa': new FormControl('')
     });
   }
 
@@ -194,6 +199,10 @@ export class PesquisarMembroComponent implements OnInit {
       this.comboEstadoCivil = item;
       // console.log(item);
     });
+  }
+
+  getComboEtapaVisao() {
+    this.etapa$ = this._etapaVisao.getList();
   }
 
 

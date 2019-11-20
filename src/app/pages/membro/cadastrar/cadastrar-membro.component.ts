@@ -257,7 +257,7 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   adicionarEtapa(){
-    if(this.form.controls['etapa'].value){
+    if(!this.form.controls['etapa'].value){
       this._notifierService.notify(AlertType.Error,"Por favor escolha uma etapa.!");
       return false;
     }
@@ -315,6 +315,7 @@ export class CadastrarMembroComponent implements OnInit {
       return false;
     }
     this.membro = this.carregarObjeto();
+    console.log(this.membro)
     this._membroService.save(this.membro).pipe(take(1)).subscribe(item => {
       // console.log(item.value);
       this.clear();
