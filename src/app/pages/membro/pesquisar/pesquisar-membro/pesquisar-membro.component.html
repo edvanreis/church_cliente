@@ -14,70 +14,71 @@
               </span>
             </mat-expansion-panel-header>
             <form form [formGroup]="form">
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nome" formControlName="nome" id="nome" >
-              </mat-form-field>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" >
-              </mat-form-field>
-            </div>
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg" >
-              </mat-form-field>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" >  
-              </mat-form-field>
-            </div>
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-              <mat-form-field>
-                <mat-label>Sexo</mat-label>
-                <mat-select formControlName="sexo" id="sexo" > 
-                  <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
-                    {{item.value}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-              <mat-form-field>
-                <mat-label>Estado Civil</mat-label>
-                <mat-select formControlName="estadoCivil" id="estadoCivil" >
-                  <mat-option *ngFor="let item of comboEstadoCivil | keyValue" [value]="item.key">
-                    {{item.value}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-              <mat-form-field>
-                <input matInput [matDatepicker]="picker" placeholder="Data nascimento" formControlName="dataNascimento" >
-                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
-              </mat-form-field> 
-            </div>
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" >
-              </mat-form-field>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Profissão" formControlName="profissao" id="profissao">
-              </mat-form-field>
-            </div>
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-              <mat-form-field>
-                <mat-label>Selecione...</mat-label>
-                <mat-select formControlName="etapa" id="etapa" >
-                  <mat-option *ngFor="let item of etapa$ | async" [value]="item">
-                    {{item.nome}}
-                  </mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>
-              <mat-checkbox formControlName="batizado" >Batizado</mat-checkbox>
-              <mat-checkbox formControlName="dizimista" >Dizimista</mat-checkbox>
-            </div>
-          </form>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Nome" formControlName="nome" id="nome">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field>
+                  <mat-label>Sexo</mat-label>
+                  <mat-select formControlName="sexo" id="sexo">
+                    <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
+                      {{item.value}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                  <mat-label>Estado Civil</mat-label>
+                  <mat-select formControlName="estadoCivil" id="estadoCivil">
+                    <mat-option *ngFor="let item of comboEstadoCivil | keyValue" [value]="item.key">
+                      {{item.value}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker" placeholder="Data nascimento"
+                    formControlName="dataNascimento">
+                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade">
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                  <input matInput placeholder="Profissão" formControlName="profissao" id="profissao">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field>
+                  <mat-label>Etapas da visão</mat-label>
+                  <mat-select formControlName="etapa" id="etapa">
+                    <mat-option *ngFor="let item of etapa$ | async" [value]="item">
+                      {{item.nome}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>
+                <mat-checkbox formControlName="batizado">Batizado</mat-checkbox>
+                <mat-checkbox formControlName="dizimista">Dizimista</mat-checkbox>
+              </div>
+            </form>
           </mat-expansion-panel>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -88,44 +89,53 @@
             <app-endereco></app-endereco>
           </mat-expansion-panel>
           <mat-expansion-panel>
-              <mat-expansion-panel-header>
+            <mat-expansion-panel-header>
               <span class="default-font-color"><i class="material-icons">calendar_today</i>
                 Períodos
               </span>
-              </mat-expansion-panel-header>
-              <form formDate [formGroup]="formDate"> 
-              <div class="default-font-color"><h3>Data de criação</h3></div> 
+            </mat-expansion-panel-header>
+            <form formDate [formGroup]="formDate">
+              <div class="default-font-color">
+                <h3>Data de criação</h3>
+              </div>
               <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-                  <mat-form-field>
-                    <input matInput [matDatepicker]="picker1" placeholder="Data inicio" formControlName="dataInicioAt">
-                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-                    <mat-datepicker #picker1></mat-datepicker>
-                  </mat-form-field>
-                  <mat-form-field>
-                    <input matInput [matDatepicker]="picker2" placeholder="Data fim" formControlName="dataFimAt">
-                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-                    <mat-datepicker #picker2></mat-datepicker>
-                  </mat-form-field>
-                </div>
-                <div class="default-font-color"><h3>Data de iniativação</h3></div> 
-                <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-                    <mat-form-field>
-                      <input matInput [matDatepicker]="picker3" placeholder="Data inicio" formControlName="dataInicioIn">
-                      <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
-                      <mat-datepicker #picker3></mat-datepicker>
-                    </mat-form-field>
-                    <mat-form-field>
-                      <input matInput [matDatepicker]="picker4" placeholder="Data fim" formControlName="dataFimIn">
-                      <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
-                      <mat-datepicker #picker4></mat-datepicker>
-                    </mat-form-field>
-                  </div>
-              </form>
-            </mat-expansion-panel>
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker1" placeholder="Data inicio" formControlName="dataInicioAt">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker2" placeholder="Data fim" formControlName="dataFimAt">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="default-font-color">
+                <h3>Data de iniativação</h3>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker3" placeholder="Data inicio" formControlName="dataInicioIn">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field>
+                  <input matInput [matDatepicker]="picker4" placeholder="Data fim" formControlName="dataFimIn">
+                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                  <mat-datepicker #picker4></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </form>
+          </mat-expansion-panel>
           <br />
           <br />
-          <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
-            <i class="material-icons">search</i>Buscar</button>
+          <div>
+              <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
+                <i class="material-icons">search</i>Buscar</button>
+              <div fxFlex></div>
+              <button mat-raised-button color="warn" type="submit" (click)="limpar()">
+                <i class="material-icons">brush</i>Limpar</button>
+            </div>
         </form>
         <div [hidden]="!loading" align="center" style="width: 100%">
           <h4>Buscando...</h4>
@@ -149,8 +159,8 @@
           <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
             showFirstLastButtons></mat-paginator>
         </div>
-        <button mat-raised-button color="success" (click)="exportAsXLSX()"
-            *ngIf="lista.length > 0  && !loading"><i class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
+        <button mat-raised-button color="success" (click)="exportAsXLSX()" *ngIf="lista.length > 0  && !loading"><i
+            class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
       </div>
     </div>
   </div>

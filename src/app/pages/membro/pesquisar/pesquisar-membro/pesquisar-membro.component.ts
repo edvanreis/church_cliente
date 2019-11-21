@@ -27,7 +27,7 @@ export class PesquisarMembroComponent implements OnInit {
     private _notifierService: NotifierService,
     private _excelService: ExcelService,
     private _datePipe: DatePipe,
-    private _etapaVisao:EtapaVisaoService) { }
+    private _etapaVisao: EtapaVisaoService) { }
 
   public etapa$: Observable<any[]>;
   public membro: any;
@@ -56,6 +56,7 @@ export class PesquisarMembroComponent implements OnInit {
     this.getComboSexo();
     this.getComboEstadoCivil();
     this._buildFormDate();
+    this.getComboEtapaVisao();
   }
 
   private _buildForm(): void {
@@ -95,20 +96,20 @@ export class PesquisarMembroComponent implements OnInit {
 
   pesquisar() {
     this.preencherObjeto();
-    // this.loading = true;
-    // this._membroService.pesquisar(this.membro).pipe(take(1)).subscribe(item => {
-    //   // console.log(item);
-    //   this.lista = item;
-    //   this.dados = new MatTableDataSource(this.lista);
-    //   this.dados.sort = this.sort;
-    //   this.dados.paginator = this.paginator;
-    //   this.loading = false;
-    // }, error => {
-    //   // console.log(error);
-    //   this.loading = false;
-    //   this._notifierService.notify(AlertType.Error, error.errors.message);
+    this.loading = true;
+    this._membroService.pesquisar(this.membro).pipe(take(1)).subscribe(item => {
+      // console.log(item);
+      this.lista = item;
+      this.dados = new MatTableDataSource(this.lista);
+      this.dados.sort = this.sort;
+      this.dados.paginator = this.paginator;
+      this.loading = false;
+    }, error => {
+      // console.log(error);
+      this.loading = false;
+      this._notifierService.notify(AlertType.Error, error.errors.message);
 
-    // });
+    });
   }
 
   preencherObjeto(): Membro {
@@ -125,10 +126,8 @@ export class PesquisarMembroComponent implements OnInit {
     this.membro.profissao = this.form.controls['profissao'].value;
     this.membro.batizado = this.form.controls['batizado'].value;
     this.membro.dizimista = this.form.controls['dizimista'].value;
-    this.membro.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'dd/MM/yyyy') + " 00:00:00";
-    this.membro.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'dd/MM/yyyy') + " 23:59:59";
-    this.membro.dataInativacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioIn'].value, 'dd/MM/yyyy') + " 00:00:00";
-    this.membro.dataInativacaoFim = this._datePipe.transform(this.formDate.controls['dataFimIn'].value, 'dd/MM/yyyy') + " 23:59:59";
+    this.membro.etapa = this.form.controls['etapa'].value;
+    this.preencherPeriodos();
 
     if (this.endereco) {
       this.membro.endereco.cep = this.endereco.cep;
@@ -146,6 +145,18 @@ export class PesquisarMembroComponent implements OnInit {
     return this.membro;
   }
 
+
+  preencherPeriodos() {
+    if (this.formDate.controls['dataInicioAt'].value && this.formDate.controls['dataFimAt'].value) {
+      this.membro.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
+      this.membro.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
+    }
+    if (this.formDate.controls['dataInicioIn'].value && this.formDate.controls['dataFimIn'].value) {
+      this.membro.dataInativacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioIn'].value, 'yyyy-MM-dd') + " 00:00:00";
+      this.membro.dataInativacaoFim = this._datePipe.transform(this.formDate.controls['dataFimIn'].value, 'yyyy-MM-dd') + " 23:59:59";
+    }
+
+  }
 
   columns() {
     this.columnNames = [
@@ -203,6 +214,11 @@ export class PesquisarMembroComponent implements OnInit {
 
   getComboEtapaVisao() {
     this.etapa$ = this._etapaVisao.getList();
+  }
+
+  limpar(){
+    this.form.reset();
+    this.formDate.reset();
   }
 
 
