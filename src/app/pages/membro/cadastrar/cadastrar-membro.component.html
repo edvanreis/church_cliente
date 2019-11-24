@@ -42,9 +42,10 @@
                 id="contatoTelefone" *ngIf="isTelefone">
               <input matInput placeholder="Contato" formControlName="contatoCelular" [textMask]="{mask: maskCelular}"
                 id="contatoCelular" *ngIf="isCelular">
-              <input matInput placeholder="Contato" formControlName="email" id="email" *ngIf="isEmail">
+              <input  type="email" matInput placeholder="Contato" formControlName="email" id="email" *ngIf="isEmail">
             </mat-form-field>
             <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
+            <mat-checkbox formControlName="emailPrincipal" *ngIf="isEmail">Email principal</mat-checkbox>
           </div>
           <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
             <i class="material-icons">add</i>adicionar</button>
@@ -56,12 +57,15 @@
                   <th>Tipo</th>
                   <th>Descrição</th>
                   <th></th>
+                  <th></th>
+                  <th>Email principal</th>
                   <th>Remover</th>
                 </thead>
                 <tbody>
                   <tr *ngFor="let item of contatosGrid">
                     <td>{{ item.tipo}}</td>
-                    <td>{{ item.contato }}</td>
+                    <td colspan="2">{{ item.contato }}</td>
+                    <td><span *ngIf="item.emailPrincial"  style="color:green" ><i class="material-icons">checked</i></span></td>
                     <td><img src="./assets/whatsapp.png" width="20px" *ngIf="item.whatsapp && item.celular">
                       <img src="./assets/images/facebook_circle.png" width="20px" *ngIf="item.facebook">
                       <span style="color: #1d68a5" *ngIf="item.email"><i class="material-icons">mail</i></span>

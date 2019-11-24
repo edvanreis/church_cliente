@@ -21,13 +21,13 @@ export class CadastrarMembroComponent implements OnInit {
 
   public maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/,]
   public maskCelular = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-  
 
-  constructor(private _membroService: MembroService, 
-              private _notifierService: NotifierService, 
-              private _emitirEventoService: EmitirEventoService,
-              private _enderecoService:EnderecoService,
-              private _etapaVisao:EtapaVisaoService) { }
+
+  constructor(private _membroService: MembroService,
+    private _notifierService: NotifierService,
+    private _emitirEventoService: EmitirEventoService,
+    private _enderecoService: EnderecoService,
+    private _etapaVisao: EtapaVisaoService) { }
 
   public form: FormGroup;
   public contatosGrid = [];
@@ -78,6 +78,7 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   getComboEtapaVisao() {
+    console.log('teste');
     this.etapa$ = this._etapaVisao.getList();
   }
 
@@ -125,7 +126,8 @@ export class CadastrarMembroComponent implements OnInit {
       'escolaridade': new FormControl(''),
       'curso': new FormControl(''),
       'email': new FormControl(''),
-      'etapa': new FormControl('')
+      'etapa': new FormControl(''),
+      'emailPrincipal': new FormControl('')
     });
 
   }
@@ -158,6 +160,16 @@ export class CadastrarMembroComponent implements OnInit {
         tipo = item.descTipoContato;
       }
     });
+    let possuiEmailPrincipal: boolean = false;
+    this.contatosGrid.forEach(element => {
+      if (element.emailPrincial == this.form.controls['emailPrincipal'].value) {
+        possuiEmailPrincipal = true;
+      }
+    });
+    if (possuiEmailPrincipal) {
+      this._notifierService.notify(AlertType.Error, 'Você já possuí um email principal!');
+      return false;
+    }
 
     this.contatosGrid.push({
       tipo: tipo,
@@ -166,13 +178,15 @@ export class CadastrarMembroComponent implements OnInit {
       facebook: this.isFacebook,
       email: this.isEmail,
       telefone: this.isTelefone,
-      celular: this.isCelular
+      celular: this.isCelular,
+      emailPrincial: this.form.controls['emailPrincipal'].value,
     });
     // console.log(tipo);
     let obj = new Contatos();
     obj.tipo = tipoSelected;
     obj.contato = contato;
     obj.whatsapp = this.form.controls['whatsapp'].value;
+    obj.emailPrincial = this.form.controls['emailPrincipal'].value;
     this.contatos.push(obj);
     this.clearInputContato();
   }
@@ -185,20 +199,23 @@ export class CadastrarMembroComponent implements OnInit {
       contato = this.form.controls['contatoTelefone'].value;
     } else if (this.form.controls['contatoCelular'].value) {
       contato = this.form.controls['contatoCelular'].value;
+    } else if (this.form.controls['email'].value) {
+      contato = this.form.controls['email'].value;
     }
     return contato;
   }
-  
-  clearInputContato(){
+
+  clearInputContato() {
     this.form.controls['contato'].patchValue('');
     this.form.controls['contatoTelefone'].patchValue('');
     this.form.controls['contatoCelular'].patchValue('');
     this.form.controls['whatsapp'].patchValue('');
+    this.form.controls['emailPrincipal'].patchValue(false);
   }
 
   adicionarEscolaridade() {
     if (!this.form.controls['curso'].value) {
-      this._notifierService.notify(AlertType.Error,'Por favor preencha o campo curso!');
+      this._notifierService.notify(AlertType.Error, 'Por favor preencha o campo curso!');
       return false;
     }
     let tipoSelected: string = this.form.controls['escolaridade'].value;
@@ -256,9 +273,9 @@ export class CadastrarMembroComponent implements OnInit {
     }
   }
 
-  adicionarEtapa(){
-    if(!this.form.controls['etapa'].value){
-      this._notifierService.notify(AlertType.Error,"Por favor escolha uma etapa.!");
+  adicionarEtapa() {
+    if (!this.form.controls['etapa'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor escolha uma etapa.!");
       return false;
     }
     this.etapas.push(this.form.controls['etapa'].value);
@@ -320,7 +337,7 @@ export class CadastrarMembroComponent implements OnInit {
       // console.log(item.value);
       this.clear();
       this.setEmiter();
-      this._notifierService.notify(AlertType.Success,item.value);
+      this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       // console.log(error);
       this._notifierService.notify(AlertType.Error, error.message);
