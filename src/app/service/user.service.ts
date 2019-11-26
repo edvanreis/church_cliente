@@ -20,6 +20,7 @@ export class UserService {
     if (user) {
       this.autenticadoEmitter.emit(user);
     }
+    console.log(user);
     return JSON.parse(user);
   }
 
@@ -55,6 +56,7 @@ export class UserService {
   permissions(): Array<string> {
     const user = this.isLogged();
     if (user) {
+      console.log(user);
       return user.authorities;
     }
     return;

@@ -11,6 +11,7 @@ export const appRoutes: Routes = [{
         { path: 'usuario', loadChildren: '../pages/usuario/usuario.module#UsuarioModule', data: { role: 'master' }, canActivate: [AuthGuardService] },
         { path: 'perfil', loadChildren: '../pages/perfil/perfil.module#PerfilModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
         { path: 'permissoes', loadChildren: '../pages/permissoes/permissoes.module#PermissoesModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
+        { path: 'igreja', loadChildren: '../pages/igreja/igreja.module#IgrejaModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
         
          
     ]

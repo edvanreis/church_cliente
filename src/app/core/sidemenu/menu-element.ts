@@ -50,6 +50,28 @@ export const menus = [
             },
         ]
     },
+    {
+        'name': 'Igreja',
+        'icon': 'account_balance',
+        'link': false,
+        'open': false,
+        'sub': [
+            {
+                'name': 'Pesquisar',
+                'link': 'igreja/cadastrar',
+                'icon': 'search',
+                'chip': false,
+                'open': false,
+            },
+            // {
+            //     'name': 'Pesquisar',
+            //     'link': 'membro/pesquisar',
+            //     'icon': 'search',
+            //     'chip': false,
+            //     'open': false,
+            // },
+        ]
+    },
      {
         'name': 'Configuracões',
         'icon': 'build',
@@ -78,5 +100,6 @@ export const menus = [
                 'open': false,
             },
         ]
-    }
+    },
+    
 ];
