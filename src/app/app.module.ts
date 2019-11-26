@@ -27,6 +27,7 @@ import { DatePipe } from '@angular/common';
 
 
 
+
 /**
  * Custom angular notifier options
 //  */
@@ -74,7 +75,7 @@ import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
