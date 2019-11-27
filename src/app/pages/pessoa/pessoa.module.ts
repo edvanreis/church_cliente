@@ -2,16 +2,15 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule, MatDatepickerModule, MatNativeDateModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { NgxViacepService } from '@brunoc/ngx-viacep';
 import { TextMaskModule } from 'angular2-text-mask';
+import { PipeModule } from '../../pipe/pipe/pipe.module';
+import { EmitirEventoService } from '../../service/emitir-evento.service';
+import { MembroService } from '../../service/membro.service';
 import { ContatoComponent } from './contato/contato.component';
 import { DadosPessoaisComponent } from './dados-pessoais/dados-pessoais.component';
-import { EnderecoComponent } from './endereco/endereco.component';
 import { EscolaridadeComponent } from './escolaridade/escolaridade.component';
-import { PipeModule } from '../../pipe/pipe/pipe.module';
-import { MembroService } from '../../service/membro.service';
-import { EmitirEventoService } from '../../service/emitir-evento.service';
-import { NgxViacepModule, NgxViacepService } from '@brunoc/ngx-viacep';
 
 @NgModule({
   imports: [
@@ -35,19 +34,16 @@ import { NgxViacepModule, NgxViacepService } from '@brunoc/ngx-viacep';
     MatPaginatorModule,
     MatExpansionModule,
     PipeModule,
-    NgxViacepModule,
     MatDatepickerModule,
-    MatNativeDateModule,
+    MatNativeDateModule
   ],
   exports: [
     DadosPessoaisComponent,
-    EnderecoComponent,
     ContatoComponent,
     EscolaridadeComponent
 ],
   declarations: [
     DadosPessoaisComponent,
-    EnderecoComponent,
     ContatoComponent,
     EscolaridadeComponent
   ],

@@ -1,0 +1,33 @@
+<form form [formGroup]="form">
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Nome" formControlName="nome" id="nome"  required>
+        <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
+      </mat-form-field>
+    </div> 
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"> 
+    <mat-form-field class="example-full-width">
+        <input matInput placeholder="CNPJ" [textMask]="{mask: maskCNPJ}" formControlName="cnpj" id="cnpj" (change)="change()" required>  
+        <mat-error *ngIf="!form.controls.cnpj.valid">Campo Obrigatório</mat-error>
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <input matInput placeholder="Telefone" formControlName="telefone" [textMask]="{mask: maskTelefone}" (change)="change()" required> 
+        <mat-error *ngIf="!form.controls.cnpj.valid">Campo Obrigatório</mat-error>
+      </mat-form-field>
+    </div>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="Membro" aria-label="Number" matInput [formControl]="myControlMembro"
+            [matAutocomplete]="auto" [(ngModel)]="nomeValue">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedMembroNome($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field class="example-full-width" [hidden]="titulo=='Novo'">
+          <input matInput placeholder="CPF" formControlName="cpf" >
+        </mat-form-field>
+      </div>
+  </form>

@@ -1,14 +1,17 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component';
-import { CadastrarIgrejaComponent } from './cadastrar/cadastrar-igreja.component';
-import { Routes, RouterModule } from '@angular/router';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatOptionModule, MatSelectModule, MatAutocompleteModule } from '@angular/material';
-import { DialogRemoverPerfilModule } from '../dialog/dialog-remover-perfil/dialog-remover-perfil.module';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule, MatButtonModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTabsModule, MatToolbarModule } from '@angular/material';
+import { RouterModule, Routes } from '@angular/router';
 import { InterceptorService } from '../../service/interceptor.service';
+import { CadastrarIgrejaComponent } from './cadastrar/cadastrar-igreja.component';
+import { IgrejaDadosComponent } from './igreja-dados/igreja-dados.component';
+import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component';
+import { EnderecoModule } from '../endereco/endereco.module';
+import { TextMaskModule } from 'angular2-text-mask';
+
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarIgrejaComponent , data: { animation: 'buttons' }},
@@ -29,11 +32,15 @@ const routes: Routes = [
     MatOptionModule,
     MatSelectModule,
     MatAutocompleteModule,
+    MatTabsModule,
+    EnderecoModule,
+    TextMaskModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
     CadastrarIgrejaComponent, 
-    PesquisarIgrejaComponent
+    PesquisarIgrejaComponent, 
+    IgrejaDadosComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }

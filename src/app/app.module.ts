@@ -15,62 +15,7 @@ import { InterceptorService } from './service/interceptor.service';
 import { PerfilModule } from './pages/perfil/perfil.module';
 import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
 import { DatePipe } from '@angular/common';
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Custom angular notifier options
-//  */
-// const customNotifierOptions: NotifierOptions = {
-//   position: {
-// 		horizontal: {
-// 			position: 'left',
-// 			distance: 12
-// 		},
-// 		vertical: {
-// 			position: 'bottom',
-// 			distance: 12,
-// 			gap: 10
-// 		}
-// 	},
-//   theme: 'material',
-//   behaviour: {
-//     autoHide: 5000,
-//     onClick: 'hide',
-//     onMouseover: 'pauseAutoHide',
-//     showDismissButton: true,
-//     stacking: 4
-//   },
-//   animations: {
-//     enabled: true,
-//     show: {
-//       preset: 'slide',
-//       speed: 300,
-//       easing: 'ease'
-//     },
-//     hide: {
-//       preset: 'fade',
-//       speed: 300,
-//       easing: 'ease',
-//       offset: 50
-//     },
-//     shift: {
-//       speed: 300,
-//       easing: 'ease'
-//     },
-//     overlap: 150
-//   }
-// };
+import { EnderecoModule } from './pages/endereco/endereco.module';
 
 
 @NgModule({
@@ -83,16 +28,15 @@ import { DatePipe } from '@angular/common';
     CoreModule,
     BrowserAnimationsModule,
     MembroModule,
-    NotifierModule ,//.withConfig(customNotifierOptions),
+    NotifierModule ,
     AppRoutingModule,
     LoginModule,
     PermissoesModule,
     MatDialogModule,
     PerfilModule,
     AlterarSenhaModule
-    
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },DatePipe],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -15,6 +15,7 @@ import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component
 import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
 import { ExcelService } from '../../service/excel.service';
 import { EtapaVisaoService } from '../../service/etapa-visao.service';
+import { EnderecoModule } from '../endereco/endereco.module';
 
 
 
@@ -50,6 +51,7 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    EnderecoModule,
     RouterModule.forChild(routes)
   ],
   exports: [

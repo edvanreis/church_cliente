@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
-import { AlertType } from '../../../model/alert-type';
-import { Pessoa } from '../../../model/pessoa';
-import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { EnderecoService } from '../../../service/endereco.service';
-import { MembroService } from '../../../service/membro.service';
-import { Endereco } from '../../../model/Endereco';
+import { AlertType } from '../../model/alert-type';
+import { Pessoa } from '../../model/pessoa';
+import { EmitirEventoService } from '../../service/emitir-evento.service';
+import { EnderecoService } from '../../service/endereco.service';
+import { MembroService } from '../../service/membro.service';
+import { Endereco } from '../../model/Endereco';
 
 
 
