@@ -6,6 +6,7 @@ import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs';
 import { AlertType } from '../../../model/alert-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
 
 @Component({
   selector: 'app-igreja-dados',
@@ -24,18 +25,18 @@ export class IgrejaDadosComponent implements OnInit {
   public nomeValue;
   public membro:any;
   
-  constructor(private _membroService: MembroService,private _notifierService: NotifierService) { }
+  constructor(private _membroService: MembroService,private _notifierService: NotifierService,private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this._buildForm();
     this.carregarComboMembro();
+    this.getEmiter();
   }
 
   private _buildForm(): void {
     this.form = new FormGroup({
       'nome': new FormControl('',Validators.required),
       'cnpj': new FormControl('',Validators.required),
-      'pastor': new FormControl('',Validators.required),
       'telefone': new FormControl('',Validators.required),
       'cpf': new FormControl({value:'', disabled: true}),
     });
@@ -63,4 +64,33 @@ export class IgrejaDadosComponent implements OnInit {
     this.form.controls['cpf'].patchValue(option.cpf);
   }
 
+
+  
+  setEmiter(): void {
+    console.log(this.carregarObjeto());
+    this._emitirEventoService.emitir("dadosIgreja", this.carregarObjeto());
+  }
+
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'save-ok') {
+        console.log('entrou');
+        this.form.reset();
+      }
+    });
+  }
+
+  carregarObjeto() {
+    let igreja = {} as any;
+    igreja.nome = this.form.controls['nome'].value;
+    igreja.telefone = this.form.controls['telefone'].value;
+    igreja.cnpj = this.form.controls['cnpj'].value;
+    igreja.membro = this.membro;
+    return igreja;
+  }
+
+  change() {
+    console.log('teste');
+    this.setEmiter();
+  }
 }
