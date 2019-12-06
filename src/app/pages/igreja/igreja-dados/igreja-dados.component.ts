@@ -8,14 +8,15 @@ import { AlertType } from '../../../model/alert-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 
+
 @Component({
   selector: 'app-igreja-dados',
   templateUrl: './igreja-dados.component.html',
   styleUrls: ['./igreja-dados.component.scss']
 })
 export class IgrejaDadosComponent implements OnInit {
-  
-  public maskCNPJ = [/\d/, /\d/, '.',/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+
+  public maskCNPJ = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
   public maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/,];
 
   public form: FormGroup;
@@ -23,9 +24,9 @@ export class IgrejaDadosComponent implements OnInit {
   public comboMembro = [];
   public filteredMembro: Observable<string[]>;
   public nomeValue;
-  public membro:any;
-  
-  constructor(private _membroService: MembroService,private _notifierService: NotifierService,private _emitirEventoService: EmitirEventoService) { }
+  public membro: any;
+
+  constructor(private _membroService: MembroService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this._buildForm();
@@ -35,10 +36,10 @@ export class IgrejaDadosComponent implements OnInit {
 
   private _buildForm(): void {
     this.form = new FormGroup({
-      'nome': new FormControl('',Validators.required),
-      'cnpj': new FormControl('',Validators.required),
-      'telefone': new FormControl('',Validators.required),
-      'cpf': new FormControl({value:'', disabled: true}),
+      'nome': new FormControl('', Validators.required),
+      'cnpj': new FormControl('', Validators.required),
+      'telefone': new FormControl('', Validators.required),
+      'cpf': new FormControl({ value: '', disabled: true }),
     });
   }
   carregarComboMembro() {
@@ -59,13 +60,13 @@ export class IgrejaDadosComponent implements OnInit {
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
-  onSelectionChangedMembroNome($event: MatAutocompleteSelectedEvent,option) {
+  onSelectionChangedMembroNome($event: MatAutocompleteSelectedEvent, option) {
     this.membro = option;
     this.form.controls['cpf'].patchValue(option.cpf);
   }
 
 
-  
+
   setEmiter(): void {
     console.log(this.carregarObjeto());
     this._emitirEventoService.emitir("dadosIgreja", this.carregarObjeto());
@@ -83,7 +84,7 @@ export class IgrejaDadosComponent implements OnInit {
   carregarObjeto() {
     let igreja = {} as any;
     igreja.nome = this.form.controls['nome'].value;
-    igreja.telefone = this.form.controls['telefone'].value;
+    igreja.telefone =  this.getTelefone();
     igreja.cnpj = this.form.controls['cnpj'].value;
     igreja.membro = this.membro;
     return igreja;
@@ -92,5 +93,14 @@ export class IgrejaDadosComponent implements OnInit {
   change() {
     console.log('teste');
     this.setEmiter();
+  }
+
+  getTelefone() {
+    let telefone = this.form.controls['telefone'].value;
+    if (!telefone) {
+      return undefined;
+    } else {
+      return telefone;
+    }
   }
 }

@@ -1,7 +1,7 @@
 <form form [formGroup]="form">
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Nome" formControlName="nome" id="nome"  required>
+      <mat-form-field class="example-full-width" >
+        <input matInput placeholder="Nome" formControlName="nome" id="nome"  (change)="change()"  required>
         <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
       </mat-form-field>
     </div> 
