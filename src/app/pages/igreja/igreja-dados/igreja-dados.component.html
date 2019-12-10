@@ -17,8 +17,8 @@
     </div>
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <mat-form-field class="example-full-width">
-          <input type="text" placeholder="Membro" aria-label="Number" matInput [formControl]="myControlMembro"
-            [matAutocomplete]="auto" [(ngModel)]="nomeValue">
+          <input type="text" placeholder="Pastor" aria-label="Number" matInput [formControl]="myControlMembro"
+            [matAutocomplete]="auto" [(ngModel)]="nomeValue" required>
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
               (onSelectionChange)="onSelectionChangedMembroNome($event,option)">

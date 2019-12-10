@@ -45,20 +45,18 @@ export class CadastrarIgrejaComponent implements OnInit {
     });  
   }
 
-  getDadosIgreja(filial){
+  getDadosIgreja(){
+    console.log(this.dadosIgreja)
     this.igreja = {} as any;
     this.igreja.nome = this.dadosIgreja.nome;
     this.igreja.cnpj = this.dadosIgreja.cnpj;
     this.igreja.telefone = this.dadosIgreja.telefone;
-    this.igreja.pastor = this.dadosIgreja.membro;
+    this.igreja.pastor = this.dadosIgreja.pastor;
     this.igreja.endereco = this.endereco;
-    if(filial){
-      this.igreja.sede = null;
-    }
   }
 
   salvarSede(){
-    this.getDadosIgreja(false);
+    this.getDadosIgreja();
     console.log(this.igreja);
     this._igrejaService.saveSede(this.igreja).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
@@ -68,9 +66,10 @@ export class CadastrarIgrejaComponent implements OnInit {
   }
 
   carregarComboIgrejaSede() {
-    console.log('entrou');
+   
     this._igrejaService.getListSede().pipe(take(1)).subscribe(item => {
       this.comboIgrejaSede = item;
+      console.log(item);
       this.filteredIgrejaSede = this.myControlIgrejaSede.valueChanges
         .pipe(
           startWith(''),
@@ -88,7 +87,10 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   onSelectionChangedIgreja($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
-    this.nomePastorValue = option.membro.nome;
+    if(option.pastor){
+      this.nomePastorValue = option.pastor.nomeCompleto;
+    }
+    
   }
 
 

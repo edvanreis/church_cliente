@@ -63,6 +63,7 @@ export class IgrejaDadosComponent implements OnInit {
   onSelectionChangedMembroNome($event: MatAutocompleteSelectedEvent, option) {
     this.membro = option;
     this.form.controls['cpf'].patchValue(option.cpf);
+    this.setEmiter();
   }
 
 
@@ -84,9 +85,9 @@ export class IgrejaDadosComponent implements OnInit {
   carregarObjeto() {
     let igreja = {} as any;
     igreja.nome = this.form.controls['nome'].value;
-    igreja.telefone =  this.getTelefone();
+    igreja.telefone = this.getTelefone();
     igreja.cnpj = this.form.controls['cnpj'].value;
-    igreja.membro = this.membro;
+    igreja.pastor = this.membro;
     return igreja;
   }
 

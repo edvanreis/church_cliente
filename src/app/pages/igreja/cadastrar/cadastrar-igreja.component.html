@@ -6,7 +6,7 @@
     </mat-toolbar>
     <div class="cdk-container">
       <mat-tab-group>
-        <mat-tab label="Sede">
+        <mat-tab label="Sede" (click)="alert('teste');">
           <br />
           <app-igreja-dados></app-igreja-dados>
           <app-endereco></app-endereco>
@@ -30,7 +30,7 @@
               </mat-autocomplete>
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="CPF" [(ngModel)]="nomePastorValue" >
+              <input matInput placeholder="Nome" [(ngModel)]="nomePastorValue" desabled>
             </mat-form-field>
           </div>
           <div>
