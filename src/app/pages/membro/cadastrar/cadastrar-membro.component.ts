@@ -129,7 +129,6 @@ export class CadastrarMembroComponent implements OnInit {
       'etapa': new FormControl(''),
       'emailPrincipal': new FormControl('')
     });
-
   }
   adicionarContato() {
     let contato: string;

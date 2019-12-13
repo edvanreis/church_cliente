@@ -11,6 +11,7 @@ import { IgrejaDadosComponent } from './igreja-dados/igreja-dados.component';
 import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component';
 import { EnderecoModule } from '../endereco/endereco.module';
 import { TextMaskModule } from 'angular2-text-mask';
+import { ContatosModule } from '../contatos/contatos.module';
 
 
 const routes: Routes = [
@@ -35,6 +36,7 @@ const routes: Routes = [
     MatTabsModule,
     EnderecoModule,
     TextMaskModule,
+    ContatosModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

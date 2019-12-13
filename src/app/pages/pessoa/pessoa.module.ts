@@ -25,7 +25,6 @@ import { EscolaridadeComponent } from './escolaridade/escolaridade.component';
     MatDividerModule,
     MatIconModule,
     MatButtonModule,
-    TextMaskModule,
     MatOptionModule,
     MatSelectModule,
     MatCheckboxModule,

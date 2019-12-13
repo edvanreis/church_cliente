@@ -89,6 +89,8 @@ export class CadastrarIgrejaComponent implements OnInit {
     this.igrejaSelecionada = option;
     if(option.pastor){
       this.nomePastorValue = option.pastor.nomeCompleto;
+    }else{
+      this.nomePastorValue = null;
     }
     
   }
