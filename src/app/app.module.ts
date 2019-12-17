@@ -9,14 +9,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { LazyLoadModule } from './lazy-load/lazy-load.module';
-import { ContatosModule } from './pages/contatos/contatos.module';
 import { LoginModule } from './pages/login/login.module';
 import { MembroModule } from './pages/membro/membro.module';
 import { PerfilModule } from './pages/perfil/perfil.module';
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
 import { InterceptorService } from './service/interceptor.service';
-import { TextMaskModule } from 'angular2-text-mask';
 
 
 @NgModule({

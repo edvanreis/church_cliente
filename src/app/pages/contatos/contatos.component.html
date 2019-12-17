@@ -1,14 +1,14 @@
 <form form [formGroup]="form">
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-    <!-- <mat-form-field>
+    <mat-form-field>
       <mat-label>Selecione...</mat-label>
       <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
-        <mat-option *ngFor="let item of comboTipoContatos " [value]="item.tipo">
+        <mat-option *ngFor="let item of comboTipoContatos" [value]="item.tipo">
           {{item.descTipoContato}}
         </mat-option>
       </mat-select>
-    </mat-form-field> -->
-    <!-- <mat-form-field class="example-full-width">
+    </mat-form-field>
+    <mat-form-field class="example-full-width">
       <input matInput placeholder="Contato" formControlName="contato" id="contato" *ngIf="isContato">
       <input matInput placeholder="Contato" formControlName="contatoTelefone" [textMask]="{mask: maskTelefone}"
         id="contatoTelefone" *ngIf="isTelefone">
@@ -17,12 +17,12 @@
       <input type="email" matInput placeholder="Contato" formControlName="email" id="email" *ngIf="isEmail">
     </mat-form-field>
     <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
-    <mat-checkbox formControlName="emailPrincipal" *ngIf="isEmail">Email principal</mat-checkbox> -->
-  <!-- </div> -->
-  <!-- <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
+    <mat-checkbox formControlName="emailPrincipal" *ngIf="isEmail">Email principal</mat-checkbox>
+  </div>
+  <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
     <i class="material-icons">add</i>adicionar</button>
-    <br /><br />
-    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0">
+  <br /><br />
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0">
       <div class="table-responsive">
         <table>
           <thead class="text-primary">
@@ -48,5 +48,5 @@
           </tbody>
         </table>
       </div>
-    </div> -->
+    </div>
 </form>

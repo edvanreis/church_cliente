@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ContatoComponent } from '../pessoa/contato/contato.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { TextMaskModule } from 'angular2-text-mask';
-import { MatCheckboxModule, MatOptionModule } from '@angular/material';
+import { MatCheckboxModule, MatOptionModule, MatSelectModule, MatInputModule, MatButtonModule } from '@angular/material';
+import { ContatosComponent } from './contatos.component';
+
 
 @NgModule({
   imports: [
@@ -15,10 +16,17 @@ import { MatCheckboxModule, MatOptionModule } from '@angular/material';
     FlexLayoutModule,
     TextMaskModule,
     MatCheckboxModule,
-    MatOptionModule   
+    MatOptionModule,
+    MatSelectModule,
+    MatCheckboxModule,
+    MatInputModule,
+    MatButtonModule
+  ],
+  exports: [
+    ContatosComponent
   ],
   declarations: [
-    ContatoComponent
+    ContatosComponent
   ]
 })
 export class ContatosModule { }

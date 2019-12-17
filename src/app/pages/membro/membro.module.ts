@@ -12,10 +12,10 @@ import { InterceptorService } from '../../service/interceptor.service';
 import { MembroService } from '../../service/membro.service';
 import { PessoaModule } from '../pessoa/pessoa.module';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
-import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
 import { ExcelService } from '../../service/excel.service';
 import { EtapaVisaoService } from '../../service/etapa-visao.service';
 import { EnderecoModule } from '../endereco/endereco.module';
+import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro.component';
 
 
 

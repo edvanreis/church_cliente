@@ -14,6 +14,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { ContatosModule } from '../contatos/contatos.module';
 
 
+
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarIgrejaComponent , data: { animation: 'buttons' }},
   { path: 'pesquisar', component:  PesquisarIgrejaComponent , data: { animation: 'buttons' }}
@@ -37,6 +38,7 @@ const routes: Routes = [
     EnderecoModule,
     TextMaskModule,
     ContatosModule,
+    MatButtonModule, 
     RouterModule.forChild(routes)
   ],
   declarations: [

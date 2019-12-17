@@ -8,7 +8,6 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { EmitirEventoService } from '../../service/emitir-evento.service';
 import { MembroService } from '../../service/membro.service';
-import { ContatoComponent } from './contato/contato.component';
 import { DadosPessoaisComponent } from './dados-pessoais/dados-pessoais.component';
 import { EscolaridadeComponent } from './escolaridade/escolaridade.component';
 
@@ -34,16 +33,15 @@ import { EscolaridadeComponent } from './escolaridade/escolaridade.component';
     MatExpansionModule,
     PipeModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    TextMaskModule
   ],
   exports: [
     DadosPessoaisComponent,
-    ContatoComponent,
     EscolaridadeComponent
 ],
   declarations: [
     DadosPessoaisComponent,
-    ContatoComponent,
     EscolaridadeComponent
   ],
   providers: [
