@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Contatos } from '../../model/contatos';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../model/alert-type';
+import { EmitirEventoService } from '../../service/emitir-evento.service';
 
 @Component({
   selector: 'app-contatos',
@@ -27,7 +28,7 @@ export class ContatosComponent implements OnInit {
   public comboTipoContatos = [];
 
 
-  constructor(private _contatoService: ContatoService, private _notifierService: NotifierService) { }
+  constructor(private _contatoService: ContatoService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this._buildForm();
@@ -126,9 +127,14 @@ export class ContatosComponent implements OnInit {
     });
     let possuiEmailPrincipal: boolean = false;
     this.contatosGrid.forEach(element => {
-      if (element.emailPrincial == this.form.controls['emailPrincipal'].value) {
-        possuiEmailPrincipal = true;
+      console.log(element);
+      console.log(this.form.controls['emailPrincipal'].value);
+      if (element.emailPrincial) {
+        if (element.emailPrincial == this.form.controls['emailPrincipal'].value) {
+          possuiEmailPrincipal = true;
+        }
       }
+
     });
     if (possuiEmailPrincipal) {
       this._notifierService.notify(AlertType.Error, 'Você já possuí um email principal!');
@@ -153,6 +159,7 @@ export class ContatosComponent implements OnInit {
     obj.emailPrincial = this.form.controls['emailPrincipal'].value;
     this.contatos.push(obj);
     this.clearInputContato();
+    this.setEmiter();
   }
 
   preecherContato() {
@@ -175,6 +182,27 @@ export class ContatosComponent implements OnInit {
     this.form.controls['contatoCelular'].patchValue('');
     this.form.controls['whatsapp'].patchValue('');
     this.form.controls['emailPrincipal'].patchValue(false);
+  }
+
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'save-ok') {
+        this.form.reset();
+        this.contatos = [];
+        this.contatosGrid = [];
+      }
+    });
+  }
+
+  setEmiter(): void {
+    this._emitirEventoService.emitir("contatos", this.contatos);
+  }
+
+  //  remove uma linha da grid
+  removerContato(index): void {
+    this.contatos.splice(index, 1);
+    this.contatosGrid.splice(index, 1);
+    this.setEmiter();
   }
 
 

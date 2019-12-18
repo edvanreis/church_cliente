@@ -28,16 +28,15 @@
           <thead class="text-primary">
             <th>Tipo</th>
             <th>Descrição</th>
-            <th></th>
-            <th></th>
             <th>Email principal</th>
+            <th></th>            
             <th>Remover</th>
           </thead>
           <tbody>
             <tr *ngFor="let item of contatosGrid">
               <td>{{ item.tipo}}</td>
-              <td colspan="2">{{ item.contato }}</td>
-              <td><span *ngIf="item.emailPrincial"  style="color:green" ><i class="material-icons">checked</i></span></td>
+              <td>{{ item.contato }}</td>
+              <td><span  style="color:green" *ngIf="item.emailPrincial" ><i class="material-icons">checked</i></span></td>
               <td><img src="./assets/whatsapp.png" width="20px" *ngIf="item.whatsapp && item.celular">
                 <img src="./assets/images/facebook_circle.png" width="20px" *ngIf="item.facebook">
                 <span style="color: #1d68a5" *ngIf="item.email"><i class="material-icons">mail</i></span>

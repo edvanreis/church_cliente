@@ -21,6 +21,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   public nomeValue:any;
   public dadosIgreja:any;
   public endereco:any;
+  public contatos:any;
   public myControlIgreja = new FormControl();
   public comboIgrejaSede=[];
   public filteredIgrejaSede: Observable<string[]>;
@@ -42,23 +43,43 @@ export class CadastrarIgrejaComponent implements OnInit {
       if (item.type == 'endereco') {
         this.endereco = item.data;
       }
+      if (item.type == 'contatos') {
+        this.contatos = item.data;
+      }
     });  
   }
 
+  setEmiter(): void {
+    this._emitirEventoService.emitir("save-ok", "save-ok");
+  }
+
   getDadosIgreja(){
-    console.log(this.dadosIgreja)
+    
     this.igreja = {} as any;
     this.igreja.nome = this.dadosIgreja.nome;
     this.igreja.cnpj = this.dadosIgreja.cnpj;
     this.igreja.telefone = this.dadosIgreja.telefone;
     this.igreja.pastor = this.dadosIgreja.pastor;
     this.igreja.endereco = this.endereco;
+    this.igreja.contatos = this.contatos;
+    console.log(this.igreja);
   }
 
   salvarSede(){
     this.getDadosIgreja();
     console.log(this.igreja);
     this._igrejaService.saveSede(this.igreja).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+  salvarFilial(){
+    this.getDadosIgreja();
+    this.igreja.sede = this.igrejaSelecionada;
+    console.log(this.igreja);
+    this._igrejaService.saveFilial(this.igreja).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -91,8 +112,12 @@ export class CadastrarIgrejaComponent implements OnInit {
       this.nomePastorValue = option.pastor.nomeCompleto;
     }else{
       this.nomePastorValue = null;
-    }
-    
+    }  
+  }
+
+  clearFieldsSede(){
+      this.setEmiter();
+      this.nomeValue = null;
   }
 
 
