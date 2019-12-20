@@ -16,22 +16,22 @@ import { take, startWith, map } from 'rxjs/operators';
 export class CadastrarIgrejaComponent implements OnInit {
 
   public filteredIgreja: Observable<string[]>;
-  public igrejaSelecionada:any;
-  public igreja:any;
-  public nomeValue:any;
-  public dadosIgreja:any;
-  public endereco:any;
-  public contatos:any;
+  public igrejaSelecionada: any;
+  public igreja: any;
+  public nomeValue: any;
+  public dadosIgreja: any;
+  public endereco: any;
+  public contatos: any;
   public myControlIgreja = new FormControl();
-  public comboIgrejaSede=[];
+  public comboIgrejaSede = [];
   public filteredIgrejaSede: Observable<string[]>;
   public myControlIgrejaSede = new FormControl();
   public nomePastorValue;
-  constructor(private _emitirEventoService: EmitirEventoService,private _igrejaService:IgrejaService, private _notifierService: NotifierService) { }
+  constructor(private _emitirEventoService: EmitirEventoService, private _igrejaService: IgrejaService, private _notifierService: NotifierService) { }
 
   ngOnInit() {
-   this.getEmiter();
-   this.carregarComboIgrejaSede();
+    this.getEmiter();
+    this.carregarComboIgrejaSede();
   }
 
   getEmiter(): void {
@@ -46,15 +46,15 @@ export class CadastrarIgrejaComponent implements OnInit {
       if (item.type == 'contatos') {
         this.contatos = item.data;
       }
-    });  
+    });
   }
 
   setEmiter(): void {
     this._emitirEventoService.emitir("save-ok", "save-ok");
   }
 
-  getDadosIgreja(){
-    
+  getDadosIgreja() {
+
     this.igreja = {} as any;
     this.igreja.nome = this.dadosIgreja.nome;
     this.igreja.cnpj = this.dadosIgreja.cnpj;
@@ -65,17 +65,18 @@ export class CadastrarIgrejaComponent implements OnInit {
     console.log(this.igreja);
   }
 
-  salvarSede(){
+  salvarSede() {
     this.getDadosIgreja();
     console.log(this.igreja);
     this._igrejaService.saveSede(this.igreja).pipe(take(1)).subscribe(item => {
+      this.clearFieldsSede();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
     });
   }
 
-  salvarFilial(){
+  salvarFilial() {
     this.getDadosIgreja();
     this.igreja.sede = this.igrejaSelecionada;
     console.log(this.igreja);
@@ -87,7 +88,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   }
 
   carregarComboIgrejaSede() {
-   
+
     this._igrejaService.getListSede().pipe(take(1)).subscribe(item => {
       this.comboIgrejaSede = item;
       console.log(item);
@@ -108,17 +109,22 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   onSelectionChangedIgreja($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
-    if(option.pastor){
+    if (option.pastor) {
       this.nomePastorValue = option.pastor.nomeCompleto;
-    }else{
+    } else {
       this.nomePastorValue = null;
-    }  
+    }
   }
 
-  clearFieldsSede(){
-      this.setEmiter();
-      this.nomeValue = null;
+  clearFieldsSede() {
+    this.setEmiter();
   }
+
+  clearFieldFilial() {
+    this.setEmiter();
+    this.nomeValue = null;
+  }
+
 
 
 }

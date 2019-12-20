@@ -19,7 +19,7 @@ export class IgrejaService {
   }
 
   saveFilial(igreja) {
-    return this.http.post(this._url+"saveSede", igreja)
+    return this.http.post(this._url+"saveFilial", igreja)
       .pipe(map((response: any) => response))
   }
 

@@ -61,6 +61,7 @@ export class IgrejaDadosComponent implements OnInit {
   }
 
   onSelectionChangedMembroNome($event: MatAutocompleteSelectedEvent, option) {
+    console.log(option)
     this.membro = option;
     this.form.controls['cpf'].patchValue(option.cpf);
     this.setEmiter();
@@ -78,6 +79,7 @@ export class IgrejaDadosComponent implements OnInit {
       if (item.type == 'save-ok') {
         console.log('entrou');
         this.form.reset();
+        this.membro = null;
       }
     });
   }
