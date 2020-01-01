@@ -12,6 +12,7 @@ import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component
 import { EnderecoModule } from '../endereco/endereco.module';
 import { TextMaskModule } from 'angular2-text-mask';
 import { ContatosModule } from '../contatos/contatos.module';
+import { PipeModule } from '../../pipe/pipe/pipe.module';
 
 
 
@@ -39,6 +40,7 @@ const routes: Routes = [
     TextMaskModule,
     ContatosModule,
     MatButtonModule, 
+    PipeModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

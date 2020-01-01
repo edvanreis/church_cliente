@@ -1,20 +1,14 @@
 <form form [formGroup]="form">
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
       <mat-form-field class="example-full-width" >
-        <input matInput placeholder="Nome" formControlName="nome" id="nome"  (change)="change()"  required>
+        <input matInput style="text-transform: uppercase;" placeholder="Nome" formControlName="nome" id="nome"  (change)="change()"  required>
         <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
       </mat-form-field>
-    </div> 
-    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"> 
-    <mat-form-field class="example-full-width">
+      <mat-form-field class="example-full-width">
         <input matInput placeholder="CNPJ" [textMask]="{mask: maskCNPJ}" formControlName="cnpj" id="cnpj" (change)="change()" required>  
         <mat-error *ngIf="!form.controls.cnpj.valid">Campo Obrigatório</mat-error>
       </mat-form-field>
-      <mat-form-field class="example-full-width">
-        <input matInput placeholder="Telefone" formControlName="telefone" [textMask]="{mask: maskTelefone}" (change)="change()" required> 
-        <mat-error *ngIf="!form.controls.cnpj.valid">Campo Obrigatório</mat-error>
-      </mat-form-field>
-    </div>
+    </div> 
     <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <mat-form-field class="example-full-width">
           <input type="text" placeholder="Pastor" aria-label="Number" matInput [formControl]="myControlMembro"

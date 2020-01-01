@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { AlertType } from '../../../model/alert-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { HelperChurch } from '../../../helper/helper.church';
 
 
 @Component({
@@ -38,7 +39,6 @@ export class IgrejaDadosComponent implements OnInit {
     this.form = new FormGroup({
       'nome': new FormControl('', Validators.required),
       'cnpj': new FormControl('', Validators.required),
-      'telefone': new FormControl('', Validators.required),
       'cpf': new FormControl({ value: '', disabled: true }),
     });
   }
@@ -80,6 +80,7 @@ export class IgrejaDadosComponent implements OnInit {
         console.log('entrou');
         this.form.reset();
         this.membro = null;
+        this.nomeValue = "";
       }
     });
   }
@@ -87,8 +88,7 @@ export class IgrejaDadosComponent implements OnInit {
   carregarObjeto() {
     let igreja = {} as any;
     igreja.nome = this.form.controls['nome'].value;
-    igreja.telefone = this.getTelefone();
-    igreja.cnpj = this.form.controls['cnpj'].value;
+    igreja.cnpj = HelperChurch.retirarFormatacaoCNPJ(this.form.controls['cnpj'].value);
     igreja.pastor = this.membro;
     return igreja;
   }
@@ -98,12 +98,4 @@ export class IgrejaDadosComponent implements OnInit {
     this.setEmiter();
   }
 
-  getTelefone() {
-    let telefone = this.form.controls['telefone'].value;
-    if (!telefone) {
-      return undefined;
-    } else {
-      return telefone;
-    }
-  }
 }

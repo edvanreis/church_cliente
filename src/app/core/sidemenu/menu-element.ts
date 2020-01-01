@@ -58,7 +58,7 @@ export const menus = [
         'sub': [
             {
                 'name': 'Pesquisar',
-                'link': 'igreja/cadastrar',
+                'link': 'igreja/pesquisar',
                 'icon': 'search',
                 'chip': false,
                 'open': false,

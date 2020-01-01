@@ -94,7 +94,7 @@ export class EnderecoComponent implements OnInit {
     this.endereco.complemento = this.form.controls['complemento'].value;
     this.endereco.bairro = endereco.bairro;
     this.endereco.logradouro = endereco.logradouro;
-    this.endereco.localiade = endereco.localiade;
+    this.endereco.localidade = endereco.localidade;
     this.endereco.uf = endereco.uf;
   }
 
@@ -104,7 +104,7 @@ export class EnderecoComponent implements OnInit {
     this.endereco.complemento = this.form.controls['complemento'].value;
     this.endereco.bairro = this.form.controls['bairro'].value;
     this.endereco.logradouro = this.form.controls['logradouro'].value;
-    this.endereco.localiade =this.form.controls['localidade'].value;
+    this.endereco.localidade =this.form.controls['localidade'].value;
     this.endereco.uf = this.form.controls['uf'].value;
   }
 

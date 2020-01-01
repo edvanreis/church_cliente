@@ -7,6 +7,7 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { IgrejaService } from '../../../service/igreja.service';
 import { take, startWith, map } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-igreja',
@@ -27,7 +28,10 @@ export class CadastrarIgrejaComponent implements OnInit {
   public filteredIgrejaSede: Observable<string[]>;
   public myControlIgrejaSede = new FormControl();
   public nomePastorValue;
-  constructor(private _emitirEventoService: EmitirEventoService, private _igrejaService: IgrejaService, private _notifierService: NotifierService) { }
+  constructor(private _emitirEventoService: EmitirEventoService, 
+              private _igrejaService: IgrejaService, 
+              private _notifierService: NotifierService,
+              private _router: Router) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -70,6 +74,7 @@ export class CadastrarIgrejaComponent implements OnInit {
     console.log(this.igreja);
     this._igrejaService.saveSede(this.igreja).pipe(take(1)).subscribe(item => {
       this.clearFieldsSede();
+      this.carregarComboIgrejaSede();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -78,9 +83,10 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   salvarFilial() {
     this.getDadosIgreja();
-    this.igreja.sede = this.igrejaSelecionada;
+    this.igreja.sede = {id:this.igrejaSelecionada.id};
     console.log(this.igreja);
     this._igrejaService.saveFilial(this.igreja).pipe(take(1)).subscribe(item => {
+      this.clearFieldFilial();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -122,7 +128,17 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   clearFieldFilial() {
     this.setEmiter();
-    this.nomeValue = null;
+    this.nomePastorValue = "";
+    this.nomeValue = "";
+  }
+
+  voltar() {
+    this._router.navigate(['/auth/igreja/pesquisar'], {
+      queryParams: {
+        janela: 'Novo',
+      },
+      skipLocationChange: true
+    });
   }
 
 

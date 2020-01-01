@@ -33,6 +33,7 @@ export class ContatosComponent implements OnInit {
   ngOnInit() {
     this._buildForm();
     this.getComboContatos();
+    this.getEmiter();
   }
 
   public contatos$: Observable<any[]>;

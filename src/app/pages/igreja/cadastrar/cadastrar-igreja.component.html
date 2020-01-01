@@ -10,16 +10,19 @@
           <br />
           <app-igreja-dados></app-igreja-dados>
           <app-endereco></app-endereco>
-          <app-contatos></app-contatos>  
-          <br/><br/>
+          <app-contatos></app-contatos>
+          <br /><br />
           <div>
             <button mat-raised-button color="primary" type="submit" (click)="salvarSede()">
               <i class="material-icons">save</i>Salvar</button>
+            <div fxFlex></div>
+            <button mat-raised-button color="warn" type="submit" (click)="voltar()">
+              <i class="material-icons">reply</i>Voltar</button>
           </div>
         </mat-tab>
         <mat-tab label="Filial">
           <app-igreja-dados></app-igreja-dados>
-          <app-endereco></app-endereco>      
+          <app-endereco></app-endereco>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
               <input type="text" placeholder="Igreja Sede" aria-label="Number" matInput [formControl]="myControlIgreja"
@@ -32,14 +35,17 @@
               </mat-autocomplete>
             </mat-form-field>
             <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nome" [(ngModel)]="nomePastorValue" desabled>
+              <input matInput placeholder="Pastor" [(ngModel)]="nomePastorValue" readonly>
             </mat-form-field>
           </div>
           <app-contatos></app-contatos>
-          <br/><br/>
+          <br /><br />
           <div>
             <button mat-raised-button color="primary" type="submit" (click)="salvarFilial()">
               <i class="material-icons">save</i>Salvar</button>
+            <div fxFlex></div>
+            <button mat-raised-button color="warn" type="submit" (click)="voltar()">
+              <i class="material-icons">reply</i>Voltar</button>
           </div>
         </mat-tab>
       </mat-tab-group>
