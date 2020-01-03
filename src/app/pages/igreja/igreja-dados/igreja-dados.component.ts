@@ -76,11 +76,18 @@ export class IgrejaDadosComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
+      console.log(item);
       if (item.type == 'save-ok') {
-        console.log('entrou');
         this.form.reset();
         this.membro = null;
         this.nomeValue = "";
+      }
+      if (item.type == 'dadosSede') {
+        this.membro = item.data.pastor;
+        this.form.controls['nome'].patchValue(item.data.nome);
+        this.form.controls['cnpj'].patchValue(item.data.cnpj);
+        this.form.controls['cpf'].patchValue(item.data.cpf);
+        this.nomeValue = item.data.pastor.nomeCompleto;
       }
     });
   }

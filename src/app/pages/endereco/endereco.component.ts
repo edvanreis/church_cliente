@@ -112,10 +112,24 @@ export class EnderecoComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
+      console.log(item.data);
       if (item.type == 'save-ok') {
         this.form.reset();
       }
+      if (item.type == 'endereco') {
+        this.carregarEnderecoEmiter(item.data)
+      }
     });
+  }
+
+  carregarEnderecoEmiter(endereco) {
+    this.form.controls['cep'].patchValue(endereco.cep);
+    this.form.controls['numero'].patchValue(endereco.numero);
+    this.form.controls['complemento'].patchValue(endereco.complemento);
+    this.form.controls['bairro'].patchValue(endereco.bairro);
+    this.form.controls['logradouro'].patchValue(endereco.logradouro);
+    this.form.controls['localidade'].patchValue(endereco.localidade);
+    this.form.controls['uf'].patchValue(endereco.uf);
   }
 
 

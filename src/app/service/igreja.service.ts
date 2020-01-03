@@ -24,8 +24,12 @@ export class IgrejaService {
   }
 
   getListSede() {
-    console.log(this._url+"obterSede");
-    return this.http.get(this._url+"obterSede")
+    return this.http.get(this._url+"obterListaSede")
+      .pipe(map((response: any) => response))
+  }
+
+  getSede(id) {
+    return this.http.get(this._url+id+"/obterSede")
       .pipe(map((response: any) => response))
   }
 }

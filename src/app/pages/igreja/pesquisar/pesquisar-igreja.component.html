@@ -24,6 +24,7 @@
             <th>CNPJ</th>
             <th>Pastor</th>
             <th>QTD Membros</th>
+            <th>CEP</th>
             <th>Bairro</th>
             <th>logradouro</th>
             <th>Cidade</th>
@@ -37,11 +38,12 @@
               <td>{{i.cnpj}}</td>
               <td>{{i.pastor.nomeCompleto}}</td>
               <td></td>
+              <td>{{i.endereco.cep}}</td>
               <td>{{i.endereco.bairro}}</td>
               <td>{{i.endereco.logradouro}}</td>
               <td>{{i.endereco.localidade}}</td>
-              <td>{{i.endereco.uf}}</td>
-              <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(i.id)"><i
+              <td>{{i.endereco.estado}}</td>
+              <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(i.id,'sede')"><i
                     class="material-icons">create</i></span>
                 <span title="Excluir" style="cursor: pointer;color:white" (click)="remover(i.id)"><i
                     class="material-icons">delete_forever</i></span>
@@ -54,11 +56,12 @@
               <td>{{f.cnpj}}</td>
               <td>{{f.pastor.nomeCompleto}}</td>
               <td></td>
+              <td>{{f.endereco.cep}}</td>
               <td>{{f.endereco.bairro}}</td>
               <td>{{f.endereco.logradouro}}</td>
               <td>{{f.endereco.localidade}}</td>
-              <td>{{f.endereco.uf}}</td>
-              <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(f.id)"><i
+              <td>{{f.endereco.estado}}</td>
+              <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(f.id,'filial')"><i
                     class="material-icons">create</i></span>
                 <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="remover(i.id)"><i
                     class="material-icons">delete_forever</i></span>

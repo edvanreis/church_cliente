@@ -59,11 +59,12 @@ export class PesquisarIgrejaComponent implements OnInit {
     });
   }
 
-  editar(id) {
+  editar(id,tipo) {
     this._router.navigate(['/auth/igreja/cadastrar'], {
       queryParams: {
         janela: 'Editar',
-        id: id
+        id: id,
+        tipo:tipo
       },
       skipLocationChange: true
     });

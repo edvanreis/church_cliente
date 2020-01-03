@@ -20,7 +20,7 @@
               <i class="material-icons">reply</i>Voltar</button>
           </div>
         </mat-tab>
-        <mat-tab label="Filial">
+        <mat-tab label="Filial" *ngIf="tipoEdicao!='sede'">
           <app-igreja-dados></app-igreja-dados>
           <app-endereco></app-endereco>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">

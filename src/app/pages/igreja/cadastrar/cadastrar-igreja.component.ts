@@ -7,7 +7,8 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { IgrejaService } from '../../../service/igreja.service';
 import { take, startWith, map } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Endereco } from '../../../model/Endereco';
 
 @Component({
   selector: 'app-cadastrar-igreja',
@@ -21,21 +22,26 @@ export class CadastrarIgrejaComponent implements OnInit {
   public igreja: any;
   public nomeValue: any;
   public dadosIgreja: any;
-  public endereco: any;
+  public endereco = {} as any
   public contatos: any;
   public myControlIgreja = new FormControl();
   public comboIgrejaSede = [];
   public filteredIgrejaSede: Observable<string[]>;
   public myControlIgrejaSede = new FormControl();
   public nomePastorValue;
+  public id:any;
+  public dadosSede = {} as any;
+  public tipoEdicao:any;
   constructor(private _emitirEventoService: EmitirEventoService, 
               private _igrejaService: IgrejaService, 
               private _notifierService: NotifierService,
-              private _router: Router) { }
+              private _router: Router,
+              private _avRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.getEmiter();
     this.carregarComboIgrejaSede();
+    this.getParams();
   }
 
   getEmiter(): void {
@@ -53,8 +59,16 @@ export class CadastrarIgrejaComponent implements OnInit {
     });
   }
 
-  setEmiter(): void {
-    this._emitirEventoService.emitir("save-ok", "save-ok");
+  setEmiter(save:boolean): void {
+    if(save){
+      this._emitirEventoService.emitir("save-ok", "save-ok");
+    }
+    if(this.dadosSede){
+      this._emitirEventoService.emitir("dadosSede",this.dadosSede);
+    }  
+    if(this.endereco){
+      this._emitirEventoService.emitir("endereco",this.endereco);
+    } 
   }
 
   getDadosIgreja() {
@@ -69,6 +83,15 @@ export class CadastrarIgrejaComponent implements OnInit {
     console.log(this.igreja);
   }
 
+  getParams() {
+    if (this._avRoute.snapshot.queryParamMap.get("id")) {
+      this.id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.getSede(this.id);
+    }
+    if (this._avRoute.snapshot.queryParamMap.get("tipo")) {
+      this.tipoEdicao = this._avRoute.snapshot.queryParamMap.get("tipo");
+    }
+  }
   salvarSede() {
     this.getDadosIgreja();
     console.log(this.igreja);
@@ -123,11 +146,11 @@ export class CadastrarIgrejaComponent implements OnInit {
   }
 
   clearFieldsSede() {
-    this.setEmiter();
+    this.setEmiter(true);
   }
 
   clearFieldFilial() {
-    this.setEmiter();
+    this.setEmiter(true);
     this.nomePastorValue = "";
     this.nomeValue = "";
   }
@@ -135,11 +158,43 @@ export class CadastrarIgrejaComponent implements OnInit {
   voltar() {
     this._router.navigate(['/auth/igreja/pesquisar'], {
       queryParams: {
-        janela: 'Novo',
+        //janela: 'Novo',
       },
       skipLocationChange: true
     });
   }
+
+  
+  getSede(id) {
+    this._igrejaService.getSede(id).pipe(take(1)).subscribe(item => {
+      console.log(item);
+      this.carregarDadosSede(item);
+      this.carregarEndereco(item.endereco);
+      this.setEmiter(false);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  carregarDadosSede(item) {
+    this.dadosSede.nome = item.nome
+    this.dadosSede.cnpj = item.cnpj;
+    this.dadosSede.pastor = item.pastor;
+  }
+
+  carregarEndereco(item) {
+    // console.log(item);
+    this.endereco = new Endereco();
+    this.endereco.cep = item.cep;
+    this.endereco.numero = item.numero;
+    this.endereco.complemento = item.complemento;
+    this.endereco.bairro = item.bairro;
+    this.endereco.logradouro = item.logradouro;
+    this.endereco.localidade = item.localidade;
+    this.endereco.uf = item.uf;
+  }
+
+
 
 
 
