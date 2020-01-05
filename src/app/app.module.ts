@@ -17,6 +17,7 @@ import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
 import { InterceptorService } from './service/interceptor.service';
 
 
+
 @NgModule({
   declarations: [
     AppComponent

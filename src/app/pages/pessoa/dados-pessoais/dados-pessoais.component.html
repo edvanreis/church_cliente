@@ -1,11 +1,11 @@
 <form form [formGroup]="form">
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="Nome" formControlName="nome" id="nome" (change)="change()" required>
+      <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" (change)="change()" required>
       <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
     </mat-form-field>
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" (change)="change()" required>
+      <input matInput  class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" (change)="change()" required>
       <mat-error *ngIf="!form.controls.sobrenome.valid">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
@@ -48,10 +48,10 @@
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" (change)="change()" required>
+      <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" (change)="change()" required>
     </mat-form-field>
     <mat-form-field class="example-full-width">
-      <input matInput placeholder="Profissão" formControlName="profissao" id="profissao" (change)="change()">
+      <input matInput class="input-upper" placeholder="Profissão" formControlName="profissao" id="profissao" (change)="change()">
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>

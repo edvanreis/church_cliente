@@ -14,8 +14,9 @@ import { PessoaModule } from '../pessoa/pessoa.module';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { ExcelService } from '../../service/excel.service';
 import { EtapaVisaoService } from '../../service/etapa-visao.service';
-import { EnderecoModule } from '../endereco/endereco.module';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro.component';
+import { EnderecoModule } from '../componentes/endereco/endereco.module';
+
 
 
 

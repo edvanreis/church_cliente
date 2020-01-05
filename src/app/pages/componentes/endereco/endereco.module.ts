@@ -5,7 +5,8 @@ import { MatCheckboxModule, MatSelectModule, MatOptionModule, MatButtonModule, M
 import { TextMaskModule } from 'angular2-text-mask';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { PipeModule } from '../../pipe/pipe/pipe.module';
+import { PipeModule } from '../../../pipe/pipe/pipe.module';
+
 
 @NgModule({
   imports: [

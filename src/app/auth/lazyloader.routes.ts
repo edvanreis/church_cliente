@@ -12,6 +12,7 @@ export const appRoutes: Routes = [{
         { path: 'perfil', loadChildren: '../pages/perfil/perfil.module#PerfilModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
         { path: 'permissoes', loadChildren: '../pages/permissoes/permissoes.module#PermissoesModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
         { path: 'igreja', loadChildren: '../pages/igreja/igreja.module#IgrejaModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
+        { path: 'celula', loadChildren: '../pages/celula/celula.module#CelulaModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
         
          
     ]

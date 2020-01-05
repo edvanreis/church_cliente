@@ -51,14 +51,36 @@ export const menus = [
         ]
     },
     {
-        'name': 'Igreja',
+        'name': 'Igrejas',
         'icon': 'account_balance',
         'link': false,
         'open': false,
         'sub': [
             {
-                'name': 'Pesquisar',
+                'name': 'Ver todas',
                 'link': 'igreja/pesquisar',
+                'icon': 'reorder',
+                'chip': false,
+                'open': false,
+            },
+            // {
+            //     'name': 'Pesquisar',
+            //     'link': 'membro/pesquisar',
+            //     'icon': 'search',
+            //     'chip': false,
+            //     'open': false,
+            // },
+        ]
+    },
+    {
+        'name': 'Células',
+        'icon': 'group',
+        'link': false,
+        'open': false,
+        'sub': [
+            {
+                'name': 'Pesquisar',
+                'link': 'celula/cadastrar',
                 'icon': 'search',
                 'chip': false,
                 'open': false,
