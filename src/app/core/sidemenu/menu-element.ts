@@ -29,6 +29,28 @@ export const menus = [
     //     ]
     // },
     {
+        'name': 'Visitantes',
+        'icon': 'person',
+        'link': false,
+        'open': false,
+        'sub': [
+            {
+                'name': 'Cadastrar',
+                'link': 'visitante/cadastrar',
+                'icon': 'person_add',
+                'chip': false,
+                'open': false,
+            },
+            {
+                'name': 'Pesquisar',
+                'link': 'visitante/pesquisar',
+                'icon': 'search',
+                'chip': false,
+                'open': false,
+            },
+        ]
+    },
+    {
         'name': 'Membros',
         'icon': 'person',
         'link': false,
@@ -73,6 +95,29 @@ export const menus = [
         ]
     },
     {
+        'name': 'Redes',
+        'icon': 'device_hub',
+        'link': false,
+        'open': false,
+        'sub': [
+            {
+                'name': 'Cadastrar',
+                'link': 'rede/cadastrar',
+                'icon': 'add',
+                // 'icon': 'search',
+                'chip': false,
+                'open': false,
+            },
+            // {
+            //     'name': 'Pesquisar',
+            //     'link': 'membro/pesquisar',
+            //     'icon': 'search',
+            //     'chip': false,
+            //     'open': false,
+            // },
+        ]
+    },
+    {
         'name': 'Células',
         'icon': 'group',
         'link': false,
@@ -81,6 +126,50 @@ export const menus = [
             {
                 'name': 'Pesquisar',
                 'link': 'celula/cadastrar',
+                'icon': 'search',
+                'chip': false,
+                'open': false,
+            },
+            // {
+            //     'name': 'Pesquisar',
+            //     'link': 'membro/pesquisar',
+            //     'icon': 'search',
+            //     'chip': false,
+            //     'open': false,
+            // },
+        ]
+    },
+    {
+        'name': 'Cargos',
+        'icon': 'work',
+        'link': false,
+        'open': false,
+        'sub': [
+            {
+                'name': 'Pesquisar',
+                'link': 'cargo/cadastrar',
+                'icon': 'search',
+                'chip': false,
+                'open': false,
+            },
+            // {
+            //     'name': 'Pesquisar',
+            //     'link': 'membro/pesquisar',
+            //     'icon': 'search',
+            //     'chip': false,
+            //     'open': false,
+            // },
+        ]
+    },
+    {
+        'name': 'Agendamentos',
+        'icon': 'calendar_today',
+        'link': false,
+        'open': false,
+        'sub': [
+            {
+                'name': 'Pesquisar',
+                'link': 'agendamento/cadastrar',
                 'icon': 'search',
                 'chip': false,
                 'open': false,
