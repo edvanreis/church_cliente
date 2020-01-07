@@ -15,6 +15,7 @@ export const appRoutes: Routes = [{
         { path: 'igreja', loadChildren: '../pages/igreja/igreja.module#IgrejaModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
         { path: 'celula', loadChildren: '../pages/celula/celula.module#CelulaModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
         { path: 'rede', loadChildren: '../pages/rede/rede.module#RedeModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
+        { path: 'agendamentos', loadChildren: '../pages/agendamentos/agendamentos.module#AgendamentosModule',  data: { role: 'master' }, canActivate: [AuthGuardService]},
        
         
          

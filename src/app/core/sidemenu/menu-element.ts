@@ -169,7 +169,7 @@ export const menus = [
         'sub': [
             {
                 'name': 'Pesquisar',
-                'link': 'agendamento/cadastrar',
+                'link': 'agendamentos/cadastrar',
                 'icon': 'search',
                 'chip': false,
                 'open': false,
