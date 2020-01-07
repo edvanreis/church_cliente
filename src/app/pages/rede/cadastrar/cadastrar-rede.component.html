@@ -11,6 +11,14 @@
             <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" required>
             <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
+          <mat-form-field>
+            <mat-label>Selecione...</mat-label>
+            <mat-select formControlName="redes" id="comboRede" >
+              <mat-option *ngFor="let item of comboRede" [value]="item.rede">
+                {{item.descRede}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field>

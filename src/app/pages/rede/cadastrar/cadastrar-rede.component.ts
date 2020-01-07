@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { RedeService } from '../../../service/rede.service';
 
 @Component({
   selector: 'app-cadastrar-rede',
@@ -9,11 +10,13 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class CadastrarRedeComponent implements OnInit {
 
   public form: FormGroup;
+  public comboRede = []
 
-  constructor() { }
+  constructor(private _service:RedeService) { }
 
   ngOnInit() {
     this._buildForm();
+    this.getComboContatos();
   }
 
   private _buildForm(): void {
@@ -21,8 +24,16 @@ export class CadastrarRedeComponent implements OnInit {
       'nome': new FormControl(''),
       'dataAbertura': new FormControl(''),
       'observacao': new FormControl(''),
-      'tipo': new FormControl(''),
+      'redes': new FormControl(''),
     });
   }
+
+  getComboContatos() {
+    this._service.tiposDeRedes().subscribe(item => {
+      this.comboRede = item;
+      // console.log(item);
+    });
+  }
+
 
 }
