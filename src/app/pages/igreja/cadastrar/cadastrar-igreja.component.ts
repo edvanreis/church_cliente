@@ -24,11 +24,11 @@ export class CadastrarIgrejaComponent implements OnInit {
   public dadosIgreja: any;
   public endereco = {} as any
   public contatos: any;
-  public myControlIgreja = new FormControl();
+  // public myControlIgreja = new FormControl();
   public comboIgrejaSede = [];
   public filteredIgrejaSede: Observable<string[]>;
   public myControlIgrejaSede = new FormControl();
-  public nomePastorValue;
+  public nomePastorValue:string;
   public id:any;
   public dadosSede = {} as any;
   public tipoEdicao:any;

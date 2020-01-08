@@ -6,11 +6,13 @@
     </mat-toolbar>
     <div class="cdk-container">
       <form form [formGroup]="form">
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+        <div fxLayout="row"  fxLayoutGap="20px">
           <mat-form-field class="example-full-width">
             <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" required>
             <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field>
             <mat-label>Selecione...</mat-label>
             <mat-select formControlName="redes" id="comboRede" >
@@ -19,14 +21,32 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-        </div>
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field>
             <input matInput [matDatepicker]="picker" placeholder="Data de abertura" formControlName="dataAbertura"  (dateChange)="changeData($event)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
           </mat-form-field>  
+        </div>
+        <!-- <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Data de abertura" formControlName="dataAbertura"  (dateChange)="changeData($event)">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+            <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>  
+        </div> -->
+        <div>
+          <mat-form-field class="example-full-width">
+            <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
+              [matAutocomplete]="auto" [(ngModel)]="nameIgreja">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
+                (onSelectionChange)="onSelectionChangedIgreja($event,option)">
+                {{option.nome}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="100px">
           <mat-form-field class="example-full-width">
@@ -35,6 +55,49 @@
           </mat-form-field>
         </div>
       </form>
+      <div>
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="Membro" aria-label="Number" matInput [formControl]="myControlMembro"
+            [matAutocomplete]="auto" [(ngModel)]="nomeValue" required>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedMembro($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
+          <i class="material-icons">add</i>adicionar</button>
+      </div>
+      <br/>
+      <div class="table-responsive" *ngIf="membros.length > 0">
+        <table>
+          <thead class="text-primary">
+            <th>Nome</th>
+            <th>Célula</th>
+            <th>Igreja</th>       
+            <th>Remover</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of membros">
+              <td>{{ m.nomeCompleto}}</td>
+              <td></td>
+              <td></td>
+              <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
+                    class="material-icons">delete</i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br/>
+      <br/>
+      <div>
+        <button mat-raised-button color="primary" type="submit" (click)="salvar()">
+          <i class="material-icons">save</i>Salvar</button>
+        <div fxFlex></div>
+        <button mat-raised-button color="warn" type="submit" (click)="voltar()">
+          <i class="material-icons">reply</i>Voltar</button>
+      </div>
     </div>
   </div>
 </div>

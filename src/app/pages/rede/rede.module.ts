@@ -5,7 +5,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { CadastrarRedeComponent } from './cadastrar/cadastrar-rede.component';
 import { PesquisarRedeComponent } from './pesquisar/pesquisar-rede.component';
 import { Routes, RouterModule } from '@angular/router';
-import { MatDatepickerModule, MatToolbarModule, MatButtonModule, MatInputModule, MatSelectModule, MatOptionModule } from '@angular/material';
+import { MatDatepickerModule, MatToolbarModule, MatButtonModule, MatInputModule, MatSelectModule, MatOptionModule, MatAutocompleteModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -25,6 +25,7 @@ const routes: Routes = [
     MatDatepickerModule,
     MatSelectModule,
     MatOptionModule,
+    MatAutocompleteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

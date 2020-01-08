@@ -7,12 +7,12 @@ import { MatAutocompleteModule, MatButtonModule, MatInputModule, MatOptionModule
 import { RouterModule, Routes } from '@angular/router';
 import { InterceptorService } from '../../service/interceptor.service';
 import { CadastrarIgrejaComponent } from './cadastrar/cadastrar-igreja.component';
-import { IgrejaDadosComponent } from './igreja-dados/igreja-dados.component';
 import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
 import { ContatosModule } from '../componentes/contatos/contatos.module';
+import { IgrejaDadosComponent } from '../componentes/igreja-dados/igreja-dados.component';
 
 
 

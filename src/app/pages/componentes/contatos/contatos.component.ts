@@ -97,7 +97,7 @@ export class ContatosComponent implements OnInit {
     }
   }
 
-  adicionarContato() {
+  adicionar() {
     let contato: string;
     let email: string;
     contato = this.preecherContato();
@@ -200,7 +200,7 @@ export class ContatosComponent implements OnInit {
   }
 
   //  remove uma linha da grid
-  removerContato(index): void {
+  remover(index): void {
     this.contatos.splice(index, 1);
     this.contatosGrid.splice(index, 1);
     this.setEmiter();
