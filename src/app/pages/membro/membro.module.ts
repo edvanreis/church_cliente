@@ -10,12 +10,12 @@ import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { EmitirEventoService } from '../../service/emitir-evento.service';
 import { InterceptorService } from '../../service/interceptor.service';
 import { MembroService } from '../../service/membro.service';
-import { PessoaModule } from '../pessoa/pessoa.module';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { ExcelService } from '../../service/excel.service';
 import { EtapaVisaoService } from '../../service/etapa-visao.service';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro.component';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
+import { PessoaModule } from '../componentes/pessoa/pessoa.module';
 
 
 

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MembroService } from '../../../service/membro.service';
-import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { MembroService } from '../../../../service/membro.service';
+import { EmitirEventoService } from '../../../../service/emitir-evento.service';
+
 
 @Component({
   selector: 'app-escolaridade',

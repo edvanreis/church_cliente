@@ -1,9 +1,10 @@
 import { Component, OnInit, OnChanges } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { MembroService } from '../../../service/membro.service';
-import { Pessoa } from '../../../model/pessoa';
-import { HelperChurch } from '../../../helper/helper.church';
+import { MembroService } from '../../../../service/membro.service';
+import { EmitirEventoService } from '../../../../service/emitir-evento.service';
+import { HelperChurch } from '../../../../helper/helper.church';
+import { Pessoa } from '../../../../model/pessoa';
+
 
 
 
