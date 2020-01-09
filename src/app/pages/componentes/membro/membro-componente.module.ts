@@ -21,6 +21,10 @@ import { MembroComponent } from './membro.component';
   ],
   declarations: [
     MembroComponent
-  ]
+  ],
+  exports: [
+    MembroComponent
+
+]
 })
 export class MembroComponenteModule { }

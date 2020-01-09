@@ -42,6 +42,7 @@ export class CadastrarIgrejaComponent implements OnInit {
     this.getEmiter();
     this.carregarComboIgrejaSede();
     this.getParams();
+    this.getEmiter();
   }
 
   getEmiter(): void {

@@ -8,6 +8,7 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { IgrejaService } from '../../../service/igreja.service';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
 
 @Component({
   selector: 'app-cadastrar-rede',
@@ -34,15 +35,15 @@ export class CadastrarRedeComponent implements OnInit {
 
 
   constructor(private _service:RedeService,
-              private _membroService: MembroService,
               private _notifierService: NotifierService,
-              private _igrejaService: IgrejaService) { }
+              private _igrejaService: IgrejaService,
+              private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this._buildForm();
     this.getComboRedes();
     this.carregarComboIgreja();
-    this.carregarComboMembro();
+    this.getEmiter();
   }
 
   private _buildForm(): void {
@@ -61,28 +62,13 @@ export class CadastrarRedeComponent implements OnInit {
     });
   }
 
-  carregarComboMembro() {
-    this._membroService.getList().pipe(take(1)).subscribe(item => {
-      this.comboMembro = item;
-      this.filteredMembro = this.myControlMembro.valueChanges
-        .pipe(
-          startWith(''),
-          map(value => this._filter(value, this.comboMembro))
-        );
-    }, error => {
-      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      console.log(item.data);
+      if (item.type == 'membro-comp') {
+        this.membro = item.data;
+      }
     });
-  }
-
-  private _filter(value: string, lista): string[] {
-    const filterValue = value.toLowerCase();
-    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
-  }
-
-
-  onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
-    console.log(option)
-    this.membro = option;
   }
 
   adicionar() {
@@ -91,6 +77,7 @@ export class CadastrarRedeComponent implements OnInit {
       return false;
     }
     this.membros.push(this.membro);
+    this.setEmiter();
   }
 
 
@@ -128,8 +115,21 @@ export class CadastrarRedeComponent implements OnInit {
   }
 
   salvar(){
-
+    console.log(this.obj());
   }
 
+  obj(){
+    return {
+      nome:this.form.controls['nome'].value,
+      igreja:this.igrejaSelecionada,
+      lideres:this.membros,
+      dataAbertura:this.form.controls['dataAbertura'].value,
+      rede:this.form.controls['redes'].value
+    }
+  }
+
+  setEmiter(): void {
+    this._emitirEventoService.emitir("rede", "");
+  }
 
 }

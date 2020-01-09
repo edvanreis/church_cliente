@@ -22,7 +22,7 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Data de abertura" formControlName="dataAbertura"  (dateChange)="changeData($event)">
+            <input matInput [matDatepicker]="picker"  placeholder="Data de abertura" formControlName="dataAbertura"  (dateChange)="changeData($event)">
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
@@ -56,7 +56,8 @@
         </div>
       </form>
       <div>
-        <mat-form-field class="example-full-width">
+        <app-membro [label]="label"></app-membro>
+        <!-- <mat-form-field class="example-full-width">
           <input type="text" placeholder="Membro" aria-label="Number" matInput [formControl]="myControlMembro"
             [matAutocomplete]="auto" [(ngModel)]="nomeValue" required>
           <mat-autocomplete #auto="matAutocomplete">
@@ -65,12 +66,11 @@
               {{option.nomeCompleto}}
             </mat-option>
           </mat-autocomplete>
-        </mat-form-field>
+        </mat-form-field> -->
         <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
           <i class="material-icons">add</i>adicionar</button>
       </div>
       <br/>
-      <app-membro [label]="label"></app-membro>
       <div class="table-responsive" *ngIf="membros.length > 0">
         <table>
           <thead class="text-primary">

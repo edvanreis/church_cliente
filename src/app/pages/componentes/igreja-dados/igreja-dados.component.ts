@@ -101,7 +101,7 @@ export class IgrejaDadosComponent implements OnInit {
   }
 
   change() {
-    console.log('teste');
+    // console.log('teste');
     this.setEmiter();
   }
 

@@ -5,6 +5,8 @@ import { Observable } from 'rxjs';
 import { take, startWith, map } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'app-membro',
@@ -18,11 +20,13 @@ export class MembroComponent implements OnInit {
   public filteredMembro: Observable<string[]>;
   public nomeValue:string;
   @Input('label') label; 
+  public membro:any;
 
-  constructor(private _membroService: MembroService, private _notifierService: NotifierService) { }
+  constructor(private _membroService: MembroService, private _notifierService: NotifierService,private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this.carregarComboMembro();
+    this.getEmiter();
   }
 
   carregarComboMembro() {
@@ -42,6 +46,30 @@ export class MembroComponent implements OnInit {
     const filterValue = value.toLowerCase();
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
+
+  setEmiter(): void {
+    this._emitirEventoService.emitir("membro-comp", this.membro);
+  }
+
+  onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
+    console.log(option)
+    this.membro = option;
+    this.setEmiter();
+  }
+
+  
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      console.log(item.type);
+      if (item.type == 'rede') {
+        this.membro = item.data;
+        this.nomeValue = item.data;
+      }
+
+    });
+  }
+
+
 
 
 }

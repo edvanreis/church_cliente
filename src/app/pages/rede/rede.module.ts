@@ -10,6 +10,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MembroComponent } from '../componentes/membro/membro.component';
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
+import { TextMaskModule } from 'angular2-text-mask';
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarRedeComponent , data: { animation: 'buttons' }},
