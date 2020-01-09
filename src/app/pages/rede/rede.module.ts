@@ -8,6 +8,8 @@ import { Routes, RouterModule } from '@angular/router';
 import { MatDatepickerModule, MatToolbarModule, MatButtonModule, MatInputModule, MatSelectModule, MatOptionModule, MatAutocompleteModule } from '@angular/material';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MembroComponent } from '../componentes/membro/membro.component';
+import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarRedeComponent , data: { animation: 'buttons' }},
@@ -26,6 +28,7 @@ const routes: Routes = [
     MatSelectModule,
     MatOptionModule,
     MatAutocompleteModule,
+    MembroComponenteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

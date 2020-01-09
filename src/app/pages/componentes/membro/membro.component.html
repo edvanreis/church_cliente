@@ -1,6 +1,6 @@
 <div>
   <mat-form-field class="example-full-width">
-    <input type="text" placeholder="{{label}}" aria-label="Number" matInput [formControl]="myControlMembro"
+    <input type="text" placeholder="Membro" aria-label="Number" matInput [formControl]="myControlMembro"
       [matAutocomplete]="auto" [(ngModel)]="nomeValue" required>
     <mat-autocomplete #auto="matAutocomplete">
       <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"

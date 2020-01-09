@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MembroService } from '../../../service/membro.service';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -17,6 +17,7 @@ export class MembroComponent implements OnInit {
   public comboMembro = [];
   public filteredMembro: Observable<string[]>;
   public nomeValue:string;
+  @Input('label') label; 
 
   constructor(private _membroService: MembroService, private _notifierService: NotifierService) { }
 

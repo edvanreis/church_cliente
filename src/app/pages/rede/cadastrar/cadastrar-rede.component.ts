@@ -30,6 +30,7 @@ export class CadastrarRedeComponent implements OnInit {
   public nomePastorValue:string;
   public myControlIgreja = new FormControl();
   public rede = {} as any;
+  public label:string = "Membro";
 
 
   constructor(private _service:RedeService,
