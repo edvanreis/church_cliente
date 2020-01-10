@@ -22,7 +22,7 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
-            <input matInput [matDatepicker]="picker"  placeholder="Data de abertura" formControlName="dataAbertura"  (dateChange)="changeData($event)">
+            <input matInput [matDatepicker]="picker"  placeholder="Data de abertura" formControlName="dataAbertura" >
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
@@ -50,8 +50,8 @@
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="100px">
           <mat-form-field class="example-full-width">
-            <textarea matInput placeholder="Descrição" formControlName="observacao"></textarea>
-            <mat-error *ngIf="!form.controls.observacao.valid">Campo Obrigatório</mat-error>
+            <textarea matInput placeholder="Descrição" formControlName="descricao"></textarea>
+            <mat-error *ngIf="!form.controls.descricao.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
       </form>

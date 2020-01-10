@@ -17,6 +17,11 @@ export class RedeService {
     return this.http.get(this._url + "tipoRedes")
       .pipe(tap((response: any) => response));
   }
+
+  save(rede) {
+    return this.http.post(this._url, rede)
+      .pipe(map((response: any) => response))
+  }
   
 
 }

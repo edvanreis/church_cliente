@@ -9,6 +9,7 @@ import { AlertType } from '../../../model/alert-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { IgrejaService } from '../../../service/igreja.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-cadastrar-rede',
@@ -37,7 +38,8 @@ export class CadastrarRedeComponent implements OnInit {
   constructor(private _service:RedeService,
               private _notifierService: NotifierService,
               private _igrejaService: IgrejaService,
-              private _emitirEventoService: EmitirEventoService) { }
+              private _emitirEventoService: EmitirEventoService,
+              private _datePipe: DatePipe) { }
 
   ngOnInit() {
     this._buildForm();
@@ -50,7 +52,7 @@ export class CadastrarRedeComponent implements OnInit {
     this.form = new FormGroup({
       'nome': new FormControl(''),
       'dataAbertura': new FormControl(''),
-      'observacao': new FormControl(''),
+      'descricao': new FormControl(''),
       'redes': new FormControl(''),
     });
   }
@@ -116,6 +118,11 @@ export class CadastrarRedeComponent implements OnInit {
 
   salvar(){
     console.log(this.obj());
+    this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
   }
 
   obj(){
@@ -123,13 +130,16 @@ export class CadastrarRedeComponent implements OnInit {
       nome:this.form.controls['nome'].value,
       igreja:this.igrejaSelecionada,
       lideres:this.membros,
-      dataAbertura:this.form.controls['dataAbertura'].value,
-      rede:this.form.controls['redes'].value
+      dataAbertura:this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy'),
+     rede:this.form.controls['redes'].value,
+      descricao:this.form.controls['descricao'].value
     }
   }
 
   setEmiter(): void {
     this._emitirEventoService.emitir("rede", "");
   }
+
+  
 
 }
