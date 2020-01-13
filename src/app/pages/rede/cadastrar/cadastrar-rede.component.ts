@@ -26,20 +26,20 @@ export class CadastrarRedeComponent implements OnInit {
   public filteredMembro: Observable<string[]>;
   public nomeValue;
   public membro: any;
-  public membros:any=[];
+  public membros: any = [];
   public filteredIgreja: Observable<string[]>;
   public igrejaSelecionada: any;
-  public nomePastorValue:string;
+  public nomePastorValue: string;
   public myControlIgreja = new FormControl();
   public rede = {} as any;
-  public label:string = "Membro";
+  public label: string = "Membro";
 
 
-  constructor(private _service:RedeService,
-              private _notifierService: NotifierService,
-              private _igrejaService: IgrejaService,
-              private _emitirEventoService: EmitirEventoService,
-              private _datePipe: DatePipe) { }
+  constructor(private _service: RedeService,
+    private _notifierService: NotifierService,
+    private _igrejaService: IgrejaService,
+    private _emitirEventoService: EmitirEventoService,
+    private _datePipe: DatePipe) { }
 
   ngOnInit() {
     this._buildForm();
@@ -54,6 +54,7 @@ export class CadastrarRedeComponent implements OnInit {
       'dataAbertura': new FormControl(''),
       'descricao': new FormControl(''),
       'redes': new FormControl(''),
+      'nomePastor': new FormControl('')
     });
   }
 
@@ -74,7 +75,7 @@ export class CadastrarRedeComponent implements OnInit {
   }
 
   adicionar() {
-    if(!this.membro){
+    if (!this.membro) {
       this._notifierService.notify(AlertType.Error, "Erro:campo membro em branco!");
       return false;
     }
@@ -90,9 +91,9 @@ export class CadastrarRedeComponent implements OnInit {
   onSelectionChangedIgreja($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
     if (option.pastor) {
-      this.nomePastorValue = option.pastor.nomeCompleto;
+      this.form.controls['nomePastor'].patchValue(option.pastor.nomeCompleto);
     } else {
-      this.nomePastorValue = null;
+      this.form.controls['nomePastor'].patchValue('');
     }
   }
 
@@ -116,7 +117,7 @@ export class CadastrarRedeComponent implements OnInit {
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
-  salvar(){
+  salvar() {
     console.log(this.obj());
     this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
@@ -125,14 +126,14 @@ export class CadastrarRedeComponent implements OnInit {
     });
   }
 
-  obj(){
+  obj() {
     return {
-      nome:this.form.controls['nome'].value,
-      igreja:this.igrejaSelecionada,
-      lideres:this.membros,
-      dataAbertura:this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy'),
-     rede:this.form.controls['redes'].value,
-      descricao:this.form.controls['descricao'].value
+      nome: this.form.controls['nome'].value,
+      igreja: this.igrejaSelecionada,
+      lideres: this.membros,
+      dataAbertura: this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy'),
+      rede: this.form.controls['redes'].value,
+      descricao: this.form.controls['descricao'].value
     }
   }
 
@@ -140,6 +141,6 @@ export class CadastrarRedeComponent implements OnInit {
     this._emitirEventoService.emitir("rede", "");
   }
 
-  
+
 
 }

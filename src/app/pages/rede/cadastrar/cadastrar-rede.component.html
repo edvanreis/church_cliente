@@ -36,7 +36,7 @@
             <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
           </mat-form-field>  
         </div> -->
-        <div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="example-full-width">
             <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
               [matAutocomplete]="auto" [(ngModel)]="nameIgreja">
@@ -46,6 +46,9 @@
                 {{option.nome}}
               </mat-option>
             </mat-autocomplete>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Pastor" formControlName="nomePastor" readonly>
           </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="100px">

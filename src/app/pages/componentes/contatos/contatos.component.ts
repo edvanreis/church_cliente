@@ -130,8 +130,8 @@ export class ContatosComponent implements OnInit {
     this.contatosGrid.forEach(element => {
       console.log(element);
       console.log(this.form.controls['emailPrincipal'].value);
-      if (element.emailPrincial) {
-        if (element.emailPrincial == this.form.controls['emailPrincipal'].value) {
+      if (element.emailPrincipal) {
+        if (element.emailPrincipal == this.form.controls['emailPrincipal'].value) {
           possuiEmailPrincipal = true;
         }
       }
@@ -150,14 +150,14 @@ export class ContatosComponent implements OnInit {
       email: this.isEmail,
       telefone: this.isTelefone,
       celular: this.isCelular,
-      emailPrincial: this.form.controls['emailPrincipal'].value,
+      emailPrincipal: this.form.controls['emailPrincipal'].value,
     });
     // console.log(tipo);
     let obj = new Contatos();
     obj.tipo = tipoSelected;
     obj.contato = contato;
     obj.whatsapp = this.form.controls['whatsapp'].value;
-    obj.emailPrincial = this.form.controls['emailPrincipal'].value;
+    obj.emailPrincipal = this.form.controls['emailPrincipal'].value;
     this.contatos.push(obj);
     this.clearInputContato();
     this.setEmiter();
