@@ -1,16 +1,17 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { InterceptorService } from '../../service/interceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { CadastrarRedeComponent } from './cadastrar/cadastrar-rede.component';
-import { PesquisarRedeComponent } from './pesquisar/pesquisar-rede.component';
-import { Routes, RouterModule } from '@angular/router';
-import { MatDatepickerModule, MatToolbarModule, MatButtonModule, MatInputModule, MatSelectModule, MatOptionModule, MatAutocompleteModule } from '@angular/material';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MembroComponent } from '../componentes/membro/membro.component';
+import { MatAutocompleteModule, MatButtonModule, MatDatepickerModule, MatInputModule, MatOptionModule, MatSelectModule, MatToolbarModule } from '@angular/material';
+import { RouterModule, Routes } from '@angular/router';
+import { InterceptorService } from '../../service/interceptor.service';
+import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
-import { TextMaskModule } from 'angular2-text-mask';
+import { CadastrarRedeComponent } from './cadastrar/cadastrar-rede.component';
+import { PesquisarRedeComponent } from './pesquisar/pesquisar-rede.component';
+
+
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarRedeComponent , data: { animation: 'buttons' }},
@@ -30,6 +31,7 @@ const routes: Routes = [
     MatOptionModule,
     MatAutocompleteModule,
     MembroComponenteModule,
+    IgrejasCompenenteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

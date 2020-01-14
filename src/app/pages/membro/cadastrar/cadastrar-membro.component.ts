@@ -10,6 +10,7 @@ import { take } from 'rxjs/operators';
 import { EnderecoService } from '../../../service/endereco.service';
 import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { Observable } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 
 @Component({
@@ -357,4 +358,6 @@ export class CadastrarMembroComponent implements OnInit {
   setEmiter(): void {
     this._emitirEventoService.emitir("save-ok", "save-ok");
   }
+
+ 
 }

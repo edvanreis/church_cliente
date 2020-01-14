@@ -65,6 +65,10 @@ export class MembroComponent implements OnInit {
         this.membro = item.data;
         this.nomeValue = item.data;
       }
+      if (item.type == 'save-ok') {
+        this.membro = '';
+        this.nomeValue = '';
+      }
 
     });
   }

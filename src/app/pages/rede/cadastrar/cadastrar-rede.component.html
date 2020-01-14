@@ -22,7 +22,7 @@
             </mat-select>
           </mat-form-field>
           <mat-form-field>
-            <input matInput [matDatepicker]="picker"  placeholder="Data de abertura" formControlName="dataAbertura" >
+            <input matInput [matDatepicker]="picker"  placeholder="Data de abertura" formControlName="dataAbertura" readonly>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
@@ -37,18 +37,9 @@
           </mat-form-field>  
         </div> -->
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+         <app-igrejas></app-igrejas>
           <mat-form-field class="example-full-width">
-            <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
-              [matAutocomplete]="auto" [(ngModel)]="nameIgreja">
-            <mat-autocomplete #auto="matAutocomplete">
-              <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
-                (onSelectionChange)="onSelectionChangedIgreja($event,option)">
-                {{option.nome}}
-              </mat-option>
-            </mat-autocomplete>
-          </mat-form-field>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Pastor" formControlName="nomePastor" readonly>
+            <input matInput placeholder="Pastor" formControlName="nomePastor" >
           </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="100px">
