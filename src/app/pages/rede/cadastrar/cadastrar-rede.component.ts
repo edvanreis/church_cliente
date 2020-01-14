@@ -1,10 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs';
-import { map, startWith, take } from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { IgrejaService } from '../../../service/igreja.service';
