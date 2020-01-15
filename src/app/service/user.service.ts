@@ -15,12 +15,15 @@ export class UserService {
 
   constructor(public http: HttpClient) { }
 
+  currentUser(){
+    return localStorage.getItem("currentuser");
+  }
+
   isLogged() {
-    const user = localStorage.getItem("currentuser");
+    const user = this.currentUser();
     if (user) {
       this.autenticadoEmitter.emit(user);
     }
-    console.log(user);
     return JSON.parse(user);
   }
 
@@ -35,18 +38,19 @@ export class UserService {
  * @param permissao 
  */
   hasPermission(permissao): boolean {
-    const user = this.isLogged();
+    const user = this.currentUser();
     let temPermissao = false;
-    if (user) {
+    if ( user ){
       const permissoes = this.permissions();
-      if (permissoes) {
-        let tem = permissoes.filter((item: any) => item.authority == permissao);
-        if (tem.length) {
-          temPermissao = true;
-        }
+      if( permissoes ){
+        permissoes.forEach(map =>{
+          if( map == permissao){
+            temPermissao = true;
+          }
+        });
       }
     }
-
+    
     return temPermissao;
   }
 
@@ -54,12 +58,11 @@ export class UserService {
  * Obtem as permissões do usuário logado
  */
   permissions(): Array<string> {
-    const user = this.isLogged();
-    if (user) {
-      console.log(user);
-      return user.authorities;
+    const user = this.currentUser();
+    if ( user ){
+      return JSON.parse(user).permissoes;
     }
-    return;
+    return ;
   }
 
   clear() {
@@ -87,7 +90,6 @@ export class UserService {
   }
 
   alterarSenha(obj) {
-    console.log(this._url + "alterarSenha", obj);
     return this.http.post(this._url + "alterarSenha", obj)
       .pipe(map((response: any) => response))
   }

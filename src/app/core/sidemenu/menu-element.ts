@@ -1,38 +1,18 @@
-export const menus = [
+export const menuElement = [
     {
         'name': 'Dashboard',
         'icon': 'dashboard',
         'link': '/auth/dashboard',
         'open': false,
         'chip': { 'value': 1, 'color': 'accent' },
+        'visible': false
     },
-    // {
-    //     'name': 'Visitannte',
-    //     'icon': 'person',
-    //     'open': false,
-    //     'link': false,
-    //     'sub': [
-    //         {
-    //             'name': 'Cadastrar',
-    //             'link': 'membro/cadastrar',
-    //             'icon': 'person_add',
-    //             'chip': false,
-    //             'open': false,
-    //         },
-    //         {
-    //             'name': 'Pesquisar',
-    //             'link': 'membro/pesquisar',
-    //             'icon': 'search',
-    //             'chip': false,
-    //             'open': false,
-    //         },
-    //     ]
-    // },
     {
         'name': 'Visitantes',
         'icon': 'person',
         'link': false,
         'open': false,
+        'visible': false,
         'sub': [
             {
                 'name': 'Cadastrar',
@@ -40,6 +20,7 @@ export const menus = [
                 'icon': 'person_add',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
             {
                 'name': 'Pesquisar',
@@ -47,6 +28,7 @@ export const menus = [
                 'icon': 'search',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
         ]
     },
@@ -55,6 +37,7 @@ export const menus = [
         'icon': 'person',
         'link': false,
         'open': false,
+        'visible': false,
         'sub': [
             {
                 'name': 'Cadastrar',
@@ -62,6 +45,7 @@ export const menus = [
                 'icon': 'person_add',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
             {
                 'name': 'Pesquisar',
@@ -69,6 +53,7 @@ export const menus = [
                 'icon': 'search',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
         ]
     },
@@ -77,6 +62,7 @@ export const menus = [
         'icon': 'account_balance',
         'link': false,
         'open': false,
+        'visible': false,
         'sub': [
             {
                 'name': 'Ver todas',
@@ -84,14 +70,8 @@ export const menus = [
                 'icon': 'reorder',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
-            // {
-            //     'name': 'Pesquisar',
-            //     'link': 'membro/pesquisar',
-            //     'icon': 'search',
-            //     'chip': false,
-            //     'open': false,
-            // },
         ]
     },
     {
@@ -99,22 +79,16 @@ export const menus = [
         'icon': 'device_hub',
         'link': false,
         'open': false,
+        'visible': false,
         'sub': [
             {
                 'name': 'Cadastrar',
                 'link': 'rede/cadastrar',
                 'icon': 'add',
-                // 'icon': 'search',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
-            // {
-            //     'name': 'Pesquisar',
-            //     'link': 'membro/pesquisar',
-            //     'icon': 'search',
-            //     'chip': false,
-            //     'open': false,
-            // },
         ]
     },
     {
@@ -122,6 +96,7 @@ export const menus = [
         'icon': 'group',
         'link': false,
         'open': false,
+        'visible': false,
         'sub': [
             {
                 'name': 'Pesquisar',
@@ -129,6 +104,7 @@ export const menus = [
                 'icon': 'search',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
             // {
             //     'name': 'Pesquisar',
@@ -144,6 +120,7 @@ export const menus = [
         'icon': 'work',
         'link': false,
         'open': false,
+        'visible': false,
         'sub': [
             {
                 'name': 'Pesquisar',
@@ -151,6 +128,7 @@ export const menus = [
                 'icon': 'search',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
             // {
             //     'name': 'Pesquisar',
@@ -166,6 +144,7 @@ export const menus = [
         'icon': 'calendar_today',
         'link': false,
         'open': false,
+        'visible': false,
         'sub': [
             {
                 'name': 'Pesquisar',
@@ -173,6 +152,7 @@ export const menus = [
                 'icon': 'search',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
             // {
             //     'name': 'Pesquisar',
@@ -188,6 +168,7 @@ export const menus = [
         'icon': 'build',
         'open': false,
         'link': false,
+        'visible': false,
         'sub': [
             {
                 'name': 'Usuario',
@@ -195,6 +176,7 @@ export const menus = [
                 'icon': 'person',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
             {
                 'name': 'Perfil',
@@ -202,6 +184,7 @@ export const menus = [
                 'icon': 'people',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
             {
                 'name': 'Permissões',
@@ -209,6 +192,7 @@ export const menus = [
                 'icon': 'vpn_key',
                 'chip': false,
                 'open': false,
+                'visible': false,
             },
         ]
     },

@@ -42,4 +42,12 @@ export class TokenService {
     const dateExpiration = JSON.parse(localStorage.getItem(this.tokenExpire));
     return new Date().getTime() > dateExpiration;
   }
+
+  isTokenExpired(token?: string): boolean {
+    if(!token) token = this.retrieveToken();
+    if(!token) return true;
+
+    const dateExpiration = JSON.parse(localStorage.getItem(this.tokenExpire));
+    return new Date().getTime() > dateExpiration;
+  }
 }

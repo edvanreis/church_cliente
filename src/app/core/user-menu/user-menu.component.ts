@@ -33,7 +33,10 @@ export class UserMenuComponent implements OnInit {
 
 
 	ngOnInit() {
-
+		const user = this._userService.currentUser();
+		if( user ){
+			this.currentUser = JSON.parse(user).name;
+		}
 	}
 
 	logout() {

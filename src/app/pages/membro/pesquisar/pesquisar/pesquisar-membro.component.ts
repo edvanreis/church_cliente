@@ -12,6 +12,7 @@ import { HelperChurch } from '../../../../helper/helper.church';
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { EtapaVisaoService } from '../../../../service/etapa-visao.service';
+import { UserService } from '../../../../service/user.service';
 
 
 @Component({
@@ -27,7 +28,7 @@ export class PesquisarMembroComponent implements OnInit {
     private _notifierService: NotifierService,
     private _excelService: ExcelService,
     private _datePipe: DatePipe,
-    private _etapaVisao: EtapaVisaoService) { }
+    private _etapaVisao: EtapaVisaoService, private user: UserService) { }
 
   public etapa$: Observable<any[]>;
   public membro: any;
@@ -57,6 +58,8 @@ export class PesquisarMembroComponent implements OnInit {
     this.getComboEstadoCivil();
     this._buildFormDate();
     this.getComboEtapaVisao();
+    console.log(JSON.parse(this.user.currentUser()));
+    console.log(JSON.parse(this.user.currentUser()).name);
   }
 
   private _buildForm(): void {
