@@ -3,10 +3,12 @@
     <input type="text" placeholder="{{label}}" aria-label="Number" matInput [formControl]="myControlMembro"
       [matAutocomplete]="auto" [(ngModel)]="nomeValue" required>
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
-        (onSelectionChange)="onSelectionChangedMembro($event,option)">
-        {{option.nomeCompleto}}
-      </mat-option>
+      <mat-optgroup *ngFor="let group of filteredMembro | async" [label]="group.nomeCompleto">
+        <mat-option *ngFor="let option of group.options" [value]="option"
+          (onSelectionChange)="onSelectionChangedMembro($event,option)">
+          {{option.nomeCompleto}}
+        </mat-option>
+      </mat-optgroup>
     </mat-autocomplete>
   </mat-form-field>
 </div>

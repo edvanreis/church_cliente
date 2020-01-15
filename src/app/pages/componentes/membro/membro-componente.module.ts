@@ -17,14 +17,13 @@ import { MembroComponent } from './membro.component';
     MatDatepickerModule,
     MatSelectModule,
     MatOptionModule,
-    MatAutocompleteModule,
+    MatAutocompleteModule
   ],
   declarations: [
     MembroComponent
   ],
   exports: [
     MembroComponent
-
 ]
 })
 export class MembroComponenteModule { }

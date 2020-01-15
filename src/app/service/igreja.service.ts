@@ -23,6 +23,12 @@ export class IgrejaService {
       .pipe(map((response: any) => response))
   }
 
+  
+  getList() {
+    return this.http.get(this._url+"obterLista")
+      .pipe(map((response: any) => response))
+  }
+
   getListSede() {
     return this.http.get(this._url+"obterListaSede")
       .pipe(map((response: any) => response))

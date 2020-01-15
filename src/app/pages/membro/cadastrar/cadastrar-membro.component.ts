@@ -10,6 +10,7 @@ import { take } from 'rxjs/operators';
 import { EnderecoService } from '../../../service/endereco.service';
 import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { Observable } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 
 @Component({
@@ -178,14 +179,14 @@ export class CadastrarMembroComponent implements OnInit {
       email: this.isEmail,
       telefone: this.isTelefone,
       celular: this.isCelular,
-      emailPrincial: this.form.controls['emailPrincipal'].value,
+      emailPrincipal: this.form.controls['emailPrincipal'].value,
     });
     // console.log(tipo);
     let obj = new Contatos();
     obj.tipo = tipoSelected;
     obj.contato = contato;
     obj.whatsapp = this.form.controls['whatsapp'].value;
-    obj.emailPrincial = this.form.controls['emailPrincipal'].value;
+    obj.emailPrincipal = this.form.controls['emailPrincipal'].value;
     this.contatos.push(obj);
     this.clearInputContato();
   }
@@ -357,4 +358,6 @@ export class CadastrarMembroComponent implements OnInit {
   setEmiter(): void {
     this._emitirEventoService.emitir("save-ok", "save-ok");
   }
+
+ 
 }
