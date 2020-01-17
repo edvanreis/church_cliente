@@ -13,6 +13,7 @@ import { MembroComponenteModule } from '../componentes/membro/membro-componente.
 import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
+import { RedesComponenteModule } from '../componentes/redes/redes-componente.module';
 
 
 
@@ -38,6 +39,7 @@ const routes: Routes = [
     PipeModule,
     MatSelectModule,
     MatOptionModule,
+    RedesComponenteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

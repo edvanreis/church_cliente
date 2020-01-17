@@ -26,11 +26,11 @@ export class IgrejasComponent implements OnInit {
     private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
-    this.carregarComboIgreja();
+    this.carregarIgrejas();
     this.getEmiter();
   }
 
-  carregarComboIgreja() {
+  carregarIgrejas() {
 
     this._igrejaService.getList().pipe(take(1)).subscribe(item => {
       this.comboIgrejas = item;
@@ -38,19 +38,19 @@ export class IgrejasComponent implements OnInit {
       this.filteredIgreja = this.myControlIgreja.valueChanges
         .pipe(
           startWith(''),
-          map(value => this._filterIgreja(value, this.comboIgrejas))
+          map(value => this._filter(value, this.comboIgrejas))
         );
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
     });
   }
 
-  private _filterIgreja(value: string, lista): string[] {
+  private _filter(value: string, lista): string[] {
     const filterValue = value.toLowerCase();
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
-  onSelectionChangedIgreja($event: MatAutocompleteSelectedEvent, option) {
+  onSelectionChanged($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
     this.setEmiter();
   }

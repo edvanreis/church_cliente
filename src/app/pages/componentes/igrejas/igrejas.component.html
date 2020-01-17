@@ -4,7 +4,7 @@
     [matAutocomplete]="auto" [(ngModel)]="nomeValue">
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
-      (onSelectionChange)="onSelectionChangedIgreja($event,option)">
+      (onSelectionChange)="onSelectionChanged($event,option)">
       {{option.nome}}
     </mat-option>
   </mat-autocomplete>

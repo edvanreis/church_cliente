@@ -25,11 +25,11 @@ export class MembroComponent implements OnInit {
   constructor(private _membroService: MembroService, private _notifierService: NotifierService,private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
-    this.carregarComboMembro();
+    this.carregarMembro();
     this.getEmiter();
   }
 
-  carregarComboMembro() {
+  carregarMembro() {
     this._membroService.getList().pipe(take(1)).subscribe(item => {
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges

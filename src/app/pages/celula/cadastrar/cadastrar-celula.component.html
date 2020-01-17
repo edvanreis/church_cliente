@@ -21,7 +21,8 @@
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Horário" [textMask]="{mask: maskHorario}" formControlName="horario" id="horario" required>
+            <input matInput placeholder="Horário" [textMask]="{mask: maskHorario}" formControlName="horario"
+              id="horario" required>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Turno</mat-label>
@@ -35,8 +36,16 @@
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field>
             <mat-label>Dia da semana</mat-label>
-            <mat-select formControlName="diaSemana" id="diaSemana" required> 
+            <mat-select formControlName="diaSemana" id="diaSemana" required>
               <mat-option *ngFor="let item of comboSemana | keyValue" [value]="item.key">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Tipo de Célula</mat-label>
+            <mat-select formControlName="tipo" id="tipo" required>
+              <mat-option *ngFor="let item of comboTipoCelula | keyValue" [value]="item.key">
                 {{item.value}}
               </mat-option>
             </mat-select>
@@ -47,7 +56,10 @@
         <app-membro [label]="lider"></app-membro>
         <app-membro [label]="anfitriao"></app-membro>
       </div>
-      <app-igrejas></app-igrejas>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+        <app-igrejas></app-igrejas>
+        <app-redes></app-redes>
+      </div>
       <app-endereco></app-endereco>
       <br />
       <br />

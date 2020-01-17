@@ -18,6 +18,7 @@ export class CadastrarCelulaComponent implements OnInit {
   public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/]
   public comboSemana = [];
   public comboTurno = [];
+  public comboTipoCelula = [];
 
   constructor(private _service: CelulaService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
 
@@ -25,6 +26,7 @@ export class CadastrarCelulaComponent implements OnInit {
     this._buildForm();
     this.getComboSemana();
     this.getComboTurno();
+    this.carregarTipoCelula();
   }
 
   getEmiter(): void {
@@ -65,6 +67,13 @@ export class CadastrarCelulaComponent implements OnInit {
   getComboTurno() {
     this._service.carregarTurno().subscribe(item => {
       this.comboTurno = item;
+      // console.log(item);
+    });
+  }
+
+  carregarTipoCelula() {
+    this._service.carregarTipoCelula().subscribe(item => {
+      this.comboTipoCelula = item;
       // console.log(item);
     });
   }

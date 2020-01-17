@@ -23,4 +23,9 @@ export class CelulaService {
       .pipe(tap((response: any) => response));
   }
 
+  carregarTipoCelula() {
+    return this.http.get(this._url + "tipoCelula")
+      .pipe(tap((response: any) => response));
+  }
+
 }
