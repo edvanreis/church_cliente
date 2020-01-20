@@ -53,7 +53,7 @@ export class RedesComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       console.log(item.type);
-      if (item.type == 'rede') {
+      if (item.type == 'add') {
         this.redeSelecionada = item.data;
         this.nomeValue = item.data;
       }

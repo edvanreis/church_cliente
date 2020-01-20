@@ -18,11 +18,11 @@ export class MembroComponent implements OnInit {
   public myControlMembro = new FormControl();
   public comboMembro = [];
   public filteredMembro: Observable<string[]>;
-  public nomeValue:string;
-  @Input('label') label; 
-  public membro:any;
+  public nomeValue: string;
+  @Input('label') label;
+  public membro: any;
 
-  constructor(private _membroService: MembroService, private _notifierService: NotifierService,private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _membroService: MembroService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this.carregarMembro();
@@ -48,23 +48,36 @@ export class MembroComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir("membro-comp", this.membro);
+
+    if (this.label == 'Lider') {
+      this._emitirEventoService.emitir("membro-comp-lider", this.membro);
+    } else if (this.label == 'Anfitrião') {
+      this._emitirEventoService.emitir("membro-comp-anfitriao", this.membro);
+    } else if (this.label == 'Supervisor') {
+      this._emitirEventoService.emitir("membro-comp-supervisor", this.membro);
+    }else if (this.label == 'Co-Lider') {
+        this._emitirEventoService.emitir("membro-comp-coLider", this.membro);
+    } else {
+      this._emitirEventoService.emitir("membro-comp", this.membro);
+    }
+
   }
 
   onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
-    console.log(option)
+    // console.log(option)
     this.membro = option;
     this.setEmiter();
   }
 
-  
+
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       console.log(item.type);
-      if (item.type == 'rede') {
+      if (item.type == 'add') {
         this.membro = item.data;
         this.nomeValue = item.data;
       }
+  
       if (item.type == 'save-ok') {
         this.membro = '';
         this.nomeValue = '';

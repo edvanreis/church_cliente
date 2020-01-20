@@ -28,4 +28,9 @@ export class CelulaService {
       .pipe(tap((response: any) => response));
   }
 
+  save(celula) {
+    return this.http.post(this._url, celula)
+      .pipe(map((response: any) => response))
+  }
+
 }
