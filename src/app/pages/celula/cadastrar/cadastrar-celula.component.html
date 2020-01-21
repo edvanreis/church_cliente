@@ -74,20 +74,29 @@
         </mat-form-field>
       </div>
       <div>
-        <app-membro [label]="supervisor"></app-membro>
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="Dicipulador" aria-label="Number" matInput [formControl]="myControlMembro" 
+            [matAutocomplete]="auto" [(ngModel)]="membroValue" required>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChanged($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
           <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
           <i class="material-icons">add</i>adicionar</button>
       </div>
       <br />
       <br />
-      <div class="table-responsive" *ngIf="supervisores.length > 0">
+      <div class="table-responsive" *ngIf="dicipuladores.length > 0">
         <table>
           <thead class="text-primary">
             <th>Nome</th>    
             <th>Remover</th>
           </thead>
           <tbody>
-            <tr *ngFor="let m of supervisores">
+            <tr *ngFor="let m of dicipuladores">
               <td>{{ m.nomeCompleto}}</td>
               <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
                     class="material-icons">delete</i></span></td>

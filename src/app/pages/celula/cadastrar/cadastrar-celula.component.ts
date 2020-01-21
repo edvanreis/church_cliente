@@ -5,7 +5,10 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { CelulaService } from '../../../service/celula.service';
 import { DatePipe } from '@angular/common';
 import { AlertType } from '../../../model/alert-type';
-import { take } from 'rxjs/operators';
+import { take, startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { MembroService } from '../../../service/membro.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
   selector: 'app-cadastrar-celula',
@@ -30,15 +33,20 @@ export class CadastrarCelulaComponent implements OnInit {
   public endereco:any;
   public liderSelecionado: any;
   public anfitriaoSelecionado: any;
-  public supervisorSelecionado: any;
+  public dicipuladorSelecionado: any;
   public coLiderSelecionado: any;
-  public supervisores = [];
+  public dicipuladores = [];
+  public comboMembro = [];
+  public filteredMembro: Observable<string[]>;
+  public membroValue: string;
+  public myControlMembro = new FormControl();
 
 
   constructor(private _service: CelulaService, 
               private _notifierService: NotifierService, 
               private _emitirEventoService: EmitirEventoService,
-              private _datePipe: DatePipe) { }
+              private _datePipe: DatePipe,
+              private _membroService: MembroService) { }
 
   ngOnInit() {
     this._buildForm();
@@ -46,6 +54,7 @@ export class CadastrarCelulaComponent implements OnInit {
     this.getComboTurno();
     this.carregarTipoCelula();
     this.getEmiter();
+    this.carregarMembro();
   }
 
   getEmiter(): void {
@@ -55,10 +64,7 @@ export class CadastrarCelulaComponent implements OnInit {
         this.liderSelecionado = item.data;
         console.log(this.liderSelecionado);
       }
-      if (item.type == 'membro-comp-supervisor') {
-        this.supervisorSelecionado = item.data;
-        console.log(this.supervisorSelecionado);
-      }
+   
       if (item.type == 'membro-comp-anfitriao') {
         this.anfitriaoSelecionado = item.data;
         console.log(this.anfitriaoSelecionado);
@@ -115,7 +121,7 @@ export class CadastrarCelulaComponent implements OnInit {
 
   salvar() {
     this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
-      this.setEmiter(true);
+      this.setEmiter();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -132,9 +138,9 @@ export class CadastrarCelulaComponent implements OnInit {
       tipo: this.form.controls['tipo'].value,
       igreja:this.igrejaSelecionada,
       rede:this.redeSelecionada,
-      endereo:this.endereco,
+      endereco:this.endereco,
       observacao:this.observacao,
-      supervisores:this.supervisores,
+      supervisores:this.dicipuladores,
       lider:this.liderSelecionado,
       anfitriao:this.anfitriaoSelecionado,
       coLider:this.coLiderSelecionado
@@ -142,24 +148,44 @@ export class CadastrarCelulaComponent implements OnInit {
   }
 
   adicionar() {
-    if (!this.supervisorSelecionado) {
+    if (!this.dicipuladorSelecionado) {
       this._notifierService.notify(AlertType.Error, "Erro:campo membro em branco!");
       return false;
     }
-    this.supervisores.push(this.supervisorSelecionado);
-    this.setEmiter(false);
+    this.dicipuladores.push(this.dicipuladorSelecionado);
+    this.membroValue = "";
   }
 
 
   remover(index): void {
-    this.supervisores.splice(index, 1);
+    this.dicipuladores.splice(index, 1);
   }
-  setEmiter(save): void {
-    if (save) {
+  setEmiter(): void {
       this._emitirEventoService.emitir("save-ok", "");
-    } else {
-      this._emitirEventoService.emitir("add", "");
-    }
   }
+
+  
+  carregarMembro() {
+    this._membroService.getList().pipe(take(1)).subscribe(item => {
+      this.comboMembro = item;
+      this.filteredMembro = this.myControlMembro.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value, this.comboMembro))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+    });
+  }
+
+  private _filter(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionChanged($event: MatAutocompleteSelectedEvent, option) {
+    this.dicipuladorSelecionado = option;
+  }
+
 
 }
