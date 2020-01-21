@@ -53,8 +53,6 @@ export class MembroComponent implements OnInit {
       this._emitirEventoService.emitir("membro-comp-lider", this.membro);
     } else if (this.label == 'Anfitrião') {
       this._emitirEventoService.emitir("membro-comp-anfitriao", this.membro);
-    } else if (this.label == 'Supervisor') {
-      this._emitirEventoService.emitir("membro-comp-supervisor", this.membro);
     }else if (this.label == 'Co-Lider') {
         this._emitirEventoService.emitir("membro-comp-coLider", this.membro);
     } else {
