@@ -46,7 +46,8 @@ export class CadastrarCelulaComponent implements OnInit {
               private _notifierService: NotifierService, 
               private _emitirEventoService: EmitirEventoService,
               private _datePipe: DatePipe,
-              private _membroService: MembroService) { }
+              private _membroService: MembroService,
+              private datePipe: DatePipe) { }
 
   ngOnInit() {
     this._buildForm();
@@ -120,6 +121,7 @@ export class CadastrarCelulaComponent implements OnInit {
   }
 
   salvar() {
+    console.log(this.obj());
     this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
       this.setEmiter();
       this._notifierService.notify(AlertType.Success, item.value);
@@ -132,8 +134,8 @@ export class CadastrarCelulaComponent implements OnInit {
     return {
       nome: this.form.controls['nome'].value,
       dataAbertura: this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy'),
-      horario: this.form.controls['horario'].value,
-      diaSemana: this.form.controls['diaSemana'].value,
+      horario:this.transformDate(this.form.controls['horario'].value),
+      dia: this.form.controls['diaSemana'].value,
       turno: this.form.controls['turno'].value,
       tipo: this.form.controls['tipo'].value,
       igreja:this.igrejaSelecionada,
@@ -187,5 +189,8 @@ export class CadastrarCelulaComponent implements OnInit {
     this.dicipuladorSelecionado = option;
   }
 
+  transformDate(hora) {
+    return this.datePipe.transform(new Date(), 'dd/MM/yyyy '+hora);
+  }
 
 }
