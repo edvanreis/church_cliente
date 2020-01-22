@@ -134,7 +134,7 @@ export class CadastrarCelulaComponent implements OnInit {
     return {
       nome: this.form.controls['nome'].value,
       dataAbertura: this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy'),
-      horario:this.transformDate(this.form.controls['horario'].value),
+      horario:this.form.controls['horario'].value,
       dia: this.form.controls['diaSemana'].value,
       turno: this.form.controls['turno'].value,
       tipo: this.form.controls['tipo'].value,
