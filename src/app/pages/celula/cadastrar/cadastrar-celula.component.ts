@@ -36,9 +36,15 @@ export class CadastrarCelulaComponent implements OnInit {
   public dicipuladorSelecionado: any;
   public coLiderSelecionado: any;
   public dicipuladores = [];
+  public lideres = [];
+  public coLideres = [];
+  public anfitroes = [];
   public comboMembro = [];
   public filteredMembro: Observable<string[]>;
-  public membroValue: string;
+  public discipuladorValue: string;
+  public liderValue: string;
+  public coLiderValue: string;
+  public anfitriaoValue: string;
   public myControlMembro = new FormControl();
 
 
@@ -61,19 +67,7 @@ export class CadastrarCelulaComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       // console.log(item.data);
-      if (item.type == 'membro-comp-lider') {
-        this.liderSelecionado = item.data;
-        console.log(this.liderSelecionado);
-      }
-   
-      if (item.type == 'membro-comp-anfitriao') {
-        this.anfitriaoSelecionado = item.data;
-        console.log(this.anfitriaoSelecionado);
-      }
-      if (item.type == 'membro-comp-coLider') {
-        this.coLiderSelecionado = item.data;
-        console.log(this.coLiderSelecionado);
-      }
+      
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
         this.pastor = this.igrejaSelecionada.pastor.nomeCompleto;
@@ -142,26 +136,68 @@ export class CadastrarCelulaComponent implements OnInit {
       rede:this.redeSelecionada,
       endereco:this.endereco,
       observacao:this.observacao,
-      supervisores:this.dicipuladores,
-      lider:this.liderSelecionado,
-      anfitriao:this.anfitriaoSelecionado,
-      coLider:this.coLiderSelecionado
+      discipuladores:this.dicipuladores,
+      lideres:this.lideres,
+      anfitrioes:this.anfitroes,
+      coLideres:this.coLideres
     }
   }
 
-  adicionar() {
+  adicionarLider() {
+    if (!this.liderSelecionado) {
+      this._notifierService.notify(AlertType.Error, "Erro:campo Lider em branco!");
+      return false;
+    }
+    this.lideres.push(this.liderSelecionado);
+    this.liderValue = "";
+  }
+
+  adicionarDiscipulador() {
     if (!this.dicipuladorSelecionado) {
-      this._notifierService.notify(AlertType.Error, "Erro:campo membro em branco!");
+      this._notifierService.notify(AlertType.Error, "Erro:campo Discipular em branco!");
       return false;
     }
     this.dicipuladores.push(this.dicipuladorSelecionado);
-    this.membroValue = "";
+    this.discipuladorValue = "";
   }
 
+  adicionarColider() {
+    if (!this.coLiderSelecionado) {
+      this._notifierService.notify(AlertType.Error, "Erro:campo Co Lider em branco!");
+      return false;
+    }
+    this.coLideres.push(this.coLiderSelecionado);
+    this.coLiderValue = "";
+  }
 
-  remover(index): void {
+  adicionarAnfitriao() {
+    if (!this.anfitriaoSelecionado) {
+      this._notifierService.notify(AlertType.Error, "Erro:camp  Anfitrião em branco!");
+      return false;
+    }
+    this.anfitroes.push(this.anfitriaoSelecionado);
+    this.anfitriaoValue = "";
+  }
+
+  removerDiscipulador(index): void {
     this.dicipuladores.splice(index, 1);
   }
+
+  removerLider(index): void {
+    this.lideres.splice(index, 1);
+  }
+
+  removerColider(index): void {
+    this.coLideres.splice(index, 1);
+  }
+
+  removerAnfitriao(index): void {
+    this.anfitroes.splice(index, 1);
+  }
+
+
+
+
   setEmiter(): void {
       this._emitirEventoService.emitir("save-ok", "");
   }
@@ -185,10 +221,22 @@ export class CadastrarCelulaComponent implements OnInit {
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
-  onSelectionChanged($event: MatAutocompleteSelectedEvent, option) {
+  onSelectionChangedLider($event: MatAutocompleteSelectedEvent, option) {
+    this.liderSelecionado = option;
+  }
+
+
+  onSelectionChangedDiscipulador($event: MatAutocompleteSelectedEvent, option) {
     this.dicipuladorSelecionado = option;
   }
 
+  onSelectionChangedCoLider($event: MatAutocompleteSelectedEvent, option) {
+    this.coLiderSelecionado = option;
+  }
+
+  onSelectionChangedAnfitriao($event: MatAutocompleteSelectedEvent, option) {
+    this.anfitriaoSelecionado = option;
+  }
   transformDate(hora) {
     return this.datePipe.transform(new Date(), 'dd/MM/yyyy '+hora);
   }

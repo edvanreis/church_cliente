@@ -48,17 +48,7 @@ export class MembroComponent implements OnInit {
   }
 
   setEmiter(): void {
-
-    if (this.label == 'Lider') {
-      this._emitirEventoService.emitir("membro-comp-lider", this.membro);
-    } else if (this.label == 'Anfitrião') {
-      this._emitirEventoService.emitir("membro-comp-anfitriao", this.membro);
-    }else if (this.label == 'Co-Lider') {
-        this._emitirEventoService.emitir("membro-comp-coLider", this.membro);
-    } else {
-      this._emitirEventoService.emitir("membro-comp", this.membro);
-    }
-
+    this._emitirEventoService.emitir("membro-comp", this.membro);
   }
 
   onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
@@ -75,7 +65,7 @@ export class MembroComponent implements OnInit {
         this.membro = item.data;
         this.nomeValue = item.data;
       }
-  
+
       if (item.type == 'save-ok') {
         this.membro = '';
         this.nomeValue = '';

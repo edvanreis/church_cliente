@@ -53,18 +53,12 @@
         </div>
       </form>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-        <app-membro [label]="lider"></app-membro>
-        <app-membro [label]="coLider"></app-membro>
-        
-      </div>
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <app-igrejas></app-igrejas>
         <mat-form-field class="example-full-width">
           <input matInput placeholder="Pastor" [(ngModel)]="pastor" disabled="disabled">
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-        <app-membro [label]="anfitriao"></app-membro>
         <app-redes></app-redes>
       </div>
       <app-endereco></app-endereco>
@@ -73,18 +67,19 @@
           <textarea matInput placeholder="Nota/Observação" [(ngModel)]="observacao"></textarea>
         </mat-form-field>
       </div>
+      <br />
       <div>
         <mat-form-field class="example-full-width">
           <input type="text" placeholder="Dicipulador" aria-label="Number" matInput [formControl]="myControlMembro" 
-            [matAutocomplete]="auto" [(ngModel)]="membroValue" required>
+            [matAutocomplete]="auto" [(ngModel)]="discipuladorValue" required>
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
-              (onSelectionChange)="onSelectionChanged($event,option)">
+              (onSelectionChange)="onSelectionChangedDiscipulador($event,option)">
               {{option.nomeCompleto}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-          <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
+          <button mat-raised-button color="primary" type="submit" (click)="adicionarDiscipulador()">
           <i class="material-icons">add</i>adicionar</button>
       </div>
       <br />
@@ -98,7 +93,103 @@
           <tbody>
             <tr *ngFor="let m of dicipuladores">
               <td>{{ m.nomeCompleto}}</td>
-              <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
+              <td><span style="color: #1d68a5;cursor: pointer" (click)="removerDiscipulador(i)"><i
+                    class="material-icons">delete</i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <div>
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="Lider" aria-label="Number" matInput [formControl]="myControlMembro" 
+            [matAutocomplete]="aut" [(ngModel)]="liderValue" required>
+          <mat-autocomplete #aut="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedLider($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" (click)="adicionarLider()">
+          <i class="material-icons">add</i>adicionar</button>
+      </div>
+      <br />
+      <br />
+      <div class="table-responsive" *ngIf="lideres.length > 0">
+        <table>
+          <thead class="text-primary">
+            <th>Nome</th>    
+            <th>Remover</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of lideres">
+              <td>{{ m.nomeCompleto}}</td>
+              <td><span style="color: #1d68a5;cursor: pointer" (click)="removerLider(i)"><i
+                    class="material-icons">delete</i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <div>
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="Co lider" aria-label="Number" matInput [formControl]="myControlMembro" 
+            [matAutocomplete]="au" [(ngModel)]="coLiderValue" required>
+          <mat-autocomplete #au="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedCoLider($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" (click)="adicionarColider()">
+          <i class="material-icons">add</i>adicionar</button>
+      </div>
+      <br />
+      <br />
+      <div class="table-responsive" *ngIf="coLideres.length > 0">
+        <table>
+          <thead class="text-primary">
+            <th>Nome</th>    
+            <th>Remover</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of coLideres">
+              <td>{{ m.nomeCompleto}}</td>
+              <td><span style="color: #1d68a5;cursor: pointer" (click)="removerColider(i)"><i
+                    class="material-icons">delete</i></span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <div>
+        <mat-form-field class="example-full-width">
+          <input type="text" placeholder="Anfitrião" aria-label="Number" matInput [formControl]="myControlMembro" 
+            [matAutocomplete]="a" [(ngModel)]="anfitriaoValue" required>
+          <mat-autocomplete #a="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedAnfitriao($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+          <button mat-raised-button color="primary" type="submit" (click)="adicionarAnfitriao()">
+          <i class="material-icons">add</i>adicionar</button>
+      </div>
+      <br />
+      <br />
+      <div class="table-responsive" *ngIf="anfitroes.length > 0">
+        <table>
+          <thead class="text-primary">
+            <th>Nome</th>    
+            <th>Remover</th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of anfitroes">
+              <td>{{ m.nomeCompleto}}</td>
+              <td><span style="color: #1d68a5;cursor: pointer" (click)="removerAnfitriao(i)"><i
                     class="material-icons">delete</i></span></td>
             </tr>
           </tbody>

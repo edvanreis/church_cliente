@@ -212,15 +212,11 @@ export class CadastrarUsuarioComponent implements OnInit {
     this.perfilUsuario = option.source.value;
   }
 
-  onSelectionChangedMembroNome($event: MatAutocompleteSelectedEvent,option) {
+  onSelectionChangedMembro($event: MatAutocompleteSelectedEvent,option) {
     this.membro = option;
     this.form.controls['cpf'].patchValue(option.cpf);
   }
 
-  // onSelectionChangedMembroCpf($event: MatAutocompleteSelectedEvent,option) {
-  //   this.membro = option;
-  //   this.nomeValue = option.nome;
-  // }
 
   carregarComboMembro() {
     this._membroService.getList().pipe(take(1)).subscribe(item => {
