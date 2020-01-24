@@ -6,7 +6,7 @@ import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule,
 import { NgxViacepService } from '@brunoc/ngx-viacep';
 import { TextMaskModule } from 'angular2-text-mask';
 import { DadosPessoaisComponent } from './dados-pessoais/dados-pessoais.component';
-import { EscolaridadeComponent } from './escolaridade/escolaridade.component';
+import { EscolaridadeComponent } from '../escolaridade/escolaridade.component';
 import { PipeModule } from '../../../pipe/pipe/pipe.module';
 import { MembroService } from '../../../service/membro.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';

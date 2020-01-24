@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MembroService } from '../../../service/membro.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MembroService } from '../../../../service/membro.service';
-import { EmitirEventoService } from '../../../../service/emitir-evento.service';
+
+
 
 
 @Component({
@@ -11,17 +12,17 @@ import { EmitirEventoService } from '../../../../service/emitir-evento.service';
 })
 export class EscolaridadeComponent implements OnInit {
   
-  public form: FormGroup;
   public comboEscolaridade = []
+  public form: FormGroup;
 
-  constructor(private _membroService: MembroService, private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _membroService: MembroService) { }
 
   ngOnInit() {
-    this._buildForm();
     this.getComboEscolaridade();
+    this._buildForm();
   }
 
-  
+
   private _buildForm(): void {
     this.form = new FormGroup({
       'escolaridade': new FormControl(''),
