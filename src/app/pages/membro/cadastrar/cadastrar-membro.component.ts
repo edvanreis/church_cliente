@@ -57,7 +57,6 @@ export class CadastrarMembroComponent implements OnInit {
     // this.getComboSexo();
     // this.getComboEstadoCivil();
     this.getComboContatos();
-    this.getComboEscolaridade();
     this._buildForm();
     // this.getComboUF();
     this.getComboEtapaVisao();
@@ -83,19 +82,6 @@ export class CadastrarMembroComponent implements OnInit {
     this.etapa$ = this._etapaVisao.getList();
   }
 
-  getComboSexo() {
-    this._membroService.carregarSexo().subscribe(item => {
-      this.comboSexo = item;
-      // console.log(item);
-    });
-  }
-
-  getComboEstadoCivil() {
-    this._membroService.carregarEstadoCivil().subscribe(item => {
-      this.comboEstadoCivil = item;
-      // console.log(item);
-    });
-  }
 
   getComboContatos() {
     this._membroService.carregarTiposContatos().subscribe(item => {
@@ -104,12 +90,7 @@ export class CadastrarMembroComponent implements OnInit {
     });
   }
 
-  getComboEscolaridade() {
-    this._membroService.carregarEscolaridade().subscribe(item => {
-      this.comboEscolaridade = item;
-      // console.log(item);
-    });
-  }
+ 
   getComboUF() {
     this._enderecoService.carregarEstados().subscribe(item => {
       this.comboEstados = item;

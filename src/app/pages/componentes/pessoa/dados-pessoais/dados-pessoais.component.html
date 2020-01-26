@@ -4,6 +4,8 @@
       <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" (change)="change()" required>
       <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
     </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"> 
     <mat-form-field class="full-width-field">
       <input matInput  class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" (change)="change()" required>
       <mat-error *ngIf="!form.controls.sobrenome.valid">Campo Obrigatório</mat-error>
@@ -21,6 +23,10 @@
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="full-width-field">
+      <input matInput [textMask]="{mask: maskDate}" placeholder="Data nascimento" formControlName="dataNascimento"  (change)="change()">
+      <mat-error *ngIf="!form.controls.dataNascimento.valid">Campo Obrigatório</mat-error>
+    </mat-form-field> 
+    <mat-form-field class="full-width-field">
       <mat-label>Sexo</mat-label>
       <mat-select formControlName="sexo" id="sexo" (selectionChange)="change()" required> 
         <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
@@ -29,6 +35,8 @@
       </mat-select>
       <mat-error *ngIf="!form.controls.sexo.valid">Campo Obrigatório</mat-error>
     </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="full-width-field">
       <mat-label>Estado Civil</mat-label>
       <mat-select formControlName="estadoCivil" id="estadoCivil" (selectionChange)="change()" required>
@@ -38,27 +46,12 @@
       </mat-select>
     </mat-form-field>
     <mat-form-field class="full-width-field">
-      <input matInput [matDatepicker]="picker" placeholder="Data nascimento" formControlName="dataNascimento"  (dateChange)="changeData($event)">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="!form.controls.dataNascimento.valid">Campo Obrigatório</mat-error>
-    </mat-form-field> 
-    <mat-form-field class="full-width-field">
       <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" (change)="change()" required>
     </mat-form-field>
   </div>
-  
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>
     <mat-form-field class="full-width-field">
       <input matInput class="input-upper" placeholder="Profissão" formControlName="profissao" id="profissao" (change)="change()">
     </mat-form-field>
-    <div class="full-width-field" fxLayoutGap="20px" required>
-      <mat-checkbox   formControlName="batizado" (change)="change()">Batizado</mat-checkbox>
-      <mat-checkbox  formControlName="dizimista" (change)="change()">Dizimista</mat-checkbox>
-    </div>
-  </div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>
-    
   </div>
 </form>

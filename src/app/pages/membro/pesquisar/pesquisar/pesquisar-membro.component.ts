@@ -54,8 +54,8 @@ export class PesquisarMembroComponent implements OnInit {
     this.getEmiter();
     this.columns();
     this._buildForm();
-    this.getComboSexo();
-    this.getComboEstadoCivil();
+    // this.getComboSexo();
+    // this.getComboEstadoCivil();
     this._buildFormDate();
     this.getComboEtapaVisao();
     console.log(JSON.parse(this.user.currentUser()));
@@ -201,19 +201,19 @@ export class PesquisarMembroComponent implements OnInit {
     this._excelService.exportAsExcelFile(dados, "pesquisa");
   }
 
-  getComboSexo() {
-    this._membroService.carregarSexo().subscribe(item => {
-      this.comboSexo = item;
-      // console.log(item);
-    });
-  }
+  // getComboSexo() {
+  //   this._membroService.carregarSexo().subscribe(item => {
+  //     this.comboSexo = item;
+  //     // console.log(item);
+  //   });
+  // }
 
-  getComboEstadoCivil() {
-    this._membroService.carregarEstadoCivil().subscribe(item => {
-      this.comboEstadoCivil = item;
-      // console.log(item);
-    });
-  }
+  // getComboEstadoCivil() {
+  //   this._membroService.carregarEstadoCivil().subscribe(item => {
+  //     this.comboEstadoCivil = item;
+  //     // console.log(item);
+  //   });
+  // }
 
   getComboEtapaVisao() {
     this.etapa$ = this._etapaVisao.getList();

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MembroService } from '../../../service/membro.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { PessoaService } from '../../../service/pessoa.service';
 
 
 
@@ -15,7 +16,7 @@ export class EscolaridadeComponent implements OnInit {
   public comboEscolaridade = []
   public form: FormGroup;
 
-  constructor(private _membroService: MembroService) { }
+  constructor(private _pessoaService: PessoaService) { }
 
   ngOnInit() {
     this.getComboEscolaridade();
@@ -31,7 +32,7 @@ export class EscolaridadeComponent implements OnInit {
   }
 
   getComboEscolaridade() {
-    this._membroService.carregarEscolaridade().subscribe(item => {
+    this._pessoaService.carregarEscolaridade().subscribe(item => {
       this.comboEscolaridade = item;
       // console.log(item);
     });

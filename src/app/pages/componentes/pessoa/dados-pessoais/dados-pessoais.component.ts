@@ -4,6 +4,7 @@ import { MembroService } from '../../../../service/membro.service';
 import { EmitirEventoService } from '../../../../service/emitir-evento.service';
 import { HelperChurch } from '../../../../helper/helper.church';
 import { Pessoa } from '../../../../model/pessoa';
+import { PessoaService } from '../../../../service/pessoa.service';
 
 
 
@@ -24,7 +25,7 @@ export class DadosPessoaisComponent implements OnInit {
   public comboSexo = [];
   public comboEstadoCivil = [];
   public dataNascimento;
-  constructor(private _membroService: MembroService, private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _pessoaService: PessoaService, private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this._buildForm();
@@ -35,14 +36,14 @@ export class DadosPessoaisComponent implements OnInit {
   }
 
   getComboSexo() {
-    this._membroService.carregarSexo().subscribe(item => {
+    this._pessoaService.carregarSexo().subscribe(item => {
       this.comboSexo = item;
       // console.log(item);
     });
   }
 
   getComboEstadoCivil() {
-    this._membroService.carregarEstadoCivil().subscribe(item => {
+    this._pessoaService.carregarEstadoCivil().subscribe(item => {
       this.comboEstadoCivil = item;
       // console.log(item);
     });
@@ -57,9 +58,7 @@ export class DadosPessoaisComponent implements OnInit {
       'sexo': new FormControl('',Validators.required),
       'estadoCivil': new FormControl('',Validators.required),
       'nacionalidade': new FormControl('',Validators.required),
-      'profissao': new FormControl(''),
-      'batizado': new FormControl(''),
-      'dizimista': new FormControl(''),
+      'profissao': new FormControl('')
     });
   }
 
@@ -88,8 +87,6 @@ export class DadosPessoaisComponent implements OnInit {
     this.pessoa.dataNascimento = !this.dataNascimento?this.form.controls['dataNascimento'].value:this.dataNascimento;
     this.pessoa.nacionalidade = this.form.controls['nacionalidade'].value;
     this.pessoa.profissao = this.form.controls['profissao'].value;
-    this.pessoa.batizado = this.form.controls['batizado'].value;
-    this.pessoa.dizimista = this.form.controls['dizimista'].value;
     return this.pessoa;
   }
 

@@ -13,23 +13,10 @@ export class MembroService {
   constructor(public http: HttpClient) { }
 
 
-  carregarSexo() {
-    return this.http.get(this._url + "sexo")
-      .pipe(tap((response: any) => response));
-  }
 
-  carregarEstadoCivil() {
-    return this.http.get(this._url + "estadoCivil")
-      .pipe(tap((response: any) => response));
-  }
 
   carregarTiposContatos() {
     return this.http.get(this._url + "tipoContato")
-      .pipe(tap((response: any) => response));
-  }
-
-  carregarEscolaridade() {
-    return this.http.get(this._url + "escolaridade")
       .pipe(tap((response: any) => response));
   }
 

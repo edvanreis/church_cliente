@@ -1,29 +1,31 @@
 <form form [formGroup]="form">
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="full-width-field">
       <input matInput placeholder="CEP" formControlName="cep" id="cep" (blur)="consultarCEP($event)"  (change)="change()"
         [textMask]="{mask: maskCEP}">
       <mat-error *ngIf="!form.controls.cep.valid">Campo Obrigatório</mat-error>
     </mat-form-field>
-    <mat-form-field class="example-full-width">
+    <mat-form-field cclass="full-width-field">
       <input matInput placeholder="Número" formControlName="numero" id="numero"  (change)="change()">
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-    <mat-form-field class="example-full-width">
+    <mat-form-field  class="full-width-field">
       <input matInput placeholder="Complemento" formControlName="complemento" id="complemento"  (change)="change()">
     </mat-form-field>
-    <mat-form-field class="example-full-width">
+  </div> 
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+    <mat-form-field class="full-width-field">
       <input matInput placeholder="Bairro" formControlName="bairro" id="bairro"  (change)="change()">
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" >
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="full-width-field">
       <input matInput placeholder="Logradouro" formControlName="logradouro" id="logradouro"  (change)="change()">
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="full-width-field">
       <input matInput placeholder="Cidade" formControlName="localidade" id="localidade"  (change)="change()">
     </mat-form-field>
     <mat-form-field>
