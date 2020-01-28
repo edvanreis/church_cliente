@@ -50,6 +50,8 @@ export class CadastrarMembroComponent implements OnInit {
   public endereco: any;
   public etapa$: Observable<any[]>;
   public etapas = [];
+  public batizado:boolean = false;
+  public dizimista:boolean;
 
 
 
@@ -71,6 +73,9 @@ export class CadastrarMembroComponent implements OnInit {
         this.dadosPessoais = item.data;
       }
       if (item.type == 'endereco') {
+        this.endereco = item.data;
+      }
+      if (item.type == 'escolaridade') {
         this.endereco = item.data;
       }
 
@@ -109,7 +114,9 @@ export class CadastrarMembroComponent implements OnInit {
       'curso': new FormControl(''),
       'email': new FormControl(''),
       'etapa': new FormControl(''),
-      'emailPrincipal': new FormControl('')
+      'emailPrincipal': new FormControl(''),
+      'batizado': new FormControl(''),
+      'dizimista': new FormControl('')
     });
   }
   adicionarContato() {
@@ -340,5 +347,6 @@ export class CadastrarMembroComponent implements OnInit {
     this._emitirEventoService.emitir("save-ok", "save-ok");
   }
 
+ 
  
 }

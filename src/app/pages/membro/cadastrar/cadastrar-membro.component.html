@@ -11,9 +11,14 @@
           <h1 class="mat-subheading-2 center-align">Dados Pessoais</h1>
         </div>
         <app-dados-pessoais></app-dados-pessoais>
+        <!-- <form  [formGroup]="form"> -->
         <div class="full-width-field" fxLayoutGap="20px" required>
-          <!-- <mat-checkbox   formControlName="batizado" (change)="change()">Batizado</mat-checkbox>
-          <mat-checkbox  formControlName="dizimista" (change)="change()">Dizimista</mat-checkbox> -->
+          <label style="color:#1d68a5">Batizado?</label>
+          <mat-slide-toggle id="batizado" #batizado>{{batizado.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+          <label style="color:#1d68a5">Dizimista?</label>
+          <mat-slide-toggle id="dizimista" #dizimista>{{dizimista.checked | boolean : ['Sim', 'Não']}}
+          </mat-slide-toggle>
+          <!-- </form> -->
         </div>
         <br />
         <br />
@@ -30,138 +35,143 @@
           <i class="material-icons">headset_mic</i>
           <h1 class="mat-subheading-2 center-align">Contatos</h1>
         </div>
-        <form form [formGroup]="form">
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field>
-              <mat-label>Selecione...</mat-label>
-              <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
-                <mat-option *ngFor="let item of comboTipoContatos " [value]="item.tipo">
-                  {{item.descTipoContato}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Contato" formControlName="contato" id="contato" *ngIf="isContato">
-              <input matInput placeholder="Contato" formControlName="contatoTelefone" [textMask]="{mask: maskTelefone}"
-                id="contatoTelefone" *ngIf="isTelefone">
-              <input matInput placeholder="Contato" formControlName="contatoCelular" [textMask]="{mask: maskCelular}"
-                id="contatoCelular" *ngIf="isCelular">
-              <input  type="email" matInput placeholder="Contato" formControlName="email" id="email" *ngIf="isEmail">
-            </mat-form-field>
-            <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
-            <mat-checkbox formControlName="emailPrincipal" *ngIf="isEmail">Email principal</mat-checkbox>
+        <!-- <form form [formGroup]="form">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field>
+            <mat-label>Selecione...</mat-label>
+            <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
+              <mat-option *ngFor="let item of comboTipoContatos " [value]="item.tipo">
+                {{item.descTipoContato}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Contato" formControlName="contato" id="contato" *ngIf="isContato">
+            <input matInput placeholder="Contato" formControlName="contatoTelefone" [textMask]="{mask: maskTelefone}"
+              id="contatoTelefone" *ngIf="isTelefone">
+            <input matInput placeholder="Contato" formControlName="contatoCelular" [textMask]="{mask: maskCelular}"
+              id="contatoCelular" *ngIf="isCelular">
+            <input type="email" matInput placeholder="Contato" formControlName="email" id="email" *ngIf="isEmail">
+          </mat-form-field>
+          <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
+          <mat-checkbox formControlName="emailPrincipal" *ngIf="isEmail">Email principal</mat-checkbox>
+        </div>
+        <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
+          <i class="material-icons">add</i>adicionar</button>
+        <br /><br />
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0">
+          <div class="table-responsive">
+            <table>
+              <thead class="text-primary">
+                <th>Tipo</th>
+                <th>Descrição</th>
+                <th></th>
+                <th></th>
+                <th>Email principal</th>
+                <th>Remover</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of contatosGrid">
+                  <td>{{ item.tipo}}</td>
+                  <td colspan="2">{{ item.contato }}</td>
+                  <td><span *ngIf="item.emailPrincial" style="color:green"><i class="material-icons">checked</i></span>
+                  </td>
+                  <td><img src="./assets/whatsapp.png" width="20px" *ngIf="item.whatsapp && item.celular">
+                    <img src="./assets/images/facebook_circle.png" width="20px" *ngIf="item.facebook">
+                    <span style="color: #1d68a5" *ngIf="item.email"><i class="material-icons">mail</i></span>
+                    <span style="color: #1d68a5" *ngIf="item.telefone"><i class="material-icons">call</i></span></td>
+                  <td><span style="color: #1d68a5;cursor: pointer" (click)="removerContato(i)"><i
+                        class="material-icons">delete</i></span></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
-            <i class="material-icons">add</i>adicionar</button>
-          <br /><br />
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0">
-            <div class="table-responsive">
-              <table>
-                <thead class="text-primary">
-                  <th>Tipo</th>
-                  <th>Descrição</th>
-                  <th></th>
-                  <th></th>
-                  <th>Email principal</th>
-                  <th>Remover</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of contatosGrid">
-                    <td>{{ item.tipo}}</td>
-                    <td colspan="2">{{ item.contato }}</td>
-                    <td><span *ngIf="item.emailPrincial"  style="color:green" ><i class="material-icons">checked</i></span></td>
-                    <td><img src="./assets/whatsapp.png" width="20px" *ngIf="item.whatsapp && item.celular">
-                      <img src="./assets/images/facebook_circle.png" width="20px" *ngIf="item.facebook">
-                      <span style="color: #1d68a5" *ngIf="item.email"><i class="material-icons">mail</i></span>
-                      <span style="color: #1d68a5" *ngIf="item.telefone"><i class="material-icons">call</i></span></td>
-                    <td><span style="color: #1d68a5;cursor: pointer" (click)="removerContato(i)"><i
-                          class="material-icons">delete</i></span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+        </div>
+        <br /><br />
+        <mat-divider></mat-divider>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+          <i class="material-icons">school</i>
+          <h1 class="mat-subheading-2 center-align">Escolaridade</h1>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field>
+            <mat-label>Selecione...</mat-label>
+            <mat-select formControlName="escolaridade" id="escolaridade">
+              <mat-option *ngFor="let item of comboEscolaridade" [value]="item.tipo">
+                {{item.descricao}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field class="example-full-width">
+            <input matInput placeholder="Curso" formControlName="curso" id="curso">
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" type="submit" (click)="adicionarEscolaridade()">
+          <i class="material-icons">add</i>adicionar</button>
+        <br /><br />
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="escolaridades.length > 0">
+          <div class="table-responsive">
+            <table>
+              <thead class="text-primary">
+                <th>Escolaridade</th>
+                <th>Curso</th>
+                <th>Remover</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of escolaridadesGrid">
+                  <td>{{ item.tipo}}</td>
+                  <td>{{ item.curso }}</td>
+                  <td><span style="color: #1d68a5;cursor: pointer" (click)="removerEscolaridade(i)"><i
+                        class="material-icons">delete</i></span></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <br /><br />
-          <mat-divider></mat-divider>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <i class="material-icons">school</i>
-            <h1 class="mat-subheading-2 center-align">Escolaridade</h1>
+        </div>
+        <br /><br />
+        <mat-divider></mat-divider>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+          <i class="material-icons">extension</i>
+          <h1 class="mat-subheading-2 center-align">Etapa da visão</h1>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field>
+            <mat-label>Selecione...</mat-label>
+            <mat-select formControlName="etapa" id="etapa">
+              <mat-option *ngFor="let item of etapa$ | async" [value]="item">
+                {{item.nome}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button color="primary" type="submit" (click)="adicionarEtapa()">
+          <i class="material-icons">add</i>adicionar</button>
+        <br /><br />
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="etapas.length > 0">
+          <div class="table-responsive">
+            <table>
+              <thead class="text-primary">
+                <th>Etapa</th>
+                <th>REMOVER</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let item of etapas">
+                  <td>{{ item.nome}}</td>
+                  <td><span style="color: #1d68a5;cursor: pointer" (click)="removerEtapa(i)"><i
+                        class="material-icons">delete</i></span></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field>
-              <mat-label>Selecione...</mat-label>
-              <mat-select formControlName="escolaridade" id="escolaridade" >
-                <mat-option *ngFor="let item of comboEscolaridade" [value]="item.tipo">
-                  {{item.descricao}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Curso" formControlName="curso" id="curso">
-            </mat-form-field>
-          </div>
-          <button mat-raised-button color="primary" type="submit" (click)="adicionarEscolaridade()">
-            <i class="material-icons">add</i>adicionar</button>
-          <br /><br />
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="escolaridades.length > 0">
-            <div class="table-responsive">
-              <table>
-                <thead class="text-primary">
-                  <th>Escolaridade</th>
-                  <th>Curso</th>
-                  <th>Remover</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of escolaridadesGrid">
-                    <td>{{ item.tipo}}</td>
-                    <td>{{ item.curso }}</td>
-                    <td><span style="color: #1d68a5;cursor: pointer" (click)="removerEscolaridade(i)"><i
-                          class="material-icons">delete</i></span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <br /><br />
-          <mat-divider></mat-divider>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <i class="material-icons">extension</i>
-            <h1 class="mat-subheading-2 center-align">Etapa da visão</h1>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field>
-              <mat-label>Selecione...</mat-label>
-              <mat-select formControlName="etapa" id="etapa" >
-                <mat-option *ngFor="let item of etapa$ | async" [value]="item">
-                  {{item.nome}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <button mat-raised-button color="primary" type="submit" (click)="adicionarEtapa()">
-            <i class="material-icons">add</i>adicionar</button>
-          <br /><br />
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="etapas.length > 0">
-            <div class="table-responsive">
-              <table>
-                <thead class="text-primary">
-                  <th>Etapa</th>
-                  <th>REMOVER</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of etapas">
-                    <td>{{ item.nome}}</td>
-                    <td><span style="color: #1d68a5;cursor: pointer" (click)="removerEtapa(i)"><i
-                          class="material-icons">delete</i></span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <mat-divider></mat-divider>
+        </div>
+        <mat-divider></mat-divider>
+        <button mat-raised-button color="primary" type="submit" (click)="salvar()">
+          <i class="material-icons">save</i>Salvar</button>
+      </form> -->
+        <div>
           <button mat-raised-button color="primary" type="submit" (click)="salvar()">
             <i class="material-icons">save</i>Salvar</button>
-        </form>
+        </div>
       </div>
     </div>
   </div>
