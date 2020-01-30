@@ -6,6 +6,7 @@ import { Contatos } from '../../../model/contatos';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { HelperChurch } from '../../../helper/helper.church';
 
 @Component({
   selector: 'app-contatos',
@@ -145,19 +146,19 @@ export class ContatosComponent implements OnInit {
     this.contatosGrid.push({
       tipo: tipo,
       contato: contato,
-      whatsapp: this.form.controls['whatsapp'].value,
+      whatsapp: HelperChurch.isBoolean(this.form.controls['whatsapp'].value),
       facebook: this.isFacebook,
       email: this.isEmail,
       telefone: this.isTelefone,
       celular: this.isCelular,
-      emailPrincipal: this.form.controls['emailPrincipal'].value,
+      emailPrincipal: HelperChurch.isBoolean(this.form.controls['emailPrincipal'].value),
     });
     // console.log(tipo);
     let obj = new Contatos();
     obj.tipo = tipoSelected;
     obj.contato = contato;
-    obj.whatsapp = this.form.controls['whatsapp'].value;
-    obj.emailPrincipal = this.form.controls['emailPrincipal'].value;
+    obj.whatsapp =  HelperChurch.isBoolean(this.form.controls['whatsapp'].value);
+    obj.emailPrincipal = HelperChurch.isBoolean(this.form.controls['emailPrincipal'].value);
     this.contatos.push(obj);
     this.clearInputContato();
     this.setEmiter();

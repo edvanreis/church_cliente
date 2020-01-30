@@ -21,6 +21,7 @@ import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro
 
 
 
+
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarMembroComponent , data: { animation: 'buttons' }},
   { path: 'pesquisar', component:  PesquisarMembroComponent , data: { animation: 'buttons' }}

@@ -19,9 +19,6 @@
           <h1 class="mat-subheading-2 center-align">Endereço</h1>
         </div>
         <app-endereco></app-endereco>
-        <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
-          <i class="material-icons">add</i>adicionar</button>
-        <br /><br />
         <br />
         <br />
         <mat-divider></mat-divider>
@@ -29,16 +26,17 @@
           <i class="material-icons">headset_mic</i>
           <h1 class="mat-subheading-2 center-align">Contatos</h1>
         </div>
-          <app-contatos></app-contatos>0
-          <mat-divider></mat-divider>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <i class="material-icons">school</i>
-            <h1 class="mat-subheading-2 center-align">Escolaridade</h1>
-          </div>
-          <app-escolaridade></app-escolaridade>
-          <button mat-raised-button color="primary" type="submit" (click)="salvar()">
-            <i class="material-icons">save</i>Salvar</button>
-
+        <app-contatos></app-contatos>
+        <mat-divider></mat-divider>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+          <i class="material-icons">school</i>
+          <h1 class="mat-subheading-2 center-align">Escolaridade</h1>
+        </div>
+        <app-escolaridade></app-escolaridade>
+        <br />
+        <br />
+        <button mat-raised-button color="primary" type="submit" (click)="salvar()">
+          <i class="material-icons">save</i>Salvar</button>
       </div>
     </div>
   </div>

@@ -10,16 +10,9 @@
           <i class="material-icons">face</i>
           <h1 class="mat-subheading-2 center-align">Dados Pessoais</h1>
         </div>
-        <app-dados-pessoais></app-dados-pessoais>
+        <app-dados-pessoais [tipoCadastro]="tipoCadastro"></app-dados-pessoais>
         <!-- <form  [formGroup]="form"> -->
-        <div class="full-width-field" fxLayoutGap="20px" required>
-          <label style="color:#1d68a5">Batizado?</label>
-          <mat-slide-toggle id="batizado" #batizado>{{batizado.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
-          <label style="color:#1d68a5">Dizimista?</label>
-          <mat-slide-toggle id="dizimista" #dizimista>{{dizimista.checked | boolean : ['Sim', 'Não']}}
-          </mat-slide-toggle>
-          <!-- </form> -->
-        </div>
+
         <br />
         <br />
         <mat-divider></mat-divider>

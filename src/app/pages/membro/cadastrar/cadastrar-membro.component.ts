@@ -52,7 +52,7 @@ export class CadastrarMembroComponent implements OnInit {
   public etapas = [];
   public batizado:boolean = false;
   public dizimista:boolean;
-
+  public tipoCadastro:string = "membro";
 
 
   ngOnInit() {
@@ -295,8 +295,8 @@ export class CadastrarMembroComponent implements OnInit {
     this.membro.dataNascimento = this.dadosPessoais.dataNascimento;
     this.membro.nacionalidade = this.dadosPessoais.nacionalidade;
     this.membro.profissao = this.dadosPessoais.profissao;
-    this.membro.batizado = this.dadosPessoais.batizado;
-    this.membro.dizimista = this.dadosPessoais.dizimista;
+    // this.membro.batizado = this.dadosPessoais.batizado;
+    // this.membro.dizimista = this.dadosPessoais.dizimista;
     // endereço
     this.membro.endereco.cep = this.endereco.cep;
     this.membro.endereco.numero = this.endereco.numero;
@@ -344,7 +344,11 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir("save-ok", "save-ok");
+    this._emitirEventoService.emitir("save-ok", "");
+  }
+
+  setFieldFormControl(field, value) {
+    this.form.controls[field].patchValue(value)
   }
 
  

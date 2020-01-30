@@ -1,0 +1,12 @@
+<div>
+  <mat-form-field class="full-width-field">
+    <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula" 
+      [matAutocomplete]="auto" [(ngModel)]="nomeValue">
+    <mat-autocomplete #auto="matAutocomplete">
+      <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
+        (onSelectionChange)="onSelectionChange($event,option)">
+        {{option.nome}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
+  </div>

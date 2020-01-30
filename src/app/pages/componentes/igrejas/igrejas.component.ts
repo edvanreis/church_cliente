@@ -50,7 +50,7 @@ export class IgrejasComponent implements OnInit {
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
-  onSelectionChanged($event: MatAutocompleteSelectedEvent, option) {
+  onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
     this.setEmiter();
   }
