@@ -43,7 +43,7 @@ export class SidemenuComponent implements OnInit {
             {'name': 'Pesquisar','link': 'celula/cadastrar','icon': 'search','chip': false,'open': false,'visible': true  ,},
         ]
       },
-      {'name': 'Cargos','icon': 'work','link': false,'open': false,'visible': true  ,'sub': [
+      {'name': 'Grupo de Trabalho','icon': 'work','link': false,'open': false,'visible': true  ,'sub': [
             {'name': 'Pesquisar','link': 'cargo/cadastrar','icon': 'search','chip': false,'open': false,'visible': true  ,},
         ]
       },

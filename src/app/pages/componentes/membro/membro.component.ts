@@ -18,18 +18,18 @@ export class MembroComponent implements OnInit {
   public myControlMembro = new FormControl();
   public comboMembro = [];
   public filteredMembro: Observable<string[]>;
-  public nomeValue:string;
-  @Input('label') label; 
-  public membro:any;
+  public nomeValue: string;
+  @Input('label') label;
+  public membro: any;
 
-  constructor(private _membroService: MembroService, private _notifierService: NotifierService,private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _membroService: MembroService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
-    this.carregarComboMembro();
+    this.carregarMembro();
     this.getEmiter();
   }
 
-  carregarComboMembro() {
+  carregarMembro() {
     this._membroService.getList().pipe(take(1)).subscribe(item => {
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges
@@ -52,19 +52,20 @@ export class MembroComponent implements OnInit {
   }
 
   onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
-    console.log(option)
+    // console.log(option)
     this.membro = option;
     this.setEmiter();
   }
 
-  
+
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       console.log(item.type);
-      if (item.type == 'rede') {
+      if (item.type == 'add') {
         this.membro = item.data;
         this.nomeValue = item.data;
       }
+
       if (item.type == 'save-ok') {
         this.membro = '';
         this.nomeValue = '';

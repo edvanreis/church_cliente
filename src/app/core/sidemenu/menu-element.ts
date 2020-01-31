@@ -116,11 +116,11 @@ export const menuElement = [
         ]
     },
     {
-        'name': 'Cargos',
+        'name': 'Grupo de Trabalho',
         'icon': 'work',
         'link': false,
         'open': false,
-        'visible': false,
+        'visible': false, 
         'sub': [
             {
                 'name': 'Pesquisar',

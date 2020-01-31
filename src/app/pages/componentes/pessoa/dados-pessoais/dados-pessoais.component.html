@@ -1,61 +1,73 @@
 <form form [formGroup]="form">
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="full-width-field">
       <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" (change)="change()" required>
       <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
     </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input matInput  class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" (change)="change()" required>
-      <mat-error *ngIf="!form.controls.sobrenome.valid">Campo Obrigatório</mat-error>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"> 
+    <mat-form-field class="full-width-field">
+      <input matInput  class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" (change)="change()">
+      <mat-error *ngIf="!form.controls.sobrenome.valid && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg" (change)="change()" required>
-      <mat-error *ngIf="!form.controls.rg.valid">Campo Obrigatório</mat-error>
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg" (change)="change()" >
+      <mat-error *ngIf="!form.controls.rg.valid  && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
     </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" (change)="change()" required>  
-      <mat-error *ngIf="!form.controls.cpf.valid">Campo Obrigatório</mat-error>
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" (change)="change()" >  
+      <mat-error *ngIf="!form.controls.cpf.valid  && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-    <mat-form-field>
+    <mat-form-field class="full-width-field">
+      <input matInput [textMask]="{mask: maskDate}" placeholder="Data nascimento" formControlName="dataNascimento"  (change)="change()">
+      <mat-error *ngIf="!form.controls.dataNascimento.valid  && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
+    </mat-form-field> 
+    <mat-form-field class="full-width-field">
       <mat-label>Sexo</mat-label>
-      <mat-select formControlName="sexo" id="sexo" (selectionChange)="change()" required> 
+      <mat-select formControlName="sexo" id="sexo" (selectionChange)="change()"> 
         <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
           {{item.value}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="!form.controls.sexo.valid">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="!form.controls.sexo.valid  && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
     </mat-form-field>
-    <mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+    <mat-form-field class="full-width-field">
       <mat-label>Estado Civil</mat-label>
-      <mat-select formControlName="estadoCivil" id="estadoCivil" (selectionChange)="change()" required>
+      <mat-select formControlName="estadoCivil" id="estadoCivil" (selectionChange)="change()">
         <mat-option *ngFor="let item of comboEstadoCivil | keyValue" [value]="item.key">
           {{item.value}}
         </mat-option>
       </mat-select>
+      <mat-error *ngIf="!form.controls.estadoCivil.valid  && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
     </mat-form-field>
-  </div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-    <mat-form-field>
-      <input matInput [matDatepicker]="picker" placeholder="Data nascimento" formControlName="dataNascimento"  (dateChange)="changeData($event)">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-      <mat-datepicker #picker></mat-datepicker>
-      <mat-error *ngIf="!form.controls.dataNascimento.valid">Campo Obrigatório</mat-error>
-    </mat-form-field>    
-  </div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="full-width-field">
       <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" (change)="change()" required>
-    </mat-form-field>
-    <mat-form-field class="example-full-width">
-      <input matInput class="input-upper" placeholder="Profissão" formControlName="profissao" id="profissao" (change)="change()">
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>
-    <mat-checkbox formControlName="batizado" (change)="change()">Batizado</mat-checkbox>
-    <mat-checkbox formControlName="dizimista" (change)="change()">Dizimista</mat-checkbox>
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="Profissão" class="input-upper" formControlName="profissao" id="profissao" (change)="change()">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+    <app-igrejas></app-igrejas>
+    <app-celula *ngIf="visisaoCelular"></app-celula>
+  </div>
+  <div class="full-width-field" fxLayoutGap="20px" [hidden]="hideTipo">
+    <label style="color:#1d68a5">Batizado?</label>
+    <mat-slide-toggle formControlName="batizado" id="batizado" #batizado>{{batizado.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+    <label style="color:#1d68a5">Dizimista?</label>
+    <mat-slide-toggle formControlName="dizimista" id="dizimista" #dizimista>{{dizimista.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+    <mat-form-field class="full-width-field">
+      <textarea matInput placeholder="Observação" formControlName="observacao"></textarea>
+    </mat-form-field>
   </div>
 </form>

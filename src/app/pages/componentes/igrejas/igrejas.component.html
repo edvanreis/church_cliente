@@ -1,12 +1,12 @@
-<div>
-<mat-form-field class="example-full-width">
-  <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
+<div >
+<mat-form-field class="full-width-field">
+  <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja" 
     [matAutocomplete]="auto" [(ngModel)]="nomeValue">
-  <mat-autocomplete #auto="matAutocomplete">
+  <mat-autocomplete #auto="matAutocomplete" >
     <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
-      (onSelectionChange)="onSelectionChangedIgreja($event,option)">
+      (onSelectionChange)="onSelectionChange($event,option)">
       {{option.nome}}
     </mat-option>
   </mat-autocomplete>
 </mat-form-field>
-</div>
+</div >

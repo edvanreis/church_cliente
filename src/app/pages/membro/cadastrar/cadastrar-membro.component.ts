@@ -50,14 +50,15 @@ export class CadastrarMembroComponent implements OnInit {
   public endereco: any;
   public etapa$: Observable<any[]>;
   public etapas = [];
-
+  public batizado:boolean = false;
+  public dizimista:boolean;
+  public tipoCadastro:string = "membro";
 
 
   ngOnInit() {
     // this.getComboSexo();
     // this.getComboEstadoCivil();
     this.getComboContatos();
-    this.getComboEscolaridade();
     this._buildForm();
     // this.getComboUF();
     this.getComboEtapaVisao();
@@ -74,6 +75,9 @@ export class CadastrarMembroComponent implements OnInit {
       if (item.type == 'endereco') {
         this.endereco = item.data;
       }
+      if (item.type == 'escolaridade') {
+        this.endereco = item.data;
+      }
 
     });
   }
@@ -83,19 +87,6 @@ export class CadastrarMembroComponent implements OnInit {
     this.etapa$ = this._etapaVisao.getList();
   }
 
-  getComboSexo() {
-    this._membroService.carregarSexo().subscribe(item => {
-      this.comboSexo = item;
-      // console.log(item);
-    });
-  }
-
-  getComboEstadoCivil() {
-    this._membroService.carregarEstadoCivil().subscribe(item => {
-      this.comboEstadoCivil = item;
-      // console.log(item);
-    });
-  }
 
   getComboContatos() {
     this._membroService.carregarTiposContatos().subscribe(item => {
@@ -104,12 +95,7 @@ export class CadastrarMembroComponent implements OnInit {
     });
   }
 
-  getComboEscolaridade() {
-    this._membroService.carregarEscolaridade().subscribe(item => {
-      this.comboEscolaridade = item;
-      // console.log(item);
-    });
-  }
+ 
   getComboUF() {
     this._enderecoService.carregarEstados().subscribe(item => {
       this.comboEstados = item;
@@ -128,7 +114,9 @@ export class CadastrarMembroComponent implements OnInit {
       'curso': new FormControl(''),
       'email': new FormControl(''),
       'etapa': new FormControl(''),
-      'emailPrincipal': new FormControl('')
+      'emailPrincipal': new FormControl(''),
+      'batizado': new FormControl(''),
+      'dizimista': new FormControl('')
     });
   }
   adicionarContato() {
@@ -307,8 +295,8 @@ export class CadastrarMembroComponent implements OnInit {
     this.membro.dataNascimento = this.dadosPessoais.dataNascimento;
     this.membro.nacionalidade = this.dadosPessoais.nacionalidade;
     this.membro.profissao = this.dadosPessoais.profissao;
-    this.membro.batizado = this.dadosPessoais.batizado;
-    this.membro.dizimista = this.dadosPessoais.dizimista;
+    // this.membro.batizado = this.dadosPessoais.batizado;
+    // this.membro.dizimista = this.dadosPessoais.dizimista;
     // endereço
     this.membro.endereco.cep = this.endereco.cep;
     this.membro.endereco.numero = this.endereco.numero;
@@ -356,8 +344,13 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir("save-ok", "save-ok");
+    this._emitirEventoService.emitir("save-ok", "");
   }
 
+  setFieldFormControl(field, value) {
+    this.form.controls[field].patchValue(value)
+  }
+
+ 
  
 }

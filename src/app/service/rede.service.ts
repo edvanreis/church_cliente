@@ -22,6 +22,12 @@ export class RedeService {
     return this.http.post(this._url, rede)
       .pipe(map((response: any) => response))
   }
+
+  getList() {
+    return this.http.get(this._url+"obterLista")
+      .pipe(map((response: any) => response))
+  }
+
   
 
 }

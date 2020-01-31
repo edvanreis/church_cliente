@@ -46,7 +46,7 @@ export class EnderecoComponent implements OnInit {
   }
 
   consultarCEP(event) {
-    console.log(event.target.value);
+    // console.log(event.target.value);
     let cep: string = event.target.value;
     if (cep) {
       cep = cep.replace("-", "").trim();
@@ -111,7 +111,7 @@ export class EnderecoComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      console.log(item.data);
+      // console.log(item.data);
       if (item.type == 'save-ok') {
         this.form.reset();
       }

@@ -7,8 +7,13 @@ import { InterceptorService } from '../../service/interceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule } from '@angular/material';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
+import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
+import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { TextMaskModule } from 'angular2-text-mask';
+import { PipeModule } from '../../pipe/pipe/pipe.module';
+import { RedesComponenteModule } from '../componentes/redes/redes-componente.module';
 
 
 
@@ -28,6 +33,14 @@ const routes: Routes = [
     MatToolbarModule,
     MatDatepickerModule,
     EnderecoModule,
+    MembroComponenteModule,
+    IgrejasCompenenteModule,
+    TextMaskModule,
+    PipeModule,
+    MatSelectModule,
+    MatOptionModule,
+    RedesComponenteModule,
+    MatAutocompleteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

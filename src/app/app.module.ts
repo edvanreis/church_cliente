@@ -15,6 +15,8 @@ import { PerfilModule } from './pages/perfil/perfil.module';
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
 import { InterceptorService } from './service/interceptor.service';
+import { RedesComponent } from './pages/componentes/redes/redes.component';
+import { EscolaridadeComponent } from './pages/componentes/escolaridade/escolaridade.component';
 
 
 

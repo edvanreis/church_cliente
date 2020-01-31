@@ -116,7 +116,6 @@ export class CadastrarRedeComponent implements OnInit {
     } else {
       this._emitirEventoService.emitir("rede", "");
     }
-
   }
 
   clean() {
