@@ -14,12 +14,14 @@ export class InterceptorService {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
 
     const token = this._tokenService.retrieveToken();
-    // console.log("token");
-    // console.log(token);
+
     if (token) {
       const authReq = req.clone({
         headers: new HttpHeaders({
-          'Authorization': 'bearer ' + JSON.parse(token)
+          'Authorization': 'bearer ' + JSON.parse(token),
+          'Cache-Control': 'no-cache',
+          'Pragma': 'no-cache',
+          'Expires': 'Sat, 01 Jan 2000 00:00:00 GMT'
         })
       });
       return this._intercept(authReq, next);
@@ -31,18 +33,11 @@ export class InterceptorService {
 
     return next.handle(req).pipe(
       tap(evt => {
-        if (evt instanceof HttpResponse) {
-          if (evt.body && evt.body.success){
-            console.log(evt.body);
-          }
-        }
+        evt
       }),
       catchError((err: any) => {
         if (err instanceof HttpErrorResponse) {
           try {
-            if( err.error.message ){
-            }else{
-            }
             console.log(err)
           } catch (e) {
             console.log(e)
