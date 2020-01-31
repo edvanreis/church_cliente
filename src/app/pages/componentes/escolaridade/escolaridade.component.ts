@@ -24,6 +24,7 @@ export class EscolaridadeComponent implements OnInit {
   ngOnInit() {
     this.getComboEscolaridade();
     this._buildForm();
+    this.getEmiter();
   }
 
 

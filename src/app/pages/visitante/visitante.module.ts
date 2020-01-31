@@ -11,6 +11,7 @@ import { PesquisarVisitanteComponent } from './pesquisar/pesquisar-visitante.com
 import { PessoaModule } from '../componentes/pessoa/pessoa.module';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
 import { ContatosModule } from '../componentes/contatos/contatos.module';
+import { VisitanteService } from '../../service/visitante.service';
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarVisitanteComponent , data: { animation: 'buttons' }},
@@ -37,6 +38,7 @@ const routes: Routes = [
     PesquisarVisitanteComponent
   ],
   providers: [
+    VisitanteService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ]
 })

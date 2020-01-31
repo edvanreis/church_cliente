@@ -1,5 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { VisitanteService } from '../../../service/visitante.service';
+import { take } from 'rxjs/operators';
+import { NotifierService } from 'angular-notifier';
+import { AlertType } from '../../../model/alert-type';
 
 @Component({
   selector: 'app-cadastrar-visitante',
@@ -12,10 +16,14 @@ export class CadastrarVisitanteComponent implements OnInit {
   public endereco: any;
   public escolaridades:any = [];
   public contatos:any = [];
+  public celula:any;
+  public igreja:any;
   public visitante = {} as any;
 
 
-  constructor( private _emitirEventoService: EmitirEventoService) { }
+  constructor( private _emitirEventoService: EmitirEventoService,
+    private _visitanteService:VisitanteService, 
+    private _notifierService: NotifierService) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -38,13 +46,26 @@ export class CadastrarVisitanteComponent implements OnInit {
       if (item.type == 'contatos') {
         this.contatos = item.data;
       }
+      if (item.type == 'celula-comp') {
+        this.contatos = item.data;
+      }
+      if (item.type == 'igreja-comp') {
+        this.contatos = item.data;
+      }
 
     });
   }
 
   salvar(){
     this.setObj();
-    console.log(this.visitante)
+    // console.log(this.visitante)
+    this._visitanteService.save(this.visitante).pipe(take(1)).subscribe(item => {
+      this.setEmiter();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+
+    });
   
   }
 
@@ -62,14 +83,17 @@ export class CadastrarVisitanteComponent implements OnInit {
       this.visitante.profissao = this.dadosPessoais.profissao;
     }
     if(this.endereco){
-      this.visitante.endereco = {} as any;
-      this.visitante.endereco.cep = this.endereco.cep;
-      this.visitante.endereco.numero = this.endereco.numero;
-      this.visitante.endereco.complemento = this.endereco.complemento;
-      this.visitante.endereco.bairro = this.endereco.bairro;
-      this.visitante.endereco.logradouro = this.endereco.logradouro;
-      this.visitante.endereco.uf = this.endereco.uf;
-      this.visitante.endereco.localidade = this.endereco.cidade;
+      let enderecos:any = [];
+      let endereco = {} as any
+      endereco.cep = this.endereco.cep;
+      endereco.numero = this.endereco.numero;
+      endereco.complemento = this.endereco.complemento;
+      endereco.bairro = this.endereco.bairro;
+      endereco.logradouro = this.endereco.logradouro;
+      endereco.uf = this.endereco.uf;
+      endereco.localidade = this.endereco.cidade;
+      enderecos.push(endereco);
+      this.visitante.enderecos = enderecos;
     }
     if(this.contatos){
       this.visitante.contatos = this.contatos;
@@ -77,8 +101,19 @@ export class CadastrarVisitanteComponent implements OnInit {
     if(this.escolaridades){
       this.visitante.escolaridades = this.escolaridades;
     } 
+    if(this.celula){
+      this.visitante.celula = this.celula;
+    } 
+
+    if(this.igreja){
+      this.visitante.igreja = this.celula;
+    } 
     
 
+  }
+
+  setEmiter(): void {
+    this._emitirEventoService.emitir("save-ok", "");
   }
 
 }

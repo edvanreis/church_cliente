@@ -83,7 +83,6 @@ export class DadosPessoaisComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       if (item.type == 'save-ok') {
-        console.log('entrou');
         this.form.reset();
       }
       if (item.type == 'igreja-comp') {
