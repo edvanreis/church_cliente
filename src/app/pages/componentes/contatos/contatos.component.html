@@ -1,6 +1,6 @@
 <form form [formGroup]="form">
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-    <mat-form-field>
+    <mat-form-field class="full-width-field">
       <mat-label>Selecione...</mat-label>
       <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
         <mat-option *ngFor="let item of comboTipoContatos" [value]="item.tipo">
@@ -8,7 +8,7 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field class="example-full-width">
+    <mat-form-field class="full-width-field">
       <input matInput placeholder="Contato" formControlName="contato" id="contato" *ngIf="isContato">
       <input matInput placeholder="Contato" formControlName="contatoTelefone" [textMask]="{mask: maskTelefone}"
         id="contatoTelefone" *ngIf="isTelefone">
