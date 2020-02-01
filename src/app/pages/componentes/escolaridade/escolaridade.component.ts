@@ -56,7 +56,7 @@ export class EscolaridadeComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      if (item.type == 'save-ok') {
+      if (item.type == 'clear') {
         this.form.reset();
         this.escolaridades = [];
       }

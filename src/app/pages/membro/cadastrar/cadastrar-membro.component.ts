@@ -52,7 +52,7 @@ export class CadastrarMembroComponent implements OnInit {
   public etapas = [];
   public batizado:boolean = false;
   public dizimista:boolean;
-  public tipoCadastro:string = "membro";
+ 
 
 
   ngOnInit() {

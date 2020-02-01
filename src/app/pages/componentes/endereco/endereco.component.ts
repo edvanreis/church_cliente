@@ -54,7 +54,7 @@ export class EnderecoComponent implements OnInit {
       if (validarCep.test(cep)) {
         this._enderecoService.carregarEndereco(cep).subscribe(item => {
           if (item) {
-            // console.log(item);
+             console.log(item);
             this.form.controls['logradouro'].patchValue(item.logradouro);
             this.form.controls['localidade'].patchValue(item.localidade);
             this.form.controls['uf'].patchValue(item.uf);
@@ -112,7 +112,7 @@ export class EnderecoComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       // console.log(item.data);
-      if (item.type == 'save-ok') {
+      if (item.type == 'clear') {
         this.form.reset();
       }
       // if (item.type == 'endereco') {

@@ -26,7 +26,8 @@ export class DadosPessoaisComponent implements OnInit {
   public comboEstadoCivil = [];
   public dataNascimento;
   public igrejaSelecionada: any;
-  @Input('tipoCadastro') tipoCadastro;
+  @Input('membroInput') membroInput:boolean;
+  @Input('pesquisa') pesquisa:boolean;
   public hideTipo: boolean = true;
   public visisaoCelular: boolean;
 
@@ -38,8 +39,8 @@ export class DadosPessoaisComponent implements OnInit {
     this.getComboSexo();
     this.getComboEstadoCivil();
     this.getEmiter();
-    console.log(this.tipoCadastro)
-    if (this.tipoCadastro == 'membro') {
+    console.log(this.membroInput)
+    if (this.membroInput) {
       this.hideTipo = false;
     }
   }
@@ -82,7 +83,7 @@ export class DadosPessoaisComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      if (item.type == 'save-ok') {
+      if (item.type == 'clear') {
         this.form.reset();
       }
       if (item.type == 'igreja-comp') {

@@ -13,72 +13,7 @@
                 Dados pessoais
               </span>
             </mat-expansion-panel-header>
-            <form form [formGroup]="form">
-              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Nome" formControlName="nome" id="nome">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome">
-                </mat-form-field>
-              </div>
-              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf">
-                </mat-form-field>
-              </div>
-              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-                <mat-form-field>
-                  <mat-label>Sexo</mat-label>
-                  <mat-select formControlName="sexo" id="sexo">
-                    <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
-                      {{item.value}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-                <mat-form-field>
-                  <mat-label>Estado Civil</mat-label>
-                  <mat-select formControlName="estadoCivil" id="estadoCivil">
-                    <mat-option *ngFor="let item of comboEstadoCivil | keyValue" [value]="item.key">
-                      {{item.value}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-                <mat-form-field>
-                  <input matInput [matDatepicker]="picker" placeholder="Data nascimento"
-                    formControlName="dataNascimento">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-              </div>
-              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade">
-                </mat-form-field>
-                <mat-form-field class="example-full-width">
-                  <input matInput placeholder="Profissão" formControlName="profissao" id="profissao">
-                </mat-form-field>
-              </div>
-              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-                <mat-form-field>
-                  <mat-label>Etapas da visão</mat-label>
-                  <mat-select formControlName="etapa" id="etapa">
-                    <mat-option *ngFor="let item of etapa$ | async" [value]="item">
-                      {{item.nome}}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>
-                <mat-checkbox formControlName="batizado">Batizado</mat-checkbox>
-                <mat-checkbox formControlName="dizimista">Dizimista</mat-checkbox>
-              </div>
-            </form>
+            <app-dados-pessoais [pesquisa]="true"></app-dados-pessoais>
           </mat-expansion-panel>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
