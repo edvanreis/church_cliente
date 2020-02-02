@@ -11,6 +11,7 @@ import { ExcelService } from '../../../service/excel.service';
 import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { AlertType } from '../../../model/alert-type';
 import { PessoaService } from '../../../service/pessoa.service';
+import { Router } from '@angular/router';
 
 
 
@@ -27,7 +28,8 @@ export class PesquisarVisitanteComponent implements OnInit {
     private _notifierService: NotifierService,
     private _excelService: ExcelService,
     private _datePipe: DatePipe,
-    private _etapaVisao: EtapaVisaoService) { }
+    private _etapaVisao: EtapaVisaoService,
+    private _router: Router) { }
 
   public etapa$: Observable<any[]>;
   public visitante:any= {} as any;
@@ -69,18 +71,21 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'dadosPessoais') {
+        this.dadosPessoais = item.data;
+      }
       if (item.type == 'endereco') {
         this.endereco = item.data;
-        // console.log(item.data)
       }
     });
   }
 
   pesquisar() {
     this.setObj();
+    console.log(this.visitante)
     this.loading = true;
     this._service.pesquisar(this.visitante).pipe(take(1)).subscribe(item => {
-      // console.log(item);
+      console.log(item);
       this.visitantes = item;
       this.dados = new MatTableDataSource(this.visitantes);
       this.dados.sort = this.sort;
@@ -201,6 +206,16 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   setFieldFormControl(field, value) {
     this.form.controls[field].patchValue(value)
+  }
+
+  editar(id){
+    this._router.navigate(['/auth/visitante/cadastrar'], {
+      queryParams: {
+        janela: 'Editar',
+        id: id
+      },
+      skipLocationChange: true
+    });
   }
 
 }

@@ -70,14 +70,28 @@
           <mat-table #table [dataSource]="dados" matSort>
             <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
               <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
-              <mat-cell *matCellDef="let element"> {{element[column.id]}} </mat-cell>
+              <mat-cell *matCellDef="let element"> 
+                <span  *ngIf="column.id!='id'">{{element[column.id]}}</span> 
+                <span  *ngIf="column.id=='id'">
+                      <span style="cursor: pointer;" (click)="editar(element.id)" title="Editar">
+                        <i class="material-icons">person</i>
+                </span> 
+                </span>
+              </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
           </mat-table>
-          <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
-            showFirstLastButtons></mat-paginator>
+          <mat-paginator 
+                #paginator 
+                [length]="dados.length" 
+                [pageSize]="5" 
+                [pageSizeOptions]="[5, 10, 20]"
+                showFirstLastButtons
+                (page) = "paginatorEvent($event)"
+                [pageIndex]="pageIndex" >
+          </mat-paginator>
         </div>
         <button mat-raised-button color="success" (click)="exportAsXLSX()" *ngIf="visitantes.length > 0  && !loading"><i
             class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>

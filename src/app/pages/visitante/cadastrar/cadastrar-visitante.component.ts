@@ -5,6 +5,7 @@ import { take } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { PessoaService } from '../../../service/pessoa.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-visitante',
@@ -24,7 +25,8 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   constructor( private _emitirEventoService: EmitirEventoService,
     private _service:PessoaService, 
-    private _notifierService: NotifierService) { }
+    private _notifierService: NotifierService,
+    private _router: Router) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -118,6 +120,15 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   setEmiter(): void {
     this._emitirEventoService.emitir('clear', '');
+  }
+
+  voltar(){
+    this._router.navigate(['/auth/visitante/pesquisar'], {
+      queryParams: {
+        
+      },
+      skipLocationChange: true
+    });
   }
 
 }
