@@ -26,8 +26,8 @@ export class DadosPessoaisComponent implements OnInit {
   public comboEstadoCivil = [];
   public dataNascimento;
   public igrejaSelecionada: any;
-  @Input('membroInput') membroInput:boolean;
-  @Input('pesquisa') pesquisa:boolean;
+  @Input('membroInput') membroInput: boolean;
+  @Input('pesquisa') pesquisa: boolean;
   public hideTipo: boolean = true;
   public visisaoCelular: boolean;
 
@@ -86,6 +86,9 @@ export class DadosPessoaisComponent implements OnInit {
       if (item.type == 'clear') {
         this.form.reset();
       }
+      if (item.type == 'edit-dadosPessoais') {
+        this.getObj(item.data);
+      }
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
         if (this.igrejaSelecionada.visisaoCelular) {
@@ -115,8 +118,21 @@ export class DadosPessoaisComponent implements OnInit {
     if (this.form.controls['dizimista'].value) {
       this.pessoa.dizimista = this.form.controls['dizimista'].value;
     }
-
     return this.pessoa;
+  }
+
+  getObj(dados){
+    this.form.controls['nome'].patchValue(dados.nome);
+    this.form.controls['sobrenome'].patchValue(dados.sobreNome);
+    this.form.controls['rg'].patchValue(dados.rg);
+    this.form.controls['cpf'].patchValue(dados.cpf);
+    this.form.controls['sexo'].patchValue(dados.sexoEnum);
+    this.form.controls['estadoCivil'].patchValue(dados.estadoCivilEnum);
+    this.form.controls['nacionalidade'].patchValue(dados.nacionalidade);
+    this.form.controls['profissao'].patchValue(dados.profissao);
+    this.form.controls['observacao'].patchValue(dados.observacao);
+    this.form.controls['batizado'].patchValue(dados.batizado);
+    this.form.controls['dizimista'].patchValue(dados.dizimista);
   }
 
   change() {

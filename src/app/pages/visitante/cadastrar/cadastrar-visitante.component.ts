@@ -5,7 +5,7 @@ import { take } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { PessoaService } from '../../../service/pessoa.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-visitante',
@@ -26,10 +26,28 @@ export class CadastrarVisitanteComponent implements OnInit {
   constructor( private _emitirEventoService: EmitirEventoService,
     private _service:PessoaService, 
     private _notifierService: NotifierService,
-    private _router: Router) { }
+    private _router: Router,
+    private _avRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.getEmiter();
+    this.getParams();
+  }
+
+  getParams(){
+    if (this._avRoute.snapshot.queryParamMap.get("id")) {
+      let id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.getPessoa(id);
+    }
+  }
+
+  getPessoa(id) {
+    this._service.obterPessoa(id).pipe(take(1)).subscribe(item => {
+      this.dadosPessoais = item;
+      this.emitirPessoa();
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
   }
 
   
@@ -66,7 +84,7 @@ export class CadastrarVisitanteComponent implements OnInit {
       return false;
     }
     this._service.saveVisitante(this.visitante).pipe(take(1)).subscribe(item => {
-      this.setEmiter();
+      this.emitiClear();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -118,8 +136,12 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   }
 
-  setEmiter(): void {
+  emitiClear(): void {
     this._emitirEventoService.emitir('clear', '');
+  }
+
+  emitirPessoa(): void {
+    this._emitirEventoService.emitir('edit-dadosPessoais', this.dadosPessoais);
   }
 
   voltar(){
