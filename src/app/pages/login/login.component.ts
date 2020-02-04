@@ -44,6 +44,7 @@ export class LoginComponent implements OnInit {
       this._storeToken(user);
       this._storeUser();
     }, erro => {
+      console.log(erro.error.error_description);
       // this._helper.showMessageError(erro.error.error_description);
     })
 
