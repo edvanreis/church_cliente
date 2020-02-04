@@ -1,30 +1,30 @@
 <form form [formGroup]="form">
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="full-width-field">
-      <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" (change)="change()" required>
-      <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
+      <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" (change)="change()">
+      <mat-error *ngIf="!form.controls.nome.valid && !pesquisa">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"> 
     <mat-form-field class="full-width-field">
       <input matInput  class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" (change)="change()">
-      <mat-error *ngIf="!form.controls.sobrenome.valid && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="!form.controls.sobrenome.valid && membroInput">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="full-width-field">
       <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg" (change)="change()" >
-      <mat-error *ngIf="!form.controls.rg.valid  && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="!form.controls.rg.valid  && membroInput ">Campo Obrigatório</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width-field">
       <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" (change)="change()" >  
-      <mat-error *ngIf="!form.controls.cpf.valid  && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="!form.controls.cpf.valid  && membroInput">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="full-width-field">
       <input matInput [textMask]="{mask: maskDate}" placeholder="Data nascimento" formControlName="dataNascimento"  (change)="change()">
-      <mat-error *ngIf="!form.controls.dataNascimento.valid  && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="!form.controls.dataNascimento.valid  && membroInput">Campo Obrigatório</mat-error>
     </mat-form-field> 
     <mat-form-field class="full-width-field">
       <mat-label>Sexo</mat-label>
@@ -33,7 +33,7 @@
           {{item.value}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="!form.controls.sexo.valid  && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="!form.controls.sexo.valid  && membroInput">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -44,15 +44,17 @@
           {{item.value}}
         </mat-option>
       </mat-select>
-      <mat-error *ngIf="!form.controls.estadoCivil.valid  && tipoCadastro=='membro'">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="!form.controls.estadoCivil.valid  && membroInput">Campo Obrigatório</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width-field">
-      <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" (change)="change()" required>
+      <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" (change)="change()" >
+      <mat-error *ngIf="!form.controls.estadoCivil.valid  && membroInput">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" required>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" >
     <mat-form-field class="full-width-field">
       <input matInput placeholder="Profissão" class="input-upper" formControlName="profissao" id="profissao" (change)="change()">
+      <mat-error *ngIf="!form.controls.estadoCivil.valid  && membroInput">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -65,7 +67,7 @@
     <label style="color:#1d68a5">Dizimista?</label>
     <mat-slide-toggle formControlName="dizimista" id="dizimista" #dizimista>{{dizimista.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
   </div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="!pesquisa">
     <mat-form-field class="full-width-field">
       <textarea matInput placeholder="Observação" formControlName="observacao"></textarea>
     </mat-form-field>

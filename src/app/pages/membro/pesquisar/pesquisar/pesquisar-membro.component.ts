@@ -45,39 +45,19 @@ export class PesquisarMembroComponent implements OnInit {
   public lista = [];
   public form: FormGroup;
   public formDate: FormGroup;
-  public comboSexo = [];
-  public comboEstadoCivil = [];
-  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
-  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/]
+
+  
 
   ngOnInit() {
     this.getEmiter();
     this.columns();
-    this._buildForm();
-    // this.getComboSexo();
-    // this.getComboEstadoCivil();
     this._buildFormDate();
     this.getComboEtapaVisao();
-    console.log(JSON.parse(this.user.currentUser()));
-    console.log(JSON.parse(this.user.currentUser()).name);
+    // console.log(JSON.parse(this.user.currentUser()));
+    // console.log(JSON.parse(this.user.currentUser()).name);
   }
 
-  private _buildForm(): void {
-    this.form = new FormGroup({
-      'nome': new FormControl(''),
-      'sobrenome': new FormControl(''),
-      'dataNascimento': new FormControl(''),
-      'rg': new FormControl(''),
-      'cpf': new FormControl(''),
-      'sexo': new FormControl(''),
-      'estadoCivil': new FormControl(''),
-      'nacionalidade': new FormControl(''),
-      'profissao': new FormControl(''),
-      'batizado': new FormControl(''),
-      'dizimista': new FormControl(''),
-      'etapa': new FormControl('')
-    });
-  }
+
 
   private _buildFormDate(): void {
     this.formDate = new FormGroup({
@@ -201,19 +181,6 @@ export class PesquisarMembroComponent implements OnInit {
     this._excelService.exportAsExcelFile(dados, "pesquisa");
   }
 
-  // getComboSexo() {
-  //   this._membroService.carregarSexo().subscribe(item => {
-  //     this.comboSexo = item;
-  //     // console.log(item);
-  //   });
-  // }
-
-  // getComboEstadoCivil() {
-  //   this._membroService.carregarEstadoCivil().subscribe(item => {
-  //     this.comboEstadoCivil = item;
-  //     // console.log(item);
-  //   });
-  // }
 
   getComboEtapaVisao() {
     this.etapa$ = this._etapaVisao.getList();
@@ -223,6 +190,8 @@ export class PesquisarMembroComponent implements OnInit {
     this.form.reset();
     this.formDate.reset();
   }
+
+  
 
 
 }

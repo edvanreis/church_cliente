@@ -57,7 +57,7 @@ export class RedesComponent implements OnInit {
         this.redeSelecionada = item.data;
         this.nomeValue = item.data;
       }
-      if (item.type == 'save-ok') {
+      if (item.type == 'clear') {
         this.redeSelecionada = '';
         this.nomeValue = '';
       }

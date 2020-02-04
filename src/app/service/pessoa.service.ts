@@ -13,21 +13,37 @@ export class PessoaService {
 
   constructor(public http: HttpClient) { }
 
-  
+
   carregarEscolaridade() {
     return this.http.get(this._url + "escolaridade")
       .pipe(tap((response: any) => response));
   }
 
-  
+
   carregarEstadoCivil() {
     return this.http.get(this._url + "estadoCivil")
       .pipe(tap((response: any) => response));
   }
 
-  
+
   carregarSexo() {
     return this.http.get(this._url + "sexo")
+      .pipe(tap((response: any) => response));
+  }
+
+  saveVisitante(visitante) {
+    return this.http.post(this._url + "visitante", visitante)
+      .pipe(map((response: any) => response))
+  }
+
+  pesquisar(pessoa) {
+    console.log(this._url + "pesquisar" + pessoa);
+    return this.http.post(this._url + "pesquisar", pessoa)
+      .pipe(map((response: any) => response))
+  }
+
+  obterPessoa(id) {
+    return this.http.get(this._url + id + "/obterPessoa")
       .pipe(tap((response: any) => response));
   }
 }

@@ -4,6 +4,8 @@ import { VisitanteService } from '../../../service/visitante.service';
 import { take } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
+import { PessoaService } from '../../../service/pessoa.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-visitante',
@@ -22,11 +24,30 @@ export class CadastrarVisitanteComponent implements OnInit {
 
 
   constructor( private _emitirEventoService: EmitirEventoService,
-    private _visitanteService:VisitanteService, 
-    private _notifierService: NotifierService) { }
+    private _service:PessoaService, 
+    private _notifierService: NotifierService,
+    private _router: Router,
+    private _avRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.getEmiter();
+    this.getParams();
+  }
+
+  getParams(){
+    if (this._avRoute.snapshot.queryParamMap.get("id")) {
+      let id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.getPessoa(id);
+    }
+  }
+
+  getPessoa(id) {
+    this._service.obterPessoa(id).pipe(take(1)).subscribe(item => {
+      this.dadosPessoais = item;
+      this.emitirPessoa();
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
   }
 
   
@@ -58,9 +79,12 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   salvar(){
     this.setObj();
-    // console.log(this.visitante)
-    this._visitanteService.save(this.visitante).pipe(take(1)).subscribe(item => {
-      this.setEmiter();
+    if(!this.visitante.nome){
+      this._notifierService.notify(AlertType.Error,"Por favor digite o nome do visitante!");
+      return false;
+    }
+    this._service.saveVisitante(this.visitante).pipe(take(1)).subscribe(item => {
+      this.emitiClear();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -91,7 +115,7 @@ export class CadastrarVisitanteComponent implements OnInit {
       endereco.bairro = this.endereco.bairro;
       endereco.logradouro = this.endereco.logradouro;
       endereco.uf = this.endereco.uf;
-      endereco.localidade = this.endereco.cidade;
+      endereco.localidade = this.endereco.localidade;
       enderecos.push(endereco);
       this.visitante.enderecos = enderecos;
     }
@@ -112,8 +136,21 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   }
 
-  setEmiter(): void {
-    this._emitirEventoService.emitir("save-ok", "");
+  emitiClear(): void {
+    this._emitirEventoService.emitir('clear', '');
+  }
+
+  emitirPessoa(): void {
+    this._emitirEventoService.emitir('edit-dadosPessoais', this.dadosPessoais);
+  }
+
+  voltar(){
+    this._router.navigate(['/auth/visitante/pesquisar'], {
+      queryParams: {
+        
+      },
+      skipLocationChange: true
+    });
   }
 
 }

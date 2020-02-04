@@ -66,7 +66,7 @@ export class IgrejasComponent implements OnInit {
         this.igrejaSelecionada = item.data;
         this.nomeValue = item.data;
       }
-      if (item.type == 'save-ok') {
+      if (item.type == 'clear') {
         this.igrejaSelecionada = '';
         this.nomeValue = '';
       }

@@ -20,7 +20,9 @@ export class PesquisarIgrejaComponent implements OnInit {
   filteredIgrejas: Observable<string[]>;
   myControl = new FormControl();
 
-  constructor(private _igrejaService: IgrejaService, private _notifierService: NotifierService, private _router: Router) { }
+  constructor(private _igrejaService: IgrejaService, 
+              private _notifierService: NotifierService, 
+              private _router: Router) { }
 
   ngOnInit() {
     this.lista();
