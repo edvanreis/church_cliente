@@ -9,7 +9,7 @@
         <mat-tab label="Sede">
           <br />
           <app-igreja-dados></app-igreja-dados>
-          <app-endereco></app-endereco>
+          <app-endereco [sizeLimitOne]="sizeLimitOne"></app-endereco>
           <app-contatos></app-contatos>
           <br /><br />
           <div>
@@ -22,7 +22,7 @@
         </mat-tab>
         <mat-tab label="Filial" *ngIf="tipoEdicao!='sede'">
           <app-igreja-dados></app-igreja-dados>
-          <app-endereco></app-endereco>
+          <app-endereco [sizeLimitOne]="sizeLimitOne"></app-endereco>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="example-full-width">
               <input type="text" placeholder="Igreja Sede" aria-label="Number" matInput [formControl]="myControlIgrejaSede"

@@ -6,6 +6,7 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { PessoaService } from '../../../service/pessoa.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { EnderecoService } from '../../../service/endereco.service';
 
 @Component({
   selector: 'app-cadastrar-visitante',
@@ -15,7 +16,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 export class CadastrarVisitanteComponent implements OnInit {
 
   public dadosPessoais: any;
-  public endereco: any;
+  public enderecos: any;
   public escolaridades:any = [];
   public contatos:any = [];
   public celula:any;
@@ -25,6 +26,7 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   constructor( private _emitirEventoService: EmitirEventoService,
     private _service:PessoaService, 
+    private _enderecoService:EnderecoService,
     private _notifierService: NotifierService,
     private _router: Router,
     private _avRoute: ActivatedRoute) { }
@@ -43,10 +45,21 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   getPessoa(id) {
     this._service.obterPessoa(id).pipe(take(1)).subscribe(item => {
-      this.dadosPessoais = item;
-      this.emitirPessoa();
+      this.emitirPessoa(item);
+      this.getEndereco(item.id)
     }, error => {
-      this._notifierService.notify(AlertType.Error, error.errors.message);
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  getEndereco(id) {
+    console.log(id)
+    this._enderecoService.obterEndereco(id).pipe(take(1)).subscribe(item => {
+      this.emitirEnderecos(item);
+    }, error => {
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
     });
   }
 
@@ -59,7 +72,7 @@ export class CadastrarVisitanteComponent implements OnInit {
         this.dadosPessoais = item.data;
       }
       if (item.type == 'endereco') {
-        this.endereco = item.data;
+        this.enderecos = item.data;
       }
       if (item.type == 'escolaridades') {
         this.escolaridades = item.data;
@@ -106,18 +119,8 @@ export class CadastrarVisitanteComponent implements OnInit {
       this.visitante.nacionalidade = this.dadosPessoais.nacionalidade;
       this.visitante.profissao = this.dadosPessoais.profissao;
     }
-    if(this.endereco){
-      let enderecos:any = [];
-      let endereco = {} as any
-      endereco.cep = this.endereco.cep;
-      endereco.numero = this.endereco.numero;
-      endereco.complemento = this.endereco.complemento;
-      endereco.bairro = this.endereco.bairro;
-      endereco.logradouro = this.endereco.logradouro;
-      endereco.uf = this.endereco.uf;
-      endereco.localidade = this.endereco.localidade;
-      enderecos.push(endereco);
-      this.visitante.enderecos = enderecos;
+    if(this.enderecos){
+      this.visitante.enderecos = this.enderecos;
     }
     if(this.contatos){
       this.visitante.contatos = this.contatos;
@@ -140,10 +143,13 @@ export class CadastrarVisitanteComponent implements OnInit {
     this._emitirEventoService.emitir('clear', '');
   }
 
-  emitirPessoa(): void {
-    this._emitirEventoService.emitir('edit-dadosPessoais', this.dadosPessoais);
+  emitirPessoa(item): void {
+    this._emitirEventoService.emitir('edit-dadosPessoais', item);
   }
 
+  emitirEnderecos(item): void {
+    this._emitirEventoService.emitir('edit-endereco', item);
+  }
   voltar(){
     this._router.navigate(['/auth/visitante/pesquisar'], {
       queryParams: {

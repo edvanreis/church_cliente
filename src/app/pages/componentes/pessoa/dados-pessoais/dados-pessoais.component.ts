@@ -134,6 +134,7 @@ export class DadosPessoaisComponent implements OnInit {
     this.form.controls['batizado'].patchValue(dados.batizado);
     this.form.controls['dizimista'].patchValue(dados.dizimista);
   }
+  
 
   change() {
     this.setEmiter();

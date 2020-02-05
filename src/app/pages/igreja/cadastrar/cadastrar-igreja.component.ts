@@ -32,6 +32,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   public id:any;
   public dadosSede = {} as any;
   public tipoEdicao:any;
+  public sizeLimitOne:boolean = true;
   constructor(private _emitirEventoService: EmitirEventoService, 
               private _igrejaService: IgrejaService, 
               private _notifierService: NotifierService,

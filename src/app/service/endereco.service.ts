@@ -24,4 +24,9 @@ export class EnderecoService {
       .pipe(tap((response: any) => response));
   }
 
+  obterEndereco(id) {
+    return this.http.get(this._url + id + "/enderecosPessoa")
+      .pipe(tap((response: any) => response));
+  }
+
 }

@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 
 
 
+
 @Component({
   selector: 'app-pesquisar-visitante',
   templateUrl: './pesquisar-visitante.component.html',
@@ -92,9 +93,9 @@ export class PesquisarVisitanteComponent implements OnInit {
       this.dados.paginator = this.paginator;
       this.loading = false;
     }, error => {
-      // console.log(error);
+      console.log(error);
       this.loading = false;
-      this._notifierService.notify(AlertType.Error, error.errors.message);
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
 
     });
   }

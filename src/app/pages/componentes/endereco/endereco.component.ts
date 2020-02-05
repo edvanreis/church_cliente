@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
@@ -20,6 +20,8 @@ export class EnderecoComponent implements OnInit {
   public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
   public comboEstados = [];
   public endereco;
+  public enderecos:any = [];
+  @Input('sizeLimitOne')sizeLimitOne = false;
 
   constructor(private _membroService: MembroService,
     private _notifierService: NotifierService,
@@ -82,7 +84,7 @@ export class EnderecoComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir("endereco", this.endereco);
+    this._emitirEventoService.emitir("endereco", this.enderecos);
   }
 
 
@@ -111,9 +113,12 @@ export class EnderecoComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      // console.log(item.data);
+      console.log(item.data);
       if (item.type == 'clear') {
         this.form.reset();
+      }
+      if (item.type == 'edit-endereco') {
+          this.enderecos = item.data;
       }
       // if (item.type == 'endereco') {
       //   this.carregarEnderecoEmiter(item.data)
@@ -131,5 +136,19 @@ export class EnderecoComponent implements OnInit {
     this.form.controls['uf'].patchValue(endereco.uf);
   }
 
+
+    //  remove uma linha da grid
+    remover(index): void {
+      this.enderecos.splice(index, 1);
+      this.setEmiter();
+    }
+  
+    adicionar() {
+      if(this.enderecos.length > 0 && this.sizeLimitOne){
+        this._notifierService.notify(AlertType.Error, 'Apenas um endereço é permitido!');
+        return false;
+      }
+      this.enderecos.push(this.endereco);
+    }
 
 }

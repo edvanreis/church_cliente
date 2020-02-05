@@ -38,3 +38,38 @@
     </mat-form-field>
     </div>
 </form>
+<br />
+<button mat-raised-button color="primary" type="submit" (click)="adicionar()">
+  <i class="material-icons">add</i>adicionar
+</button>
+<br />
+<br />
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="enderecos.length > 0">
+  <div class="table-responsive">
+    <table>
+      <thead class="text-primary">
+        <th>Cep</th> 
+        <th>Número</th> 
+        <th>Complemento</th>
+        <th>Bairro</th> 
+        <th>Logradouro</th>  
+        <th>Cidade</th>
+        <th>Estado</th>                            
+        <th>Remover</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of enderecos">
+          <td>{{ e.cep}}</td> 
+          <td>{{ e.numero}}</td> 
+          <td>{{ e.complemento}}</td> 
+          <td>{{ e.bairro}}</td> 
+          <td>{{ e.logradouro}}</td> 
+          <td>{{ e.localidade}}</td>
+          <td>{{ e.uf}}</td>
+          <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
+                class="material-icons">delete</i></span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
