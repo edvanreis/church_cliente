@@ -193,6 +193,26 @@ export class ContatosComponent implements OnInit {
         this.contatos = [];
         this.contatosGrid = [];
       }
+      if (item.type == 'edit-contatos') {
+        this.contatos = item.data;
+        this.carregarContatoGrid(this.contatos);
+      }
+
+    });
+  }
+
+  carregarContatoGrid(contatos){
+    contatos.forEach(element => {
+      this.contatosGrid.push({
+        tipo: element.tipo,
+        contato: element.contato,
+        whatsapp: element.whatsapp,
+        facebook: null,
+        email:null,
+        telefone: null,
+        celular: null,
+        emailPrincipal: element.emailPrincipal
+      });
     });
   }
 

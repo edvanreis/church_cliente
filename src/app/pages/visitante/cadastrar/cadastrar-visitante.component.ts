@@ -7,6 +7,7 @@ import { AlertType } from '../../../model/alert-type';
 import { PessoaService } from '../../../service/pessoa.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EnderecoService } from '../../../service/endereco.service';
+import { ContatoService } from '../../../service/contato.service';
 
 @Component({
   selector: 'app-cadastrar-visitante',
@@ -29,7 +30,8 @@ export class CadastrarVisitanteComponent implements OnInit {
     private _enderecoService:EnderecoService,
     private _notifierService: NotifierService,
     private _router: Router,
-    private _avRoute: ActivatedRoute) { }
+    private _avRoute: ActivatedRoute,
+    private _contatoService:ContatoService) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -47,6 +49,8 @@ export class CadastrarVisitanteComponent implements OnInit {
     this._service.obterPessoa(id).pipe(take(1)).subscribe(item => {
       this.emitirPessoa(item);
       this.getEndereco(item.id)
+      this.getContatos(item.id);
+      this.getEscolaridades(item.id);
     }, error => {
       console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -57,6 +61,26 @@ export class CadastrarVisitanteComponent implements OnInit {
     console.log(id)
     this._enderecoService.obterEndereco(id).pipe(take(1)).subscribe(item => {
       this.emitirEnderecos(item);
+    }, error => {
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  getContatos(id) {
+    console.log(id)
+    this._contatoService.obterContatoPessoa(id).pipe(take(1)).subscribe(item => {
+      this.emitirContatos(item);
+    }, error => {
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  getEscolaridades(id) {
+    console.log(id)
+    this._service.obterEscolaridadePessoa(id).pipe(take(1)).subscribe(item => {
+      this.emitirEscolaridades(item);
     }, error => {
       console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -150,6 +174,15 @@ export class CadastrarVisitanteComponent implements OnInit {
   emitirEnderecos(item): void {
     this._emitirEventoService.emitir('edit-endereco', item);
   }
+
+  emitirContatos(item): void {
+    this._emitirEventoService.emitir('edit-contatos', item);
+  }
+
+  emitirEscolaridades(item): void {
+    this._emitirEventoService.emitir('edit-escolaridades', item);
+  }
+
   voltar(){
     this._router.navigate(['/auth/visitante/pesquisar'], {
       queryParams: {

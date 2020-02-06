@@ -18,4 +18,9 @@ export class ContatoService {
     return this.http.get(this._url + "tipoContato")
       .pipe(tap((response: any) => response));
   }
+
+  obterContatoPessoa(id) {
+    return this.http.get(this._url + id + "/contatoPessoa")
+      .pipe(tap((response: any) => response));
+  }
 }

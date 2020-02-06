@@ -60,9 +60,22 @@ export class EscolaridadeComponent implements OnInit {
         this.form.reset();
         this.escolaridades = [];
       }
+      if (item.type == 'edit-escolaridades') {
+        this.escolaridades = item.data;
+        this.carregarEscolaridadeGrid(this.escolaridades);
+      }
     });
   }
   
+
+  carregarEscolaridadeGrid(contatos){
+    contatos.forEach(element => {
+      this.escolaridadesGrid.push({
+        tipo: element.descricao,
+        curso: element.curso,
+      });
+    });
+  }
 
   setEmiter(): void {
     this._emitirEventoService.emitir("escolaridades",  this.escolaridades);

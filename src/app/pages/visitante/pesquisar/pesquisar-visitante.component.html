@@ -15,14 +15,14 @@
             </mat-expansion-panel-header>
             <app-dados-pessoais [pesquisa]="true"></app-dados-pessoais>
           </mat-expansion-panel>
-          <mat-expansion-panel>
+          <!-- <mat-expansion-panel>
             <mat-expansion-panel-header>
               <span style="color:#1d68a5"><i class="material-icons">store_mall_directory</i>
                 Endereço
               </span>
             </mat-expansion-panel-header>
             <app-endereco></app-endereco>
-          </mat-expansion-panel>
+          </mat-expansion-panel> -->
           <mat-expansion-panel>
             <mat-expansion-panel-header>
               <span class="default-font-color"><i class="material-icons">calendar_today</i>
@@ -74,7 +74,7 @@
                 <span  *ngIf="column.id!='id'">{{element[column.id]}}</span> 
                 <span  *ngIf="column.id=='id'">
                       <span style="cursor: pointer;" (click)="editar(element.id)" title="Editar">
-                        <i class="material-icons">person</i>
+                        <i class="material-icons">create</i>
                 </span> 
                 </span>
               </mat-cell>

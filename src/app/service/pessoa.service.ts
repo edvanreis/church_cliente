@@ -46,4 +46,9 @@ export class PessoaService {
     return this.http.get(this._url + id + "/obterPessoa")
       .pipe(tap((response: any) => response));
   }
+
+  obterEscolaridadePessoa(id) {
+    return this.http.get(this._url + id + "/escolaridadePessoa")
+      .pipe(tap((response: any) => response));
+  }
 }
