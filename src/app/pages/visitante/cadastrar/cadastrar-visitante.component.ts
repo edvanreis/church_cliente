@@ -23,6 +23,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   public celula:any;
   public igreja:any;
   public visitante = {} as any;
+  public id:any;
 
 
   constructor( private _emitirEventoService: EmitirEventoService,
@@ -40,8 +41,8 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   getParams(){
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
-      let id = this._avRoute.snapshot.queryParamMap.get("id");
-      this.getPessoa(id);
+      this.id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.getPessoa(this.id);
     }
   }
 
@@ -120,19 +121,36 @@ export class CadastrarVisitanteComponent implements OnInit {
       this._notifierService.notify(AlertType.Error,"Por favor digite o nome do visitante!");
       return false;
     }
-    this._service.saveVisitante(this.visitante).pipe(take(1)).subscribe(item => {
+    if(!this.visitante.id){
+      this.save();
+    }else{
+      this.updade();
+    }
+  }
+
+  save(){
+    this._service.save(this.visitante).pipe(take(1)).subscribe(item => {
+      this.emitiClear();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+  updade(){
+    this._service.update(this.visitante).pipe(take(1)).subscribe(item => {
       this.emitiClear();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
 
     });
-  
   }
 
   setObj(){
     this.getEmiter();
     if(this.dadosPessoais){
+      this.visitante.id = this.id;
       this.visitante.nome = this.dadosPessoais.nome;
       this.visitante.sobreNome = this.dadosPessoais.sobreNome;
       this.visitante.rg = this.dadosPessoais.rg;

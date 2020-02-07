@@ -31,8 +31,8 @@ export class PessoaService {
       .pipe(tap((response: any) => response));
   }
 
-  saveVisitante(visitante) {
-    return this.http.post(this._url + "visitante", visitante)
+  save(pessoa) {
+    return this.http.post(this._url , pessoa)
       .pipe(map((response: any) => response))
   }
 
@@ -50,5 +50,10 @@ export class PessoaService {
   obterEscolaridadePessoa(id) {
     return this.http.get(this._url + id + "/escolaridadePessoa")
       .pipe(tap((response: any) => response));
+  }
+
+  update(pessoa) {
+    return this.http.put(this._url,pessoa)
+      .pipe(map((response: any) => response))
   }
 }
