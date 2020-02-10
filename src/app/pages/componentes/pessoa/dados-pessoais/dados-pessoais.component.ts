@@ -118,6 +118,7 @@ export class DadosPessoaisComponent implements OnInit {
     if (this.form.controls['dizimista'].value) {
       this.pessoa.dizimista = this.form.controls['dizimista'].value;
     }
+    console.log(this.pessoa)
     return this.pessoa;
   }
 
@@ -133,6 +134,8 @@ export class DadosPessoaisComponent implements OnInit {
     this.form.controls['observacao'].patchValue(dados.observacao);
     this.form.controls['batizado'].patchValue(dados.batizado);
     this.form.controls['dizimista'].patchValue(dados.dizimista);
+    this.setObj();
+    this.setEmiter();
   }
   
 
