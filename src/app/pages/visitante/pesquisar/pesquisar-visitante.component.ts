@@ -11,7 +11,7 @@ import { ExcelService } from '../../../service/excel.service';
 import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { AlertType } from '../../../model/alert-type';
 import { PessoaService } from '../../../service/pessoa.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 
@@ -30,11 +30,12 @@ export class PesquisarVisitanteComponent implements OnInit {
     private _excelService: ExcelService,
     private _datePipe: DatePipe,
     private _etapaVisao: EtapaVisaoService,
-    private _router: Router) { }
+    private _router: Router,
+    private _avRoute: ActivatedRoute) { }
 
   public etapa$: Observable<any[]>;
   public visitante:any= {} as any;
-  public endereco: any;
+  public enderecos: any;
   public comboTipoContatos = [];
   public comboEscolaridade = []
   @ViewChild(MatSort) sort: MatSort;
@@ -62,6 +63,13 @@ export class PesquisarVisitanteComponent implements OnInit {
   }
 
 
+  getParams(){
+    if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
+        this.visitante = localStorage.getItem("pesquisa");
+        this.pesquisar();
+    }
+  }
+
 
   private _buildFormDate(): void {
     this.formDate = new FormGroup({
@@ -76,7 +84,7 @@ export class PesquisarVisitanteComponent implements OnInit {
         this.dadosPessoais = item.data;
       }
       if (item.type == 'endereco') {
-        this.endereco = item.data;
+        this.enderecos = item.data;
       }
     });
   }
@@ -120,18 +128,8 @@ export class PesquisarVisitanteComponent implements OnInit {
       this.visitante.membro = false;
       
     }
-    if(this.endereco){
-      let enderecos:any = [];
-      let endereco = {} as any
-      endereco.cep = this.endereco.cep;
-      endereco.numero = this.endereco.numero;
-      endereco.complemento = this.endereco.complemento;
-      endereco.bairro = this.endereco.bairro;
-      endereco.logradouro = this.endereco.logradouro;
-      endereco.uf = this.endereco.uf;
-      endereco.localidade = this.endereco.localidade;
-      enderecos.push(endereco);
-      this.visitante.enderecos = enderecos;
+    if(this.enderecos){
+      this.visitante.enderecos = this.enderecos;
     }
 
     if(this.celula){
@@ -210,6 +208,8 @@ export class PesquisarVisitanteComponent implements OnInit {
   }
 
   editar(id){
+    this.setObj();
+    localStorage.setItem("pesquisa",JSON.stringify(this.visitante));
     this._router.navigate(['/auth/visitante/cadastrar'], {
       queryParams: {
         janela: 'Editar',

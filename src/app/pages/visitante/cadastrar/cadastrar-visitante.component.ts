@@ -24,6 +24,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   public igreja:any;
   public visitante = {} as any;
   public id:any;
+  public pesquisa:boolean=false;
 
 
   constructor( private _emitirEventoService: EmitirEventoService,
@@ -43,6 +44,7 @@ export class CadastrarVisitanteComponent implements OnInit {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
       this.getPessoa(this.id);
+      this.pesquisa = true;
     }
   }
 
@@ -139,7 +141,6 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   updade(){
     this._service.update(this.visitante).pipe(take(1)).subscribe(item => {
-      this.emitiClear();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -204,7 +205,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   voltar(){
     this._router.navigate(['/auth/visitante/pesquisar'], {
       queryParams: {
-        
+        pesquisa: this.pesquisa
       },
       skipLocationChange: true
     });
