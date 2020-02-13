@@ -58,14 +58,17 @@ export class PesquisarVisitanteComponent implements OnInit {
     this.columns();
     this._buildFormDate();
     this.getComboEtapaVisao();
+    this.getParams();
     // console.log(JSON.parse(this.user.currentUser()));
     // console.log(JSON.parse(this.user.currentUser()).name);
   }
 
 
   getParams(){
+    console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
-        this.visitante = localStorage.getItem("pesquisa");
+        this.visitante = JSON.parse(localStorage.getItem("pesquisa"));
+        localStorage.removeItem("pesquisa");
         this.pesquisar();
     }
   }

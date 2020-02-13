@@ -154,11 +154,15 @@ export class ContatosComponent implements OnInit {
       emailPrincipal: HelperChurch.isBoolean(this.form.controls['emailPrincipal'].value),
     });
     // console.log(tipo);
-    let obj = new Contatos();
+    let obj = {} as any;
     obj.tipo = tipoSelected;
     obj.contato = contato;
     obj.whatsapp =  HelperChurch.isBoolean(this.form.controls['whatsapp'].value);
     obj.emailPrincipal = HelperChurch.isBoolean(this.form.controls['emailPrincipal'].value);
+    obj.facebook = this.isFacebook,
+    obj.email = this.isEmail,
+    obj.telefone = this.isTelefone,
+    obj.celular = this.isCelular,
     this.contatos.push(obj);
     this.clearInputContato();
     this.setEmiter();
@@ -195,6 +199,7 @@ export class ContatosComponent implements OnInit {
       }
       if (item.type == 'edit-contatos') {
         this.contatos = item.data;
+        console.log(this.contatos)
         this.carregarContatoGrid(this.contatos);
       }
 
@@ -202,15 +207,16 @@ export class ContatosComponent implements OnInit {
   }
 
   carregarContatoGrid(contatos){
+    console.log(contatos);
     contatos.forEach(element => {
       this.contatosGrid.push({
-        tipo: element.tipo,
+        tipo: element.descTipoContato,
         contato: element.contato,
         whatsapp: element.whatsapp,
-        facebook: null,
-        email:null,
-        telefone: null,
-        celular: null,
+        facebook: element.facebook,
+        email:element.email,
+        telefone: element.telefone,
+        celular: element.celular,
         emailPrincipal: element.emailPrincipal
       });
     });

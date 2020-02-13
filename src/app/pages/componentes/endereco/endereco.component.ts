@@ -101,6 +101,7 @@ export class EnderecoComponent implements OnInit {
 
   carregarEndereco() {
     this.endereco = new Endereco();
+    this.endereco.cep = this.form.controls['cep'].value;
     this.endereco.numero = this.form.controls['numero'].value;
     this.endereco.complemento = this.form.controls['complemento'].value;
     this.endereco.bairro = this.form.controls['bairro'].value;
