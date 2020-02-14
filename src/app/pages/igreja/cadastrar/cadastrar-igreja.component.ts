@@ -48,7 +48,7 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      console.log(item.data);
+      // console.log(item.data);
       if (item.type == 'dadosIgreja') {
         this.dadosIgreja = item.data;
       }
@@ -82,7 +82,7 @@ export class CadastrarIgrejaComponent implements OnInit {
     this.igreja.pastor = this.dadosIgreja.pastor;
     this.igreja.endereco = this.endereco;
     this.igreja.contatos = this.contatos;
-    console.log(this.igreja);
+    // console.log(this.igreja);
   }
 
   getParams() {
@@ -96,7 +96,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   }
   salvarSede() {
     this.getDadosIgreja();
-    console.log(this.igreja);
+    // console.log(this.igreja);
     this._igrejaService.saveSede(this.igreja).pipe(take(1)).subscribe(item => {
       this.clearFieldsSede();
       this.carregarComboIgrejaSede();
@@ -109,7 +109,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   salvarFilial() {
     this.getDadosIgreja();
     this.igreja.sede = {id:this.igrejaSelecionada.id};
-    console.log(this.igreja);
+    // console.log(this.igreja);
     this._igrejaService.saveFilial(this.igreja).pipe(take(1)).subscribe(item => {
       this.clearFieldFilial();
       this._notifierService.notify(AlertType.Success, item.value);
@@ -122,7 +122,7 @@ export class CadastrarIgrejaComponent implements OnInit {
 
     this._igrejaService.getListSede().pipe(take(1)).subscribe(item => {
       this.comboIgrejaSede = item;
-      console.log(item);
+      // console.log(item);
       this.filteredIgrejaSede = this.myControlIgrejaSede.valueChanges
         .pipe(
           startWith(''),
@@ -169,7 +169,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   
   getSede(id) {
     this._igrejaService.getSede(id).pipe(take(1)).subscribe(item => {
-      console.log(item);
+      // console.log(item);
       this.carregarDadosSede(item);
       this.carregarEndereco(item.endereco);
       this.setEmiter(false);

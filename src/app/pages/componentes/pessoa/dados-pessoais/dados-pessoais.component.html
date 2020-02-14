@@ -69,7 +69,7 @@
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="!pesquisa">
     <mat-form-field class="full-width-field">
-      <textarea matInput placeholder="Observação" formControlName="observacao"></textarea>
+      <textarea matInput placeholder="Observação" formControlName="observacao" (change)="change()"></textarea>
     </mat-form-field>
   </div>
 </form>

@@ -34,7 +34,7 @@ export class IgrejasComponent implements OnInit {
 
     this._igrejaService.getList().pipe(take(1)).subscribe(item => {
       this.comboIgrejas = item;
-      console.log(item);
+      // console.log(item);
       this.filteredIgreja = this.myControlIgreja.valueChanges
         .pipe(
           startWith(''),
@@ -61,7 +61,7 @@ export class IgrejasComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      console.log(item.type);
+      // console.log(item.type);
       if (item.type == 'igreja') {
         this.igrejaSelecionada = item.data;
         this.nomeValue = item.data;

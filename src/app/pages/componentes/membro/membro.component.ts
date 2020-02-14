@@ -60,7 +60,7 @@ export class MembroComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      console.log(item.type);
+      // console.log(item.type);
       if (item.type == 'add') {
         this.membro = item.data;
         this.nomeValue = item.data;

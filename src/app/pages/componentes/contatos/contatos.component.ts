@@ -200,7 +200,7 @@ export class ContatosComponent implements OnInit {
       }
       if (item.type == 'edit-contatos') {
         this.contatos = item.data;
-        console.log(this.contatos)
+        // console.log(this.contatos)
         this.carregarContatoGrid(this.contatos);
       }
 
@@ -208,7 +208,7 @@ export class ContatosComponent implements OnInit {
   }
 
   carregarContatoGrid(contatos){
-    console.log(contatos);
+    // console.log(contatos);
     contatos.forEach(element => {
       this.contatosGrid.push({
         tipo: element.descTipoContato,

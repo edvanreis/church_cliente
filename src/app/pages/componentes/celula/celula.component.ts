@@ -34,7 +34,7 @@ export class CelulaComponent implements OnInit {
 
     this._service.getList().pipe(take(1)).subscribe(item => {
       this.comboCelulas = item;
-      console.log(item);
+      // console.log(item);
       this.filteredCelula = this.myControlCelula.valueChanges
         .pipe(
           startWith(''),
@@ -61,7 +61,7 @@ export class CelulaComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      console.log(item.type);
+      // console.log(item.type);
       if (item.type == 'celula') {
         this.celulaSelecionada = item.data;
         this.nomeValue = item.data;

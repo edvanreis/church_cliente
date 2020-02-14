@@ -32,7 +32,7 @@ export class PesquisarIgrejaComponent implements OnInit {
   lista() {
     this._igrejaService.getListSede().pipe(take(1)).subscribe(item => {
       this.igrejas = item;
-      console.log(item);
+      // console.log(item);
       this.filteredIgrejas = this.myControl.valueChanges
         .pipe(
           startWith(''),

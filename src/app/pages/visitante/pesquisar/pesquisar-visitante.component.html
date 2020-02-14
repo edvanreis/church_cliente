@@ -63,7 +63,7 @@
         </div>
         <br />
         <br />
-        <div *ngIf="visitantes.length > 0 && !loading">
+        <div *ngIf="pessoas.length > 0 && !loading">
           <mat-form-field class="full-width-field">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
           </mat-form-field>
@@ -93,7 +93,7 @@
                 [pageIndex]="pageIndex" >
           </mat-paginator>
         </div>
-        <button mat-raised-button color="success" (click)="exportAsXLSX()" *ngIf="visitantes.length > 0  && !loading"><i
+        <button mat-raised-button color="success" (click)="exportAsXLSX()" *ngIf="pessoas.length > 0  && !loading"><i
             class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
       </div>
     </div>

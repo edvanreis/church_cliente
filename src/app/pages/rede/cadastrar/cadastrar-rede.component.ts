@@ -62,13 +62,13 @@ export class CadastrarRedeComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      console.log(item.data);
+      // console.log(item.data);
       if (item.type == 'membro-comp') {
         this.membro = item.data;
       }
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
-        console.log(item.data)
+        // console.log(item.data)
         this.form.controls['nomePastor'].patchValue(this.igrejaSelecionada.pastor.nomeCompleto);
       }
     });
@@ -90,7 +90,7 @@ export class CadastrarRedeComponent implements OnInit {
 
 
   salvar() {
-    console.log(this.obj());
+    // console.log(this.obj());
     this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
       this.clean();
       this._notifierService.notify(AlertType.Success, item.value);

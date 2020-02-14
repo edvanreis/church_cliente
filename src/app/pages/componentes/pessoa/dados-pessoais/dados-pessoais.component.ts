@@ -39,7 +39,7 @@ export class DadosPessoaisComponent implements OnInit {
     this.getComboSexo();
     this.getComboEstadoCivil();
     this.getEmiter();
-    console.log(this.membroInput)
+    // console.log(this.membroInput)
     if (this.membroInput) {
       this.hideTipo = false;
     }
@@ -85,6 +85,7 @@ export class DadosPessoaisComponent implements OnInit {
     this._emitirEventoService.mensagem.subscribe(item => {
       if (item.type == 'clear') {
         this.form.reset();
+        this.pessoa = {} as any;
       }
       if (item.type == 'edit-dadosPessoais') {
         this.getObj(item.data);
@@ -118,7 +119,7 @@ export class DadosPessoaisComponent implements OnInit {
     if (this.form.controls['dizimista'].value) {
       this.pessoa.dizimista = this.form.controls['dizimista'].value;
     }
-    console.log(this.pessoa)
+    // console.log(this.pessoa)
     return this.pessoa;
   }
 

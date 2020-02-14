@@ -22,7 +22,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   public contatos:any = [];
   public celula:any;
   public igreja:any;
-  public visitante = {} as any;
+  public pessoa = {} as any;
   public id:any;
   public pesquisa:boolean=false;
 
@@ -55,13 +55,13 @@ export class CadastrarVisitanteComponent implements OnInit {
       this.getContatos(item.id);
       this.getEscolaridades(item.id);
     }, error => {
-      console.log(error)
+      // console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
     });
   }
 
   getEndereco(id) {
-    console.log(id)
+    // console.log(id)
     this._enderecoService.obterEndereco(id).pipe(take(1)).subscribe(item => {
       this.emitirEnderecos(item);
     }, error => {
@@ -71,7 +71,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   }
 
   getContatos(id) {
-    console.log(id)
+    // console.log(id)
     this._contatoService.obterContatoPessoa(id).pipe(take(1)).subscribe(item => {
       this.emitirContatos(item);
     }, error => {
@@ -81,7 +81,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   }
 
   getEscolaridades(id) {
-    console.log(id)
+    // console.log(id)
     this._service.obterEscolaridadePessoa(id).pipe(take(1)).subscribe(item => {
       this.emitirEscolaridades(item);
     }, error => {
@@ -107,31 +107,31 @@ export class CadastrarVisitanteComponent implements OnInit {
       if (item.type == 'contatos') {
         this.contatos = item.data;
       }
-      if (item.type == 'celula-comp') {
-        this.contatos = item.data;
-      }
-      if (item.type == 'igreja-comp') {
-        this.contatos = item.data;
-      }
+      // if (item.type == 'celula-comp') {
+      //   this.contatos = item.data;
+      // }
+      // if (item.type == 'igreja-comp') {
+      //   this.contatos = item.data;
+      // }
 
     });
   }
 
   salvar(){
     this.setObj();
-    if(!this.visitante.nome){
+    if(!this.pessoa.nome){
       this._notifierService.notify(AlertType.Error,"Por favor digite o nome do visitante!");
       return false;
     }
-    if(!this.visitante.id){
-      this.save();
+    if(!this.pessoa.id){
+      // this.save();
     }else{
-      this.updade();
+      // this.updade();
     }
   }
 
   save(){
-    this._service.save(this.visitante).pipe(take(1)).subscribe(item => {
+    this._service.save(this.pessoa).pipe(take(1)).subscribe(item => {
       this.emitiClear();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
@@ -140,7 +140,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   }
 
   updade(){
-    this._service.update(this.visitante).pipe(take(1)).subscribe(item => {
+    this._service.update(this.pessoa).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -151,32 +151,33 @@ export class CadastrarVisitanteComponent implements OnInit {
   setObj(){
     this.getEmiter();
     if(this.dadosPessoais){
-      this.visitante.id = this.id;
-      this.visitante.nome = this.dadosPessoais.nome;
-      this.visitante.sobreNome = this.dadosPessoais.sobreNome;
-      this.visitante.rg = this.dadosPessoais.rg;
-      this.visitante.cpf = this.dadosPessoais.cpf;
-      this.visitante.sexo = this.dadosPessoais.sexo;
-      this.visitante.estadoCivil = this.dadosPessoais.estadoCivil;
-      this.visitante.dataNascimento = this.dadosPessoais.dataNascimento;
-      this.visitante.nacionalidade = this.dadosPessoais.nacionalidade;
-      this.visitante.profissao = this.dadosPessoais.profissao;
+      this.pessoa.id = this.id;
+      this.pessoa.nome = this.dadosPessoais.nome;
+      this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
+      this.pessoa.rg = this.dadosPessoais.rg;
+      this.pessoa.cpf = this.dadosPessoais.cpf;
+      this.pessoa.sexo = this.dadosPessoais.sexo;
+      this.pessoa.estadoCivil = this.dadosPessoais.estadoCivil;
+      this.pessoa.dataNascimento = this.dadosPessoais.dataNascimento;
+      this.pessoa.nacionalidade = this.dadosPessoais.nacionalidade;
+      this.pessoa.profissao = this.dadosPessoais.profissao;
+      this.pessoa.observacao = this.dadosPessoais.observacao;
     }
     if(this.enderecos){
-      this.visitante.enderecos = this.enderecos;
+      this.pessoa.enderecos = this.enderecos;
     }
     if(this.contatos){
-      this.visitante.contatos = this.contatos;
+      this.pessoa.contatos = this.contatos;
     }
     if(this.escolaridades){
-      this.visitante.escolaridades = this.escolaridades;
+      this.pessoa.escolaridades = this.escolaridades;
     } 
     if(this.celula){
-      this.visitante.celula = this.celula;
+      this.pessoa.celula = this.celula;
     } 
 
     if(this.igreja){
-      this.visitante.igreja = this.celula;
+      this.pessoa.igreja = this.celula;
     } 
     
 

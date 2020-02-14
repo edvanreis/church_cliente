@@ -113,7 +113,7 @@ export class CadastrarUsuarioComponent implements OnInit {
     //   return false;
     // }
     this.setObj();
-    console.log(this.obj)
+    // console.log(this.obj)
     this._userService.update(this.obj).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
       // this.voltar();

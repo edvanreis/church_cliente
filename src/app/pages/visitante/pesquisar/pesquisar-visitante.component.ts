@@ -34,7 +34,7 @@ export class PesquisarVisitanteComponent implements OnInit {
     private _avRoute: ActivatedRoute) { }
 
   public etapa$: Observable<any[]>;
-  public visitante:any= {} as any;
+  public pessoa:any= {} as any;
   public enderecos: any;
   public comboTipoContatos = [];
   public comboEscolaridade = []
@@ -45,7 +45,7 @@ export class PesquisarVisitanteComponent implements OnInit {
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
   public loading: boolean = false;
-  public visitantes:any = [];
+  public pessoas:any = [];
   public form: FormGroup;
   public formDate: FormGroup;
   public dadosPessoais: any;
@@ -67,7 +67,7 @@ export class PesquisarVisitanteComponent implements OnInit {
   getParams(){
     console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
-        this.visitante = JSON.parse(localStorage.getItem("pesquisa"));
+        this.pessoa = JSON.parse(localStorage.getItem("pesquisa"));
         localStorage.removeItem("pesquisa");
         this.pesquisar();
     }
@@ -94,12 +94,12 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   pesquisar() {
     this.setObj();
-    console.log(this.visitante)
+    //  console.log(this.pessoa)
     this.loading = true;
-    this._service.pesquisar(this.visitante).pipe(take(1)).subscribe(item => {
-      console.log(item);
-      this.visitantes = item;
-      this.dados = new MatTableDataSource(this.visitantes);
+    this._service.pesquisar(this.pessoa).pipe(take(1)).subscribe(item => {
+      // console.log(item);
+      this.pessoas = item;
+      this.dados = new MatTableDataSource(this.pessoas);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;
       this.loading = false;
@@ -117,26 +117,27 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   setObj(){
     this.getEmiter();
-    this.visitante.visitante = true;
+    this.pessoa.visitante = true;
     if(this.dadosPessoais){
-      this.visitante.nome = this.dadosPessoais.nome;
-      this.visitante.sobreNome = this.dadosPessoais.sobreNome;
-      this.visitante.rg = this.dadosPessoais.rg;
-      this.visitante.cpf = this.dadosPessoais.cpf;
-      this.visitante.sexo = this.dadosPessoais.sexo;
-      this.visitante.estadoCivil = this.dadosPessoais.estadoCivil;
-      this.visitante.dataNascimento = this.dadosPessoais.dataNascimento;
-      this.visitante.nacionalidade = this.dadosPessoais.nacionalidade;
-      this.visitante.profissao = this.dadosPessoais.profissao;
-      this.visitante.membro = false;
+      this.pessoa.nome = this.dadosPessoais.nome;
+      this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
+      this.pessoa.rg = this.dadosPessoais.rg;
+      this.pessoa.cpf = this.dadosPessoais.cpf;
+      this.pessoa.sexo = this.dadosPessoais.sexo;
+      this.pessoa.estadoCivil = this.dadosPessoais.estadoCivil;
+      this.pessoa.dataNascimento = this.dadosPessoais.dataNascimento;
+      this.pessoa.nacionalidade = this.dadosPessoais.nacionalidade;
+      this.pessoa.profissao = this.dadosPessoais.profissao;
+      this.pessoa.observacao = this.dadosPessoais.observacao;
+      this.pessoa.membro = false;
       
     }
     if(this.enderecos){
-      this.visitante.enderecos = this.enderecos;
+      this.pessoa.enderecos = this.enderecos;
     }
 
     if(this.celula){
-      this.visitante.celula = this.celula;
+      this.pessoa.celula = this.celula;
     } 
     this.preencherPeriodos();
   }
@@ -145,8 +146,8 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   preencherPeriodos() {
     if (this.formDate.controls['dataInicioAt'].value && this.formDate.controls['dataFimAt'].value) {
-      this.visitante.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
-      this.visitante.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
+      this.pessoa.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
+      this.pessoa.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
     }
 
   }
@@ -175,7 +176,7 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   exportAsXLSX() {
     let dados = [];
-    this.visitantes.forEach(i => {
+    this.pessoas.forEach(i => {
       dados.push({
         "Nome": i.nome,
         "Sobre nome": i.sobreNome,
@@ -198,7 +199,9 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   limpar(){
     this.setEmiter();
-    this.visitantes = [];
+    this.pessoas = [];
+    this.pessoa = {} as any;
+    this.dadosPessoais = {} as any;
     this.formDate.reset();
   }
 
@@ -212,7 +215,7 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   editar(id){
     this.setObj();
-    localStorage.setItem("pesquisa",JSON.stringify(this.visitante));
+    localStorage.setItem("pesquisa",JSON.stringify(this.pessoa));
     this._router.navigate(['/auth/visitante/cadastrar'], {
       queryParams: {
         janela: 'Editar',
