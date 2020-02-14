@@ -163,6 +163,7 @@ export class ContatosComponent implements OnInit {
     obj.email = this.isEmail,
     obj.telefone = this.isTelefone,
     obj.celular = this.isCelular,
+    console.log(obj)
     this.contatos.push(obj);
     this.clearInputContato();
     this.setEmiter();
@@ -228,6 +229,7 @@ export class ContatosComponent implements OnInit {
 
   //  remove uma linha da grid
   remover(index): void {
+    console.log(index)
     this.contatos.splice(index, 1);
     this.contatosGrid.splice(index, 1);
     this.setEmiter();
