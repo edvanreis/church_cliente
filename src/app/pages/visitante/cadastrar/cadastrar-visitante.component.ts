@@ -107,26 +107,27 @@ export class CadastrarVisitanteComponent implements OnInit {
       if (item.type == 'contatos') {
         this.contatos = item.data;
       }
-      // if (item.type == 'celula-comp') {
-      //   this.contatos = item.data;
-      // }
-      // if (item.type == 'igreja-comp') {
-      //   this.contatos = item.data;
-      // }
+      if (item.type == 'celula-comp') {
+        this.celula = item.data;
+      }
+      if (item.type == 'igreja-comp') {
+        this.igreja = item.data;
+      }
 
     });
   }
 
   salvar(){
     this.setObj();
+    console.log(this.pessoa)
     if(!this.pessoa.nome){
       this._notifierService.notify(AlertType.Error,"Por favor digite o nome do visitante!");
       return false;
     }
     if(!this.pessoa.id){
-      // this.save();
+      this.save();
     }else{
-      // this.updade();
+      this.updade();
     }
   }
 

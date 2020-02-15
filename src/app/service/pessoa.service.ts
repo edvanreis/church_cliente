@@ -37,7 +37,6 @@ export class PessoaService {
   }
 
   pesquisar(pessoa) {
-    console.log(this._url + "pesquisar" + pessoa);
     return this.http.post(this._url + "pesquisar", pessoa)
       .pipe(map((response: any) => response))
   }

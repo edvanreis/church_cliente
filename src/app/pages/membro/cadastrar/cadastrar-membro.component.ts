@@ -83,7 +83,6 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   getComboEtapaVisao() {
-    console.log('teste');
     this.etapa$ = this._etapaVisao.getList();
   }
 

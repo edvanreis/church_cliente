@@ -63,6 +63,7 @@ export class EscolaridadeComponent implements OnInit {
       if (item.type == 'edit-escolaridades') {
         this.escolaridades = item.data;
         this.carregarEscolaridadeGrid(this.escolaridades);
+        this.setEmiter();
       }
     });
   }

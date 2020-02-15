@@ -65,7 +65,7 @@ export class PesquisarVisitanteComponent implements OnInit {
 
 
   getParams(){
-    console.log(this._avRoute.snapshot.queryParamMap);
+    // console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
         this.pessoa = JSON.parse(localStorage.getItem("pesquisa"));
         localStorage.removeItem("pesquisa");
@@ -104,9 +104,9 @@ export class PesquisarVisitanteComponent implements OnInit {
       this.dados.paginator = this.paginator;
       this.loading = false;
     }, error => {
-      console.log(error);
+      // console.log(error);
       this.loading = false;
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
+      this._notifierService.notify(AlertType.Error, error.error.message);
 
     });
   }

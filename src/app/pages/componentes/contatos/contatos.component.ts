@@ -202,6 +202,7 @@ export class ContatosComponent implements OnInit {
         this.contatos = item.data;
         // console.log(this.contatos)
         this.carregarContatoGrid(this.contatos);
+        this.setEmiter();
       }
 
     });
@@ -229,7 +230,7 @@ export class ContatosComponent implements OnInit {
 
   //  remove uma linha da grid
   remover(index): void {
-    console.log(index)
+    //console.log(index)
     this.contatos.splice(index, 1);
     this.contatosGrid.splice(index, 1);
     this.setEmiter();

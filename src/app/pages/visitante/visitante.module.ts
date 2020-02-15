@@ -12,6 +12,7 @@ import { PessoaModule } from '../componentes/pessoa/pessoa.module';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
 import { ContatosModule } from '../componentes/contatos/contatos.module';
 import { VisitanteService } from '../../service/visitante.service';
+import { EtapaVisaoModule } from '../componentes/etapa-visao/etapa-visao.module';
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarVisitanteComponent , data: { animation: 'buttons' }},
@@ -36,6 +37,7 @@ const routes: Routes = [
     MatSortModule,
     MatTableModule,
     MatPaginatorModule,
+    EtapaVisaoModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
