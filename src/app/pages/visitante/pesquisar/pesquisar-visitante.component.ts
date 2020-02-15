@@ -180,8 +180,7 @@ export class PesquisarVisitanteComponent implements OnInit {
       dados.push({
         "Nome": i.nome,
         "Sobre nome": i.sobreNome,
-        "Data Nascimento": i.dataNasciemento,
-        "dataAtualizacao": i.descSituacaoHorario,
+        "Data Nascimento": i.dataNascimentoFormatada,
         "rg": i.rg,
         "cpf": i.cpf,
         "Estado Civil": i.estadoCivil,
