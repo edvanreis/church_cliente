@@ -16,6 +16,8 @@ import { EnderecoModule } from '../componentes/endereco/endereco.module';
 import { PessoaModule } from '../componentes/pessoa/pessoa.module';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro.component';
+import { ContatosModule } from '../componentes/contatos/contatos.module';
+import { EtapaVisaoModule } from '../componentes/etapa-visao/etapa-visao.module';
 
 
 
@@ -39,23 +41,19 @@ const routes: Routes = [
     MatDividerModule,
     MatIconModule,
     MatButtonModule,
-    TextMaskModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatCheckboxModule,
     MatSortModule,
     MatTableModule,
     MatPaginatorModule,
     MatExpansionModule,
     HttpClientModule,
     PessoaModule,
-    PipeModule,
     MatProgressSpinnerModule,
     MatDatepickerModule,
     MatNativeDateModule,
     EnderecoModule,
     MatSlideToggleModule,
-    PipeModule,
+    ContatosModule,
+    EtapaVisaoModule,
     RouterModule.forChild(routes)
   ],
   exports: [

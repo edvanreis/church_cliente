@@ -119,6 +119,12 @@ export class DadosPessoaisComponent implements OnInit {
     if (this.form.controls['dizimista'].value) {
       this.pessoa.dizimista = this.form.controls['dizimista'].value;
     }
+
+    if(this.membroInput){
+      this.pessoa.membro = true;
+    }else{
+      this.pessoa.visitante = true;
+    }
     // console.log(this.pessoa)
     return this.pessoa;
   }
