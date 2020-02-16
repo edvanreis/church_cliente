@@ -18,29 +18,30 @@ export class CadastrarMembroComponent implements OnInit {
 
   public dadosPessoais: any;
   public enderecos: any;
-  public escolaridades:any = [];
-  public contatos:any = [];
-  public celula:any;
-  public igreja:any;
+  public escolaridades: any = [];
+  public contatos: any = [];
+  public etapas: any = [];
+  public celula: any;
+  public igreja: any;
   public pessoa = {} as any;
-  public id:any;
-  public pesquisa:boolean=false;
+  public id: any;
+  public pesquisa: boolean = false;
 
 
-  constructor( private _emitirEventoService: EmitirEventoService,
-    private _service:PessoaService, 
-    private _enderecoService:EnderecoService,
+  constructor(private _emitirEventoService: EmitirEventoService,
+    private _service: PessoaService,
+    private _enderecoService: EnderecoService,
     private _notifierService: NotifierService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
-    private _contatoService:ContatoService) { }
+    private _contatoService: ContatoService) { }
 
   ngOnInit() {
     this.getEmiter();
     this.getParams();
   }
 
-  getParams(){
+  getParams() {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
       this.getPessoa(this.id);
@@ -90,7 +91,7 @@ export class CadastrarMembroComponent implements OnInit {
     });
   }
 
-  
+
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
@@ -113,25 +114,28 @@ export class CadastrarMembroComponent implements OnInit {
       if (item.type == 'igreja-comp') {
         this.igreja = item.data;
       }
+      if (item.type == 'etapas-comp') {
+        this.etapas = item.data;
+      }
 
     });
   }
 
-  salvar(){
+  salvar() {
     this.setObj();
-    console.log(this.pessoa)
-    if(!this.pessoa.nome){
-      this._notifierService.notify(AlertType.Error,"Por favor digite o nome do membro!");
+    let mensagem = this.validarCampos();
+    if (mensagem) {
+      this._notifierService.notify(AlertType.Error, mensagem);
       return false;
     }
-    if(!this.pessoa.id){
-      this.save();
-    }else{
-      this.updade();
+    if (!this.pessoa.id) {
+      // this.save();
+    } else {
+      // this.updade();
     }
   }
 
-  save(){
+  save() {
     this._service.save(this.pessoa).pipe(take(1)).subscribe(item => {
       this.emitiClear();
       this._notifierService.notify(AlertType.Success, item.value);
@@ -140,7 +144,7 @@ export class CadastrarMembroComponent implements OnInit {
     });
   }
 
-  updade(){
+  updade() {
     this._service.update(this.pessoa).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
@@ -149,9 +153,9 @@ export class CadastrarMembroComponent implements OnInit {
     });
   }
 
-  setObj(){
+  setObj() {
     this.getEmiter();
-    if(this.dadosPessoais){
+    if (this.dadosPessoais) {
       this.pessoa.id = this.id;
       this.pessoa.nome = this.dadosPessoais.nome;
       this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
@@ -163,24 +167,29 @@ export class CadastrarMembroComponent implements OnInit {
       this.pessoa.nacionalidade = this.dadosPessoais.nacionalidade;
       this.pessoa.profissao = this.dadosPessoais.profissao;
       this.pessoa.observacao = this.dadosPessoais.observacao;
+      this.pessoa.membro = true;
     }
-    if(this.enderecos){
+    if (this.enderecos) {
       this.pessoa.enderecos = this.enderecos;
     }
-    if(this.contatos){
+    if (this.contatos) {
       this.pessoa.contatos = this.contatos;
     }
-    if(this.escolaridades){
+    if (this.escolaridades) {
       this.pessoa.escolaridades = this.escolaridades;
-    } 
-    if(this.celula){
+    }
+    if (this.celula) {
       this.pessoa.celula = this.celula;
-    } 
+    }
 
-    if(this.igreja){
+    if (this.igreja) {
       this.pessoa.igreja = this.celula;
-    } 
-    
+    }
+
+    if (this.etapas) {
+      this.pessoa.etapas = this.etapas;
+    }
+
 
   }
 
@@ -204,12 +213,56 @@ export class CadastrarMembroComponent implements OnInit {
     this._emitirEventoService.emitir('edit-escolaridades', item);
   }
 
-  voltar(){
-    this._router.navigate(['/auth/visitante/pesquisar'], {
+  voltar() {
+    this._router.navigate(['/auth/membro/pesquisar'], {
       queryParams: {
         pesquisa: this.pesquisa
       },
       skipLocationChange: true
     });
   }
+
+  validarCampos(): string {
+    console.log( 'tes')
+    let concat = 'Por favor preencha o campo';
+    let concatArray = 'Por favor adicione pelo menos um';
+    if (!this.pessoa.nome) {
+      return concat + ' nome!';
+    }
+    if (!this.pessoa.sobreNome) {
+      return concat + ' Sobre Nome!';
+    }
+    if (!this.pessoa.rg) {
+      return concat + ' RG!';
+    }
+    if (!this.pessoa.cpf) {
+      return concat + ' CPF!';
+    }
+    if (!this.pessoa.dataNascimento) {
+      return concat + ' Data Nascimento!';
+    }
+    if (!this.pessoa.sexo) {
+      return concat + ' Sexo!';
+    }
+    if (!this.pessoa.estadoCivil) {
+      return concat + ' Estado Civil!';
+    }
+    if (!this.pessoa.nacionalidade) {
+      return concat + ' Nacionalidade!';
+    }
+    if (this.enderecos.length == 0) {
+      return concatArray + ' Endereço!';
+    }
+    if (this.enderecos.length == 0) {
+      return concatArray + ' Contato!';
+    }
+    if (this.escolaridades.length == 0) {
+      return concatArray + 'a  Esconlaridade!';
+    }
+    if (this.etapas.length == 0) {
+      return concatArray + 'a  Etapa da visão!';
+    }
+    return null;
+  }
+
 }

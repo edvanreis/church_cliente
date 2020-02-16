@@ -2,7 +2,7 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="full-width-field">
       <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" (change)="change()">
-      <mat-error *ngIf="!form.controls.nome.valid && !pesquisa">Campo Obrigatório</mat-error>
+      <mat-error *ngIf="!pesquisa">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"> 

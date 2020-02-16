@@ -37,8 +37,8 @@ export class EtapaVisaoComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor escolha uma etapa.!");
       return false;
     }
-    let etapaAdicionada = this.etapas.find(i=>i==this.etapa);
-    if(etapaAdicionada){
+    let etapaAdicionada = this.etapas.find(i=>i.nome==this.etapa.nome);
+    if(etapaAdicionada &&  etapaAdicionada.nome == this.etapa.nome){
       this._notifierService.notify(AlertType.Error, "Etapa já adiocionada.!");
       return false;
     }
@@ -51,9 +51,6 @@ export class EtapaVisaoComponent implements OnInit {
     this.etapas.splice(index, 1);
   }
 
-  onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
-    this.etapa = option;
-  }
 
     getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
@@ -69,7 +66,7 @@ export class EtapaVisaoComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir("etapas",  this.etapas);
+    this._emitirEventoService.emitir('etapas-comp',  this.etapas);
   }
 
 }

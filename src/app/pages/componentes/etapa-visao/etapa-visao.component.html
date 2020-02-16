@@ -1,8 +1,8 @@
 <div>
   <mat-form-field>
     <mat-label>Selecione...</mat-label>
-    <mat-select [ngModel]="etapa" id="etapa">
-      <mat-option *ngFor="let item of etapa$ | async" (onSelectionChange)="onSelectionChange($event,item)"[value]="item">
+    <mat-select [(ngModel)]="etapa" id="etapa">
+      <mat-option *ngFor="let item of etapa$ | async" [value]="item">
         {{item.nome}}
       </mat-option>
     </mat-select>

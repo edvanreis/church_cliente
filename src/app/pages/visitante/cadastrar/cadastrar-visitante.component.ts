@@ -163,6 +163,7 @@ export class CadastrarVisitanteComponent implements OnInit {
       this.pessoa.nacionalidade = this.dadosPessoais.nacionalidade;
       this.pessoa.profissao = this.dadosPessoais.profissao;
       this.pessoa.observacao = this.dadosPessoais.observacao;
+      this.pessoa.visitante = true;
     }
     if(this.enderecos){
       this.pessoa.enderecos = this.enderecos;
