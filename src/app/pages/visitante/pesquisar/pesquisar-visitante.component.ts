@@ -117,7 +117,6 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   setObj(){
     this.getEmiter();
-    this.pessoa.visitante = true;
     if(this.dadosPessoais){
       this.pessoa.nome = this.dadosPessoais.nome;
       this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
@@ -130,6 +129,7 @@ export class PesquisarVisitanteComponent implements OnInit {
       this.pessoa.profissao = this.dadosPessoais.profissao;
       this.pessoa.observacao = this.dadosPessoais.observacao;
       this.pessoa.membro = false;
+      this.pessoa.visitante = true;
       
     }
     if(this.enderecos){

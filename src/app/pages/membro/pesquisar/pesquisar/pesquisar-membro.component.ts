@@ -13,6 +13,8 @@ import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { EtapaVisaoService } from '../../../../service/etapa-visao.service';
 import { UserService } from '../../../../service/user.service';
+import { PessoaService } from '../../../../service/pessoa.service';
+import { Router, ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -23,16 +25,19 @@ import { UserService } from '../../../../service/user.service';
 export class PesquisarMembroComponent implements OnInit {
 
 
+
   constructor(private _emitirEventoService: EmitirEventoService,
-    private _membroService: MembroService,
+    private _service: PessoaService,
     private _notifierService: NotifierService,
     private _excelService: ExcelService,
     private _datePipe: DatePipe,
-    private _etapaVisao: EtapaVisaoService, private user: UserService) { }
+    private _etapaVisao: EtapaVisaoService,
+    private _router: Router,
+    private _avRoute: ActivatedRoute) { }
 
   public etapa$: Observable<any[]>;
-  public membro: any;
-  public endereco: any;
+  public pessoa:any= {} as any;
+  public enderecos: any;
   public comboTipoContatos = [];
   public comboEscolaridade = []
   @ViewChild(MatSort) sort: MatSort;
@@ -42,9 +47,11 @@ export class PesquisarMembroComponent implements OnInit {
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
   public loading: boolean = false;
-  public lista = [];
+  public pessoas:any = [];
   public form: FormGroup;
   public formDate: FormGroup;
+  public dadosPessoais: any;
+  public celula:any;
 
   
 
@@ -53,10 +60,20 @@ export class PesquisarMembroComponent implements OnInit {
     this.columns();
     this._buildFormDate();
     this.getComboEtapaVisao();
+    this.getParams();
     // console.log(JSON.parse(this.user.currentUser()));
     // console.log(JSON.parse(this.user.currentUser()).name);
   }
 
+
+  getParams(){
+    // console.log(this._avRoute.snapshot.queryParamMap);
+    if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
+        this.pessoa = JSON.parse(localStorage.getItem("pesquisa"));
+        localStorage.removeItem("pesquisa");
+        this.pesquisar();
+    }
+  }
 
 
   private _buildFormDate(): void {
@@ -70,81 +87,87 @@ export class PesquisarMembroComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'dadosPessoais') {
+        this.dadosPessoais = item.data;
+      }
       if (item.type == 'endereco') {
-        this.endereco = item.data;
-        // console.log(item.data)
+        this.enderecos = item.data;
       }
     });
   }
 
   pesquisar() {
-    this.preencherObjeto();
+    this.setObj();
+    //  console.log(this.pessoa)
     this.loading = true;
-    this._membroService.pesquisar(this.membro).pipe(take(1)).subscribe(item => {
+    this._service.pesquisar(this.pessoa).pipe(take(1)).subscribe(item => {
       // console.log(item);
-      this.lista = item;
-      this.dados = new MatTableDataSource(this.lista);
+      this.pessoas = item;
+      this.dados = new MatTableDataSource(this.pessoas);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;
       this.loading = false;
     }, error => {
       // console.log(error);
       this.loading = false;
-      this._notifierService.notify(AlertType.Error, error.errors.message);
+      this._notifierService.notify(AlertType.Error, error.error.message);
 
     });
   }
 
-  preencherObjeto(): Membro {
 
-    this.membro = new Membro();
-    this.membro.nome = this.form.controls['nome'].value;
-    this.membro.sobreNome = this.form.controls['sobrenome'].value;
-    this.membro.rg = HelperChurch.retirarFormatacao(this.form.controls['rg'].value);
-    this.membro.cpf = HelperChurch.retirarFormatacao(this.form.controls['cpf'].value);
-    this.membro.sexo = this.form.controls['sexo'].value;
-    this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
-    this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
-    this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
-    this.membro.profissao = this.form.controls['profissao'].value;
-    this.membro.batizado = this.form.controls['batizado'].value;
-    this.membro.dizimista = this.form.controls['dizimista'].value;
-    this.membro.etapa = this.form.controls['etapa'].value;
-    this.preencherPeriodos();
 
-    if (this.endereco) {
-      this.membro.endereco.cep = this.endereco.cep;
-      this.membro.endereco.numero = this.endereco.numero;
-      this.membro.endereco.complemento = this.endereco.complemento;
-      this.membro.endereco.bairro = this.endereco.bairro;
-      this.membro.endereco.logradouro = this.endereco.logradouro;
-      this.membro.endereco.uf = this.endereco.uf;
-      this.membro.endereco.localidade = this.endereco.cidade;
+
+
+  setObj(){
+    this.getEmiter();
+   
+    if(this.dadosPessoais){
+      this.pessoa.nome = this.dadosPessoais.nome;
+      this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
+      this.pessoa.rg = this.dadosPessoais.rg;
+      this.pessoa.cpf = this.dadosPessoais.cpf;
+      this.pessoa.sexo = this.dadosPessoais.sexo;
+      this.pessoa.estadoCivil = this.dadosPessoais.estadoCivil;
+      this.pessoa.dataNascimento = this.dadosPessoais.dataNascimento;
+      this.pessoa.nacionalidade = this.dadosPessoais.nacionalidade;
+      this.pessoa.profissao = this.dadosPessoais.profissao;
+      this.pessoa.observacao = this.dadosPessoais.observacao;
+      this.pessoa.membro = true;
+      this.pessoa.visitante = false;
+      
+    }
+    if(this.enderecos){
+      this.pessoa.enderecos = this.enderecos;
     }
 
+    if(this.celula){
+      this.pessoa.celula = this.celula;
+    } 
+    this.preencherPeriodosAtivacao();
+    this.preencherPeriodosInativacao();
+  }
+  
 
 
-    console.log(this.membro);
-    return this.membro;
+  preencherPeriodosAtivacao() {
+    if (this.formDate.controls['dataInicioAt'].value && this.formDate.controls['dataFimAt'].value) {
+      this.pessoa.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
+      this.pessoa.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
+    }
   }
 
-
-  preencherPeriodos() {
-    if (this.formDate.controls['dataInicioAt'].value && this.formDate.controls['dataFimAt'].value) {
-      this.membro.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
-      this.membro.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
-    }
+  preencherPeriodosInativacao() {
     if (this.formDate.controls['dataInicioIn'].value && this.formDate.controls['dataFimIn'].value) {
-      this.membro.dataInativacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioIn'].value, 'yyyy-MM-dd') + " 00:00:00";
-      this.membro.dataInativacaoFim = this._datePipe.transform(this.formDate.controls['dataFimIn'].value, 'yyyy-MM-dd') + " 23:59:59";
+      this.pessoa.dataInativacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioIn'].value, 'yyyy-MM-dd') + " 00:00:00";
+      this.pessoa.dataInativacaoFim = this._datePipe.transform(this.formDate.controls['dataFimIn'].value, 'yyyy-MM-dd') + " 23:59:59";
     }
-
   }
 
   columns() {
     this.columnNames = [
       { id: 'nomeCompleto', value: 'Nome' },
-      { id: 'dataNasciemento', value: 'Data Nascimento' },
+      { id: 'dataNascimentoFormatada', value: 'Data Nascimento' },
       { id: 'rg', value: 'RG' },
       { id: 'cpf', value: 'CPF' },
       { id: 'estadoCivil', value: 'Estado Civil' },
@@ -165,17 +188,17 @@ export class PesquisarMembroComponent implements OnInit {
 
   exportAsXLSX() {
     let dados = [];
-    this.lista.forEach(i => {
+    this.pessoas.forEach(i => {
       dados.push({
         "Nome": i.nome,
         "Sobre nome": i.sobreNome,
-        "Data Nascimento": i.dataNasciemento,
-        "dataAtualizacao": i.descSituacaoHorario,
+        "Data Nascimento": i.dataNascimentoFormatada,
         "rg": i.rg,
         "cpf": i.cpf,
         "Estado Civil": i.estadoCivil,
         "Sexo Civil": i.sexo,
         "Profissao": i.profissao,
+        "Etapa Visão":i.etapasStr
       });
     });
     this._excelService.exportAsExcelFile(dados, "pesquisa");
@@ -187,11 +210,33 @@ export class PesquisarMembroComponent implements OnInit {
   }
 
   limpar(){
-    this.form.reset();
+    this.setEmiter();
+    this.pessoas = [];
+    this.pessoa = {} as any;
+    this.dadosPessoais = {} as any;
     this.formDate.reset();
   }
 
-  
+  setEmiter(): void {
+    this._emitirEventoService.emitir('clear', '');
+  }
+
+  setFieldFormControl(field, value) {
+    this.form.controls[field].patchValue(value)
+  }
+
+  editar(id){
+    this.setObj();
+    localStorage.setItem("pesquisa",JSON.stringify(this.pessoa));
+    this._router.navigate(['/auth/membro/cadastrar'], {
+      queryParams: {
+        janela: 'Editar',
+        id: id
+      },
+      skipLocationChange: true
+    });
+  }
+
 
 
 }
