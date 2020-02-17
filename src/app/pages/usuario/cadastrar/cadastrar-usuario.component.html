@@ -9,36 +9,36 @@
       <div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100">
         <form form [formGroup]="form">
           <div [hidden]="titulo=='Editar'" >
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="full-width-field">
               <input matInput placeholder="login" formControlName="login" id="login">
               <mat-error *ngIf="!form.controls.login.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
           </div>
           <div  [hidden]="titulo=='Novo'">
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="full-width-field">
               <input matInput placeholder="login" formControlName="login-desable" id="login">
             </mat-form-field>
           </div>
           <div [hidden]="titulo=='Editar'" >
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="full-width-field">
               <input type="text" placeholder="Membro" aria-label="Number" matInput [formControl]="myControlMembro"
                 [matAutocomplete]="auto" [(ngModel)]="nomeValue">
               <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
-                  (onSelectionChange)="onSelectionChangedMembroNome($event,option)">
+                  (onSelectionChange)="onSelectionChangedMembro($event,option)">
                   {{option.nomeCompleto}}
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
-            <mat-form-field class="example-full-width" [hidden]="titulo=='Novo'">
+            <mat-form-field class="full-width-field" [hidden]="titulo=='Novo'">
               <input matInput placeholder="CPF" formControlName="cpf" >
             </mat-form-field>
           </div>
           <div [hidden]="titulo=='Novo'" >
-            <mat-form-field class="example-full-width" >
+            <mat-form-field class="full-width-field" >
               <input matInput placeholder="Membro" formControlName="nome" id="nome">
             </mat-form-field>
-            <mat-form-field class="example-full-width" [hidden]="titulo=='Novo'">
+            <mat-form-field class="full-width-field" [hidden]="titulo=='Novo'">
               <input matInput placeholder="CPF" formControlName="cpf" >
             </mat-form-field>
           </div>

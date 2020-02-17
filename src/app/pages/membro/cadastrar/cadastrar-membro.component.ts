@@ -129,9 +129,9 @@ export class CadastrarMembroComponent implements OnInit {
       return false;
     }
     if (!this.pessoa.id) {
-      // this.save();
+      this.save();
     } else {
-      // this.updade();
+      this.updade();
     }
   }
 

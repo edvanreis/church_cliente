@@ -11,15 +11,15 @@
       </div>
       <form form [formGroup]="form">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-          <mat-form-field class="example-full-width">
+          <mat-form-field class="full-width-field">
             <input matInput placeholder="Nome" formControlName="nome" id="nome">
           </mat-form-field>
-          <mat-form-field class="example-full-width">
+          <mat-form-field class="full-width-field">
             <input matInput placeholder="Login" formControlName="login" id="login">
           </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-          <mat-form-field class="example-full-width">
+          <mat-form-field class="full-width-field">
             <input matInput placeholder="CPF" formControlName="cpf" id="cpf" [textMask]="{mask: maskCPF}">
           </mat-form-field>
           <mat-form-field>

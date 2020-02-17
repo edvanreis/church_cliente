@@ -9,13 +9,13 @@
       <div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100">
         <form form [formGroup]="form">
           <div>
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="full-width-field">
               <input matInput placeholder="Nome" formControlName="nome" id="nome">
               <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
           </div>
           <div>
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="full-width-field">
               <textarea matInput placeholder="Descrição" formControlName="descricao"></textarea>
               <mat-error *ngIf="!form.controls.descricao.valid">Campo Obrigatório</mat-error>
             </mat-form-field>

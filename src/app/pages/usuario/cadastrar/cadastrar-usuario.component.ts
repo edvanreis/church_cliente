@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { NotifierService } from 'angular-notifier';
-import { UserService } from '../../../service/user.service';
-import { PerfilService } from '../../../service/perfil.service';
-import { AlertType } from '../../../model/alert-type';
-import { take, startWith, map } from 'rxjs/operators';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
-import { MembroService } from '../../../service/membro.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs';
+import { map, startWith, take } from 'rxjs/operators';
+import { AlertType } from '../../../model/alert-type';
+import { PerfilService } from '../../../service/perfil.service';
+import { PessoaService } from '../../../service/pessoa.service';
+import { UserService } from '../../../service/user.service';
 
 const ELEMENT_DATA = [
   { codigo: 'A', value: 'Ativo' },
@@ -51,13 +51,13 @@ export class CadastrarUsuarioComponent implements OnInit {
     private _userService: UserService,
     private _avRoute: ActivatedRoute,
     private _perfilService: PerfilService,
-    private _membroService: MembroService) { }
+    private _pessoaSErvice: PessoaService) { }
 
   ngOnInit() {
     this._buildForm();
     this.getParams();
     this.carregarComboPerfis();
-    this.carregarComboMembro(); 
+    this.carregarComboPessoa(); 
   }
 
   private _buildForm(): void {
@@ -108,15 +108,9 @@ export class CadastrarUsuarioComponent implements OnInit {
 
 
   edit() {
-    // if (!this.form.valid) {
-    //   this._notifierService.notify(AlertType.Error, "Preencha todos os campos obrigatórios!");
-    //   return false;
-    // }
     this.setObj();
-    // console.log(this.obj)
     this._userService.update(this.obj).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
-      // this.voltar();
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
     });
@@ -218,8 +212,8 @@ export class CadastrarUsuarioComponent implements OnInit {
   }
 
 
-  carregarComboMembro() {
-    this._membroService.getList().pipe(take(1)).subscribe(item => {
+  carregarComboPessoa() {
+    this._pessoaSErvice.getListMembros().pipe(take(1)).subscribe(item => {
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges
         .pipe(
