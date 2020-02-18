@@ -37,6 +37,19 @@
       </mat-select>
     </mat-form-field>
     </div>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+      <mat-form-field>
+        <mat-label>Tipo Endereços</mat-label>
+        <mat-select formControlName="tipo" id="tipo" (selectionChange)="change()">
+          <mat-option *ngFor="let item of tipoEndereco" [value]="item.tipo" >
+            {{item.descTipoEndereco}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="full-width-field" *ngIf="observacao">
+        <textarea matInput placeholder="Observação" formControlName="observacao" (change)="change()"></textarea>
+      </mat-form-field>
+    </div>
 </form>
 <br />
 <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
@@ -54,7 +67,8 @@
         <th>Bairro</th> 
         <th>Logradouro</th>  
         <th>Cidade</th>
-        <th>Estado</th>                            
+        <th>Estado</th>
+        <th>Tipo</th>                             
         <th>Remover</th>
       </thead>
       <tbody>
@@ -66,6 +80,7 @@
           <td>{{ e.logradouro}}</td> 
           <td>{{ e.localidade}}</td>
           <td>{{ e.uf}}</td>
+          <td>{{ e.descTipoEndereco}}</td>
           <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
                 class="material-icons">delete</i></span></td>
         </tr>

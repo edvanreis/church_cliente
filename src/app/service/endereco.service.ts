@@ -29,4 +29,9 @@ export class EnderecoService {
       .pipe(tap((response: any) => response));
   }
 
+  carregarTiposEndereco() {
+    return this.http.get(this._url + "tiposEndereco")
+      .pipe(tap((response: any) => response));
+  }
+
 }

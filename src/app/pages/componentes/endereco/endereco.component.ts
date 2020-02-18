@@ -6,6 +6,7 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { EnderecoService } from '../../../service/endereco.service';
 import { MembroService } from '../../../service/membro.service';
 import { Endereco } from '../../../model/Endereco';
+import { Observable } from 'rxjs';
 
 
 
@@ -22,6 +23,9 @@ export class EnderecoComponent implements OnInit {
   public endereco;
   public enderecos:any = [];
   @Input('sizeLimitOne')sizeLimitOne = false;
+  @Input('pessoa')pessoa = false;
+  public tipoEndereco = [];
+  public observacao:boolean = false;
 
   constructor(private _membroService: MembroService,
     private _notifierService: NotifierService,
@@ -32,7 +36,8 @@ export class EnderecoComponent implements OnInit {
     this._buildForm();
     this.setEmiter();
     this.getComboUF();
-    this.getEmiter()
+    this.getComboTipoEndereco();
+    this.getEmiter();
   }
 
   private _buildForm(): void {
@@ -44,6 +49,8 @@ export class EnderecoComponent implements OnInit {
       'logradouro': new FormControl(''),
       'localidade': new FormControl(''),
       'uf': new FormControl(''),
+      'tipo': new FormControl(''),
+      'observacao': new FormControl(''),
     });
   }
 
@@ -78,6 +85,12 @@ export class EnderecoComponent implements OnInit {
     });
   }
 
+  getComboTipoEndereco() {
+    this._enderecoService.carregarTiposEndereco().subscribe(item => {
+      this.tipoEndereco = item;
+    });
+  }
+
   change() {
     this.carregarEndereco();
     this.setEmiter();
@@ -89,7 +102,7 @@ export class EnderecoComponent implements OnInit {
 
 
   carregarEnderecoParam(endereco) {
-    this.endereco = new Endereco();
+    this.endereco = {} as any;
     this.endereco.cep = endereco.cep;
     this.endereco.numero = endereco.numero;
     this.endereco.complemento = this.form.controls['complemento'].value;
@@ -97,10 +110,13 @@ export class EnderecoComponent implements OnInit {
     this.endereco.logradouro = endereco.logradouro;
     this.endereco.localidade = endereco.localidade;
     this.endereco.uf = endereco.uf;
+    this.endereco.tipo = endereco.tipo;
+    this.endereco.descTipoEndereco = endereco.descTipoEndereco;
+    this.endereco.observacao = endereco.observacao;
   }
 
   carregarEndereco() {
-    this.endereco = new Endereco();
+    this.endereco = {} as any;
     this.endereco.cep = this.form.controls['cep'].value;
     this.endereco.numero = this.form.controls['numero'].value;
     this.endereco.complemento = this.form.controls['complemento'].value;
@@ -108,6 +124,17 @@ export class EnderecoComponent implements OnInit {
     this.endereco.logradouro = this.form.controls['logradouro'].value;
     this.endereco.localidade =this.form.controls['localidade'].value;
     this.endereco.uf = this.form.controls['uf'].value;
+    this.endereco.observacao = this.form.controls['observacao'].value;
+    if(this.form.controls['tipo'].value){
+      this.endereco.tipo = this.form.controls['tipo'].value;
+      let tipoObj = this.tipoEndereco.find(i=>i.tipo == this.endereco.tipo);
+      this.endereco.descTipoEndereco = tipoObj.descTipoEndereco;
+      if(this.endereco.tipo=='OUTROS'){
+        this.observacao = true;
+      }else{
+        this.observacao = false;
+      }
+    }
   }
 
 
@@ -122,9 +149,6 @@ export class EnderecoComponent implements OnInit {
           this.enderecos = item.data;
           this.setEmiter();
       }
-      // if (item.type == 'endereco') {
-      //   this.carregarEnderecoEmiter(item.data)
-      // }
     });
   }
 
@@ -136,6 +160,7 @@ export class EnderecoComponent implements OnInit {
     this.form.controls['logradouro'].patchValue(endereco.logradouro);
     this.form.controls['localidade'].patchValue(endereco.localidade);
     this.form.controls['uf'].patchValue(endereco.uf);
+    this.form.controls['tipo'].patchValue(endereco.tipo);
   }
 
 
