@@ -36,7 +36,7 @@
             <tr *ngFor="let c of contatosGrid">
               <td>{{ c.tipo}}</td>
               <td>{{ c.contato }}</td>      
-              <td><img src="./assets/whatsapp.png" width="20px" *ngIf="c.whatsapp && c.celular">
+              <td><img src="./assets/whatsapp.png" width="20px" *ngIf="c.whatsapp">
                 <img src="./assets/images/facebook_circle.png" width="20px" *ngIf="c.facebook">
                 <span style="color: #1d68a5" *ngIf="c.email"><i class="material-icons">mail</i></span>
                 <span style="color: #1d68a5" *ngIf="c.telefone"><i class="material-icons">call</i></span></td>

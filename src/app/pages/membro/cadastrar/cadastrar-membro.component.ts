@@ -167,6 +167,8 @@ export class CadastrarMembroComponent implements OnInit {
       this.pessoa.nacionalidade = this.dadosPessoais.nacionalidade;
       this.pessoa.profissao = this.dadosPessoais.profissao;
       this.pessoa.observacao = this.dadosPessoais.observacao;
+      this.pessoa.batizado = this.dadosPessoais.batizado;
+      this.pessoa.dizimista = this.dadosPessoais.dizimista;
       this.pessoa.membro = true;
     }
     if (this.enderecos) {

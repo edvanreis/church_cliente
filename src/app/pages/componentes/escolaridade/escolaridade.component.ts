@@ -3,6 +3,8 @@ import { MembroService } from '../../../service/membro.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { PessoaService } from '../../../service/pessoa.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { AlertType } from '../../../model/alert-type';
+import { NotifierService } from 'angular-notifier';
 
 
 
@@ -19,7 +21,9 @@ export class EscolaridadeComponent implements OnInit {
   public escolaridadesGrid:any = []
   public form: FormGroup;
 
-  constructor(private _pessoaService: PessoaService,private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _pessoaService: PessoaService,
+              private _emitirEventoService: EmitirEventoService,
+              private _notifierService: NotifierService) { }
 
   ngOnInit() {
     this.getComboEscolaridade();
@@ -48,9 +52,14 @@ export class EscolaridadeComponent implements OnInit {
   }
 
   adicionar() {
+    if(!this.form.controls['escolaridade'].value){
+      this._notifierService.notify(AlertType.Error, "Por favor escolha pelo menos uma escolaridade!");
+      return false;
+    }
     let escolaridade = this.comboEscolaridade.find(i=>i.tipo==this.form.controls['escolaridade'].value);
-    this.escolaridades.push({tipo:escolaridade.tipo,curso:this.form.controls['curso'].value});
-    this.escolaridadesGrid.push({tipo:escolaridade.descricao,curso:this.form.controls['curso'].value});
+    let curso:string = this.form.controls['curso'].value;
+    this.escolaridades.push({tipo:escolaridade.tipo,curso:curso.toUpperCase()});
+    this.escolaridadesGrid.push({tipo:escolaridade.descricao,curso:curso.toUpperCase()});
     this.setEmiter();
   }
 

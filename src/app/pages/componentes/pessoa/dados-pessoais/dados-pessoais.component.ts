@@ -110,20 +110,21 @@ export class DadosPessoaisComponent implements OnInit {
     this.pessoa.dataNascimento = this.form.controls['dataNascimento'].value;
     this.pessoa.nacionalidade = this.form.controls['nacionalidade'].value;
     this.pessoa.profissao = this.form.controls['profissao'].value;
-    this.pessoa.observacao = this.form.controls['observacao'].value;
+    this.pessoa.observacao = HelperChurch.isNull(this.form.controls['observacao'].value);
 
     if (this.form.controls['batizado'].value) {
-      this.pessoa.ofertante = this.form.controls['batizado'].value;
+      this.pessoa.batizado = this.form.controls['batizado'].value;
     }
 
     if (this.form.controls['dizimista'].value) {
       this.pessoa.dizimista = this.form.controls['dizimista'].value;
     }
-    // console.log(this.pessoa)
+    //  console.log(this.pessoa)
     return this.pessoa;
   }
 
   getObj(dados){
+    // console.log(dados)
     this.form.controls['nome'].patchValue(dados.nome);
     this.form.controls['sobrenome'].patchValue(dados.sobreNome);
     this.form.controls['rg'].patchValue(dados.rg);
@@ -135,6 +136,7 @@ export class DadosPessoaisComponent implements OnInit {
     this.form.controls['observacao'].patchValue(dados.observacao);
     this.form.controls['batizado'].patchValue(dados.batizado);
     this.form.controls['dizimista'].patchValue(dados.dizimista);
+    this.form.controls['dataNascimento'].patchValue(dados.dataNascimentoFormatada);
     this.setObj();
     this.setEmiter();
   }
