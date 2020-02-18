@@ -215,6 +215,10 @@ export class CadastrarMembroComponent implements OnInit {
     this._emitirEventoService.emitir('edit-escolaridades', item);
   }
 
+  emitirEtapaVisao(item): void {
+    this._emitirEventoService.emitir('edit-etapa-visao', item);
+  }
+
   voltar() {
     this._router.navigate(['/auth/membro/pesquisar'], {
       queryParams: {

@@ -58,8 +58,9 @@ export class EtapaVisaoComponent implements OnInit {
         this.etapa = null;
         this.etapas = [];
       }
-      if (item.type == 'edit-escolaridades') {
+      if (item.type == 'edit-etapa-visao') {
         this.etapas = item.data;
+        console.log(this.etapas)
         this.setEmiter();
       }
     });
