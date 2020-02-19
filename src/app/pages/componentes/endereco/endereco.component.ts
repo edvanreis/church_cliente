@@ -147,6 +147,7 @@ export class EnderecoComponent implements OnInit {
       }
       if (item.type == 'edit-endereco') {
           this.enderecos = item.data;
+          // console.log(this.enderecos)
           this.setEmiter();
       }
     });

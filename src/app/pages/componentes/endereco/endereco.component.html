@@ -37,7 +37,7 @@
       </mat-select>
     </mat-form-field>
     </div>
-    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" *ngIf="pessoa">
       <mat-form-field>
         <mat-label>Tipo Endereços</mat-label>
         <mat-select formControlName="tipo" id="tipo" (selectionChange)="change()">

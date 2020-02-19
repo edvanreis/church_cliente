@@ -19,4 +19,9 @@ export class EtapaVisaoService {
     .pipe(tap((response: any) => response));
   }
 
+  obterEtapaPessoa(id) {
+    return this.http.get(this._url + id + "/pessoaEtapa")
+      .pipe(tap((response: any) => response));
+  }
+
 }

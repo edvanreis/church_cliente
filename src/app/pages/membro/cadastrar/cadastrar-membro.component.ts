@@ -7,6 +7,7 @@ import { ContatoService } from '../../../service/contato.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { EnderecoService } from '../../../service/endereco.service';
 import { PessoaService } from '../../../service/pessoa.service';
+import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 
 
 @Component({
@@ -34,7 +35,8 @@ export class CadastrarMembroComponent implements OnInit {
     private _notifierService: NotifierService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
-    private _contatoService: ContatoService) { }
+    private _contatoService: ContatoService,
+    private _etapaVisaoService:EtapaVisaoService) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -55,6 +57,7 @@ export class CadastrarMembroComponent implements OnInit {
       this.getEndereco(item.id)
       this.getContatos(item.id);
       this.getEscolaridades(item.id);
+      this.getEtapas(item.id);
     }, error => {
       // console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -85,6 +88,16 @@ export class CadastrarMembroComponent implements OnInit {
     // console.log(id)
     this._service.obterEscolaridadePessoa(id).pipe(take(1)).subscribe(item => {
       this.emitirEscolaridades(item);
+    }, error => {
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  getEtapas(id) {
+    // console.log(id)
+    this._etapaVisaoService.obterEtapaPessoa(id).pipe(take(1)).subscribe(item => {
+      this.emitirEtapaVisao(item);
     }, error => {
       console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
