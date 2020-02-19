@@ -166,6 +166,7 @@ export class PesquisarMembroComponent implements OnInit {
 
   columns() {
     this.columnNames = [
+      { id: 'icon', value: 'Situação' },
       { id: 'nomeCompleto', value: 'Nome' },
       { id: 'dataNascimentoFormatada', value: 'Data Nascimento' },
       { id: 'rg', value: 'RG' },

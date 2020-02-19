@@ -141,6 +141,7 @@ export class CadastrarMembroComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, mensagem);
       return false;
     }
+    console.log(this.enderecos)
     if (!this.pessoa.id) {
       this.save();
     } else {
