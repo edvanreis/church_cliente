@@ -53,6 +53,7 @@ export class CadastrarMembroComponent implements OnInit {
 
   getPessoa(id) {
     this._service.obterPessoa(id).pipe(take(1)).subscribe(item => {
+      // console.log(item)
       this.emitirPessoa(item);
       this.getEndereco(item.id)
       this.getContatos(item.id);
@@ -183,6 +184,7 @@ export class CadastrarMembroComponent implements OnInit {
       this.pessoa.observacao = this.dadosPessoais.observacao;
       this.pessoa.batizado = this.dadosPessoais.batizado;
       this.pessoa.dizimista = this.dadosPessoais.dizimista;
+      this.pessoa.cartaRecomendacao = this.dadosPessoais.cartaRecomendacao;
       this.pessoa.membro = true;
     }
     if (this.enderecos) {

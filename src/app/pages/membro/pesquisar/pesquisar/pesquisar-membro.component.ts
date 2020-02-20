@@ -135,6 +135,7 @@ export class PesquisarMembroComponent implements OnInit {
       this.pessoa.observacao = this.dadosPessoais.observacao;
       this.pessoa.membro = true;
       this.pessoa.visitante = false;
+      this.pessoa.cartaRecomendacao = this.dadosPessoais.cartaRecomendacao;;
       
     }
     if(this.enderecos){
@@ -166,7 +167,8 @@ export class PesquisarMembroComponent implements OnInit {
 
   columns() {
     this.columnNames = [
-      { id: 'icon', value: 'Situação' },
+      { id: 'icon', value: '' },
+      { id: 'descSitucao', value: 'Situação' },
       { id: 'nomeCompleto', value: 'Nome' },
       { id: 'dataNascimentoFormatada', value: 'Data Nascimento' },
       { id: 'rg', value: 'RG' },

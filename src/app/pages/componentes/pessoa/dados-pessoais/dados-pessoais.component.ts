@@ -71,7 +71,8 @@ export class DadosPessoaisComponent implements OnInit {
       'profissao': new FormControl(''),
       'batizado': new FormControl(''),
       'dizimista': new FormControl(''),
-      'observacao': new FormControl('')
+      'observacao': new FormControl(''),
+      'cartaRecomendacao': new FormControl('')
     });
   }
 
@@ -119,6 +120,9 @@ export class DadosPessoaisComponent implements OnInit {
     if (this.form.controls['dizimista'].value) {
       this.pessoa.dizimista = this.form.controls['dizimista'].value;
     }
+    if (this.form.controls['cartaRecomendacao'].value) {
+      this.pessoa.cartaRecomendacao = this.form.controls['cartaRecomendacao'].value;
+    }
     //  console.log(this.pessoa)
     return this.pessoa;
   }
@@ -137,6 +141,7 @@ export class DadosPessoaisComponent implements OnInit {
     this.form.controls['batizado'].patchValue(dados.batizado);
     this.form.controls['dizimista'].patchValue(dados.dizimista);
     this.form.controls['dataNascimento'].patchValue(dados.dataNascimentoFormatada);
+    this.form.controls['cartaRecomendacao'].patchValue(dados.cartaRecomendacao);
     this.setObj();
     this.setEmiter();
   }

@@ -86,7 +86,16 @@
             <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
               <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
+                <span *ngIf="column.id!='id' && element.situacao != 'APROVADO'">{{element[column.id]}}</span>
+                <span *ngIf="column.id!='id' && element.situacao == 'APROVADO'" style="color:green;">{{element[column.id]}}</span>
+                <span *ngIf="column.id=='icon'">
+                  <span style="color: green;" *ngIf="element.status=='A'">
+                    <i class="material-icons">person</i>
+                  </span>
+                  <span style="color: grey;" *ngIf="element.status=='I'">
+                    <i class="material-icons">person</i>
+                  </span>
+                </span>
                 <span *ngIf="column.id=='id'">
                   <span style="cursor: pointer;" (click)="editar(element.id)" title="Editar">
                     <i class="material-icons">create</i>

@@ -60,7 +60,7 @@ export class EtapaVisaoComponent implements OnInit {
       }
       if (item.type == 'edit-etapa-visao') {
         this.etapas = item.data;
-        console.log(this.etapas)
+        // console.log(this.etapas)
         this.setEmiter();
       }
     });

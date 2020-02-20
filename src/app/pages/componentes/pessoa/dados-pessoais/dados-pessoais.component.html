@@ -66,6 +66,8 @@
     <mat-slide-toggle formControlName="batizado" id="batizado"  (change)="change()" #batizado>{{batizado.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
     <label style="color:#1d68a5">Dizimista?</label>
     <mat-slide-toggle formControlName="dizimista" id="dizimista"  (change)="change()" #dizimista>{{dizimista.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+    <label style="color:#1d68a5">Possui Carta de Recomendação?</label>
+    <mat-slide-toggle formControlName="cartaRecomendacao" id="cartaRecomendacao"  (change)="change()" #cartaRecomendacao>{{cartaRecomendacao.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="!pesquisa">
     <mat-form-field class="full-width-field">

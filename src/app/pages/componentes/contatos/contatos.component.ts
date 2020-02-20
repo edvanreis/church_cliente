@@ -209,7 +209,7 @@ export class ContatosComponent implements OnInit {
   }
 
   carregarContatoGrid(contatos){
-    console.log(contatos);
+    // console.log(contatos);
     contatos.forEach(element => {
       this.contatosGrid.push({
         tipo: element.descTipoContato,
