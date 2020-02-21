@@ -7,6 +7,11 @@ import { Pessoa } from '../../../../model/pessoa';
 import { PessoaService } from '../../../../service/pessoa.service';
 
 
+const ELEMENT_DATA = [
+  { codigo: 'A', value: 'Ativo' },
+  { codigo: 'I', value: 'Inativo' },
+  { codigo: null, value: 'Todos' },
+];
 
 
 @Component({
@@ -30,6 +35,7 @@ export class DadosPessoaisComponent implements OnInit {
   @Input('pesquisa') pesquisa: boolean;
   public hideTipo: boolean = true;
   public visisaoCelular: boolean;
+  public comboStatus = ELEMENT_DATA;
 
   constructor(private _pessoaService: PessoaService, private _emitirEventoService: EmitirEventoService) { }
 
@@ -72,7 +78,8 @@ export class DadosPessoaisComponent implements OnInit {
       'batizado': new FormControl(''),
       'dizimista': new FormControl(''),
       'observacao': new FormControl(''),
-      'cartaRecomendacao': new FormControl('')
+      'cartaRecomendacao': new FormControl(''),
+      'status': new FormControl(''),
     });
   }
 
@@ -112,6 +119,7 @@ export class DadosPessoaisComponent implements OnInit {
     this.pessoa.nacionalidade = this.form.controls['nacionalidade'].value;
     this.pessoa.profissao = this.form.controls['profissao'].value;
     this.pessoa.observacao = HelperChurch.isNull(this.form.controls['observacao'].value);
+    this.pessoa.status = HelperChurch.isNull(this.form.controls['status'].value);
 
     if (this.form.controls['batizado'].value) {
       this.pessoa.batizado = this.form.controls['batizado'].value;
@@ -142,6 +150,7 @@ export class DadosPessoaisComponent implements OnInit {
     this.form.controls['dizimista'].patchValue(dados.dizimista);
     this.form.controls['dataNascimento'].patchValue(dados.dataNascimentoFormatada);
     this.form.controls['cartaRecomendacao'].patchValue(dados.cartaRecomendacao);
+    this.form.controls['status'].patchValue(dados.status);
     this.setObj();
     this.setEmiter();
   }

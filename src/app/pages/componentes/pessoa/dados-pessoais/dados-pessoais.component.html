@@ -61,6 +61,16 @@
     <app-igrejas></app-igrejas>
     <app-celula *ngIf="visisaoCelular"></app-celula>
   </div>
+  <div  class="full-width-field" *ngIf="pesquisa">
+    <mat-form-field>
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status" id="status" (selectionChange)="change()">
+        <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
+          {{item.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
   <div class="full-width-field" fxLayoutGap="20px" [hidden]="hideTipo">
     <label style="color:#1d68a5">Batizado?</label>
     <mat-slide-toggle formControlName="batizado" id="batizado"  (change)="change()" #batizado>{{batizado.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>

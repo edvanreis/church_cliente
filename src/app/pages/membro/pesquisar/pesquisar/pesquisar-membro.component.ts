@@ -1,20 +1,17 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { take } from 'rxjs/operators';
-import { EmitirEventoService } from '../../../../service/emitir-evento.service';
-import { MembroService } from '../../../../service/membro.service';
-import { Membro } from '../../../../model/membro';
-import { NotifierService } from 'angular-notifier';
-import { AlertType } from '../../../../model/alert-type';
-import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
-import { ExcelService } from '../../../../service/excel.service';
-import { FormGroup, FormControl } from '@angular/forms';
-import { HelperChurch } from '../../../../helper/helper.church';
 import { DatePipe } from '@angular/common';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { AlertType } from '../../../../model/alert-type';
+import { EmitirEventoService } from '../../../../service/emitir-evento.service';
 import { EtapaVisaoService } from '../../../../service/etapa-visao.service';
-import { UserService } from '../../../../service/user.service';
+import { ExcelService } from '../../../../service/excel.service';
 import { PessoaService } from '../../../../service/pessoa.service';
-import { Router, ActivatedRoute } from '@angular/router';
+
 
 
 @Component({
@@ -52,6 +49,7 @@ export class PesquisarMembroComponent implements OnInit {
   public formDate: FormGroup;
   public dadosPessoais: any;
   public celula:any;
+  
 
   
 
@@ -135,7 +133,8 @@ export class PesquisarMembroComponent implements OnInit {
       this.pessoa.observacao = this.dadosPessoais.observacao;
       this.pessoa.membro = true;
       this.pessoa.visitante = false;
-      this.pessoa.cartaRecomendacao = this.dadosPessoais.cartaRecomendacao;;
+      this.pessoa.cartaRecomendacao = this.dadosPessoais.cartaRecomendacao;
+      this.pessoa.status = this.dadosPessoais.status;
       
     }
     if(this.enderecos){

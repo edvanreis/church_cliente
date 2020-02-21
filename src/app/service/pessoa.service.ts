@@ -60,4 +60,5 @@ export class PessoaService {
     return this.http.get(this._url + "listaMembros")
       .pipe(map((response: any) => response))
   }
+
 }
