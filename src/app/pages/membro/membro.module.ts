@@ -18,6 +18,9 @@ import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component
 import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro.component';
 import { ContatosModule } from '../componentes/contatos/contatos.module';
 import { EtapaVisaoModule } from '../componentes/etapa-visao/etapa-visao.module';
+import { DialogEnviarCartaModule } from '../dialog/dialog-enviar-carta/dialog-enviar-carta.module';
+import { DialogHistoricoPessoaModule } from '../dialog/dialog-historico-pessoa/dialog-historico-pessoa.module';
+import { DialogInativarPessoaModule } from '../dialog/dialog-inativar-pessoa/dialog-inativar-pessoa.module';
 
 
 
@@ -54,6 +57,9 @@ const routes: Routes = [
     MatSlideToggleModule,
     ContatosModule,
     EtapaVisaoModule,
+    DialogEnviarCartaModule,
+    DialogHistoricoPessoaModule,
+    DialogInativarPessoaModule,
     RouterModule.forChild(routes)
   ],
   exports: [

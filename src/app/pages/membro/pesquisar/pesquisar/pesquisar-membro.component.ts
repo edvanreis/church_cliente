@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs';
@@ -11,6 +11,9 @@ import { EmitirEventoService } from '../../../../service/emitir-evento.service';
 import { EtapaVisaoService } from '../../../../service/etapa-visao.service';
 import { ExcelService } from '../../../../service/excel.service';
 import { PessoaService } from '../../../../service/pessoa.service';
+import { DialogEnviarCartaComponent } from '../../../dialog/dialog-enviar-carta/dialog-enviar-carta.component';
+import { DialogHistoricoPessoaComponent } from '../../../dialog/dialog-historico-pessoa/dialog-historico-pessoa.component';
+import { DialogInativarPessoaComponent } from '../../../dialog/dialog-inativar-pessoa/dialog-inativar-pessoa.component';
 
 
 
@@ -30,7 +33,8 @@ export class PesquisarMembroComponent implements OnInit {
     private _datePipe: DatePipe,
     private _etapaVisao: EtapaVisaoService,
     private _router: Router,
-    private _avRoute: ActivatedRoute) { }
+    private _avRoute: ActivatedRoute,
+    private _dialog: MatDialog) { }
 
   public etapa$: Observable<any[]>;
   public pessoa:any= {} as any;
@@ -239,6 +243,37 @@ export class PesquisarMembroComponent implements OnInit {
     });
   }
 
+
+  
+  enviarCarta(id) {
+    const dialogRef = this._dialog.open(DialogEnviarCartaComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        panelClass: 'components-container-gt-xs'
+      }
+    });
+  }
+
+  historico(id) {
+    console.log(id)
+    const dialogRef = this._dialog.open(DialogHistoricoPessoaComponent, {
+      width: '900px',
+      data: {
+        history: this._service.getHistory(id)
+      }
+    });
+  }
+
+  inativar(id) {
+    const dialogRef = this._dialog.open(DialogInativarPessoaComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        panelClass: 'components-container-gt-xs'
+      }
+    });
+  }
 
 
 }

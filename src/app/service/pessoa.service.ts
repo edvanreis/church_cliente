@@ -61,4 +61,11 @@ export class PessoaService {
       .pipe(map((response: any) => response))
   }
 
+  getHistory(id) {
+    return this.http.get(this._url + id + "/historico")
+      .pipe(tap((response: any) => response));
+  }
+
+  
+
 }

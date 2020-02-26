@@ -1,3 +1,20 @@
-<p>
-  dialog-enviar-carta works!
-</p>
+<div mat-dialog-content>
+  <h4 mat-dialog-title>
+    <mat-toolbar class="cdk-header">
+      <i class="material-icons">mail</i>
+      <h1 class="mat-headline center-align">Enviar Carta de Recomendação</h1>
+    </mat-toolbar>
+  </h4>
+  <div class="cdk-container">
+    <label>
+      <input type="file" class="form-control" (change)="upload($event)" #fileInput>
+    </label>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" type="submit" (click)="confirmar()">
+      <i class="material-icons">vertical_align_top</i>Enviar</button>
+    <div fxFlex></div>
+    <button mat-raised-button color="warn" type="submit" (click)="close()">
+      <i class="material-icons">close</i>Fechar</button>
+  </div>
+</div>

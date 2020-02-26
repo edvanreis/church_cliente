@@ -92,11 +92,14 @@
                   <span style="cursor: pointer;" (click)="editar(element.id)" title="Editar">
                     <i class="material-icons">create</i>
                   </span>
-                  <span  *ngIf="element.cartaRecomendacao" style="cursor: pointer;color: darkblue;" (click)="enviarCarta(element.id)" title="Editar">
+                  <span  *ngIf="!element.cartaRecomendacao" style="cursor: pointer;color: darkblue;" (click)="enviarCarta(element.id)" title="Editar">
                     <i class="material-icons">vertical_align_top</i>
                   </span>
                   <span style="cursor: pointer;color:darkred;" (click)="inativar(element.id)" title="Editar">
                     <i class="material-icons">delete_forever</i>
+                  </span>
+                  <span style="cursor: pointer;" (click)="historico(element.id)" title="Historico">
+                    <i class="material-icons">event_note</i>
                   </span>
                 </span>
               </mat-cell>
