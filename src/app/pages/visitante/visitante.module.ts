@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatProgressSpinnerModule, MatPaginatorModule, MatTableModule, MatSortModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatProgressSpinnerModule, MatPaginatorModule, MatTableModule, MatSortModule, MatTooltipModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
@@ -38,6 +38,7 @@ const routes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     EtapaVisaoModule,
+    MatTooltipModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

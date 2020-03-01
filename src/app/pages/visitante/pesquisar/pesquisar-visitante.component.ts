@@ -224,4 +224,17 @@ export class PesquisarVisitanteComponent implements OnInit {
     });
   }
 
+  importar(id){
+    this.setObj();
+    localStorage.setItem("pesquisa",JSON.stringify(this.pessoa));
+    this._router.navigate(['/auth/membro/cadastrar'], {
+      queryParams: {
+        janela: 'Importar',
+        id: id,
+        importacao:true
+      },
+      skipLocationChange: true
+    });
+  }
+
 }

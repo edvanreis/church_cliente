@@ -27,6 +27,7 @@ export class CadastrarMembroComponent implements OnInit {
   public pessoa = {} as any;
   public id: any;
   public pesquisa: boolean = false;
+  public importacao: boolean = false;
 
 
   constructor(private _emitirEventoService: EmitirEventoService,
@@ -36,7 +37,7 @@ export class CadastrarMembroComponent implements OnInit {
     private _router: Router,
     private _avRoute: ActivatedRoute,
     private _contatoService: ContatoService,
-    private _etapaVisaoService:EtapaVisaoService) { }
+    private _etapaVisaoService: EtapaVisaoService) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -48,6 +49,9 @@ export class CadastrarMembroComponent implements OnInit {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
       this.getPessoa(this.id);
       this.pesquisa = true;
+    }
+    if (this._avRoute.snapshot.queryParamMap.get("importacao")) {
+      this.importacao = true;;
     }
   }
 
@@ -235,8 +239,16 @@ export class CadastrarMembroComponent implements OnInit {
     this._emitirEventoService.emitir('edit-etapa-visao', item);
   }
 
+
   voltar() {
-    this._router.navigate(['/auth/membro/pesquisar'], {
+    let caminho:string ="";
+    if(this.importacao){
+      caminho = "/auth/visitante/pesquisar";
+    }else{
+      caminho = "/auth/membro/pesquisar";
+    }
+
+    this._router.navigate([caminho], {
       queryParams: {
         pesquisa: this.pesquisa
       },
@@ -245,7 +257,7 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   validarCampos(): string {
-    console.log( 'tes')
+    console.log('tes')
     let concat = 'Por favor preencha o campo';
     let concatArray = 'Por favor adicione pelo menos um';
     if (!this.pessoa.nome) {
