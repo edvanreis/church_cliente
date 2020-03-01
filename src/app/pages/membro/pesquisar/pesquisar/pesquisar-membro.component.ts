@@ -14,6 +14,7 @@ import { PessoaService } from '../../../../service/pessoa.service';
 import { DialogEnviarCartaComponent } from '../../../dialog/dialog-enviar-carta/dialog-enviar-carta.component';
 import { DialogHistoricoPessoaComponent } from '../../../dialog/dialog-historico-pessoa/dialog-historico-pessoa.component';
 import { DialogInativarPessoaComponent } from '../../../dialog/dialog-inativar-pessoa/dialog-inativar-pessoa.component';
+import { DialogReativarPessoaComponent } from '../../../dialog/dialog-reativar-pessoa/dialog-reativar-pessoa.component';
 
 
 
@@ -37,7 +38,7 @@ export class PesquisarMembroComponent implements OnInit {
     private _dialog: MatDialog) { }
 
   public etapa$: Observable<any[]>;
-  public pessoa:any= {} as any;
+  public pessoa: any = {} as any;
   public enderecos: any;
   public comboTipoContatos = [];
   public comboEscolaridade = []
@@ -48,14 +49,14 @@ export class PesquisarMembroComponent implements OnInit {
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
   public loading: boolean = false;
-  public pessoas:any = [];
+  public pessoas: any = [];
   public form: FormGroup;
   public formDate: FormGroup;
   public dadosPessoais: any;
-  public celula:any;
-  
+  public celula: any;
 
-  
+
+
 
   ngOnInit() {
     this.getEmiter();
@@ -68,12 +69,12 @@ export class PesquisarMembroComponent implements OnInit {
   }
 
 
-  getParams(){
+  getParams() {
     // console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
-        this.pessoa = JSON.parse(localStorage.getItem("pesquisa"));
-        localStorage.removeItem("pesquisa");
-        this.pesquisar();
+      this.pessoa = JSON.parse(localStorage.getItem("pesquisa"));
+      localStorage.removeItem("pesquisa");
+      this.pesquisar();
     }
   }
 
@@ -89,11 +90,15 @@ export class PesquisarMembroComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
+      console.log(item.type)
       if (item.type == 'dadosPessoais') {
         this.dadosPessoais = item.data;
       }
       if (item.type == 'endereco') {
         this.enderecos = item.data;
+      }
+      if (item.type == 'inativado' || item.type == 'reativar') {
+        this.pesquisar();
       }
     });
   }
@@ -121,10 +126,10 @@ export class PesquisarMembroComponent implements OnInit {
 
 
 
-  setObj(){
+  setObj() {
     this.getEmiter();
-   
-    if(this.dadosPessoais){
+
+    if (this.dadosPessoais) {
       this.pessoa.nome = this.dadosPessoais.nome;
       this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
       this.pessoa.rg = this.dadosPessoais.rg;
@@ -139,19 +144,19 @@ export class PesquisarMembroComponent implements OnInit {
       this.pessoa.visitante = false;
       this.pessoa.cartaRecomendacao = this.dadosPessoais.cartaRecomendacao;
       this.pessoa.status = this.dadosPessoais.status;
-      
+
     }
-    if(this.enderecos){
+    if (this.enderecos) {
       this.pessoa.enderecos = this.enderecos;
     }
 
-    if(this.celula){
+    if (this.celula) {
       this.pessoa.celula = this.celula;
-    } 
+    }
     this.preencherPeriodosAtivacao();
     this.preencherPeriodosInativacao();
   }
-  
+
 
 
   preencherPeriodosAtivacao() {
@@ -204,7 +209,7 @@ export class PesquisarMembroComponent implements OnInit {
         "Estado Civil": i.estadoCivil,
         "Sexo Civil": i.sexo,
         "Profissao": i.profissao,
-        "Etapa Visão":i.etapasStr
+        "Etapa Visão": i.etapasStr
       });
     });
     this._excelService.exportAsExcelFile(dados, "pesquisa");
@@ -215,7 +220,7 @@ export class PesquisarMembroComponent implements OnInit {
     this.etapa$ = this._etapaVisao.getList();
   }
 
-  limpar(){
+  limpar() {
     this.setEmiter();
     this.pessoas = [];
     this.pessoa = {} as any;
@@ -231,9 +236,9 @@ export class PesquisarMembroComponent implements OnInit {
     this.form.controls[field].patchValue(value)
   }
 
-  editar(id){
+  editar(id) {
     this.setObj();
-    localStorage.setItem("pesquisa",JSON.stringify(this.pessoa));
+    localStorage.setItem("pesquisa", JSON.stringify(this.pessoa));
     this._router.navigate(['/auth/membro/cadastrar'], {
       queryParams: {
         janela: 'Editar',
@@ -244,7 +249,7 @@ export class PesquisarMembroComponent implements OnInit {
   }
 
 
-  
+
   enviarCarta(id) {
     const dialogRef = this._dialog.open(DialogEnviarCartaComponent, {
       width: '600px',
@@ -267,6 +272,16 @@ export class PesquisarMembroComponent implements OnInit {
 
   inativar(id) {
     const dialogRef = this._dialog.open(DialogInativarPessoaComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        panelClass: 'components-container-gt-xs'
+      }
+    });
+  }
+
+  reativar(id) {
+    const dialogRef = this._dialog.open(DialogReativarPessoaComponent, {
       width: '600px',
       data: {
         id: id,

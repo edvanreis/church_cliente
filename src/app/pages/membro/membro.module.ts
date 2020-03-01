@@ -3,7 +3,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatOptionModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatOptionModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
@@ -21,6 +21,7 @@ import { EtapaVisaoModule } from '../componentes/etapa-visao/etapa-visao.module'
 import { DialogEnviarCartaModule } from '../dialog/dialog-enviar-carta/dialog-enviar-carta.module';
 import { DialogHistoricoPessoaModule } from '../dialog/dialog-historico-pessoa/dialog-historico-pessoa.module';
 import { DialogInativarPessoaModule } from '../dialog/dialog-inativar-pessoa/dialog-inativar-pessoa.module';
+import { DialogReativarPessoaModule } from '../dialog/dialog-reativar-pessoa/dialog-reativar-pessoa.module';
 
 
 
@@ -60,6 +61,8 @@ const routes: Routes = [
     DialogEnviarCartaModule,
     DialogHistoricoPessoaModule,
     DialogInativarPessoaModule,
+    MatTooltipModule,
+    DialogReativarPessoaModule,
     RouterModule.forChild(routes)
   ],
   exports: [

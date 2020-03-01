@@ -66,6 +66,16 @@ export class PessoaService {
       .pipe(tap((response: any) => response));
   }
 
+  inativarPessoa(pessoa) {
+    return this.http.put(this._url + "inativar", pessoa)
+      .pipe(map((response: any) => response))
+  }
+
+  reativarPessoa(pessoa) {
+    return this.http.put(this._url + "reativar", pessoa)
+      .pipe(map((response: any) => response))
+  }
+
   
 
 }

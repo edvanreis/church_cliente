@@ -89,16 +89,19 @@
                   </span>
                 </span>
                 <span *ngIf="column.id=='id'">
-                  <span style="cursor: pointer;" (click)="editar(element.id)" title="Editar">
+                  <span style="cursor: pointer;" (click)="editar(element.id)" matTooltip="Editar">
                     <i class="material-icons">create</i>
                   </span>
-                  <span  *ngIf="!element.cartaRecomendacao" style="cursor: pointer;color: darkblue;" (click)="enviarCarta(element.id)" title="Editar">
+                  <span  *ngIf="!element.cartaRecomendacao" style="cursor: pointer;color: darkblue;" (click)="enviarCarta(element.id)" matTooltip="Editar">
                     <i class="material-icons">vertical_align_top</i>
                   </span>
-                  <span style="cursor: pointer;color:darkred;" (click)="inativar(element.id)" title="Editar">
-                    <i class="material-icons">delete_forever</i>
+                  <span style="cursor: pointer;color: grey;" (click)="inativar(element.id)" matTooltip="Inativar">
+                    <i class="material-icons">account_circle</i>
                   </span>
-                  <span style="cursor: pointer;" (click)="historico(element.id)" title="Historico">
+                  <span style="cursor: pointer;color:green;" (click)="reativar(element.id)" matTooltip="Reativar">
+                    <i class="material-icons">account_circle</i>
+                  </span>
+                  <span style="cursor: pointer;" (click)="historico(element.id)" matTooltip="Historico">
                     <i class="material-icons">event_note</i>
                   </span>
                 </span>

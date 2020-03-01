@@ -2,12 +2,17 @@
   <h4 mat-dialog-title>
     <mat-toolbar class="cdk-header">
       <i class="material-icons">delete_forever</i>
-      <h1 class="mat-headline center-align">Inativar Pessoa</h1>
+      <h1 class="mat-headline center-align">Inativar Membro</h1>
     </mat-toolbar>
   </h4>
   <div class="cdk-container">
-    <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
-      <span  style="color:gray" >Deseja Realmente remover este item?</span>
+    <div>
+      <span  style="color:gray" >Deseja Realmente Inativar este Membro?</span>
+    </div>
+    <div>
+      <mat-form-field class="full-width-field">
+        <textarea matInput placeholder="Observação" [(ngModel)]="observacao"></textarea>
+      </mat-form-field>
     </div>
   </div>
   <div mat-dialog-actions align="end">
