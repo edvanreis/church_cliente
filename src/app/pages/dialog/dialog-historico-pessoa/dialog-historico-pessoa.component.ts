@@ -26,6 +26,7 @@ export class DialogHistoricoPessoaComponent implements OnInit {
 
   getHistory(): void {
     this.data.history.pipe(take(1)).subscribe(map => {
+      console.log(map);
       this.dados = new MatTableDataSource(map);
       this.dados.sort = this.sortMarcacao;
       this.dados.paginator = this.paginator;
@@ -34,9 +35,11 @@ export class DialogHistoricoPessoaComponent implements OnInit {
 
   columns() {
     this.columnNames = [
-      { id: 'situacao', value: 'Situação' },
+      { id: 'status', value: 'Status' },
+      { id: 'descSitucao', value: 'Situação' },
       { id: 'dataAtualizacao', value: 'Data atualização' },
-      { id: 'usuarioValidador', value: 'Usuário atualização' },
+      { id: 'usuarioAtualizacao', value: 'Usuário atualização' },
+      { id: 'observacao', value: 'Observação' },
     ]
     this.displayedColumns = this.columnNames.map(x => x.id);
   }
