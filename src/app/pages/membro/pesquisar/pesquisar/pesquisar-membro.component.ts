@@ -90,7 +90,7 @@ export class PesquisarMembroComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      console.log(item.type)
+      // console.log(item.type)
       if (item.type == 'dadosPessoais') {
         this.dadosPessoais = item.data;
       }

@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTabsModule, MatToolbarModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatTabsModule, MatToolbarModule, MatDividerModule, MatSlideToggleModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { InterceptorService } from '../../service/interceptor.service';
 import { CadastrarIgrejaComponent } from './cadastrar/cadastrar-igreja.component';
@@ -41,6 +41,8 @@ const routes: Routes = [
     ContatosModule,
     MatButtonModule, 
     PipeModule,
+    MatDividerModule,
+    MatSlideToggleModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

@@ -18,8 +18,9 @@ import { MatInputModule, MatAutocompleteModule } from '@angular/material';
   declarations: [
     CelulaComponent
   ],
-  exports:[
+  exports: [
     CelulaComponent
-  ]
+  ],
+
 })
 export class CelulaComponentModule { }

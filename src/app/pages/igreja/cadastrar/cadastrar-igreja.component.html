@@ -9,7 +9,21 @@
         <mat-tab label="Sede">
           <br />
           <app-igreja-dados></app-igreja-dados>
+          <br />
+          <br />
+          <mat-divider></mat-divider>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+            <i class="material-icons">store_mall_directory</i>
+            <h1 class="mat-subheading-2 center-align">Endereço</h1>
+          </div>
           <app-endereco [sizeLimitOne]="sizeLimitOne"></app-endereco>
+          <br />
+          <br />
+          <mat-divider></mat-divider>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+            <i class="material-icons">headset_mic</i>
+            <h1 class="mat-subheading-2 center-align">Contatos</h1>
+          </div>
           <app-contatos></app-contatos>
           <br /><br />
           <div>
@@ -21,10 +35,16 @@
           </div>
         </mat-tab>
         <mat-tab label="Filial" *ngIf="tipoEdicao!='sede'">
-          <app-igreja-dados></app-igreja-dados>
-          <app-endereco [sizeLimitOne]="sizeLimitOne"></app-endereco>
+          <app-igreja-dados [filial]="true"></app-igreja-dados>
+          <br/>
+          <br/>
+          <mat-divider></mat-divider>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+            <i class="material-icons">markunread_mailbox</i>
+            <h1 class="mat-subheading-2 center-align">Igreja Sede</h1>
+          </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="full-width-field">
               <input type="text" placeholder="Igreja Sede" aria-label="Number" matInput [formControl]="myControlIgrejaSede"
                 [matAutocomplete]="auto" [(ngModel)]="nomeValue">
               <mat-autocomplete #auto="matAutocomplete">
@@ -34,9 +54,21 @@
                 </mat-option>
               </mat-autocomplete>
             </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Pastor" [(ngModel)]="nomePastorValue" readonly>
-            </mat-form-field>
+          </div>
+          <br />
+          <br />
+          <mat-divider></mat-divider>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+            <i class="material-icons">store_mall_directory</i>
+            <h1 class="mat-subheading-2 center-align">Endereço</h1>
+          </div>
+          <app-endereco [sizeLimitOne]="sizeLimitOne"></app-endereco>
+          <br />
+          <br />
+          <mat-divider></mat-divider>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+            <i class="material-icons">headset_mic</i>
+            <h1 class="mat-subheading-2 center-align">Contatos</h1>
           </div>
           <app-contatos></app-contatos>
           <br /><br />

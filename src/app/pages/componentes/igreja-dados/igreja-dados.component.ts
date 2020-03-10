@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { take, startWith, map } from 'rxjs/operators';
 import { MembroService } from '../../../service/membro.service';
@@ -8,6 +8,7 @@ import { AlertType } from '../../../model/alert-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { HelperChurch } from '../../../helper/helper.church';
+import { PessoaService } from '../../../service/pessoa.service';
 
 
 @Component({
@@ -26,8 +27,10 @@ export class IgrejaDadosComponent implements OnInit {
   public filteredMembro: Observable<string[]>;
   public nomeValue;
   public membro: any;
+  public membros = [];
+  @Input('filial')filial:boolean = false;
 
-  constructor(private _membroService: MembroService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _pessoaService: PessoaService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this._buildForm();
@@ -39,11 +42,11 @@ export class IgrejaDadosComponent implements OnInit {
     this.form = new FormGroup({
       'nome': new FormControl('', Validators.required),
       'cnpj': new FormControl('', Validators.required),
-      'cpf': new FormControl({ value: '', disabled: true }),
+      'visaoCelular': new FormControl(false),
     });
   }
   carregarComboMembro() {
-    this._membroService.getList().pipe(take(1)).subscribe(item => {
+    this._pessoaService.getListMembros().pipe(take(1)).subscribe(item => {
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges
         .pipe(
@@ -60,11 +63,9 @@ export class IgrejaDadosComponent implements OnInit {
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
-  onSelectionChangedMembroNome($event: MatAutocompleteSelectedEvent, option) {
+  onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
     console.log(option)
     this.membro = option;
-    this.form.controls['cpf'].patchValue(option.cpf);
-    this.setEmiter();
   }
 
 
@@ -86,8 +87,7 @@ export class IgrejaDadosComponent implements OnInit {
         this.membro = item.data.pastor;
         this.form.controls['nome'].patchValue(item.data.nome);
         this.form.controls['cnpj'].patchValue(item.data.cnpj);
-        this.form.controls['cpf'].patchValue(item.data.cpf);
-        this.nomeValue = item.data.pastor.nomeCompleto;
+        this.form.controls['visaoCelular'].patchValue(item.data.visaoCelular);
       }
     });
   }
@@ -96,13 +96,33 @@ export class IgrejaDadosComponent implements OnInit {
     let igreja = {} as any;
     igreja.nome = this.form.controls['nome'].value;
     igreja.cnpj = HelperChurch.retirarFormatacaoCNPJ(this.form.controls['cnpj'].value);
-    igreja.pastor = this.membro;
+    igreja.pessoas = this.membros;
+    igreja.visaoCelular = this.form.controls['visaoCelular'].value;
     return igreja;
   }
 
   change() {
     // console.log('teste');
     this.setEmiter();
+  }
+
+  adicionar() {
+    if (!this.membro) {
+      this._notifierService.notify(AlertType.Error, "Por favor escolha uma membro.!");
+      return false;
+    }
+    let membroAdicionado = this.membros.find(i=>i.nome==this.membro.nome);
+    if(membroAdicionado &&  membroAdicionado.nome == this.membro.nome){
+      this._notifierService.notify(AlertType.Error, "Membro já adiocionado.!");
+      return false;
+    }
+    this.membros.push(this.membro);
+    this.setEmiter();
+  }
+
+  
+  remover(index): void {
+    this.membros.splice(index, 1);
   }
 
 }

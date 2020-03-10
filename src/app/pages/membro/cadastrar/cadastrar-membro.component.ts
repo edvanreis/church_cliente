@@ -8,6 +8,7 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { EnderecoService } from '../../../service/endereco.service';
 import { PessoaService } from '../../../service/pessoa.service';
 import { EtapaVisaoService } from '../../../service/etapa-visao.service';
+import { CargoService } from '../../../service/cargo.service';
 
 
 @Component({
@@ -22,6 +23,7 @@ export class CadastrarMembroComponent implements OnInit {
   public escolaridades: any = [];
   public contatos: any = [];
   public etapas: any = [];
+  public cargos: any = [];
   public celula: any;
   public igreja: any;
   public pessoa = {} as any;
@@ -37,7 +39,8 @@ export class CadastrarMembroComponent implements OnInit {
     private _router: Router,
     private _avRoute: ActivatedRoute,
     private _contatoService: ContatoService,
-    private _etapaVisaoService: EtapaVisaoService) { }
+    private _etapaVisaoService: EtapaVisaoService,
+    private _cargosService: CargoService) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -63,6 +66,7 @@ export class CadastrarMembroComponent implements OnInit {
       this.getContatos(item.id);
       this.getEscolaridades(item.id);
       this.getEtapas(item.id);
+      this.getCargos(item.id);
     }, error => {
       // console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -108,7 +112,15 @@ export class CadastrarMembroComponent implements OnInit {
       // this._notifierService.notify(AlertType.Error, error.errors.message);
     });
   }
-
+  getCargos(id) {
+    // console.log(id)
+    this._cargosService.obterPessoaCargo(id).pipe(take(1)).subscribe(item => {
+      this.emitirPessoaCargo(item);
+    }, error => {
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
 
 
   getEmiter(): void {
@@ -134,6 +146,9 @@ export class CadastrarMembroComponent implements OnInit {
       }
       if (item.type == 'etapas-comp') {
         this.etapas = item.data;
+      }
+      if (item.type == 'cargos-comp') {
+        this.cargos = item.data;
       }
 
     });
@@ -212,6 +227,10 @@ export class CadastrarMembroComponent implements OnInit {
       this.pessoa.etapas = this.etapas;
     }
 
+    if (this.cargos) {
+      this.pessoa.cargos = this.cargos;
+    }
+
 
   }
 
@@ -237,6 +256,10 @@ export class CadastrarMembroComponent implements OnInit {
 
   emitirEtapaVisao(item): void {
     this._emitirEventoService.emitir('edit-etapa-visao', item);
+  }
+
+  emitirPessoaCargo(item): void {
+    this._emitirEventoService.emitir('edit-cargos', item);
   }
 
 

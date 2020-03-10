@@ -22,7 +22,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   public igreja: any;
   public nomeValue: any;
   public dadosIgreja: any;
-  public endereco = {} as any
+  public enderecos = [];
   public contatos: any;
   // public myControlIgreja = new FormControl();
   public comboIgrejaSede = [];
@@ -53,7 +53,7 @@ export class CadastrarIgrejaComponent implements OnInit {
         this.dadosIgreja = item.data;
       }
       if (item.type == 'endereco') {
-        this.endereco = item.data;
+        this.enderecos = item.data;
       }
       if (item.type == 'contatos') {
         this.contatos = item.data;
@@ -68,8 +68,8 @@ export class CadastrarIgrejaComponent implements OnInit {
     if(this.dadosSede){
       this._emitirEventoService.emitir("dadosSede",this.dadosSede);
     }  
-    if(this.endereco){
-      this._emitirEventoService.emitir("endereco",this.endereco);
+    if(this.enderecos){
+      this._emitirEventoService.emitir("endereco",this.enderecos);
     } 
   }
 
@@ -79,10 +79,10 @@ export class CadastrarIgrejaComponent implements OnInit {
     this.igreja.nome = this.dadosIgreja.nome;
     this.igreja.cnpj = this.dadosIgreja.cnpj;
     this.igreja.telefone = this.dadosIgreja.telefone;
-    this.igreja.pastor = this.dadosIgreja.pastor;
-    this.igreja.endereco = this.endereco;
+    this.igreja.pessoas = this.dadosIgreja.pessoas;
+    this.igreja.enderecos = this.enderecos;
     this.igreja.contatos = this.contatos;
-    // console.log(this.igreja);
+    console.log(this.igreja);
   }
 
   getParams() {
@@ -140,11 +140,6 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   onSelectionChangedIgreja($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
-    if (option.pastor) {
-      this.nomePastorValue = option.pastor.nomeCompleto;
-    } else {
-      this.nomePastorValue = null;
-    }
   }
 
   clearFieldsSede() {
@@ -153,8 +148,6 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   clearFieldFilial() {
     this.setEmiter(true);
-    this.nomePastorValue = "";
-    this.nomeValue = "";
   }
 
   voltar() {
@@ -171,7 +164,6 @@ export class CadastrarIgrejaComponent implements OnInit {
     this._igrejaService.getSede(id).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.carregarDadosSede(item);
-      this.carregarEndereco(item.endereco);
       this.setEmiter(false);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -181,21 +173,10 @@ export class CadastrarIgrejaComponent implements OnInit {
   carregarDadosSede(item) {
     this.dadosSede.nome = item.nome
     this.dadosSede.cnpj = item.cnpj;
-    this.dadosSede.pastor = item.pastor;
+    this.dadosSede.membros = item.membros;
   }
 
-  carregarEndereco(item) {
-    // console.log(item);
-    this.endereco = new Endereco();
-    this.endereco.cep = item.cep;
-    this.endereco.numero = item.numero;
-    this.endereco.complemento = item.complemento;
-    this.endereco.bairro = item.bairro;
-    this.endereco.logradouro = item.logradouro;
-    this.endereco.localidade = item.localidade;
-    this.endereco.uf = item.uf;
-  }
-
+ 
 
 
 

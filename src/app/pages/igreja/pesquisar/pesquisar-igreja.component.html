@@ -22,8 +22,7 @@
             <th>SEDE</th>
             <th>Nome</th>
             <th>CNPJ</th>
-            <th>Pastor</th>
-            <th>QTD Membros</th>
+            <th>Situacão</th>
             <th>CEP</th>
             <th>Bairro</th>
             <th>logradouro</th>
@@ -36,8 +35,7 @@
               <td><span style="color:white"><i class="material-icons">checked</i></span></td>
               <td>{{i.nome}}</td>
               <td>{{i.cnpj}}</td>
-              <td>{{i.pastor.nomeCompleto}}</td>
-              <td></td>
+              <td>{{i.statusDesc}}</td>
               <td>{{i.endereco.cep}}</td>
               <td>{{i.endereco.bairro}}</td>
               <td>{{i.endereco.logradouro}}</td>
@@ -54,8 +52,7 @@
               <td></td>
               <td>{{f.nome}}</td>
               <td>{{f.cnpj}}</td>
-              <td>{{f.pastor.nomeCompleto}}</td>
-              <td></td>
+              <td>{{f.statusDesc}}</td>
               <td>{{f.endereco.cep}}</td>
               <td>{{f.endereco.bairro}}</td>
               <td>{{f.endereco.logradouro}}</td>

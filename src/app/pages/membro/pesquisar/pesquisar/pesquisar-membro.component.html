@@ -92,7 +92,7 @@
                   <span style="cursor: pointer;" (click)="editar(element.id)" matTooltip="Editar">
                     <i class="material-icons">create</i>
                   </span>
-                  <span  *ngIf="!element.cartaRecomendacao" style="cursor: pointer;color: darkblue;" (click)="enviarCarta(element.id)" matTooltip="Editar">
+                  <span  *ngIf="element.cartaRecomendacao" style="cursor: pointer;color: darkblue;" (click)="enviarCarta(element.id)" matTooltip="Editar">
                     <i class="material-icons">vertical_align_top</i>
                   </span>
                   <span style="cursor: pointer;color: grey;" (click)="inativar(element.id)" matTooltip="Inativar">
