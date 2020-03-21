@@ -7,7 +7,7 @@
     <div class="cdk-container">
       <form form [formGroup]="form">
         <div fxLayout="row"  fxLayoutGap="20px">
-          <mat-form-field class="example-full-width">
+          <mat-form-field class="full-width-field">
             <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" required>
             <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
@@ -28,22 +28,11 @@
             <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
           </mat-form-field>  
         </div>
-        <!-- <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-          <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Data de abertura" formControlName="dataAbertura"  (dateChange)="changeData($event)">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-            <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
-          </mat-form-field>  
-        </div> -->
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
          <app-igrejas></app-igrejas>
-          <mat-form-field class="example-full-width">
-            <input matInput placeholder="Pastor" formControlName="nomePastor" >
-          </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="100px">
-          <mat-form-field class="example-full-width">
+          <mat-form-field class="full-width-field">
             <textarea matInput placeholder="Descrição" formControlName="descricao"></textarea>
             <mat-error *ngIf="!form.controls.descricao.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
@@ -51,16 +40,6 @@
       </form>
       <div>
         <app-membro [label]="label"></app-membro>
-        <!-- <mat-form-field class="example-full-width">
-          <input type="text" placeholder="Membro" aria-label="Number" matInput [formControl]="myControlMembro"
-            [matAutocomplete]="auto" [(ngModel)]="nomeValue" required>
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
-              (onSelectionChange)="onSelectionChangedMembro($event,option)">
-              {{option.nomeCompleto}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field> -->
         <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
           <i class="material-icons">add</i>adicionar</button>
       </div>

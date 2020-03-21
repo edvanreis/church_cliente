@@ -40,7 +40,7 @@ const routes: Routes = [
     MatSelectModule,
     MatOptionModule,
     RedesComponenteModule,
-    MatAutocompleteModule,
+    MembroComponenteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

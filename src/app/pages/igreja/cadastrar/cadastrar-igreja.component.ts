@@ -30,7 +30,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   public myControlIgrejaSede = new FormControl();
   public nomePastorValue:string;
   public id:any;
-  public dadosSede = {} as any;
+  public dados = {} as any;
   public tipoEdicao:any;
   public sizeLimitOne:boolean = true;
   constructor(private _emitirEventoService: EmitirEventoService, 
@@ -65,11 +65,14 @@ export class CadastrarIgrejaComponent implements OnInit {
     if(save){
       this._emitirEventoService.emitir("save-ok", "save-ok");
     }
-    if(this.dadosSede){
-      this._emitirEventoService.emitir("dadosSede",this.dadosSede);
+    if(this.dados){
+      this._emitirEventoService.emitir("dadosIgreja",this.dados);
     }  
     if(this.enderecos){
-      this._emitirEventoService.emitir("endereco",this.enderecos);
+      this._emitirEventoService.emitir("edit-endereco",this.enderecos);
+    } 
+    if(this.contatos){
+      this._emitirEventoService.emitir("edit-contatos",this.contatos);
     } 
   }
 
@@ -80,15 +83,32 @@ export class CadastrarIgrejaComponent implements OnInit {
     this.igreja.cnpj = this.dadosIgreja.cnpj;
     this.igreja.telefone = this.dadosIgreja.telefone;
     this.igreja.pessoas = this.dadosIgreja.pessoas;
+    this.igreja.visaoCelular = this.dadosIgreja.visaoCelular;
     this.igreja.enderecos = this.enderecos;
     this.igreja.contatos = this.contatos;
+
+    if(this.id){
+      this.igreja.id = this.id;
+    }
+    if(this.igrejaSelecionada){
+      this.igreja.sede = this.igrejaSelecionada; 
+    }
+
     console.log(this.igreja);
   }
 
   getParams() {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
-      this.getSede(this.id);
+      this.tipoEdicao = this._avRoute.snapshot.queryParamMap.get("tipo");
+      if(this.tipoEdicao){
+          if(this.tipoEdicao=='sede'){
+            this.getSede(this.id);
+          }else{
+            this.getFilial(this.id);
+          }
+      }
+      
     }
     if (this._avRoute.snapshot.queryParamMap.get("tipo")) {
       this.tipoEdicao = this._avRoute.snapshot.queryParamMap.get("tipo");
@@ -96,6 +116,15 @@ export class CadastrarIgrejaComponent implements OnInit {
   }
   salvarSede() {
     this.getDadosIgreja();
+    if(this.id){
+      this.updateSede();
+    }else{
+      this.saveSede();
+    }
+  }
+
+  saveSede(){
+    
     // console.log(this.igreja);
     this._igrejaService.saveSede(this.igreja).pipe(take(1)).subscribe(item => {
       this.clearFieldsSede();
@@ -107,6 +136,15 @@ export class CadastrarIgrejaComponent implements OnInit {
   }
 
   salvarFilial() {
+    this.getDadosIgreja();
+    if(this.id){
+      this.updateFilial();
+    }else{
+      this.saveFilial();
+    }
+  }
+
+  saveFilial() {
     this.getDadosIgreja();
     this.igreja.sede = {id:this.igrejaSelecionada.id};
     // console.log(this.igreja);
@@ -162,19 +200,53 @@ export class CadastrarIgrejaComponent implements OnInit {
   
   getSede(id) {
     this._igrejaService.getSede(id).pipe(take(1)).subscribe(item => {
-      // console.log(item);
-      this.carregarDadosSede(item);
+      console.log(item);
+      this.carregarDados(item);
       this.setEmiter(false);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });
   }
 
-  carregarDadosSede(item) {
-    this.dadosSede.nome = item.nome
-    this.dadosSede.cnpj = item.cnpj;
-    this.dadosSede.membros = item.membros;
+  getFilial(id) {
+    this._igrejaService.getFilial(id).pipe(take(1)).subscribe(item => {
+      console.log(item);
+      this.carregarDados(item);
+      this.setEmiter(false);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
   }
+
+  carregarDados(item) {
+    this.dados.nome = item.nome
+    this.dados.cnpj = item.cnpj;
+    this.dados.pessoas = item.pessoas;
+    this.dados.visaoCelular = item.visaoCelular;
+    this.enderecos = item.enderecos;
+    this.contatos = item.contatos;
+    if(item.sede){
+      this.nomeValue = item.sede.nome;
+      this.igrejaSelecionada = item.sede;
+    }
+  }
+
+  updateSede(){
+      this._igrejaService.updateSede(this.igreja).pipe(take(1)).subscribe(item => {
+        this._notifierService.notify(AlertType.Success, item.value);
+      }, error => {
+        this._notifierService.notify(AlertType.Error, error.message);
+      });
+  }
+
+  updateFilial(){
+    this._igrejaService.updateFilial(this.igreja).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+}
+
 
  
 

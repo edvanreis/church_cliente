@@ -49,7 +49,6 @@ export class CadastrarRedeComponent implements OnInit {
       'dataAbertura': new FormControl(''),
       'descricao': new FormControl(''),
       'redes': new FormControl(''),
-      'nomePastor': new FormControl({value:'', disabled: true})
     });
   }
 
@@ -68,8 +67,6 @@ export class CadastrarRedeComponent implements OnInit {
       }
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
-        // console.log(item.data)
-        this.form.controls['nomePastor'].patchValue(this.igrejaSelecionada.pastor.nomeCompleto);
       }
     });
   }
@@ -90,7 +87,7 @@ export class CadastrarRedeComponent implements OnInit {
 
 
   salvar() {
-    // console.log(this.obj());
+    console.log(this.obj());
     this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
       this.clean();
       this._notifierService.notify(AlertType.Success, item.value);
@@ -103,7 +100,7 @@ export class CadastrarRedeComponent implements OnInit {
     return {
       nome: this.form.controls['nome'].value,
       igreja: this.igrejaSelecionada,
-      lideres: this.membros,
+      pessoas: this.membros,
       dataAbertura: this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy'),
       rede: this.form.controls['redes'].value,
       descricao: this.form.controls['descricao'].value

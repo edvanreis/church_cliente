@@ -31,21 +31,12 @@ export class CadastrarCelulaComponent implements OnInit {
   public pastor: string;
   public observacao: string;
   public endereco:any;
-  public liderSelecionado: any;
-  public anfitriaoSelecionado: any;
-  public dicipuladorSelecionado: any;
-  public coLiderSelecionado: any;
-  public dicipuladores = [];
-  public lideres = [];
-  public coLideres = [];
-  public anfitroes = [];
-  public comboMembro = [];
-  public filteredMembro: Observable<string[]>;
-  public discipuladorValue: string;
-  public liderValue: string;
-  public coLiderValue: string;
-  public anfitriaoValue: string;
-  public myControlMembro = new FormControl();
+  public membro: any;
+  public membros: any = [];
+  public comboTipoPessoa = [];
+  public label: string = "Membro";
+  public tipoPessoa:any;
+
 
 
   constructor(private _service: CelulaService, 
@@ -60,8 +51,8 @@ export class CadastrarCelulaComponent implements OnInit {
     this.getComboSemana();
     this.getComboTurno();
     this.carregarTipoCelula();
+    this.carregarTipoPessoaCelula();
     this.getEmiter();
-    this.carregarMembro();
   }
 
   getEmiter(): void {
@@ -77,6 +68,9 @@ export class CadastrarCelulaComponent implements OnInit {
       }
       if (item.type == 'endereco') {
         this.endereco = item.data;
+      }
+      if (item.type == 'membro-comp') {
+        this.membro = item.data;
       }
     });
   }
@@ -114,6 +108,14 @@ export class CadastrarCelulaComponent implements OnInit {
     });
   }
 
+  
+  carregarTipoPessoaCelula() {
+    this._service.getTipoPessoaCelula().subscribe(item => {
+      this.comboTipoPessoa = item;
+      // console.log(item);
+    });
+  }
+
   salvar() {
     console.log(this.obj());
     this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
@@ -136,109 +138,34 @@ export class CadastrarCelulaComponent implements OnInit {
       rede:this.redeSelecionada,
       endereco:this.endereco,
       observacao:this.observacao,
-      discipuladores:this.dicipuladores,
-      lideres:this.lideres,
-      anfitrioes:this.anfitroes,
-      coLideres:this.coLideres
+      pessoas:this.membros
     }
   }
-
-  adicionarLider() {
-    if (!this.liderSelecionado) {
-      this._notifierService.notify(AlertType.Error, "Erro:campo Lider em branco!");
-      return false;
-    }
-    this.lideres.push(this.liderSelecionado);
-    this.liderValue = "";
-  }
-
-  adicionarDiscipulador() {
-    if (!this.dicipuladorSelecionado) {
-      this._notifierService.notify(AlertType.Error, "Erro:campo Discipular em branco!");
-      return false;
-    }
-    this.dicipuladores.push(this.dicipuladorSelecionado);
-    this.discipuladorValue = "";
-  }
-
-  adicionarColider() {
-    if (!this.coLiderSelecionado) {
-      this._notifierService.notify(AlertType.Error, "Erro:campo Co Lider em branco!");
-      return false;
-    }
-    this.coLideres.push(this.coLiderSelecionado);
-    this.coLiderValue = "";
-  }
-
-  adicionarAnfitriao() {
-    if (!this.anfitriaoSelecionado) {
-      this._notifierService.notify(AlertType.Error, "Erro:camp  Anfitrião em branco!");
-      return false;
-    }
-    this.anfitroes.push(this.anfitriaoSelecionado);
-    this.anfitriaoValue = "";
-  }
-
-  removerDiscipulador(index): void {
-    this.dicipuladores.splice(index, 1);
-  }
-
-  removerLider(index): void {
-    this.lideres.splice(index, 1);
-  }
-
-  removerColider(index): void {
-    this.coLideres.splice(index, 1);
-  }
-
-  removerAnfitriao(index): void {
-    this.anfitroes.splice(index, 1);
-  }
-
-
-
 
   setEmiter(): void {
       this._emitirEventoService.emitir("save-ok", "");
   }
 
-  
-  carregarMembro() {
-    this._membroService.getList().pipe(take(1)).subscribe(item => {
-      this.comboMembro = item;
-      this.filteredMembro = this.myControlMembro.valueChanges
-        .pipe(
-          startWith(''),
-          map(value => this._filter(value, this.comboMembro))
-        );
-    }, error => {
-      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
-    });
-  }
-
-  private _filter(value: string, lista): string[] {
-    const filterValue = value.toLowerCase();
-    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
-  }
-
-  onSelectionChangedLider($event: MatAutocompleteSelectedEvent, option) {
-    this.liderSelecionado = option;
-  }
-
-
-  onSelectionChangedDiscipulador($event: MatAutocompleteSelectedEvent, option) {
-    this.dicipuladorSelecionado = option;
-  }
-
-  onSelectionChangedCoLider($event: MatAutocompleteSelectedEvent, option) {
-    this.coLiderSelecionado = option;
-  }
-
-  onSelectionChangedAnfitriao($event: MatAutocompleteSelectedEvent, option) {
-    this.anfitriaoSelecionado = option;
-  }
   transformDate(hora) {
     return this.datePipe.transform(new Date(), 'dd/MM/yyyy '+hora);
   }
+
+  adicionar() {
+    this.getEmiter();
+    if (!this.membro) {
+      this._notifierService.notify(AlertType.Error, "Erro:campo membro em branco!");
+      return false;
+    }
+    this.membro.tipoPessoa = this.tipoPessoa.tipoPessoa;
+    this.membro.decTipoPesspa = this.tipoPessoa.decTipoPesspa;
+    this.membros.push(this.membro);
+  }
+
+
+  remover(index): void {
+    this.membros.splice(index, 1);
+  }
+
+
 
 }

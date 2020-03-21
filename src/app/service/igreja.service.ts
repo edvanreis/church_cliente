@@ -38,4 +38,24 @@ export class IgrejaService {
     return this.http.get(this._url+id+"/obterSede")
       .pipe(map((response: any) => response))
   }
+
+  getFilial(id) {
+    return this.http.get(this._url+id+"/obterFilial")
+      .pipe(map((response: any) => response))
+  }
+
+  updateSede(igreja) {
+    return this.http.put(this._url+"updateSede", igreja)
+      .pipe(map((response: any) => response))
+  }
+
+  updateFilial(igreja) {
+    return this.http.put(this._url+"updateFilial", igreja)
+      .pipe(map((response: any) => response))
+  }
+
+  inativar(id) {
+    return this.http.put(this._url+"inativar", id)
+      .pipe(map((response: any) => response))
+  }
 }

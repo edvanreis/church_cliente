@@ -43,7 +43,7 @@
               <td>{{i.endereco.estado}}</td>
               <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(i.id,'sede')"><i
                     class="material-icons">create</i></span>
-                <span title="Excluir" style="cursor: pointer;color:white" (click)="remover(i.id)"><i
+                <span title="Excluir" style="cursor: pointer;color:white" (click)="inativar(i.id)"><i
                     class="material-icons">delete_forever</i></span>
               </td>
             </tr>
@@ -60,7 +60,7 @@
               <td>{{f.endereco.estado}}</td>
               <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(f.id,'filial')"><i
                     class="material-icons">create</i></span>
-                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="remover(i.id)"><i
+                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="inativar(i.id)"><i
                     class="material-icons">delete_forever</i></span>
               </td>
             </tr>

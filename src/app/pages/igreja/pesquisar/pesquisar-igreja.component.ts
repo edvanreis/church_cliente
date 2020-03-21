@@ -7,6 +7,9 @@ import { Router } from '@angular/router';
 import { map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
+import { MatDialog } from '@angular/material';
+import { DialogInativarIgrejaComponent } from '../../dialog/dialog-inativar-igreja/dialog-inativar-igreja.component';
+
 
 
 @Component({
@@ -22,7 +25,8 @@ export class PesquisarIgrejaComponent implements OnInit {
 
   constructor(private _igrejaService: IgrejaService, 
               private _notifierService: NotifierService, 
-              private _router: Router) { }
+              private _router: Router,
+              private _dialog: MatDialog) { }
 
   ngOnInit() {
     this.lista();
@@ -70,6 +74,31 @@ export class PesquisarIgrejaComponent implements OnInit {
       },
       skipLocationChange: true
     });
+  }
+  
+  // inativar(id) {
+  //   console.log(id)
+  //   const dialogRef = this._dialog.open(DialogInativarIgrejaComponent, {
+  //     width: '600px',
+  //     data: {
+  //       id: id,
+  //     }
+  //   });
+  // }
+
+  inativar(id: any) {
+
+    if (window.confirm('Tem certeza que você quer inativar esta igreja?')) {
+      this._igrejaService.inativar(id).subscribe(
+        (data) => {
+          this.lista();
+          this._notifierService.notify(AlertType.Success, "Igreja Inativada com sucesso!");
+        },
+        error => {
+          this._notifierService.notify(AlertType.Error, "Erro ao Inativar Igreja!");
+        }
+      )
+    }
   }
 
 }

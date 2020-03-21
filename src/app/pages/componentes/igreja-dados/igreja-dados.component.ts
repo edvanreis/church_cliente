@@ -83,8 +83,8 @@ export class IgrejaDadosComponent implements OnInit {
         this.membro = null;
         this.nomeValue = "";
       }
-      if (item.type == 'dadosSede') {
-        this.membro = item.data.pastor;
+      if (item.type == 'dadosIgreja') {
+        this.membros = item.data.pessoas;
         this.form.controls['nome'].patchValue(item.data.nome);
         this.form.controls['cnpj'].patchValue(item.data.cnpj);
         this.form.controls['visaoCelular'].patchValue(item.data.visaoCelular);

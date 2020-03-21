@@ -6,7 +6,7 @@
     </mat-toolbar>
     <div class="cdk-container">
       <mat-tab-group>
-        <mat-tab label="Sede">
+        <mat-tab label="Sede" *ngIf="tipoEdicao=='sede' || !id">
           <br />
           <app-igreja-dados></app-igreja-dados>
           <br />
@@ -34,7 +34,7 @@
               <i class="material-icons">reply</i>Voltar</button>
           </div>
         </mat-tab>
-        <mat-tab label="Filial" *ngIf="tipoEdicao!='sede'">
+        <mat-tab label="Filial" *ngIf="tipoEdicao=='filial' || !id">
           <app-igreja-dados [filial]="true"></app-igreja-dados>
           <br/>
           <br/>

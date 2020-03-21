@@ -7,6 +7,7 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { PessoaService } from '../../../service/pessoa.service';
 
 @Component({
   selector: 'app-membro',
@@ -22,7 +23,9 @@ export class MembroComponent implements OnInit {
   @Input('label') label;
   public membro: any;
 
-  constructor(private _membroService: MembroService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _service: PessoaService, 
+              private _notifierService: NotifierService, 
+              private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this.carregarMembro();
@@ -30,7 +33,7 @@ export class MembroComponent implements OnInit {
   }
 
   carregarMembro() {
-    this._membroService.getList().pipe(take(1)).subscribe(item => {
+    this._service.getListMembros().pipe(take(1)).subscribe(item => {
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges
         .pipe(
