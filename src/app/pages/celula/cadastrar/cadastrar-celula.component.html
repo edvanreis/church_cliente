@@ -53,12 +53,9 @@
         </div>
       </form>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-        <app-igrejas></app-igrejas>
-      </div>
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <app-redes></app-redes>
       </div>
-      <app-endereco></app-endereco>
+      <app-endereco [sizeLimitOne]="sizeLimitOne"></app-endereco>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <mat-form-field class="full-width-field">
           <textarea matInput placeholder="Nota/Observação" [(ngModel)]="observacao"></textarea>
@@ -85,12 +82,14 @@
         <table>
           <thead class="text-primary">
             <th>Nome</th> 
-            <th>Tipo</th>       
+            <th>cpf</th>
+            <th>Tipo</th>          
             <th>Remover</th>
           </thead>
           <tbody>
             <tr *ngFor="let m of membros">
               <td>{{ m.nomeCompleto}}</td>
+              <td>{{ m.cpf}}</td>
               <td>{{ m.decTipoPesspa}}</td>
               <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
                     class="material-icons">delete</i></span></td>
@@ -98,10 +97,6 @@
           </tbody>
         </table>
       </div>
-
-
-
-
       <br />
       <br />
       <div>

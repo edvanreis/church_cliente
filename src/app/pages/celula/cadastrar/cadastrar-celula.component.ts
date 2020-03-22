@@ -18,17 +18,11 @@ import { MatAutocompleteSelectedEvent } from '@angular/material';
 export class CadastrarCelulaComponent implements OnInit {
 
   public form: FormGroup;
-  public lider: string = "Lider";
-  public anfitriao: string = "Anfitrião";
-  public supervisor: string = "Supervisor";
-  public coLider: string = "Co-Lider";
-  public igrejaSelecionada: any;
   public redeSelecionada: any;
   public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/]
   public comboSemana = [];
   public comboTurno = [];
   public comboTipoCelula = [];
-  public pastor: string;
   public observacao: string;
   public endereco:any;
   public membro: any;
@@ -36,6 +30,7 @@ export class CadastrarCelulaComponent implements OnInit {
   public comboTipoPessoa = [];
   public label: string = "Membro";
   public tipoPessoa:any;
+  public sizeLimitOne:boolean = true;
 
 
 
@@ -43,7 +38,6 @@ export class CadastrarCelulaComponent implements OnInit {
               private _notifierService: NotifierService, 
               private _emitirEventoService: EmitirEventoService,
               private _datePipe: DatePipe,
-              private _membroService: MembroService,
               private datePipe: DatePipe) { }
 
   ngOnInit() {
@@ -58,11 +52,6 @@ export class CadastrarCelulaComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       // console.log(item.data);
-      
-      if (item.type == 'igreja-comp') {
-        this.igrejaSelecionada = item.data;
-        this.pastor = this.igrejaSelecionada.pastor.nomeCompleto;
-      }
       if (item.type == 'rede-comp') {
         this.redeSelecionada = item.data;
       }
@@ -133,10 +122,9 @@ export class CadastrarCelulaComponent implements OnInit {
       horario:this.form.controls['horario'].value,
       dia: this.form.controls['diaSemana'].value,
       turno: this.form.controls['turno'].value,
-      tipo: this.form.controls['tipo'].value,
-      igreja:this.igrejaSelecionada,
-      rede:this.redeSelecionada,
-      endereco:this.endereco,
+      tipoCelula: this.form.controls['tipo'].value,
+      idRede:this.redeSelecionada.id,
+      enderecos:this.endereco,
       observacao:this.observacao,
       pessoas:this.membros
     }
@@ -156,7 +144,11 @@ export class CadastrarCelulaComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Erro:campo membro em branco!");
       return false;
     }
-    this.membro.tipoPessoa = this.tipoPessoa.tipoPessoa;
+    if (!this.tipoPessoa) {
+      this._notifierService.notify(AlertType.Error, "Erro: escolha um tipo membro da célula!");
+      return false;
+    }
+    this.membro.tipo = this.tipoPessoa.tipoPessoa;
     this.membro.decTipoPesspa = this.tipoPessoa.decTipoPesspa;
     this.membros.push(this.membro);
   }
