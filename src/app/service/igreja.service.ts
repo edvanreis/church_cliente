@@ -58,4 +58,9 @@ export class IgrejaService {
     return this.http.put(this._url+"inativar", id)
       .pipe(map((response: any) => response))
   }
+
+  getIgreja(id) {
+    return this.http.get(this._url+id+'/obterIgreja')
+      .pipe(map((response: any) => response))
+  }
 }

@@ -63,15 +63,15 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   setEmiter(save:boolean): void {
     if(save){
-      this._emitirEventoService.emitir("save-ok", "save-ok");
+      this._emitirEventoService.emitir("clear", "");
     }
-    if(this.dados){
+    if(this.dados && !save){
       this._emitirEventoService.emitir("dadosIgreja",this.dados);
     }  
-    if(this.enderecos){
+    if(this.enderecos  && !save ){
       this._emitirEventoService.emitir("edit-endereco",this.enderecos);
     } 
-    if(this.contatos){
+    if(this.contatos  && !save ){
       this._emitirEventoService.emitir("edit-contatos",this.contatos);
     } 
   }
@@ -125,7 +125,7 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   saveSede(){
     
-    // console.log(this.igreja);
+    console.log(this.igreja);
     this._igrejaService.saveSede(this.igreja).pipe(take(1)).subscribe(item => {
       this.clearFieldsSede();
       this.carregarComboIgrejaSede();
@@ -186,6 +186,8 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   clearFieldFilial() {
     this.setEmiter(true);
+    this.igrejaSelecionada = "";
+    this.nomeValue = "";
   }
 
   voltar() {

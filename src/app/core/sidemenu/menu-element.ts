@@ -83,7 +83,7 @@ export const menuElement = [
         'sub': [
             {
                 'name': 'Cadastrar',
-                'link': 'rede/cadastrar',
+                'link': 'rede/pesquisar',
                 'icon': 'add',
                 'chip': false,
                 'open': false,

@@ -36,7 +36,7 @@ export class SidemenuComponent implements OnInit {
         ]
       },
       {'name': 'Redes','icon': 'device_hub','link': false,'open': false,'visible': true  ,'sub': [
-            {'name': 'Cadastrar','link': 'rede/cadastrar','icon': 'add','chip': false,'open': false,'visible': true  ,},
+            {'name': 'Cadastrar','link': 'rede/pesquisar','icon': 'add','chip': false,'open': false,'visible': true  ,},
         ]
       },
       {'name': 'Células','icon': 'group','link': false,'open': false,'visible': true  ,'sub': [

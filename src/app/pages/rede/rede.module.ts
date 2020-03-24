@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatDatepickerModule, MatInputModule, MatOptionModule, MatSelectModule, MatToolbarModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatDatepickerModule, MatInputModule, MatOptionModule, MatSelectModule, MatToolbarModule, MatTableModule, MatPaginator, MatPaginatorModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { InterceptorService } from '../../service/interceptor.service';
 import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
@@ -32,6 +32,8 @@ const routes: Routes = [
     MatAutocompleteModule,
     MembroComponenteModule,
     IgrejasCompenenteModule,
+    MatTableModule,
+    MatPaginatorModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

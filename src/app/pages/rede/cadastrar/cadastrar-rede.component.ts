@@ -8,6 +8,9 @@ import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { IgrejaService } from '../../../service/igreja.service';
 import { RedeService } from '../../../service/rede.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { PermissoesService } from '../../../service/permissoes.service';
+import { PessoaService } from '../../../service/pessoa.service';
 
 @Component({
   selector: 'app-cadastrar-rede',
@@ -27,20 +30,25 @@ export class CadastrarRedeComponent implements OnInit {
   public membros: any = [];
   public igrejaSelecionada: any;
   public rede = {} as any;
-  public label: string = "Membro";
+  public label: string = "Lideres";
   public nameIgreja;
+  public id;
 
 
   constructor(private _service: RedeService,
     private _notifierService: NotifierService,
-    private _igrejaService: IgrejaService,
     private _emitirEventoService: EmitirEventoService,
-    private _datePipe: DatePipe) { }
+    private _datePipe: DatePipe,
+    private _avRoute: ActivatedRoute,
+    private _router: Router,
+    private _igejaService:IgrejaService,
+    private _pessoaService:PessoaService) { }
 
   ngOnInit() {
     this._buildForm();
     this.getComboRedes();
     this.getEmiter();
+    this.getParams();
   }
 
   private _buildForm(): void {
@@ -77,7 +85,7 @@ export class CadastrarRedeComponent implements OnInit {
       return false;
     }
     this.membros.push(this.membro);
-    this.setEmiter(false);
+    this.setEmiter();
   }
 
 
@@ -90,6 +98,7 @@ export class CadastrarRedeComponent implements OnInit {
     console.log(this.obj());
     this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
       this.clean();
+      this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -107,12 +116,8 @@ export class CadastrarRedeComponent implements OnInit {
     }
   }
 
-  setEmiter(save): void {
-    if (save) {
-      this._emitirEventoService.emitir("save-ok", "");
-    } else {
-      this._emitirEventoService.emitir("rede", "");
-    }
+  setEmiter(): void {
+      this._emitirEventoService.emitir("clear", "");   
   }
 
   clean() {
@@ -120,14 +125,56 @@ export class CadastrarRedeComponent implements OnInit {
     this.form.controls['redes'].patchValue('');
     this.form.controls['descricao'].patchValue('');
     this.form.controls['dataAbertura'].patchValue('');
-    this.form.controls['nomePastor'].patchValue('');
-    this.igrejaSelecionada = [];
-    this.nameIgreja = '';
+    this.igrejaSelecionada = "";
     this.membros = [];
-    this.setEmiter(true);
+    this.setEmiter();
 
   }
 
+  getParams() {
+    if (this._avRoute.snapshot.queryParamMap.get("id")) {
+      this.id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.getRede(this.id);
+    }
+  }
+
+  getRede(id) {
+    this._service.getRede(id).pipe(take(1)).subscribe(item => {
+      console.log(item)
+      this.form.controls['nome'].patchValue(item.nome);
+      this.form.controls['descricao'].patchValue(item.descricao);
+      this.form.controls['redes'].patchValue(item.rede);
+      this.getIgreja(item.idIgreja)
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+  
+  getIgreja(id) {
+    this._igejaService.getIgreja(id).pipe(take(1)).subscribe(item => {
+    this.igrejaSelecionada = item;
+    this.emitirIgreja(item);
+    this.getPessoas(item.id);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+  voltar() {
+    this._router.navigate(['/auth/rede/pesquisar']);
+  }
+
+  
+  emitirIgreja(item): void {
+    this._emitirEventoService.emitir('edit-igreja', item);
+  }
+
+  getPessoas(id) {
+    this._pessoaService.pessoaRede(id).pipe(take(1)).subscribe(item => {
+    this.membros = item;
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
 
 
 }

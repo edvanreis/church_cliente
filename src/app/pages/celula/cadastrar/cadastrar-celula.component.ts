@@ -108,7 +108,7 @@ export class CadastrarCelulaComponent implements OnInit {
   salvar() {
     console.log(this.obj());
     this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
-      this.setEmiter();
+      this.clear();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -130,10 +130,6 @@ export class CadastrarCelulaComponent implements OnInit {
     }
   }
 
-  setEmiter(): void {
-      this._emitirEventoService.emitir("save-ok", "");
-  }
-
   transformDate(hora) {
     return this.datePipe.transform(new Date(), 'dd/MM/yyyy '+hora);
   }
@@ -150,12 +146,21 @@ export class CadastrarCelulaComponent implements OnInit {
     }
     this.membro.tipo = this.tipoPessoa.tipoPessoa;
     this.membro.decTipoPesspa = this.tipoPessoa.decTipoPesspa;
+    this.tipoPessoa = null;  
     this.membros.push(this.membro);
   }
 
 
   remover(index): void {
     this.membros.splice(index, 1);
+  }
+
+  clear(){
+    this.form.reset();
+    this._emitirEventoService.emitir("clear", "");
+    this.membros = [];
+    this.observacao = null;
+
   }
 
 

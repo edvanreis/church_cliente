@@ -77,5 +77,11 @@ export class PessoaService {
   }
 
   
+  pessoaRede(id) {
+    return this.http.get(this._url + id + "/pessoaRede")
+      .pipe(tap((response: any) => response));
+  }
+
+  
 
 }

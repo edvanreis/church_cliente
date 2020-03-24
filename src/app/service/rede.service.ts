@@ -28,6 +28,16 @@ export class RedeService {
       .pipe(map((response: any) => response))
   }
 
+  getRede(id) {
+    return this.http.get(this._url+id+'/obterRede')
+      .pipe(map((response: any) => response))
+  }
+    
+  // getList() {
+  //   return this.http.get(this._url)
+  //     .pipe(map((response: any) => response))
+  // }
+
   
 
 }
