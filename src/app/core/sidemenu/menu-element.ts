@@ -82,9 +82,9 @@ export const menuElement = [
         'visible': false,
         'sub': [
             {
-                'name': 'Cadastrar',
+                'name': 'Pesquisar',
                 'link': 'rede/pesquisar',
-                'icon': 'add',
+                'icon': 'search',
                 'chip': false,
                 'open': false,
                 'visible': false,
@@ -100,7 +100,7 @@ export const menuElement = [
         'sub': [
             {
                 'name': 'Pesquisar',
-                'link': 'celula/cadastrar',
+                'link': 'celula/pesquisar',
                 'icon': 'search',
                 'chip': false,
                 'open': false,

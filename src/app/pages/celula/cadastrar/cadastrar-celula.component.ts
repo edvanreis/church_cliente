@@ -9,6 +9,7 @@ import { take, startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MembroService } from '../../../service/membro.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-celula',
@@ -38,7 +39,8 @@ export class CadastrarCelulaComponent implements OnInit {
               private _notifierService: NotifierService, 
               private _emitirEventoService: EmitirEventoService,
               private _datePipe: DatePipe,
-              private datePipe: DatePipe) { }
+              private _avRoute: ActivatedRoute,
+              private _router: Router) { }
 
   ngOnInit() {
     this._buildForm();
@@ -72,7 +74,7 @@ export class CadastrarCelulaComponent implements OnInit {
       'dataAbertura': new FormControl(''),
       'tipo': new FormControl(''),
       'perfil': new FormControl(''),
-      'horario': new FormControl('')
+      'horario': new FormControl(''),
     });
   }
 
@@ -131,7 +133,7 @@ export class CadastrarCelulaComponent implements OnInit {
   }
 
   transformDate(hora) {
-    return this.datePipe.transform(new Date(), 'dd/MM/yyyy '+hora);
+    return this._datePipe.transform(new Date(), 'dd/MM/yyyy '+hora);
   }
 
   adicionar() {
@@ -163,6 +165,8 @@ export class CadastrarCelulaComponent implements OnInit {
 
   }
 
-
+  voltar() {
+    this._router.navigate(['/auth/celula/pesquisar']);
+  }
 
 }

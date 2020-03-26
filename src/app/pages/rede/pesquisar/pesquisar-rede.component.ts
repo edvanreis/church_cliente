@@ -8,6 +8,7 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { RedeService } from '../../../service/rede.service';
 import { AlertType } from '../../../model/alert-type';
 import { take } from 'rxjs/operators';
+import { ExcelService } from '../../../service/excel.service';
 
 @Component({
   selector: 'app-pesquisar-rede',
@@ -23,12 +24,14 @@ export class PesquisarRedeComponent implements OnInit {
   public dados = new MatTableDataSource();
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
+  public redes = new Array();
 
   constructor(private _router: Router,
     private _permissoesService: RedeService,
     private _notifierService: NotifierService,
     private _dialog: MatDialog,
-    private _emitirEventoService: EmitirEventoService) { }
+    private _emitirEventoService: EmitirEventoService,
+    private _excelService: ExcelService) { }
 
     ngOnInit() {
       this.columns();
@@ -75,7 +78,7 @@ export class PesquisarRedeComponent implements OnInit {
 
     getList() {
       this._permissoesService.getList().pipe(take(1)).subscribe(item => {
-        console.log(item);
+        this.redes = item;
         this.dados = new MatTableDataSource(item);
         this.dados.sort = this.sort;
         this.dados.paginator = this.paginator;
@@ -105,4 +108,17 @@ export class PesquisarRedeComponent implements OnInit {
     //   });
     // }
 
+    
+  exportAsXLSX() {
+    let dados = [];
+    this.redes.forEach(i => {
+      dados.push({
+        "Nome": i.nome,
+        "Data Abertura": i.dataAbertura,
+        "Igreja": i.nomeIgreja,
+        "Descrição": i.descricao,
+      });
+    });
+    this._excelService.exportAsExcelFile(dados, "pesquisa");
+  }
 }

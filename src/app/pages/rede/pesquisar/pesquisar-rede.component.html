@@ -32,5 +32,9 @@
       </mat-table>
       <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
         showFirstLastButtons></mat-paginator>
-    </div>
+        <div>
+          <button mat-raised-button color="success" (click)="exportAsXLSX()"><i
+            class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
+        </div>
+      </div>
   </div>

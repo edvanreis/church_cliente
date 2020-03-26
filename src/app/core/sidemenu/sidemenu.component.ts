@@ -36,11 +36,11 @@ export class SidemenuComponent implements OnInit {
         ]
       },
       {'name': 'Redes','icon': 'device_hub','link': false,'open': false,'visible': true  ,'sub': [
-            {'name': 'Cadastrar','link': 'rede/pesquisar','icon': 'add','chip': false,'open': false,'visible': true  ,},
+            {'name': 'Pesquisar','link': 'rede/pesquisar','icon': 'search','chip': false,'open': false,'visible': true  ,},
         ]
       },
       {'name': 'Células','icon': 'group','link': false,'open': false,'visible': true  ,'sub': [
-            {'name': 'Pesquisar','link': 'celula/cadastrar','icon': 'search','chip': false,'open': false,'visible': true  ,},
+            {'name': 'Pesquisar','link': 'celula/pesquisar','icon': 'search','chip': false,'open': false,'visible': true  ,},
         ]
       },
       {'name': 'Grupo de Trabalho','icon': 'work','link': false,'open': false,'visible': true  ,'sub': [

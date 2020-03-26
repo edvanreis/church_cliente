@@ -34,7 +34,7 @@ export class CelulaService {
   }
 
   getList() {
-    return this.http.get(this._url+"obterLista")
+    return this.http.get(this._url)
       .pipe(map((response: any) => response))
   }
 
