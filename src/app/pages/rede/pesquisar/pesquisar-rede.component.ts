@@ -27,7 +27,7 @@ export class PesquisarRedeComponent implements OnInit {
   public redes = new Array();
 
   constructor(private _router: Router,
-    private _permissoesService: RedeService,
+    private _redeService: RedeService,
     private _notifierService: NotifierService,
     private _dialog: MatDialog,
     private _emitirEventoService: EmitirEventoService,
@@ -52,7 +52,7 @@ export class PesquisarRedeComponent implements OnInit {
         { id: 'nome', value: 'Nome' },
         { id: 'dataAbertura', value: 'Data Abertura' },
         { id: 'nomeIgreja', value: 'Igreja' },
-        { id: 'descricao', value: 'Descrição' },
+        { id: 'observacao', value: 'Descrição' },
         { id: 'id', value: 'Ação' }
       ];
       this.displayedColumns = this.columnNames.map(x => x.id);
@@ -77,7 +77,7 @@ export class PesquisarRedeComponent implements OnInit {
     }
 
     getList() {
-      this._permissoesService.getList().pipe(take(1)).subscribe(item => {
+      this._redeService.getList().pipe(take(1)).subscribe(item => {
         this.redes = item;
         this.dados = new MatTableDataSource(item);
         this.dados.sort = this.sort;

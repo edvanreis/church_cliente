@@ -49,10 +49,12 @@ export class PesquisarCelulaComponent implements OnInit {
 
     columns() {
       this.columnNames = [
+        { id: 'status', value: 'Status' },
         { id: 'nome', value: 'Nome' },
         { id: 'dia', value: 'Dia' },
         { id: 'turno', value: 'Turno' },
         { id: 'horario', value: 'Horário' },
+        { id: 'dataAbertura', value: 'Data Abertura' },
         { id: 'nomeRede', value: 'Rede' },
         { id: 'tipoCelula', value: 'Tipo Pessoas' },
         { id: 'cep', value: 'CEP' },
@@ -76,7 +78,7 @@ export class PesquisarCelulaComponent implements OnInit {
 
     getList() {
       this._celulaService.getList().pipe(take(1)).subscribe(item => {
-        console.log(item)
+        // console.log(item)
         this.celulas = item;
         this.dados = new MatTableDataSource(item);
         this.dados.sort = this.sort;
@@ -107,6 +109,7 @@ export class PesquisarCelulaComponent implements OnInit {
         "dia": i.dia,
         "Turno": i.turno,
         "Horário": i.horario,
+        "Data Abertura": i.dataAbertura,
         "Tipo Pessoas": i.tipoCelula,
         "CEP": i.cep,
         "Logradouro": i.logradouro,
@@ -117,5 +120,16 @@ export class PesquisarCelulaComponent implements OnInit {
       });
     });
     this._excelService.exportAsExcelFile(dados, "pesquisa");
+  }
+
+  editar(id) {
+    console.log(id)
+    this._router.navigate(['/auth/celula/cadastrar'], {
+      queryParams: {
+        janela: 'Editar',
+        id: id
+      },
+      skipLocationChange: true
+    });
   }
 }

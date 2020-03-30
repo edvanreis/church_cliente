@@ -61,6 +61,10 @@ export class RedesComponent implements OnInit {
         this.redeSelecionada = '';
         this.nomeValue = '';
       }
+      if (item.type == 'edit-rede') {
+        this.redeSelecionada = item.data;
+        this.nomeValue = item.data.nome;
+      }
 
     });
   }

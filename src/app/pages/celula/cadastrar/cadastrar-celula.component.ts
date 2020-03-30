@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
-import { NotifierService } from 'angular-notifier';
-import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { CelulaService } from '../../../service/celula.service';
 import { DatePipe } from '@angular/common';
-import { AlertType } from '../../../model/alert-type';
-import { take, startWith, map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
-import { MembroService } from '../../../service/membro.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { DateAdapter } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import { take } from 'rxjs/operators';
+import { AlertType } from '../../../model/alert-type';
+import { CelulaService } from '../../../service/celula.service';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { RedeService } from '../../../service/rede.service';
 
 @Component({
   selector: 'app-cadastrar-celula',
@@ -25,30 +24,37 @@ export class CadastrarCelulaComponent implements OnInit {
   public comboTurno = [];
   public comboTipoCelula = [];
   public observacao: string;
-  public endereco:any;
+  public endereco: any;
   public membro: any;
   public membros: any = [];
   public comboTipoPessoa = [];
   public label: string = "Membro";
-  public tipoPessoa:any;
-  public sizeLimitOne:boolean = true;
+  public tipoPessoa: any;
+  public sizeLimitOne: boolean = true;
+  public id: any;
 
 
 
-  constructor(private _service: CelulaService, 
-              private _notifierService: NotifierService, 
-              private _emitirEventoService: EmitirEventoService,
-              private _datePipe: DatePipe,
-              private _avRoute: ActivatedRoute,
-              private _router: Router) { }
+
+
+  constructor(private _service: CelulaService,
+    private _notifierService: NotifierService,
+    private _emitirEventoService: EmitirEventoService,
+    private _datePipe: DatePipe,
+    private _avRoute: ActivatedRoute,
+    private _router: Router,
+    private _redeService: RedeService,
+    private _dateAdapter: DateAdapter<Date>) { }
 
   ngOnInit() {
+    this._dateAdapter.setLocale("br");
     this._buildForm();
     this.getComboSemana();
     this.getComboTurno();
     this.carregarTipoCelula();
     this.carregarTipoPessoaCelula();
     this.getEmiter();
+    this.getParams();
   }
 
   getEmiter(): void {
@@ -99,7 +105,7 @@ export class CadastrarCelulaComponent implements OnInit {
     });
   }
 
-  
+
   carregarTipoPessoaCelula() {
     this._service.getTipoPessoaCelula().subscribe(item => {
       this.comboTipoPessoa = item;
@@ -108,32 +114,30 @@ export class CadastrarCelulaComponent implements OnInit {
   }
 
   salvar() {
-    console.log(this.obj());
-    this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
-      this.clear();
-      this._notifierService.notify(AlertType.Success, item.value);
-    }, error => {
-      this._notifierService.notify(AlertType.Error, error.message);
-    });
+    if (this.id) {
+      this.update();
+    } else {
+      this.save();
+    }
   }
 
   obj() {
     return {
       nome: this.form.controls['nome'].value,
       dataAbertura: this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy'),
-      horario:this.form.controls['horario'].value,
+      horario: this.form.controls['horario'].value,
       dia: this.form.controls['diaSemana'].value,
       turno: this.form.controls['turno'].value,
       tipoCelula: this.form.controls['tipo'].value,
-      idRede:this.redeSelecionada.id,
-      enderecos:this.endereco,
-      observacao:this.observacao,
-      pessoas:this.membros
+      idRede: this.redeSelecionada.id,
+      enderecos: this.endereco,
+      observacao: this.observacao,
+      pessoas: this.membros
     }
   }
 
   transformDate(hora) {
-    return this._datePipe.transform(new Date(), 'dd/MM/yyyy '+hora);
+    return this._datePipe.transform(new Date(), 'dd/MM/yyyy ' + hora);
   }
 
   adicionar() {
@@ -147,8 +151,8 @@ export class CadastrarCelulaComponent implements OnInit {
       return false;
     }
     this.membro.tipo = this.tipoPessoa.tipoPessoa;
-    this.membro.decTipoPesspa = this.tipoPessoa.decTipoPesspa;
-    this.tipoPessoa = null;  
+    this.membro.descTipoPesssoa = this.tipoPessoa.descTipoPesssoa;
+    this.tipoPessoa = null;
     this.membros.push(this.membro);
   }
 
@@ -157,7 +161,7 @@ export class CadastrarCelulaComponent implements OnInit {
     this.membros.splice(index, 1);
   }
 
-  clear(){
+  clear() {
     this.form.reset();
     this._emitirEventoService.emitir("clear", "");
     this.membros = [];
@@ -167,6 +171,73 @@ export class CadastrarCelulaComponent implements OnInit {
 
   voltar() {
     this._router.navigate(['/auth/celula/pesquisar']);
+  }
+
+
+  getParams() {
+    if (this._avRoute.snapshot.queryParamMap.get("id")) {
+      this.id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.getCelula(this.id);
+    }
+  }
+
+  getCelula(id) {
+    this._service.getCelula(id).pipe(take(1)).subscribe(item => {
+      // console.log(item)
+      this.form.controls['nome'].patchValue(item.nome);
+      this.form.controls['horario'].patchValue(item.horario);
+      this.form.controls['diaSemana'].patchValue(item.diasEnum);
+      this.form.controls['turno'].patchValue(item.turnoEnum);
+      this.form.controls['tipo'].patchValue(item.tipoCelulaEnum);
+      this.form.controls['dataAbertura'].patchValue(new Date(item.dataAbertutaToDate));
+      this.observacao = item.observacao;
+      this.getRede(item.rede.id)
+      this.emitirEnderecos(item.enderecos);
+      this.membros = item.pessoas;
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  getRede(id) {
+    this._redeService.getRede(id).pipe(take(1)).subscribe(item => {
+      this.redeSelecionada = item;
+      this.emitirRede(item);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  emitirRede(item): void {
+    this._emitirEventoService.emitir('edit-rede', item);
+  }
+
+  emitirEnderecos(item): void {
+    this.endereco = item;
+    this._emitirEventoService.emitir('edit-endereco', item);
+  }
+
+
+  save() {
+    console.log(this.obj());
+    this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
+      this.clear();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+
+  update() {
+    let obj = {} as any; 
+    obj = this.obj();
+    obj.id = Number.parseInt(this.id);
+    this._service.update(obj).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
   }
 
 }

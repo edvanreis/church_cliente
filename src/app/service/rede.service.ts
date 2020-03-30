@@ -32,6 +32,12 @@ export class RedeService {
     return this.http.get(this._url+id+'/obterRede')
       .pipe(map((response: any) => response))
   }
+
+  update(rede) {
+    return this.http.put(this._url,rede)
+      .pipe(map((response: any) => response))
+  }
+
     
   // getList() {
   //   return this.http.get(this._url)

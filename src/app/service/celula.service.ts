@@ -43,4 +43,14 @@ export class CelulaService {
       .pipe(tap((response: any) => response));
   }
 
+  getCelula(id) {
+    return this.http.get(this._url+id+'/obterCelula')
+      .pipe(map((response: any) => response))
+  }
+
+  update(celula) {
+    return this.http.put(this._url, celula)
+      .pipe(map((response: any) => response))
+  }
+
 }
