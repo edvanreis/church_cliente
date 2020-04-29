@@ -162,7 +162,12 @@ export class CadastrarRedeComponent implements OnInit {
     });
   }
   voltar() {
-    this._router.navigate(['/auth/rede/pesquisar']);
+    this._router.navigate(['/auth/rede/pesquisar'],{
+      queryParams: {
+        pesquisar: 'pesquisar',
+      },
+      skipLocationChange: true
+    });
   }
 
 

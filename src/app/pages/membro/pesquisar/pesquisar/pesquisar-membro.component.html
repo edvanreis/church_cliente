@@ -95,11 +95,8 @@
                   <span  *ngIf="element.cartaRecomendacao" style="cursor: pointer;color: darkblue;" (click)="enviarCarta(element.id)" matTooltip="Editar">
                     <i class="material-icons">vertical_align_top</i>
                   </span>
-                  <span style="cursor: pointer;color: grey;" (click)="inativar(element.id)" matTooltip="Inativar">
-                    <i class="material-icons">account_circle</i>
-                  </span>
-                  <span style="cursor: pointer;color:green;" (click)="reativar(element.id)" matTooltip="Reativar">
-                    <i class="material-icons">account_circle</i>
+                  <span style="cursor: pointer;color:#1d68a5"  (click)="status(element.id)" matTooltip="status">
+                    <i class="material-icons">settings</i>
                   </span>
                   <span style="cursor: pointer;" (click)="historico(element.id)" matTooltip="Historico">
                     <i class="material-icons">event_note</i>

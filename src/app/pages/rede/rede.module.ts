@@ -10,6 +10,7 @@ import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenent
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
 import { CadastrarRedeComponent } from './cadastrar/cadastrar-rede.component';
 import { PesquisarRedeComponent } from './pesquisar/pesquisar-rede.component';
+import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 
 
 
@@ -34,6 +35,7 @@ const routes: Routes = [
     IgrejasCompenenteModule,
     MatTableModule,
     MatPaginatorModule,
+    DialogAtivarInativarModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

@@ -39,11 +39,10 @@ export class RedeService {
   }
 
     
-  // getList() {
-  //   return this.http.get(this._url)
-  //     .pipe(map((response: any) => response))
-  // }
-
+  getListForStatus(status) {
+    return this.http.get(this._url+status+"/redePorStatus")
+      .pipe(map((response: any) => response))
+  }
   
 
 }

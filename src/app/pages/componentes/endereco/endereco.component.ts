@@ -141,7 +141,6 @@ export class EnderecoComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      console.log('teste')
       if (item.type == 'clear') {
         this.form.reset();
         this.enderecos = [];

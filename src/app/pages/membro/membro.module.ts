@@ -20,10 +20,8 @@ import { ContatosModule } from '../componentes/contatos/contatos.module';
 import { EtapaVisaoModule } from '../componentes/etapa-visao/etapa-visao.module';
 import { DialogEnviarCartaModule } from '../dialog/dialog-enviar-carta/dialog-enviar-carta.module';
 import { DialogHistoricoPessoaModule } from '../dialog/dialog-historico-pessoa/dialog-historico-pessoa.module';
-import { DialogInativarPessoaModule } from '../dialog/dialog-inativar-pessoa/dialog-inativar-pessoa.module';
-import { DialogReativarPessoaModule } from '../dialog/dialog-reativar-pessoa/dialog-reativar-pessoa.module';
 import { CargosModule } from '../componentes/cargos/cargos.module';
-
+import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 
 
 
@@ -61,10 +59,9 @@ const routes: Routes = [
     EtapaVisaoModule,
     DialogEnviarCartaModule,
     DialogHistoricoPessoaModule,
-    DialogInativarPessoaModule,
     MatTooltipModule,
-    DialogReativarPessoaModule,
     CargosModule,
+    DialogAtivarInativarModule,
     RouterModule.forChild(routes)
   ],
   exports: [

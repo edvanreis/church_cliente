@@ -170,7 +170,12 @@ export class CadastrarCelulaComponent implements OnInit {
   }
 
   voltar() {
-    this._router.navigate(['/auth/celula/pesquisar']);
+    this._router.navigate(['/auth/celula/pesquisar'], {
+      queryParams: {
+        pesquisar: 'pesquisar',
+      },
+      skipLocationChange: true
+    });
   }
 
 

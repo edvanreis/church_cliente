@@ -34,7 +34,7 @@ export class CelulaService {
   }
 
   getList() {
-    return this.http.get(this._url)
+    return this.http.get(this._url+"list")
       .pipe(map((response: any) => response))
   }
 
@@ -50,6 +50,21 @@ export class CelulaService {
 
   update(celula) {
     return this.http.put(this._url, celula)
+      .pipe(map((response: any) => response))
+  }
+
+  ativar(celula) {
+    return this.http.put(this._url+"ativar", celula)
+      .pipe(map((response: any) => response))
+  }
+
+  inativar(celula) {
+    return this.http.put(this._url+"ativar", celula)
+      .pipe(map((response: any) => response))
+  }
+
+  getListForStatus(status) {
+    return this.http.get(this._url+status+"/celulasPorStatus")
       .pipe(map((response: any) => response))
   }
 

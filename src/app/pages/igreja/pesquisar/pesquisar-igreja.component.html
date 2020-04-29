@@ -11,18 +11,36 @@
       </div>
       <br />
       <br />
-      <div class="example-header" style="padding: 0 20px;">
-        <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
-          <input placeholder="Filtrar Sede" aria-label="Number" matInput [formControl]="myControl">
+      <div>
+        <mat-form-field class="full-width-field">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="statusSelecionado" id="status">
+            <mat-option *ngFor="let item of comboStatus" [value]="item.codigo" (click)="onSelection()">
+              {{item.value}}
+            </mat-option>
+          </mat-select>
         </mat-form-field>
       </div>
-      <div class="table-responsive">
+      <div>
+        <form form [formGroup]="form">
+          <div [hidden]="check">
+            <label style="color:#1d68a5">Agrupar por Igreja Sede?</label>
+            <mat-slide-toggle id="agrupar" formControlName="group" (change)="changeAgrupar(agrupar.checked)" #agrupar>
+              {{agrupar.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+          </div>
+        </form>
+      </div>
+      <div>
+        <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
+          <input placeholder="Filtrar" aria-label="Number" matInput [formControl]="myControl">
+        </mat-form-field>
+      </div>
+      <div class="table-responsive" *ngIf="agrupar.checked" style="overflow: auto; height: 300px;">
         <table>
           <thead class="text-primary">
             <th>SEDE</th>
             <th>Nome</th>
             <th>CNPJ</th>
-            <th>Situacão</th>
             <th>CEP</th>
             <th>Bairro</th>
             <th>logradouro</th>
@@ -32,36 +50,66 @@
           </thead>
           <tbody *ngFor="let i of filteredIgrejas | async">
             <tr style="background-color: #5C6BC0;color: white;">
-              <td><span style="color:white"><i class="material-icons">checked</i></span></td>
+              <td>Sim</td>
               <td>{{i.nome}}</td>
-              <td>{{i.cnpj}}</td>
-              <td>{{i.statusDesc}}</td>
+              <td>{{i.cnpj | cpfCnpj }}</td>
               <td>{{i.endereco.cep}}</td>
               <td>{{i.endereco.bairro}}</td>
               <td>{{i.endereco.logradouro}}</td>
               <td>{{i.endereco.localidade}}</td>
-              <td>{{i.endereco.estado}}</td>
+              <td>{{i.endereco.uf}}</td>
               <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(i.id,'sede')"><i
                     class="material-icons">create</i></span>
-                <span title="Excluir" style="cursor: pointer;color:white" (click)="inativar(i.id)"><i
-                    class="material-icons">delete_forever</i></span>
+                <span title="Excluir" style="cursor: pointer;color:white" (click)="dialogStatus(i.id,'sede')"><i
+                    class="material-icons">settings</i></span>
               </td>
             </tr>
 
-            <tr *ngFor="let f of i.filiais">
-              <td></td>
+            <tr *ngFor="let f of i.filial">
+              <td>Não</td>
               <td>{{f.nome}}</td>
-              <td>{{f.cnpj}}</td>
-              <td>{{f.statusDesc}}</td>
+              <td>{{f.cnpj | cpfCnpj }}</td>
               <td>{{f.endereco.cep}}</td>
               <td>{{f.endereco.bairro}}</td>
               <td>{{f.endereco.logradouro}}</td>
               <td>{{f.endereco.localidade}}</td>
-              <td>{{f.endereco.estado}}</td>
+              <td>{{f.endereco.uf}}</td>
               <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(f.id,'filial')"><i
                     class="material-icons">create</i></span>
-                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="inativar(i.id)"><i
-                    class="material-icons">delete_forever</i></span>
+                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id,'filial')"><i
+                    class="material-icons">settings</i></span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="table-responsive" *ngIf="!agrupar.checked"  style="overflow: auto; height: 300px;">
+        <table>
+          <thead class="text-primary">
+            <th>SEDE</th>
+            <th>Nome</th>
+            <th>CNPJ</th>
+            <th>CEP</th>
+            <th>Bairro</th>
+            <th>logradouro</th>
+            <th>Cidade</th>
+            <th>estado</th>
+            <th>ação</th>
+          </thead>
+          <tbody *ngFor="let i of filteredIgrejas | async">
+            <tr>
+              <td *ngIf="true">{{i.isSede?'Sim':'Não'}}</td>
+              <td>{{i.nome}}</td>
+              <td>{{i?.cnpj | cpfCnpj }}</td>
+              <td>{{i.endereco.cep}}</td>
+              <td>{{i.endereco.bairro}}</td>
+              <td>{{i.endereco.logradouro}}</td>
+              <td>{{i.endereco.localidade}}</td>
+              <td>{{i.endereco.uf}}</td>
+              <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(i.id,'sede')"><i
+                    class="material-icons">create</i></span>
+                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id,'sede')"><i
+                    class="material-icons">settings</i></span>
               </td>
             </tr>
           </tbody>

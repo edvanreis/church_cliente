@@ -77,7 +77,7 @@ export class IgrejaDadosComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      console.log(item);
+      // console.log(item);
       if (item.type == 'clear') {
         this.form.reset();
         this.nomeValue = "";

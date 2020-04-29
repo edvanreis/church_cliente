@@ -13,8 +13,7 @@ import { ExcelService } from '../../../../service/excel.service';
 import { PessoaService } from '../../../../service/pessoa.service';
 import { DialogEnviarCartaComponent } from '../../../dialog/dialog-enviar-carta/dialog-enviar-carta.component';
 import { DialogHistoricoPessoaComponent } from '../../../dialog/dialog-historico-pessoa/dialog-historico-pessoa.component';
-import { DialogInativarPessoaComponent } from '../../../dialog/dialog-inativar-pessoa/dialog-inativar-pessoa.component';
-import { DialogReativarPessoaComponent } from '../../../dialog/dialog-reativar-pessoa/dialog-reativar-pessoa.component';
+import { DialogAtivarInativarComponent } from '../../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
 
 
 
@@ -97,7 +96,7 @@ export class PesquisarMembroComponent implements OnInit {
       if (item.type == 'endereco') {
         this.enderecos = item.data;
       }
-      if (item.type == 'inativado' || item.type == 'reativar') {
+      if (item.type == 'status') {
         this.pesquisar();
       }
     });
@@ -270,22 +269,12 @@ export class PesquisarMembroComponent implements OnInit {
     });
   }
 
-  inativar(id) {
-    const dialogRef = this._dialog.open(DialogInativarPessoaComponent, {
+  status(id) {
+    const dialogRef = this._dialog.open(DialogAtivarInativarComponent, {
       width: '600px',
       data: {
         id: id,
-        panelClass: 'components-container-gt-xs'
-      }
-    });
-  }
-
-  reativar(id) {
-    const dialogRef = this._dialog.open(DialogReativarPessoaComponent, {
-      width: '600px',
-      data: {
-        id: id,
-        panelClass: 'components-container-gt-xs'
+        controller: 'pessoa'
       }
     });
   }

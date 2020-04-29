@@ -9,6 +9,9 @@ import { IgrejaService } from '../../../service/igreja.service';
 import { take, startWith, map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Endereco } from '../../../model/Endereco';
+import { IgrejaSedeService } from '../../../service/igreja-sede.service';
+import { IgrejaFilialService } from '../../../service/igreja-filial.service';
+import { HelperChurch } from '../../../helper/helper.church';
 
 @Component({
   selector: 'app-cadastrar-igreja',
@@ -35,6 +38,8 @@ export class CadastrarIgrejaComponent implements OnInit {
   public sizeLimitOne:boolean = true;
   constructor(private _emitirEventoService: EmitirEventoService, 
               private _igrejaService: IgrejaService, 
+              private _sedeService: IgrejaSedeService, 
+              private _filialService:IgrejaFilialService,
               private _notifierService: NotifierService,
               private _router: Router,
               private _avRoute: ActivatedRoute) { }
@@ -80,7 +85,7 @@ export class CadastrarIgrejaComponent implements OnInit {
 
     this.igreja = {} as any;
     this.igreja.nome = this.dadosIgreja.nome;
-    this.igreja.cnpj = this.dadosIgreja.cnpj;
+    this.igreja.cnpj = HelperChurch.retirarFormatacaoCNPJ(this.dadosIgreja.cnpj);
     this.igreja.telefone = this.dadosIgreja.telefone;
     this.igreja.pessoas = this.dadosIgreja.pessoas;
     this.igreja.visaoCelular = this.dadosIgreja.visaoCelular;
@@ -123,10 +128,9 @@ export class CadastrarIgrejaComponent implements OnInit {
     }
   }
 
-  saveSede(){
-    
+  saveSede(){   
     console.log(this.igreja);
-    this._igrejaService.saveSede(this.igreja).pipe(take(1)).subscribe(item => {
+    this._sedeService.save(this.igreja).pipe(take(1)).subscribe(item => {
       this.clearFieldsSede();
       this.carregarComboIgrejaSede();
       this._notifierService.notify(AlertType.Success, item.value);
@@ -148,7 +152,7 @@ export class CadastrarIgrejaComponent implements OnInit {
     this.getDadosIgreja();
     this.igreja.sede = {id:this.igrejaSelecionada.id};
     // console.log(this.igreja);
-    this._igrejaService.saveFilial(this.igreja).pipe(take(1)).subscribe(item => {
+    this._filialService.save(this.igreja).pipe(take(1)).subscribe(item => {
       this.clearFieldFilial();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
@@ -158,7 +162,7 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   carregarComboIgrejaSede() {
 
-    this._igrejaService.getListSede().pipe(take(1)).subscribe(item => {
+    this._sedeService.getList().pipe(take(1)).subscribe(item => {
       this.comboIgrejaSede = item;
       // console.log(item);
       this.filteredIgrejaSede = this.myControlIgrejaSede.valueChanges
@@ -201,7 +205,7 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   
   getSede(id) {
-    this._igrejaService.getSede(id).pipe(take(1)).subscribe(item => {
+    this._sedeService.getSede(id).pipe(take(1)).subscribe(item => {
       console.log(item);
       this.carregarDados(item);
       this.setEmiter(false);
@@ -211,7 +215,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   }
 
   getFilial(id) {
-    this._igrejaService.getFilial(id).pipe(take(1)).subscribe(item => {
+    this._filialService.getFilial(id).pipe(take(1)).subscribe(item => {
       console.log(item);
       this.carregarDados(item);
       this.setEmiter(false);
@@ -234,7 +238,8 @@ export class CadastrarIgrejaComponent implements OnInit {
   }
 
   updateSede(){
-      this._igrejaService.updateSede(this.igreja).pipe(take(1)).subscribe(item => {
+    console.log(this.igreja);
+      this._sedeService.update(this.igreja).pipe(take(1)).subscribe(item => {
         this._notifierService.notify(AlertType.Success, item.value);
       }, error => {
         this._notifierService.notify(AlertType.Error, error.message);
@@ -242,7 +247,8 @@ export class CadastrarIgrejaComponent implements OnInit {
   }
 
   updateFilial(){
-    this._igrejaService.updateFilial(this.igreja).pipe(take(1)).subscribe(item => {
+    console.log(this.igreja);
+    this._filialService.update(this.igreja).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);

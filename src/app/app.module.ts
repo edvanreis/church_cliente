@@ -15,6 +15,7 @@ import { PerfilModule } from './pages/perfil/perfil.module';
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
 import { InterceptorService } from './service/interceptor.service';
+import { CpfCnpjPipe } from './pipes/cpf-cnpj.pipe';
 
 
 
@@ -23,7 +24,7 @@ import { InterceptorService } from './service/interceptor.service';
 
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

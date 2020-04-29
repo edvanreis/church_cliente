@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatDividerModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatTabsModule, MatToolbarModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatDividerModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatTabsModule, MatToolbarModule, MatExpansionModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
@@ -13,7 +13,8 @@ import { EnderecoModule } from '../componentes/endereco/endereco.module';
 import { IgrejaDadosComponent } from '../componentes/igreja-dados/igreja-dados.component';
 import { CadastrarIgrejaComponent } from './cadastrar/cadastrar-igreja.component';
 import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component';
-import { DialogInativarIgrejaModule } from '../dialog/dialog-inativar-igreja/dialog-inativar-igreja.module';
+import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
+
 
 
 
@@ -45,7 +46,8 @@ const routes: Routes = [
     PipeModule,
     MatDividerModule,
     MatSlideToggleModule,
-    DialogInativarIgrejaModule,
+    DialogAtivarInativarModule,
+    MatExpansionModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

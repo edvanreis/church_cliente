@@ -14,6 +14,9 @@ import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenent
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { RedesComponenteModule } from '../componentes/redes/redes-componente.module';
+import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
+
+
 
 
 
@@ -44,6 +47,7 @@ const routes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     MatDividerModule,
+    DialogAtivarInativarModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

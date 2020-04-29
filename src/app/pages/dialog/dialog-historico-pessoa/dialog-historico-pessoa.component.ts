@@ -26,7 +26,7 @@ export class DialogHistoricoPessoaComponent implements OnInit {
 
   getHistory(): void {
     this.data.history.pipe(take(1)).subscribe(map => {
-      console.log(map);
+      // console.log(map);
       this.dados = new MatTableDataSource(map);
       this.dados.sort = this.sortMarcacao;
       this.dados.paginator = this.paginator;
