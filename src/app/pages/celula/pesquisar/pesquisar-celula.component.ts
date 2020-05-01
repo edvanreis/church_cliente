@@ -60,7 +60,6 @@ export class PesquisarCelulaComponent implements OnInit {
 
   columns() {
     this.columnNames = [
-      { id: 'status', value: 'Status' },
       { id: 'nome', value: 'Nome' },
       { id: 'dia', value: 'Dia' },
       { id: 'turno', value: 'Turno' },

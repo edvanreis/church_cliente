@@ -176,11 +176,11 @@ export class CadastrarVisitanteComponent implements OnInit {
       this.pessoa.escolaridades = this.escolaridades;
     } 
     if(this.celula){
-      this.pessoa.celula = this.celula;
+      this.pessoa.celula = {id:this.celula.id};
     } 
 
     if(this.igreja){
-      this.pessoa.igreja = this.celula;
+      this.pessoa.igreja = {id:this.igreja.id};
     } 
     
 

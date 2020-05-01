@@ -31,10 +31,11 @@ export class DadosPessoaisComponent implements OnInit {
   public comboEstadoCivil = [];
   public dataNascimento;
   public igrejaSelecionada: any;
+  public celulaSelecionada: any;
   @Input('membroInput') membroInput: boolean;
   @Input('pesquisa') pesquisa: boolean;
   public hideTipo: boolean = true;
-  public visisaoCelular: boolean;
+  public visaoCelular: boolean;
   public comboStatus = ELEMENT_DATA;
 
   constructor(private _pessoaService: PessoaService, private _emitirEventoService: EmitirEventoService) { }
@@ -100,9 +101,10 @@ export class DadosPessoaisComponent implements OnInit {
       }
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
-        if (this.igrejaSelecionada.visisaoCelular) {
-          this.visisaoCelular = true;
-        }
+        this.visaoCelular = this.igrejaSelecionada.visaoCelular;
+      }
+      if (item.type == 'celula-comp') {
+        this.celulaSelecionada = item.data;
       }
     });
   }
@@ -130,6 +132,12 @@ export class DadosPessoaisComponent implements OnInit {
     }
     if (this.form.controls['cartaRecomendacao'].value) {
       this.pessoa.cartaRecomendacao = this.form.controls['cartaRecomendacao'].value;
+    }
+    if(this.igrejaSelecionada){
+      this.pessoa.igreja = this.igrejaSelecionada;
+    }
+    if(this.igrejaSelecionada){
+      this.pessoa.celula = this.celulaSelecionada;
     }
     //  console.log(this.pessoa)
     return this.pessoa;

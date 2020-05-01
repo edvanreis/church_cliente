@@ -41,7 +41,7 @@ export class CelulaComponent implements OnInit {
           map(value => this._filter(value, this.comboCelulas))
         );
     }, error => {
-      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as células!");
     });
   }
 

@@ -59,7 +59,6 @@ export class PesquisarRedeComponent implements OnInit {
 
     columns() {
       this.columnNames = [
-        { id: 'status', value: 'Status' },
         { id: 'nome', value: 'Nome' },
         { id: 'dataAbertura', value: 'Data Abertura' },
         { id: 'nomeIgreja', value: 'Igreja' },
