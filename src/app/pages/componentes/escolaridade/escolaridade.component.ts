@@ -5,6 +5,7 @@ import { PessoaService } from '../../../service/pessoa.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { AlertType } from '../../../model/alert-type';
 import { NotifierService } from 'angular-notifier';
+import { EscolaridadeService } from '../../../service/escolaridade.service';
 
 
 
@@ -21,7 +22,7 @@ export class EscolaridadeComponent implements OnInit {
   public escolaridadesGrid:any = []
   public form: FormGroup;
 
-  constructor(private _pessoaService: PessoaService,
+  constructor(private _service: EscolaridadeService,
               private _emitirEventoService: EmitirEventoService,
               private _notifierService: NotifierService) { }
 
@@ -40,7 +41,7 @@ export class EscolaridadeComponent implements OnInit {
   }
 
   getComboEscolaridade() {
-    this._pessoaService.carregarEscolaridade().subscribe(item => {
+    this._service.getList().subscribe(item => {
       this.comboEscolaridade = item;
       // console.log(item);
     });
@@ -48,7 +49,6 @@ export class EscolaridadeComponent implements OnInit {
 
   remover(index): void {
     this.escolaridades.splice(index, 1);
-    this.escolaridadesGrid.splice(index, 1);
   }
 
   adicionar() {
@@ -56,10 +56,19 @@ export class EscolaridadeComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor escolha pelo menos uma escolaridade!");
       return false;
     }
-    let escolaridade = this.comboEscolaridade.find(i=>i.tipo==this.form.controls['escolaridade'].value);
+    let escolaridade = this.form.controls['escolaridade'].value;
+    let isExist = this.escolaridades.find(i=>i.curso==this.form.controls['curso'].value);
+    if(isExist){
+      this._notifierService.notify(AlertType.Error, "Curso já adicionado!");
+      return false;
+    }
+    
     let curso:string = this.form.controls['curso'].value;
-    this.escolaridades.push({tipo:escolaridade.tipo,curso:curso.toUpperCase()});
-    this.escolaridadesGrid.push({tipo:escolaridade.descricao,curso:curso.toUpperCase()});
+    this.escolaridades.push({
+        id:escolaridade.id,
+        descricao:escolaridade.descricao,
+        curso:curso.toUpperCase()
+    });
     this.setEmiter();
   }
 
@@ -71,7 +80,6 @@ export class EscolaridadeComponent implements OnInit {
       }
       if (item.type == 'edit-escolaridades') {
         this.escolaridades = item.data;
-        this.carregarEscolaridadeGrid(this.escolaridades);
         this.setEmiter();
       }
     });

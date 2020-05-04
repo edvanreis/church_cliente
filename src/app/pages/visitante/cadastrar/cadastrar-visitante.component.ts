@@ -8,6 +8,7 @@ import { PessoaService } from '../../../service/pessoa.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { EnderecoService } from '../../../service/endereco.service';
 import { ContatoService } from '../../../service/contato.service';
+import { EscolaridadeService } from '../../../service/escolaridade.service';
 
 @Component({
   selector: 'app-cadastrar-visitante',
@@ -33,7 +34,8 @@ export class CadastrarVisitanteComponent implements OnInit {
     private _notifierService: NotifierService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
-    private _contatoService:ContatoService) { }
+    private _contatoService:ContatoService,
+    private _escolaridadeService:EscolaridadeService) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -82,7 +84,7 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   getEscolaridades(id) {
     // console.log(id)
-    this._service.obterEscolaridadePessoa(id).pipe(take(1)).subscribe(item => {
+    this._escolaridadeService.obterEscolaridadePessoa(id).pipe(take(1)).subscribe(item => {
       this.emitirEscolaridades(item);
     }, error => {
       console.log(error)

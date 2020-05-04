@@ -97,7 +97,7 @@ export class PesquisarVisitanteComponent implements OnInit {
     //  console.log(this.pessoa)
     this.loading = true;
     this._service.pesquisar(this.pessoa).pipe(take(1)).subscribe(item => {
-      // console.log(item);
+      console.log(item);
       this.pessoas = item;
       this.dados = new MatTableDataSource(this.pessoas);
       this.dados.sort = this.sort;
@@ -155,7 +155,7 @@ export class PesquisarVisitanteComponent implements OnInit {
   columns() {
     this.columnNames = [
       { id: 'nomeCompleto', value: 'Nome' },
-      { id: 'dataNascimentoFormatada', value: 'Data Nascimento' },
+      { id: 'dataNascimento', value: 'Data Nascimento' },
       { id: 'rg', value: 'RG' },
       { id: 'cpf', value: 'CPF' },
       { id: 'estadoCivil', value: 'Estado Civil' },
