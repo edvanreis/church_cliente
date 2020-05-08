@@ -237,21 +237,6 @@ export class ContatosComponent implements OnInit {
     this._emitirEventoService.emitir("contatos", this.contatos);
   }
 
-  //  remove uma linha da grid
-  remover(index): void {
-    console.log(index)
-    this.contatos.splice(index, 1);
-    if (index.id) {
-      this._contatoService.remove(index.id).pipe(take(1)).subscribe(item => {
-        this._notifierService.notify(AlertType.Success, item.value);
-      }, error => {
-        console.log(error)
-        // this._notifierService.notify(AlertType.Success, item.value);
-      });
-    }
-    this.setEmiter();
-  }
-
 
    dialogAtualizar(item) {
     // console.log(item)
@@ -266,16 +251,9 @@ export class ContatosComponent implements OnInit {
 
   dialogRemover(item) {
     // console.log(item)
-    let obj = {
-      id:item.id,
-      idPessoa:this.idPessoa,
-      tipo : item.tipo
-
-    }
     const dialogRef = this._dialog.open(DialogConfirmComponent, {
       width: '500px',
       data: {
-        obj: obj,
         controller:'contato',
         item:item
       }

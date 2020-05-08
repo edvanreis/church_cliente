@@ -6,6 +6,8 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { PipeModule } from '../../../pipe/pipe/pipe.module';
+import { DialogConfirmModule } from '../../dialog/dialog-confirm/dialog-confirm.module';
+import { DialogAtualizarEnderecoModule } from '../../dialog/dialog-atualizar-endereco/dialog-atualizar-endereco.module';
 
 
 @NgModule({
@@ -26,6 +28,8 @@ import { PipeModule } from '../../../pipe/pipe/pipe.module';
     MatSelectModule,
     MatCheckboxModule,
     PipeModule,
+    DialogConfirmModule,
+    DialogAtualizarEnderecoModule
   ],
   exports :[
     EnderecoComponent

@@ -1,32 +1,32 @@
 <form form [formGroup]="form">
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
     <mat-form-field class="full-width-field">
-      <input matInput placeholder="CEP" formControlName="cep" id="cep" (blur)="consultarCEP($event)"  (change)="change()"
+      <input matInput placeholder="CEP" formControlName="cep" id="cep" (blur)="consultarCEP($event)" (change)="change()"
         [textMask]="{mask: maskCEP}">
       <mat-error *ngIf="!form.controls.cep.valid">Campo Obrigatório</mat-error>
     </mat-form-field>
     <mat-form-field cclass="full-width-field">
-      <input matInput placeholder="Número" formControlName="numero" id="numero"  (change)="change()">
-    </mat-form-field>
-  </div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-    <mat-form-field  class="full-width-field">
-      <input matInput placeholder="Complemento" formControlName="complemento" id="complemento"  (change)="change()">
-    </mat-form-field>
-  </div> 
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-    <mat-form-field class="full-width-field">
-      <input matInput placeholder="Bairro" formControlName="bairro" id="bairro"  (change)="change()">
-    </mat-form-field>
-  </div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" >
-    <mat-form-field class="full-width-field">
-      <input matInput placeholder="Logradouro" formControlName="logradouro" id="logradouro"  (change)="change()">
+      <input matInput placeholder="Número" formControlName="numero" id="numero" (change)="change()">
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
     <mat-form-field class="full-width-field">
-      <input matInput placeholder="Cidade" formControlName="localidade" id="localidade"  (change)="change()">
+      <input matInput placeholder="Complemento" formControlName="complemento" id="complemento" (change)="change()">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="Bairro" formControlName="bairro" id="bairro" (change)="change()">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="Logradouro" formControlName="logradouro" id="logradouro" (change)="change()">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="Cidade" formControlName="localidade" id="localidade" (change)="change()">
     </mat-form-field>
     <mat-form-field>
       <mat-label>Estado</mat-label>
@@ -36,20 +36,20 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    </div>
-    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" *ngIf="pessoa">
-      <mat-form-field>
-        <mat-label>Tipo Endereços</mat-label>
-        <mat-select formControlName="tipo" id="tipo" (selectionChange)="change()">
-          <mat-option *ngFor="let item of tipoEndereco" [value]="item.tipo" >
-            {{item.descTipoEndereco}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <mat-form-field class="full-width-field" *ngIf="observacao">
-        <textarea matInput placeholder="Observação" formControlName="observacao" (change)="change()"></textarea>
-      </mat-form-field>
-    </div>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" *ngIf="pessoa">
+    <mat-form-field>
+      <mat-label>Tipo Endereços</mat-label>
+      <mat-select formControlName="tipo" id="tipo" (selectionChange)="change()">
+        <mat-option *ngFor="let item of tipoEndereco" [value]="item.tipo">
+          {{item.descTipoEndereco}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width-field" *ngIf="observacao">
+      <textarea matInput placeholder="Observação" formControlName="observacao" (change)="change()"></textarea>
+    </mat-form-field>
+  </div>
 </form>
 <br />
 <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
@@ -57,32 +57,35 @@
 </button>
 <br />
 <br />
-<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="enderecos.length > 0">
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="enderecos.length > 0" style="overflow: auto; height: 300px;">
   <div class="table-responsive">
     <table>
       <thead class="text-primary">
-        <th>Cep</th> 
-        <th>Número</th> 
+        <th></th>
+        <th>Cep</th>
+        <th>Número</th>
         <th>Complemento</th>
-        <th>Bairro</th> 
-        <th>Logradouro</th>  
+        <th>Bairro</th>
+        <th>Logradouro</th>
         <th>Cidade</th>
         <th>Estado</th>
-        <th>Tipo</th>                             
-        <th>Remover</th>
+        <th>Tipo</th>
+        <th>Ação</th>
       </thead>
       <tbody>
         <tr *ngFor="let e of enderecos">
-          <td>{{ e.cep}}</td> 
-          <td>{{ e.numero}}</td> 
-          <td>{{ e.complemento}}</td> 
-          <td>{{ e.bairro}}</td> 
-          <td>{{ e.logradouro}}</td> 
+          <td>{{ e.codigo}}</td>
+          <td>{{ e.cep}}</td>
+          <td>{{ e.numero}}</td>
+          <td>{{ e.complemento}}</td>
+          <td>{{ e.bairro}}</td>
+          <td>{{ e.logradouro}}</td>
           <td>{{ e.localidade}}</td>
           <td>{{ e.uf}}</td>
           <td>{{ e.descTipoEndereco}}</td>
-          <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
-                class="material-icons">delete</i></span></td>
+          <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogAtualizar(e)"><i class="material-icons">create</i></span>
+            <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(e)"><i class="material-icons">delete</i></span>
+          </td>
         </tr>
       </tbody>
     </table>

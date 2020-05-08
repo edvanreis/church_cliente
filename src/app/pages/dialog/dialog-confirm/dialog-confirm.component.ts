@@ -32,7 +32,7 @@ export class DialogConfirmComponent implements OnInit {
   }
 
   confirmar(){
-    this._service.removeByObj(this.data.obj,this.data.controller).pipe(take(1)).subscribe(item => {
+    this._service.remove(this.data.item.id,this.data.controller).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
       this.setEmiter();
       this.close();

@@ -1,12 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { EnderecoService } from '../../../service/endereco.service';
 import { MembroService } from '../../../service/membro.service';
-import { Endereco } from '../../../model/Endereco';
-import { Observable } from 'rxjs';
+import { DialogAtualizarEnderecoComponent } from '../../dialog/dialog-atualizar-endereco/dialog-atualizar-endereco.component';
+import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confirm.component';
 
 
 
@@ -21,16 +22,18 @@ export class EnderecoComponent implements OnInit {
   public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
   public comboEstados = [];
   public endereco;
-  public enderecos:any = [];
-  @Input('sizeLimitOne')sizeLimitOne = false;
-  @Input('pessoa')pessoa = false;
+  public enderecos: any = [];
+  @Input('sizeLimitOne') sizeLimitOne = false;
+  @Input('pessoa') pessoa = false;
+  @Input('idPessoa') idPessoa;
   public tipoEndereco = [];
-  public observacao:boolean = false;
+  public observacao: boolean = false;
 
   constructor(private _membroService: MembroService,
     private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
-    private _enderecoService: EnderecoService) { }
+    private _enderecoService: EnderecoService,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this._buildForm();
@@ -63,7 +66,7 @@ export class EnderecoComponent implements OnInit {
       if (validarCep.test(cep)) {
         this._enderecoService.carregarEndereco(cep).subscribe(item => {
           if (item) {
-             console.log(item);
+            console.log(item);
             this.form.controls['logradouro'].patchValue(item.logradouro);
             this.form.controls['localidade'].patchValue(item.localidade);
             this.form.controls['uf'].patchValue(item.uf);
@@ -122,16 +125,16 @@ export class EnderecoComponent implements OnInit {
     this.endereco.complemento = this.form.controls['complemento'].value;
     this.endereco.bairro = this.form.controls['bairro'].value;
     this.endereco.logradouro = this.form.controls['logradouro'].value;
-    this.endereco.localidade =this.form.controls['localidade'].value;
+    this.endereco.localidade = this.form.controls['localidade'].value;
     this.endereco.uf = this.form.controls['uf'].value;
     this.endereco.observacao = this.form.controls['observacao'].value;
-    if(this.form.controls['tipo'].value){
+    if (this.form.controls['tipo'].value) {
       this.endereco.tipo = this.form.controls['tipo'].value;
-      let tipoObj = this.tipoEndereco.find(i=>i.tipo == this.endereco.tipo);
+      let tipoObj = this.tipoEndereco.find(i => i.tipo == this.endereco.tipo);
       this.endereco.descTipoEndereco = tipoObj.descTipoEndereco;
-      if(this.endereco.tipo=='OUTROS'){
+      if (this.endereco.tipo == 'OUTROS') {
         this.observacao = true;
-      }else{
+      } else {
         this.observacao = false;
       }
     }
@@ -146,8 +149,27 @@ export class EnderecoComponent implements OnInit {
         this.enderecos = [];
       }
       if (item.type == 'edit-endereco') {
-          this.enderecos = item.data;
-          this.setEmiter();
+        for (let i = 0; i < item.data.length; i++) {
+          let endereco = {} as any;
+          endereco.codigo = i + 1;
+          endereco.id = item.data[i].id;
+          endereco.numero = item.data[i].numero;
+          endereco.cep = item.data[i].cep
+          endereco.complemento = item.data[i].complemento
+          endereco.bairro = item.data[i].bairro
+          endereco.logradouro = item.data[i].logradouro
+          endereco.localidade = item.data[i].localidade
+          endereco.uf = item.data[i].uf
+          endereco.tipo = item.data[i].tipo
+          endereco.descTipoEndereco = item.data[i].descTipoEndereco
+          endereco.idPessoa = this.idPessoa;
+          this.enderecos.push(endereco)
+        }
+        this.setEmiter();
+      }
+      if (item.type == 'confirm-dialog') {
+        this.enderecos.splice(item.data, 1);
+        this.setEmiter();
       }
     });
   }
@@ -164,18 +186,47 @@ export class EnderecoComponent implements OnInit {
   }
 
 
-    //  remove uma linha da grid
-    remover(index): void {
-      this.enderecos.splice(index, 1);
-      this.setEmiter();
-    }
-  
-    adicionar() {
-      if(this.enderecos.length > 0 && this.sizeLimitOne){
-        this._notifierService.notify(AlertType.Error, 'Apenas um endereço é permitido!');
-        return false;
-      }
-      this.enderecos.push(this.endereco);
-    }
+  //  remove uma linha da grid
+  remover(index): void {
+    this.enderecos.splice(index, 1);
+    this.setEmiter();
+  }
 
+  adicionar() {
+    if (this.enderecos.length > 0 && this.sizeLimitOne) {
+      this._notifierService.notify(AlertType.Error, 'Apenas um endereço é permitido!');
+      return false;
+    }
+    if (this.enderecos.length!=0) {
+      this.endereco.codigo = this.enderecos[this.enderecos.length - 1].codigo + 1;
+    }else{
+      this.endereco.codigo = 1;
+    }
+    this.enderecos.push(this.endereco);
+  }
+
+
+   dialogAtualizar(item) {
+    console.log(item)
+    const dialogRef = this._dialog.open(DialogAtualizarEnderecoComponent ,{
+      width: '600px',
+      data: {
+        item: item,
+        tipoEndereco:this.tipoEndereco,
+        comboEstados:this.comboEstados,
+        pessoa:this.pessoa
+      }
+    });
+  }
+
+  dialogRemover(item) {
+    console.log(item)
+    const dialogRef = this._dialog.open(DialogConfirmComponent, {
+      width: '600px',
+      data: {
+        controller: 'endereco',
+        item: item,
+      }
+    });
+  }
 }
