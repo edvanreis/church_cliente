@@ -3,8 +3,8 @@
     <mat-form-field class="full-width-field">
       <mat-label>Selecione...</mat-label>
       <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
-        <mat-option *ngFor="let item of comboTipoContatos" [value]="item.tipo">
-          {{item.descTipoContato}}
+        <mat-option *ngFor="let item of comboTipoContatos" [value]="item">
+          {{item.nome}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -21,31 +21,39 @@
   </div>
   <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
     <i class="material-icons">add</i>adicionar</button>
-  <br /><br />
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0">
-      <div class="table-responsive">
-        <table>
-          <thead class="text-primary">
-            <th>Tipo</th>
-            <th>Descrição</th>
-            <th></th>
-            <th>Email principal</th>                     
-            <th>Remover</th>
-          </thead>
-          <tbody>
-            <tr *ngFor="let c of contatosGrid">
-              <td>{{ c.tipo}}</td>
-              <td>{{ c.contato }}</td>      
-              <td><img src="./assets/whatsapp.png" width="20px" *ngIf="c.whatsapp">
-                <img src="./assets/images/facebook_circle.png" width="20px" *ngIf="c.facebook">
-                <span style="color: #1d68a5" *ngIf="c.email"><i class="material-icons">mail</i></span>
-                <span style="color: #1d68a5" *ngIf="c.telefone"><i class="material-icons">call</i></span></td>
-                <td><span  style="color:green" *ngIf="c.emailPrincipal" ><i class="material-icons">checked</i></span></td>
-              <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(c)"><i
-                    class="material-icons">delete</i></span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+
+  <br />
+  <br />
+
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0" style="overflow: auto; height: 300px;">
+    <div class="table-responsive">
+      <table>
+        <thead class="text-primary">
+          <th></th>
+          <th>Tipo</th>
+          <th>Descrição</th>
+          <th></th>
+          <th>Email principal</th>
+          <th>Ação</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of contatos;">
+            <td>{{ c.codigo}}</td>
+            <td>{{ c.tipo.nome}}</td>
+            <td>{{ c.descricao }}</td>
+            <td><img src="./assets/whatsapp.png" width="20px" *ngIf="c.whatsapp">
+              <img src="./assets/images/facebook_circle.png" width="20px" *ngIf="c.tipo.nome =='FACEBOOK'">
+              <span style="color: #1d68a5" *ngIf="c.tipo.nome=='E-MAIL'"><i class="material-icons">mail</i></span>
+              <span style="color: #1d68a5" *ngIf="c.tipo.nome =='TELEFONE' || c.tipo.nome =='TELEFONE DO TRABALHO'"><i
+                  class="material-icons">call</i></span></td>
+            <td><span style="color:green" *ngIf="c.login"><i class="material-icons">checked</i></span></td>
+            <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogAtualizar(c)" title="Atualizar"><i
+                  class="material-icons">create</i></span>
+            <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(c)" title="Remover"><i
+                  class="material-icons">delete</i></span></td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 </form>

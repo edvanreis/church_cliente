@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { ContatoService } from '../../../service/contato.service';
 import { Observable } from 'rxjs';
@@ -7,6 +7,11 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { HelperChurch } from '../../../helper/helper.church';
+import { TipoContatoService } from '../../../service/tipo-contato.service';
+import { take } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { DialogAtualizarContatoComponent } from '../../dialog/dialog-atualizar-contato/dialog-atualizar-contato.component';
+import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-contatos',
@@ -24,17 +29,23 @@ export class ContatosComponent implements OnInit {
   public isTelefone: boolean = false;
   public isFacebook: boolean = false;
   public isEmail: boolean = false;
-  public contatosGrid = [];
   public contatos = [];
   public comboTipoContatos = [];
+  public tipoSelected: any;
+  @Input('idPessoa') idPessoa;
 
 
-  constructor(private _contatoService: ContatoService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
+  constructor(private _contatoService: ContatoService,
+    private _notifierService: NotifierService,
+    private _emitirEventoService: EmitirEventoService,
+    private _tipoContatoService: TipoContatoService,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this._buildForm();
     this.getComboContatos();
     this.getEmiter();
+    
   }
 
   public contatos$: Observable<any[]>;
@@ -56,41 +67,39 @@ export class ContatosComponent implements OnInit {
 
 
   getComboContatos() {
-    this._contatoService.carregarTiposContatos().subscribe(item => {
+    this._tipoContatoService.getList().subscribe(item => {
       this.comboTipoContatos = item;
       // console.log(item);
     });
   }
 
   tipo(event) {
-    // console.log(event.value);
-    if (event.value == 'CELULAR' || event.value == 'CELULAR_TRABALHO') {
+    console.log(event.value);
+    this.tipoSelected = event.value;
+    if (event.value.nome == 'CELULAR' || event.value.nome == 'CELULAR DO TRABALHO') {
       this.isCelular = true;
       this.isTelefone = false;
       this.isContato = false;
       this.isEmail = false;
       this.isFacebook = false;
-    } else if (event.value == 'TELEFONE' || event.value == 'TELEFONE_TRABALHO') {
+    } else if (event.value.nome == 'TELEFONE' || event.value.nome == 'TELEFONE DO TRABALHO') {
       this.isTelefone = true;
       this.isCelular = false;
       this.isContato = false;
       this.isEmail = false;
       this.isFacebook = false;
-      this.form.controls['whatsapp'].patchValue(false);
-    } else if (event.value == 'FACEBOOK') {
+    } else if (event.value.nome == 'FACEBOOK') {
       this.isFacebook = true
       this.isContato = true;
       this.isCelular = false;
       this.isTelefone = false;
       this.isEmail = false
-      this.form.controls['whatsapp'].patchValue(false);
-    } else if (event.value == 'EMAIL') {
+    } else if (event.value.nome == 'E-MAIL') {
       this.isEmail = true
       this.isContato = false;
       this.isFacebook = false;
       this.isCelular = false;
       this.isTelefone = false;
-      this.form.controls['whatsapp'].patchValue(false);
     } else {
       this.isCelular = false;
       this.isTelefone = false;
@@ -99,71 +108,24 @@ export class ContatosComponent implements OnInit {
   }
 
   adicionar() {
-    let contato: string;
-    let email: string;
-    contato = this.preecherContato();
-    email = this.form.controls['email'].value;
-    let pattern = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$");
+    let descricao: string = this.preecherContato();
 
-    if (this.isContato && !contato) {
-      this._notifierService.notify(AlertType.Error, 'Por favor preencha o campo contato!');
-      return false;
-    }
-    if (this.isEmail && !email) {
-      this._notifierService.notify(AlertType.Error, 'Por favor preencha o campo email!');
-      return false;
-    }
-    if (this.isEmail && !pattern.test(email)) {
-      this._notifierService.notify(AlertType.Error, 'O email possui formato invalido!');
-      return false;
+    if (!this.validarCampos(descricao)) {
+      return;
     }
 
-    let tipo: string;
-    let tipoSelected: string = this.form.controls['contatos'].value;
-
-    this.comboTipoContatos.forEach(item => {
-      // console.log(item);
-      if (tipoSelected == item.tipo) {
-        tipo = item.descTipoContato;
-      }
-    });
-    let possuiEmailPrincipal: boolean = false;
-    this.contatosGrid.forEach(element => {
-      console.log(element);
-      console.log(this.form.controls['emailPrincipal'].value);
-      if (element.emailPrincipal) {
-        if (element.emailPrincipal == this.form.controls['emailPrincipal'].value) {
-          possuiEmailPrincipal = true;
-        }
-      }
-
-    });
-    if (possuiEmailPrincipal) {
-      this._notifierService.notify(AlertType.Error, 'Você já possuí um email principal!');
-      return false;
-    }
-
-    this.contatosGrid.push({
-      tipo: tipo,
-      contato: contato,
-      whatsapp: HelperChurch.isBoolean(this.form.controls['whatsapp'].value),
-      facebook: this.isFacebook,
-      email: this.isEmail,
-      telefone: this.isTelefone,
-      celular: this.isCelular,
-      emailPrincipal: HelperChurch.isBoolean(this.form.controls['emailPrincipal'].value),
-    });
-    // console.log(tipo);
     let obj = {} as any;
-    obj.tipo = tipoSelected;
-    obj.contato = contato;
-    obj.whatsapp =  HelperChurch.isBoolean(this.form.controls['whatsapp'].value);
-    obj.emailPrincipal = HelperChurch.isBoolean(this.form.controls['emailPrincipal'].value);
-    obj.facebook = this.isFacebook,
-    obj.email = this.isEmail,
-    obj.telefone = this.isTelefone,
-    obj.celular = this.isCelular,
-    console.log(obj)
+
+    obj.tipo = this.tipoSelected;
+    obj.descricao = descricao;
+    obj.whatsapp = HelperChurch.isBoolean(this.form.controls['whatsapp'].value);
+    obj.login = HelperChurch.isBoolean(this.form.controls['emailPrincipal'].value);
+    if (this.contatos.length!=0) {
+      obj.codigo = this.contatos[this.contatos.length - 1].codigo + 1;
+    }else{
+      obj.codigo = 1;
+    }
+    // console.log(obj)
     this.contatos.push(obj);
     this.clearInputContato();
     this.setEmiter();
@@ -183,6 +145,46 @@ export class ContatosComponent implements OnInit {
     return contato;
   }
 
+  validarCampos(descricao): boolean {
+    let email = this.form.controls['email'].value;
+    let pattern = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$");
+
+    if (!descricao) {
+      this._notifierService.notify(AlertType.Error, 'Por favor preencha um contato!');
+      return false;
+    }
+
+    if (this.isContato && !descricao) {
+      this._notifierService.notify(AlertType.Error, 'Por favor preencha o campo contato!');
+      return false;
+    }
+    if (this.isEmail && !email) {
+      this._notifierService.notify(AlertType.Error, 'Por favor preencha o campo email!');
+      return false;
+    }
+    if (this.isEmail && !pattern.test(email)) {
+      this._notifierService.notify(AlertType.Error, 'O email possui formato invalido!');
+      return false;
+    }
+
+    let possuiEmailPrincipal: boolean = false;
+    this.contatos.forEach(element => {
+      // console.log(element);
+      console.log(this.form.controls['emailPrincipal'].value);
+      if (element.login) {
+        if (element.login == this.form.controls['emailPrincipal'].value) {
+          possuiEmailPrincipal = true;
+        }
+      }
+
+    });
+    if (possuiEmailPrincipal) {
+      this._notifierService.notify(AlertType.Error, 'Você já possuí um email principal!');
+      return false;
+    }
+    return true;
+  }
+
   clearInputContato() {
     this.form.controls['contato'].patchValue('');
     this.form.controls['contatoTelefone'].patchValue('');
@@ -196,31 +198,38 @@ export class ContatosComponent implements OnInit {
       if (item.type == 'clear') {
         this.form.reset();
         this.contatos = [];
-        this.contatosGrid = [];
       }
       if (item.type == 'edit-contatos') {
-        this.contatos = item.data;
-        // console.log(this.contatos)
-        this.carregarContatoGrid(this.contatos);
+        // this.contatos = item.data;
+        for (let i = 0; i < item.data.length; i++) {
+          let contato = {} as any;
+          contato.codigo = i + 1;
+          contato.id = item.data[i].id;
+          contato.tipo = item.data[i].tipo;
+          contato.descricao = item.data[i].descricao
+          contato.whatsapp = item.data[i].whatsapp
+          contato.login = item.data[i].login
+          contato.idPessoa = this.idPessoa;
+          this.contatos.push(contato)
+        }
+        console.log(this.contatos)
+        // this.carregarContatoGrid(this.contatos);
         this.setEmiter();
       }
 
-    });
-  }
+      if (item.type == 'contato-dialog') {
+        for (let i = 0; i < this.contatos.length; i++) {
+          if (this.contatos[i].codigo == item.data.codigo) {
+            this.contatos[i] = item.data;
+          }
+        }
+        this.setEmiter();
+      }
+      if (item.type == 'confirm-dialog') {
+        this.contatos.splice(item.data, 1);
+        this.setEmiter();
+      }
 
-  carregarContatoGrid(contatos){
-    // console.log(contatos);
-    contatos.forEach(element => {
-      this.contatosGrid.push({
-        tipo: element.descTipoContato,
-        contato: element.contato,
-        whatsapp: element.whatsapp,
-        facebook: element.facebook,
-        email:element.email,
-        telefone: element.telefone,
-        celular: element.celular,
-        emailPrincipal: element.emailPrincipal
-      });
     });
   }
 
@@ -230,10 +239,47 @@ export class ContatosComponent implements OnInit {
 
   //  remove uma linha da grid
   remover(index): void {
-    //console.log(index)
+    console.log(index)
     this.contatos.splice(index, 1);
-    this.contatosGrid.splice(index, 1);
+    if (index.id) {
+      this._contatoService.remove(index.id).pipe(take(1)).subscribe(item => {
+        this._notifierService.notify(AlertType.Success, item.value);
+      }, error => {
+        console.log(error)
+        // this._notifierService.notify(AlertType.Success, item.value);
+      });
+    }
     this.setEmiter();
+  }
+
+
+   dialogAtualizar(item) {
+    // console.log(item)
+    const dialogRef = this._dialog.open(DialogAtualizarContatoComponent, {
+      width: '600px',
+      data: {
+        item: item,
+        comboTipos: this.comboTipoContatos
+      }
+    });
+  }
+
+  dialogRemover(item) {
+    // console.log(item)
+    let obj = {
+      id:item.id,
+      idPessoa:this.idPessoa,
+      tipo : item.tipo
+
+    }
+    const dialogRef = this._dialog.open(DialogConfirmComponent, {
+      width: '500px',
+      data: {
+        obj: obj,
+        controller:'contato',
+        item:item
+      }
+    });
   }
 
 

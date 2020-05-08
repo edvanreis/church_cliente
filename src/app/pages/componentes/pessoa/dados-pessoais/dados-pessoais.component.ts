@@ -34,7 +34,7 @@ export class DadosPessoaisComponent implements OnInit {
   public celulaSelecionada: any;
   @Input('membroInput') membroInput: boolean;
   @Input('pesquisa') pesquisa: boolean;
-  public hideTipo: boolean = true;
+  public hideVisitante: boolean = true;
   public visaoCelular: boolean;
   public comboStatus = ELEMENT_DATA;
 
@@ -48,7 +48,7 @@ export class DadosPessoaisComponent implements OnInit {
     this.getEmiter();
     // console.log(this.membroInput)
     if (this.membroInput) {
-      this.hideTipo = false;
+      this.hideVisitante = false;
     }
   }
 

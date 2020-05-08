@@ -177,7 +177,7 @@ export class PesquisarMembroComponent implements OnInit {
       { id: 'icon', value: '' },
       { id: 'descSitucao', value: 'Situação' },
       { id: 'nomeCompleto', value: 'Nome' },
-      { id: 'dataNascimentoFormatada', value: 'Data Nascimento' },
+      { id: 'dataNascimento', value: 'Data Nascimento' },
       { id: 'rg', value: 'RG' },
       { id: 'cpf', value: 'CPF' },
       { id: 'estadoCivil', value: 'Estado Civil' },

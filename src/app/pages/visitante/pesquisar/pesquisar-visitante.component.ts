@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
-import { MatSort, MatPaginator, MatTableDataSource } from '@angular/material';
+import { MatSort, MatPaginator, MatTableDataSource, DateAdapter } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -31,7 +31,8 @@ export class PesquisarVisitanteComponent implements OnInit {
     private _datePipe: DatePipe,
     private _etapaVisao: EtapaVisaoService,
     private _router: Router,
-    private _avRoute: ActivatedRoute) { }
+    private _avRoute: ActivatedRoute,
+    private dateAdapter: DateAdapter<Date>) { }
 
   public etapa$: Observable<any[]>;
   public pessoa:any= {} as any;
@@ -54,6 +55,7 @@ export class PesquisarVisitanteComponent implements OnInit {
   
 
   ngOnInit() {
+    this.dateAdapter.setLocale('br');   
     this.getEmiter();
     this.columns();
     this._buildFormDate();

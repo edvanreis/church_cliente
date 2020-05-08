@@ -23,4 +23,19 @@ export class ContatoService {
     return this.http.get(this._url + id + "/contatoPessoa")
       .pipe(tap((response: any) => response));
   }
+
+  remove(id) {
+    return this.http.delete(this._url + id)
+      .pipe(tap((response: any) => response));
+  }
+
+  getContato(id) {
+    return this.http.get(this._url + id)
+      .pipe(tap((response: any) => response));
+  }
+
+  update(obj) {
+    return this.http.put(this._url, obj)
+      .pipe(tap((response: any) => response));
+  }
 }

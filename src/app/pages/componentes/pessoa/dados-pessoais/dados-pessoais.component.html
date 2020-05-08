@@ -61,7 +61,7 @@
     <app-igrejas></app-igrejas>
     <app-celula *ngIf="visaoCelular"></app-celula>
   </div>
-  <div  class="full-width-field" *ngIf="pesquisa">
+  <div  class="full-width-field" *ngIf="pesquisa" [hidden]="hideVisitante">
     <mat-form-field>
       <mat-label>Status</mat-label>
       <mat-select formControlName="status" id="status" (selectionChange)="change()">
@@ -71,7 +71,7 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="full-width-field" fxLayoutGap="20px" [hidden]="hideTipo">
+  <div class="full-width-field" fxLayoutGap="20px" [hidden]="hideVisitante">
     <label style="color:#1d68a5">Batizado?</label>
     <mat-slide-toggle formControlName="batizado" id="batizado"  (change)="change()" #batizado>{{batizado.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
     <label style="color:#1d68a5">Dizimista?</label>

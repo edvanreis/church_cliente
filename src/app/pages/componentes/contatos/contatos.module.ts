@@ -5,11 +5,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MatCheckboxModule, MatOptionModule, MatSelectModule, MatInputModule, MatButtonModule } from '@angular/material';
 import { ContatosComponent } from './contatos.component';
+import { TipoContatoService } from '../../../service/tipo-contato.service';
+import { DialogAtualizarContatoModule } from '../../dialog/dialog-atualizar-contato/dialog-atualizar-contato.module';
+import { DialogConfirmModule } from '../../dialog/dialog-confirm/dialog-confirm.module';
 
 
 @NgModule({
   imports: [
-    CommonModule,
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
@@ -20,13 +22,18 @@ import { ContatosComponent } from './contatos.component';
     MatSelectModule,
     MatCheckboxModule,
     MatInputModule,
-    MatButtonModule
+    MatButtonModule,
+    DialogAtualizarContatoModule,
+    DialogConfirmModule
   ],
   exports: [
     ContatosComponent
   ],
   declarations: [
     ContatosComponent
+  ],
+  providers:[
+    TipoContatoService
   ]
 })
 export class ContatosModule { }

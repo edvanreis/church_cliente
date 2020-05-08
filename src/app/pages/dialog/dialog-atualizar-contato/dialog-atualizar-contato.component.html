@@ -1,0 +1,41 @@
+<div mat-dialog-content>
+  <h4 mat-dialog-title>
+    <mat-toolbar class="cdk-header">
+      <i class="material-icons">headset_mic</i>
+      <h1 class="mat-headline center-align">Contato</h1>
+    </mat-toolbar>
+  </h4>
+  <div class="cdk-container">
+    <form form [formGroup]="form">  
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+        <mat-form-field class="full-width-field">
+          <mat-label>Selecione...</mat-label>
+          <mat-select formControlName="tipos" id="tipos" (selectionChange)="tipo($event.value,true)">
+            <mat-option *ngFor="let item of comboTipoContatos" [value]="item">
+              {{item.nome}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> 
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+        <mat-form-field class="full-width-field">
+          <input matInput placeholder="Contato" formControlName="contato" id="contato" *ngIf="isContato">
+          <input matInput placeholder="Contato" formControlName="contatoTelefone" [textMask]="{mask: maskTelefone}"
+            id="contatoTelefone" *ngIf="isTelefone">
+          <input matInput placeholder="Contato" formControlName="contatoCelular" [textMask]="{mask: maskCelular}"
+            id="contatoCelular" *ngIf="isCelular">
+          <input type="email" matInput placeholder="Contato" formControlName="email" id="email" *ngIf="isEmail">
+        </mat-form-field>
+        <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
+        <mat-checkbox formControlName="emailPrincipal" *ngIf="isEmail">Email principal</mat-checkbox>
+      </div> 
+  </form> 
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" type="submit" (click)="salvar()">
+      <i class="material-icons">done</i>Salvar</button>
+    <div fxFlex></div>
+    <button mat-raised-button color="warn" type="submit" (click)="close()">
+      <i class="material-icons">close</i>Fechar</button>
+  </div>  
+</div>
