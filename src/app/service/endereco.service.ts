@@ -34,4 +34,10 @@ export class EnderecoService {
       .pipe(tap((response: any) => response));
   }
 
+ 
+  update(obj) {
+    return this.http.put(this._url, obj)
+      .pipe(tap((response: any) => response));
+  }
+
 }

@@ -21,11 +21,9 @@
   </div>
   <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
     <i class="material-icons">add</i>adicionar</button>
-
   <br />
   <br />
-
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0" style="overflow: auto; height: 300px;">
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0" style="overflow: auto; height: 200px;">
     <div class="table-responsive">
       <table>
         <thead class="text-primary">

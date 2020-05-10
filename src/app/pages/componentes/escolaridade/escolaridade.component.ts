@@ -6,6 +6,8 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { AlertType } from '../../../model/alert-type';
 import { NotifierService } from 'angular-notifier';
 import { EscolaridadeService } from '../../../service/escolaridade.service';
+import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confirm.component';
+import { MatDialog } from '@angular/material';
 
 
 
@@ -24,7 +26,8 @@ export class EscolaridadeComponent implements OnInit {
 
   constructor(private _service: EscolaridadeService,
               private _emitirEventoService: EmitirEventoService,
-              private _notifierService: NotifierService) { }
+              private _notifierService: NotifierService,
+              private _dialog: MatDialog) { }
 
   ngOnInit() {
     this.getComboEscolaridade();
@@ -82,6 +85,11 @@ export class EscolaridadeComponent implements OnInit {
         this.escolaridades = item.data;
         this.setEmiter();
       }
+      if (item.type == 'confirm-dialog-escolaridade') {
+        this.escolaridades.splice(item.data, 1);
+        this.setEmiter();
+      }
+
     });
   }
   
@@ -97,5 +105,16 @@ export class EscolaridadeComponent implements OnInit {
 
   setEmiter(): void {
     this._emitirEventoService.emitir("escolaridades",  this.escolaridades);
+  }
+
+  dialogRemover(item) {
+    console.log(item)
+    const dialogRef = this._dialog.open(DialogConfirmComponent, {
+      width: '600px',
+      data: {
+        controller: 'escolaridade',
+        item: item,
+      }
+    });
   }
 }

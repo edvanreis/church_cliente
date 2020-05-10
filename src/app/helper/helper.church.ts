@@ -49,5 +49,10 @@ export class HelperChurch {
     }
   }
 
+  static retirarFormatacaoCep(cep) {
+    cep = cep.replace("-", "").trim();
+    return cep;
+  }
+
 
 }

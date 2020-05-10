@@ -8,6 +8,7 @@ import { EnderecoService } from '../../../service/endereco.service';
 import { MembroService } from '../../../service/membro.service';
 import { DialogAtualizarEnderecoComponent } from '../../dialog/dialog-atualizar-endereco/dialog-atualizar-endereco.component';
 import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confirm.component';
+import { HelperChurch } from '../../../helper/helper.church';
 
 
 
@@ -57,27 +58,38 @@ export class EnderecoComponent implements OnInit {
     });
   }
 
+
   consultarCEP(event) {
     // console.log(event.target.value);
     let cep: string = event.target.value;
     if (cep) {
-      cep = cep.replace("-", "").trim();
-      let validarCep = /^[0-9]{8}$/;
-      if (validarCep.test(cep)) {
-        this._enderecoService.carregarEndereco(cep).subscribe(item => {
-          if (item) {
-            console.log(item);
-            this.form.controls['logradouro'].patchValue(item.logradouro);
-            this.form.controls['localidade'].patchValue(item.localidade);
-            this.form.controls['uf'].patchValue(item.uf);
-            this.form.controls['bairro'].patchValue(item.bairro);
-            this.carregarEnderecoParam(item);
-            this.setEmiter();
-          }
-        }, error => {
-          this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
-        });
+      if (!this.validarCep(cep)) {
+        return;
       }
+      this.form.reset();
+      this._enderecoService.carregarEndereco(cep).subscribe(item => {
+        console.log(item);
+        this.form.controls['cep'].patchValue(item.cep);
+        this.form.controls['logradouro'].patchValue(item.logradouro);
+        this.form.controls['localidade'].patchValue(item.localidade);
+        this.form.controls['uf'].patchValue(item.uf);
+        this.form.controls['bairro'].patchValue(item.bairro);
+        this.carregarEnderecoParam(item);
+        this.setEmiter();
+      }, error => {
+        this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
+      });
+    }
+  }
+
+  validarCep(cep: string): boolean {
+    cep = cep.replace("-", "").trim();
+    let validarCep = /^[0-9]{8}$/;
+    if (validarCep.test(cep)) {
+      return true;
+    } else {
+      this._notifierService.notify(AlertType.Error, 'Não é um cep válido!');
+      return false;
     }
   }
 
@@ -106,7 +118,7 @@ export class EnderecoComponent implements OnInit {
 
   carregarEnderecoParam(endereco) {
     this.endereco = {} as any;
-    this.endereco.cep = endereco.cep;
+    this.endereco.cep = HelperChurch.retirarFormatacaoCep(endereco.cep);
     this.endereco.numero = endereco.numero;
     this.endereco.complemento = this.form.controls['complemento'].value;
     this.endereco.bairro = endereco.bairro;
@@ -167,8 +179,16 @@ export class EnderecoComponent implements OnInit {
         }
         this.setEmiter();
       }
-      if (item.type == 'confirm-dialog') {
+      if (item.type == 'confirm-dialog-endereco') {
         this.enderecos.splice(item.data, 1);
+        this.setEmiter();
+      }
+      if (item.type == 'endereco-dialog') {
+        for (let i = 0; i < this.enderecos.length; i++) {
+          if (this.enderecos[i].codigo == item.data.codigo) {
+            this.enderecos[i] = item.data;
+          }
+        }
         this.setEmiter();
       }
     });
@@ -197,24 +217,24 @@ export class EnderecoComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, 'Apenas um endereço é permitido!');
       return false;
     }
-    if (this.enderecos.length!=0) {
+    if (this.enderecos.length != 0) {
       this.endereco.codigo = this.enderecos[this.enderecos.length - 1].codigo + 1;
-    }else{
+    } else {
       this.endereco.codigo = 1;
     }
     this.enderecos.push(this.endereco);
   }
 
 
-   dialogAtualizar(item) {
+  dialogAtualizar(item) {
     console.log(item)
-    const dialogRef = this._dialog.open(DialogAtualizarEnderecoComponent ,{
-      width: '600px',
+    const dialogRef = this._dialog.open(DialogAtualizarEnderecoComponent, {
+      width: '800px',
       data: {
         item: item,
-        tipoEndereco:this.tipoEndereco,
-        comboEstados:this.comboEstados,
-        pessoa:this.pessoa
+        tipoEndereco: this.tipoEndereco,
+        comboEstados: this.comboEstados,
+        pessoa: this.pessoa
       }
     });
   }

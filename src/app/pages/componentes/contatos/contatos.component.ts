@@ -225,7 +225,7 @@ export class ContatosComponent implements OnInit {
         }
         this.setEmiter();
       }
-      if (item.type == 'confirm-dialog') {
+      if (item.type == 'confirm-dialog-contato') {
         this.contatos.splice(item.data, 1);
         this.setEmiter();
       }

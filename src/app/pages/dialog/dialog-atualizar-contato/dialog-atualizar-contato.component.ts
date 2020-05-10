@@ -79,7 +79,7 @@ export class DialogAtualizarContatoComponent implements OnInit {
       this.form.controls['emailPrincipal'].patchValue(false);
       this.isTipoAlterado = true;
     }
-    console.log(value);
+    // console.log(value);
     if (value) {
       if (value.nome == 'CELULAR' || value.nome == 'CELULAR DO TRABALHO') {
         this.isCelular = true;

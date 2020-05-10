@@ -6,8 +6,9 @@ import { NotifierService } from 'angular-notifier';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { map, startWith, take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
 import { CargoService } from '../../../service/cargo.service';
+import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confirm.component';
 
 @Component({
   selector: 'app-cargos',
@@ -20,13 +21,14 @@ export class CargosComponent implements OnInit {
   public comboCargo = [];
   public filteredCargo: Observable<string[]>;
   public myControlCargo = new FormControl();
-  public cargoSelecionado: any;
+  public cargoSelecionado;
   public cargos$: Observable<any[]>;
   public cargos =[];
 
   constructor(private _service: CargoService,
     private _notifierService: NotifierService,
-    private _emitirEventoService: EmitirEventoService) { }
+    private _emitirEventoService: EmitirEventoService,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this.carregarCargos();
@@ -53,7 +55,18 @@ export class CargosComponent implements OnInit {
       }
       if (item.type == 'edit-cargos') {
         this.cargos = item.data;
-        // console.log(this.etapas)
+        for (let i = 0; i < item.data.length; i++) {
+          let cargo = {} as any;
+          cargo.codigo = i + 1;
+          cargo.id = item.data[i].id;
+          cargo.nome = item.data[i].nome;
+          this.cargos.push(cargo)
+          this.setEmiter();
+        }
+        this.setEmiter();
+      }
+      if (item.type == 'confirm-dialog-cargo') {
+        this.cargos.splice(item.data, 1);
         this.setEmiter();
       }
     }); 
@@ -61,23 +74,30 @@ export class CargosComponent implements OnInit {
 
   adicionar() {
     if (!this.cargoSelecionado) {
-      this._notifierService.notify(AlertType.Error, "Por favor escolha uma etapa.!");
+      this._notifierService.notify(AlertType.Error, "Por favor escolha um cargo.!");
       return false;
     }
-    let etapaAdicionada = this.cargos.find(i=>i.nome==this.cargoSelecionado.nome);
-    if(etapaAdicionada &&  etapaAdicionada.nome == this.cargoSelecionado.nome){
-      this._notifierService.notify(AlertType.Error, "Etapa já adiocionada.!");
-      return false;
+    let cargo = {} as any;
+    cargo = this.cargoSelecionado;
+    if (this.cargos.length != 0) {
+      cargo.codigo = this.cargos[this.cargos.length - 1].codigo + 1;
+    } else {
+      cargo.codigo = 1;
     }
-    this.cargos.push(this.cargoSelecionado);
+    this.cargos.push(cargo);
     this.setEmiter();
   }
 
-  
-  remover(index): void {
-    this.cargos.splice(index, 1);
+  dialogRemover(item) {
+    // console.log(item)
+    const dialogRef = this._dialog.open(DialogConfirmComponent, {
+      width: '500px',
+      data: {
+        controller:'cargo',
+        item:item
+      }
+    });
   }
-
 
 
 }

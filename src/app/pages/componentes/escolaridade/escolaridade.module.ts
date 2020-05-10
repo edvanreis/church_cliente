@@ -4,6 +4,7 @@ import { EscolaridadeComponent } from './escolaridade.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material';
+import { DialogConfirmModule } from '../../dialog/dialog-confirm/dialog-confirm.module';
 
 @NgModule({
   imports: [
@@ -12,6 +13,7 @@ import { MatSelectModule } from '@angular/material';
     ReactiveFormsModule,
     FormsModule,
     MatSelectModule,
+    DialogConfirmModule
   ],
   declarations: [
     EscolaridadeComponent

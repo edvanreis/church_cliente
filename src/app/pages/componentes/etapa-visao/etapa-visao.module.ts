@@ -4,6 +4,7 @@ import { EtapaVisaoComponent } from './etapa-visao.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { MatSelectModule, MatOptionModule, MatButtonModule } from '@angular/material';
+import { DialogConfirmModule } from '../../dialog/dialog-confirm/dialog-confirm.module';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { MatSelectModule, MatOptionModule, MatButtonModule } from '@angular/mate
     FormsModule,
     MatSelectModule,
     MatOptionModule,
-    MatButtonModule
+    MatButtonModule,
+    DialogConfirmModule
   ],
   declarations: [
     EtapaVisaoComponent

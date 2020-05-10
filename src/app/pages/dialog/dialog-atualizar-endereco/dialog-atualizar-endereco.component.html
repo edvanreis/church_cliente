@@ -10,8 +10,7 @@
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
         <mat-form-field class="full-width-field">
           <input matInput placeholder="CEP" formControlName="cep" id="cep"
-            [textMask]="{mask: maskCEP}">
-          <mat-error *ngIf="!form.controls.cep.valid">Campo Obrigatório</mat-error>
+            [textMask]="{mask: maskCEP}" (blur)="consultarCEP($event)" >
         </mat-form-field>
         <mat-form-field cclass="full-width-field">
           <input matInput placeholder="Número" formControlName="numero" id="numero">
@@ -44,18 +43,13 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </div>
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" *ngIf="data.pessoa">
-        <mat-form-field>
+        <mat-form-field  *ngIf="data.pessoa">
           <mat-label>Tipo Endereços</mat-label>
           <mat-select formControlName="tipo" id="tipo">
             <mat-option *ngFor="let item of tipoEndereco" [value]="item.tipo">
               {{item.descTipoEndereco}}
             </mat-option>
           </mat-select>
-        </mat-form-field>
-        <mat-form-field class="full-width-field" *ngIf="observacao">
-          <textarea matInput placeholder="Observação" formControlName="observacao"></textarea>
         </mat-form-field>
       </div>
     </form>
