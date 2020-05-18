@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormControl } from '@angular/forms';
 import { CelulaService } from '../../../service/celula.service';
@@ -24,6 +24,7 @@ export class CargosComponent implements OnInit {
   public cargoSelecionado;
   public cargos$: Observable<any[]>;
   public cargos =[];
+  @Input('idAssociado') idAssociado;
 
   constructor(private _service: CargoService,
     private _notifierService: NotifierService,
@@ -54,13 +55,14 @@ export class CargosComponent implements OnInit {
         this.cargos = [];
       }
       if (item.type == 'edit-cargos') {
-        this.cargos = item.data;
+        // this.cargos = item.data;
         for (let i = 0; i < item.data.length; i++) {
           let cargo = {} as any;
           cargo.codigo = i + 1;
           cargo.id = item.data[i].id;
           cargo.nome = item.data[i].nome;
-          this.cargos.push(cargo)
+          this.cargos.push(cargo);
+          console.log(this.cargos)
           this.setEmiter();
         }
         this.setEmiter();
@@ -89,12 +91,13 @@ export class CargosComponent implements OnInit {
   }
 
   dialogRemover(item) {
-    // console.log(item)
+    console.log(item)
     const dialogRef = this._dialog.open(DialogConfirmComponent, {
       width: '500px',
       data: {
         controller:'cargo',
-        item:item
+        item:item,
+        idAssociado: this.idAssociado
       }
     });
   }

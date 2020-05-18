@@ -22,6 +22,7 @@ import { DialogEnviarCartaModule } from '../dialog/dialog-enviar-carta/dialog-en
 import { DialogHistoricoPessoaModule } from '../dialog/dialog-historico-pessoa/dialog-historico-pessoa.module';
 import { CargosModule } from '../componentes/cargos/cargos.module';
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
+import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
 
 
 
@@ -62,6 +63,7 @@ const routes: Routes = [
     MatTooltipModule,
     CargosModule,
     DialogAtivarInativarModule,
+    DialogConfirmPessoaModule,
     RouterModule.forChild(routes)
   ],
   exports: [

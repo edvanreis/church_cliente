@@ -32,7 +32,7 @@ export class PessoaService {
   }
 
   save(pessoa) {
-    return this.http.post(this._url , pessoa)
+    return this.http.post(this._url, pessoa)
       .pipe(map((response: any) => response))
   }
 
@@ -46,13 +46,8 @@ export class PessoaService {
       .pipe(tap((response: any) => response));
   }
 
-  obterEscolaridadePessoa(id) {
-    return this.http.get(this._url + id + "/escolaridadePessoa")
-      .pipe(tap((response: any) => response));
-  }
-
   update(pessoa) {
-    return this.http.put(this._url,pessoa)
+    return this.http.put(this._url, pessoa)
       .pipe(map((response: any) => response))
   }
 
@@ -76,12 +71,12 @@ export class PessoaService {
       .pipe(map((response: any) => response))
   }
 
-  
+
   pessoaRede(id) {
     return this.http.get(this._url + id + "/pessoaRede")
       .pipe(tap((response: any) => response));
   }
 
-  
+
 
 }

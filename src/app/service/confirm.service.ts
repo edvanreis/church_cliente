@@ -25,4 +25,11 @@ export class ConfirmService {
     return this.http.delete(url+id)
       .pipe(map((response: any) => response))
   }
+
+  
+  removerPessoaIgreja(obj,controller) {
+    let url = this._url+controller;
+    return this.http.post(url+"/removerIgrejaPessoa", obj)
+      .pipe(tap((response: any) => response));
+  }
 }

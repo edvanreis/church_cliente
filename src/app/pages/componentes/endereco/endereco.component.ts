@@ -27,6 +27,7 @@ export class EnderecoComponent implements OnInit {
   @Input('sizeLimitOne') sizeLimitOne = false;
   @Input('pessoa') pessoa = false;
   @Input('idPessoa') idPessoa;
+  @Input('idAssociado') idAssociado;
   public tipoEndereco = [];
   public observacao: boolean = false;
 
@@ -66,9 +67,9 @@ export class EnderecoComponent implements OnInit {
       if (!this.validarCep(cep)) {
         return;
       }
-      this.form.reset();
+      this.cleanForm();
       this._enderecoService.carregarEndereco(cep).subscribe(item => {
-        console.log(item);
+        // console.log(item);
         this.form.controls['cep'].patchValue(item.cep);
         this.form.controls['logradouro'].patchValue(item.logradouro);
         this.form.controls['localidade'].patchValue(item.localidade);
@@ -80,6 +81,15 @@ export class EnderecoComponent implements OnInit {
         this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
       });
     }
+  }
+
+  cleanForm(){
+    this.form.controls['logradouro'].patchValue('');
+    this.form.controls['localidade'].patchValue('');
+    this.form.controls['uf'].patchValue('');
+    this.form.controls['bairro'].patchValue('');
+    this.form.controls['complemento'].patchValue('');
+    this.form.controls['tipo'].patchValue('');
   }
 
   validarCep(cep: string): boolean {
@@ -246,6 +256,7 @@ export class EnderecoComponent implements OnInit {
       data: {
         controller: 'endereco',
         item: item,
+        idAssociado: this.idAssociado
       }
     });
   }

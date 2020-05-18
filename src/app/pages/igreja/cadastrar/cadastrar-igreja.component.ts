@@ -31,18 +31,18 @@ export class CadastrarIgrejaComponent implements OnInit {
   public comboIgrejaSede = [];
   public filteredIgrejaSede: Observable<string[]>;
   public myControlIgrejaSede = new FormControl();
-  public nomePastorValue:string;
-  public id:any;
+  public nomePastorValue: string;
+  public id: any;
   public dados = {} as any;
-  public tipoEdicao:any;
-  public sizeLimitOne:boolean = true;
-  constructor(private _emitirEventoService: EmitirEventoService, 
-              private _igrejaService: IgrejaService, 
-              private _sedeService: IgrejaSedeService, 
-              private _filialService:IgrejaFilialService,
-              private _notifierService: NotifierService,
-              private _router: Router,
-              private _avRoute: ActivatedRoute) { }
+  public tipoIgreja: any;
+  public sizeLimitOne: boolean = true;
+  constructor(private _emitirEventoService: EmitirEventoService,
+    private _igrejaService: IgrejaService,
+    private _sedeService: IgrejaSedeService,
+    private _filialService: IgrejaFilialService,
+    private _notifierService: NotifierService,
+    private _router: Router,
+    private _avRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -55,7 +55,7 @@ export class CadastrarIgrejaComponent implements OnInit {
     this._emitirEventoService.mensagem.subscribe(item => {
       // console.log(item.data);
       if (item.type == 'dadosIgreja') {
-        this.dadosIgreja = item.data;
+        this.dados = item.data;
       }
       if (item.type == 'endereco') {
         this.enderecos = item.data;
@@ -66,69 +66,63 @@ export class CadastrarIgrejaComponent implements OnInit {
     });
   }
 
-  setEmiter(save:boolean): void {
-    if(save){
+  setEmiter(save: boolean): void {
+    if (save) {
       this._emitirEventoService.emitir("clear", "");
     }
-    if(this.dados && !save){
-      this._emitirEventoService.emitir("dadosIgreja",this.dados);
-    }  
-    if(this.enderecos  && !save ){
-      this._emitirEventoService.emitir("edit-endereco",this.enderecos);
-    } 
-    if(this.contatos  && !save ){
-      this._emitirEventoService.emitir("edit-contatos",this.contatos);
-    } 
+    if (this.dados && !save) {
+      this._emitirEventoService.emitir("edit-dadosIgreja", this.dados);
+    }
+    if (this.enderecos && !save) {
+      this._emitirEventoService.emitir("edit-endereco", this.enderecos);
+    }
+    if (this.contatos && !save) {
+      this._emitirEventoService.emitir("edit-contatos", this.contatos);
+    }
   }
 
   getDadosIgreja() {
 
     this.igreja = {} as any;
-    this.igreja.nome = this.dadosIgreja.nome;
-    this.igreja.cnpj = HelperChurch.retirarFormatacaoCNPJ(this.dadosIgreja.cnpj);
-    this.igreja.telefone = this.dadosIgreja.telefone;
-    this.igreja.pessoas = this.dadosIgreja.pessoas;
-    this.igreja.visaoCelular = this.dadosIgreja.visaoCelular;
+    this.igreja.nome = this.dados.nome;
+    this.igreja.cnpj = HelperChurch.retirarFormatacaoCNPJ(this.dados.cnpj);
+    this.igreja.telefone = this.dados.telefone;
+    this.igreja.pessoas = this.dados.pessoas;
+    this.igreja.visaoCelular = this.dados.visaoCelular;
     this.igreja.enderecos = this.enderecos;
     this.igreja.contatos = this.contatos;
 
-    if(this.id){
+    if (this.id) {
       this.igreja.id = this.id;
     }
-    if(this.igrejaSelecionada){
-      this.igreja.sede = this.igrejaSelecionada; 
+    if (this.igrejaSelecionada) {
+      this.igreja.sede = this.igrejaSelecionada;
     }
 
-    console.log(this.igreja);
+    // console.log(this.igreja);
   }
 
   getParams() {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
-      this.tipoEdicao = this._avRoute.snapshot.queryParamMap.get("tipo");
-      if(this.tipoEdicao){
-          if(this.tipoEdicao=='sede'){
-            this.getSede(this.id);
-          }else{
-            this.getFilial(this.id);
-          }
+      this.tipoIgreja = this._avRoute.snapshot.queryParamMap.get("tipo");
+      if (this.tipoIgreja && this.tipoIgreja == 'sede') {
+        this.getSede(this.id);
+      } else {
+        this.getFilial(this.id);
       }
-      
-    }
-    if (this._avRoute.snapshot.queryParamMap.get("tipo")) {
-      this.tipoEdicao = this._avRoute.snapshot.queryParamMap.get("tipo");
     }
   }
   salvarSede() {
     this.getDadosIgreja();
-    if(this.id){
+    if (this.id) {
       this.updateSede();
-    }else{
+    } else {
       this.saveSede();
     }
   }
 
-  saveSede(){   
+  saveSede() {
     console.log(this.igreja);
     this._sedeService.save(this.igreja).pipe(take(1)).subscribe(item => {
       this.clearFieldsSede();
@@ -141,16 +135,16 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   salvarFilial() {
     this.getDadosIgreja();
-    if(this.id){
+    if (this.id) {
       this.updateFilial();
-    }else{
+    } else {
       this.saveFilial();
     }
   }
 
   saveFilial() {
     this.getDadosIgreja();
-    this.igreja.sede = {id:this.igrejaSelecionada.id};
+    this.igreja.sede = { id: this.igrejaSelecionada.id };
     // console.log(this.igreja);
     this._filialService.save(this.igreja).pipe(take(1)).subscribe(item => {
       this.clearFieldFilial();
@@ -203,10 +197,10 @@ export class CadastrarIgrejaComponent implements OnInit {
     });
   }
 
-  
+
   getSede(id) {
     this._sedeService.getSede(id).pipe(take(1)).subscribe(item => {
-      console.log(item);
+      // console.log(item);
       this.carregarDados(item);
       this.setEmiter(false);
     }, error => {
@@ -216,7 +210,7 @@ export class CadastrarIgrejaComponent implements OnInit {
 
   getFilial(id) {
     this._filialService.getFilial(id).pipe(take(1)).subscribe(item => {
-      console.log(item);
+      // console.log(item);
       this.carregarDados(item);
       this.setEmiter(false);
     }, error => {
@@ -225,38 +219,39 @@ export class CadastrarIgrejaComponent implements OnInit {
   }
 
   carregarDados(item) {
+    this.dados.id = item.id
     this.dados.nome = item.nome
     this.dados.cnpj = item.cnpj;
     this.dados.pessoas = item.pessoas;
     this.dados.visaoCelular = item.visaoCelular;
     this.enderecos = item.enderecos;
     this.contatos = item.contatos;
-    if(item.sede){
+    if (item.sede) {
       this.nomeValue = item.sede.nome;
       this.igrejaSelecionada = item.sede;
     }
   }
 
-  updateSede(){
-    console.log(this.igreja);
-      this._sedeService.update(this.igreja).pipe(take(1)).subscribe(item => {
-        this._notifierService.notify(AlertType.Success, item.value);
-      }, error => {
-        this._notifierService.notify(AlertType.Error, error.message);
-      });
+  updateSede() {
+    // console.log(this.igreja);
+    this._sedeService.update(this.igreja).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
   }
 
-  updateFilial(){
+  updateFilial() {
     console.log(this.igreja);
     this._filialService.update(this.igreja).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
     });
-}
+  }
 
 
- 
+
 
 
 

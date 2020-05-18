@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Observable } from 'rxjs';
 import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { NotifierService } from 'angular-notifier';
@@ -17,6 +17,7 @@ export class EtapaVisaoComponent implements OnInit {
   public etapa$: Observable<any[]>;
   public etapa: any;
   public etapas = [];
+  @Input('idAssociado') idAssociado;
 
   constructor(private _etapaVisao: EtapaVisaoService,
     private _notifierService: NotifierService,
@@ -92,7 +93,8 @@ export class EtapaVisaoComponent implements OnInit {
       width: '500px',
       data: {
         controller: 'etapaVisao',
-        item: item
+        item: item,
+        idAssociado: this.idAssociado
       }
     });
   }

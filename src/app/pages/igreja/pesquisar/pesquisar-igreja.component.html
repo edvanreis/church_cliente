@@ -76,14 +76,14 @@
               <td>{{f.endereco.uf}}</td>
               <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(f.id,'filial')"><i
                     class="material-icons">create</i></span>
-                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id,'filial')"><i
+                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(f.id,'filial')"><i
                     class="material-icons">settings</i></span>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="table-responsive" *ngIf="!agrupar.checked && filteredIgrejas.lenght > 0"  style="overflow: auto; height: 300px;">
+      <div class="table-responsive" *ngIf="!agrupar.checked"  style="overflow: auto; height: 300px;">
         <table>
           <thead class="text-primary">
             <th>SEDE</th>
@@ -106,9 +106,9 @@
               <td>{{i.endereco.logradouro}}</td>
               <td>{{i.endereco.localidade}}</td>
               <td>{{i.endereco.uf}}</td>
-              <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(i.id,'sede')"><i
+              <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(i.id,i.isSede?'sede':'filial')"><i
                     class="material-icons">create</i></span>
-                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id,'sede')"><i
+                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id,i.isSede?'sede':'filial')"><i
                     class="material-icons">settings</i></span>
               </td>
             </tr>

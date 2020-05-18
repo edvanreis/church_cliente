@@ -21,12 +21,14 @@
   <div class="table-responsive">
     <table>
       <thead class="text-primary">
+        <th></th>
         <th>Escolaridades</th>
         <th>Curso</th>
         <th>Remover</th>
       </thead>
       <tbody>
         <tr *ngFor="let e of escolaridades">
+          <td>{{ e.codigo}}</td>
           <td>{{ e.descricao}}</td>
           <td>{{ e.curso }}</td>
           <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(e)"><i

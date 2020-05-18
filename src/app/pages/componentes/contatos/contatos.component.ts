@@ -33,6 +33,7 @@ export class ContatosComponent implements OnInit {
   public comboTipoContatos = [];
   public tipoSelected: any;
   @Input('idPessoa') idPessoa;
+  @Input('idAssociado') idAssociado;
 
 
   constructor(private _contatoService: ContatoService,
@@ -212,7 +213,7 @@ export class ContatosComponent implements OnInit {
           contato.idPessoa = this.idPessoa;
           this.contatos.push(contato)
         }
-        console.log(this.contatos)
+        // console.log(this.contatos)
         // this.carregarContatoGrid(this.contatos);
         this.setEmiter();
       }
@@ -255,7 +256,8 @@ export class ContatosComponent implements OnInit {
       width: '500px',
       data: {
         controller:'contato',
-        item:item
+        item:item,
+        idAssociado: this.idAssociado
       }
     });
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { MembroService } from '../../../service/membro.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { PessoaService } from '../../../service/pessoa.service';
@@ -18,16 +18,17 @@ import { MatDialog } from '@angular/material';
   styleUrls: ['./escolaridade.component.scss']
 })
 export class EscolaridadeComponent implements OnInit {
-  
-  public comboEscolaridade:any = []
-  public escolaridades:any = []
-  public escolaridadesGrid:any = []
+
+  public comboEscolaridade: any = []
+  public escolaridades: any = []
+  public escolaridadesGrid: any = []
   public form: FormGroup;
+  @Input('idAssociado') idAssociado;
 
   constructor(private _service: EscolaridadeService,
-              private _emitirEventoService: EmitirEventoService,
-              private _notifierService: NotifierService,
-              private _dialog: MatDialog) { }
+    private _emitirEventoService: EmitirEventoService,
+    private _notifierService: NotifierService,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this.getComboEscolaridade();
@@ -55,22 +56,28 @@ export class EscolaridadeComponent implements OnInit {
   }
 
   adicionar() {
-    if(!this.form.controls['escolaridade'].value){
+    if (!this.form.controls['escolaridade'].value) {
       this._notifierService.notify(AlertType.Error, "Por favor escolha pelo menos uma escolaridade!");
       return false;
     }
     let escolaridade = this.form.controls['escolaridade'].value;
-    let isExist = this.escolaridades.find(i=>i.curso==this.form.controls['curso'].value);
-    if(isExist){
+    let isExist = this.escolaridades.find(i => i.curso == this.form.controls['curso'].value);
+    if (isExist) {
       this._notifierService.notify(AlertType.Error, "Curso já adicionado!");
       return false;
     }
-    
-    let curso:string = this.form.controls['curso'].value;
+    if (this.escolaridades.length != 0) {
+      escolaridade.codigo = this.escolaridades[this.escolaridades.length - 1].codigo + 1;
+    } else {
+      escolaridade.codigo = 1;
+    }
+
+    let curso: string = this.form.controls['curso'].value;
     this.escolaridades.push({
-        id:escolaridade.id,
-        descricao:escolaridade.descricao,
-        curso:curso.toUpperCase()
+      codigo: escolaridade.codigo,
+      id: escolaridade.id,
+      descricao: escolaridade.descricao,
+      curso: curso.toUpperCase()
     });
     this.setEmiter();
   }
@@ -82,7 +89,14 @@ export class EscolaridadeComponent implements OnInit {
         this.escolaridades = [];
       }
       if (item.type == 'edit-escolaridades') {
-        this.escolaridades = item.data;
+        for (let i = 0; i < item.data.length; i++) {
+          let escolaridade = {} as any;
+          escolaridade.codigo = i + 1;
+          escolaridade.id = item.data[i].id;
+          escolaridade.descricao = item.data[i].descricao;
+          this.escolaridades.push(escolaridade);
+          this.setEmiter();
+        }
         this.setEmiter();
       }
       if (item.type == 'confirm-dialog-escolaridade') {
@@ -92,9 +106,9 @@ export class EscolaridadeComponent implements OnInit {
 
     });
   }
-  
 
-  carregarEscolaridadeGrid(contatos){
+
+  carregarEscolaridadeGrid(contatos) {
     contatos.forEach(element => {
       this.escolaridadesGrid.push({
         tipo: element.descricao,
@@ -104,16 +118,16 @@ export class EscolaridadeComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir("escolaridades",  this.escolaridades);
+    this._emitirEventoService.emitir("escolaridades", this.escolaridades);
   }
 
   dialogRemover(item) {
-    console.log(item)
     const dialogRef = this._dialog.open(DialogConfirmComponent, {
       width: '600px',
       data: {
         controller: 'escolaridade',
         item: item,
+        idAssociado: this.idAssociado
       }
     });
   }

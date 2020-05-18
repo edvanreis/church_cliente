@@ -156,7 +156,7 @@ export class DadosPessoaisComponent implements OnInit {
     this.form.controls['observacao'].patchValue(dados.observacao);
     this.form.controls['batizado'].patchValue(dados.batizado);
     this.form.controls['dizimista'].patchValue(dados.dizimista);
-    this.form.controls['dataNascimento'].patchValue(dados.dataNascimentoFormatada);
+    this.form.controls['dataNascimento'].patchValue(dados.dataNascimento);
     this.form.controls['cartaRecomendacao'].patchValue(dados.cartaRecomendacao);
     this.form.controls['status'].patchValue(dados.status);
     this.setObj();

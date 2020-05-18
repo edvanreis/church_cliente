@@ -28,17 +28,22 @@ export class DialogConfirmComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir('confirm-dialog-'+this.data.controller, this.data.item);
+    this._emitirEventoService.emitir('confirm-dialog-' + this.data.controller, this.data.item);
   }
 
-  confirmar(){
-    this._service.remove(this.data.item.id,this.data.controller).pipe(take(1)).subscribe(item => {
-      this._notifierService.notify(AlertType.Success, item.value);
+  confirmar() {
+    if (!this.data.idAssociado) {
       this.setEmiter();
       this.close();
-    }, error => {
-      this._notifierService.notify(AlertType.Error, error.message);
-    });
+    } else {
+      this._service.remove(this.data.item.id, this.data.controller).pipe(take(1)).subscribe(item => {
+        this._notifierService.notify(AlertType.Success, item.value);
+        this.setEmiter();
+        this.close();
+      }, error => {
+        this._notifierService.notify(AlertType.Error, error.message);
+      });
+    }
   }
 
 

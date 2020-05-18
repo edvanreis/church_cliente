@@ -148,7 +148,7 @@ export class PesquisarIgrejaComponent implements OnInit {
 
   getList() {
     this._igrejaService.getList().pipe(take(1)).subscribe(item => {
-      console.log(item)
+      // console.log(item)
       this.igrejas = item;
       this.filteredIgrejas = this.myControl.valueChanges
         .pipe(

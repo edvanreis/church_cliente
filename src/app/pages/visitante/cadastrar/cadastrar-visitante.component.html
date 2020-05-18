@@ -16,19 +16,19 @@
           <i class="material-icons">store_mall_directory</i>
           <h1 class="mat-subheading-2 center-align">Endereço</h1>
         </div>
-        <app-endereco [pessoa]="true"></app-endereco>
+        <app-endereco [pessoa]="true"  [idAssociado]="id"></app-endereco>
         <mat-divider></mat-divider>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
           <i class="material-icons">headset_mic</i>
           <h1 class="mat-subheading-2 center-align">Contatos</h1>
         </div>
-        <app-contatos [idPessoa]="id"></app-contatos>
+        <app-contatos [idPessoa]="id"  [idAssociado]="id"></app-contatos>
         <mat-divider></mat-divider>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
           <i class="material-icons">school</i>
           <h1 class="mat-subheading-2 center-align">Escolaridade</h1>
         </div>
-        <app-escolaridade></app-escolaridade>
+        <app-escolaridade  [idAssociado]="id" ></app-escolaridade>
         <br />
         <br />
           <div>

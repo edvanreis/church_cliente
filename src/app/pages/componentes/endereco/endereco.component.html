@@ -69,7 +69,7 @@
         <th>Logradouro</th>
         <th>Cidade</th>
         <th>Estado</th>
-        <th>Tipo</th>
+        <th *ngIf="pessoa" >Tipo</th>
         <th>Ação</th>
       </thead>
       <tbody>
@@ -82,7 +82,7 @@
           <td>{{ e.logradouro}}</td>
           <td>{{ e.localidade}}</td>
           <td>{{ e.uf}}</td>
-          <td>{{ e.descTipoEndereco}}</td>
+          <td *ngIf="pessoa" >{{ e.descTipoEndereco}}</td>
           <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogAtualizar(e)"><i class="material-icons">create</i></span>
             <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(e)"><i class="material-icons">delete</i></span>
           </td>

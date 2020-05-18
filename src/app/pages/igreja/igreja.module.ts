@@ -3,19 +3,17 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatDividerModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatTabsModule, MatToolbarModule, MatExpansionModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatDividerModule, MatExpansionModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatTabsModule, MatToolbarModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { InterceptorService } from '../../service/interceptor.service';
 import { ContatosModule } from '../componentes/contatos/contatos.module';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
-import { IgrejaDadosComponent } from '../componentes/igreja-dados/igreja-dados.component';
+import { IgrejaDadosModule } from '../componentes/igreja-dados/igreja-dados.module';
+import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 import { CadastrarIgrejaComponent } from './cadastrar/cadastrar-igreja.component';
 import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component';
-import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
-
-
 
 
 
@@ -48,12 +46,12 @@ const routes: Routes = [
     MatSlideToggleModule,
     DialogAtivarInativarModule,
     MatExpansionModule,
+    IgrejaDadosModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
     CadastrarIgrejaComponent, 
-    PesquisarIgrejaComponent, 
-    IgrejaDadosComponent,
+    PesquisarIgrejaComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }

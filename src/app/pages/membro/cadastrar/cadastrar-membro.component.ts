@@ -9,6 +9,7 @@ import { EnderecoService } from '../../../service/endereco.service';
 import { PessoaService } from '../../../service/pessoa.service';
 import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { CargoService } from '../../../service/cargo.service';
+import { EscolaridadeService } from '../../../service/escolaridade.service';
 
 
 @Component({
@@ -40,7 +41,8 @@ export class CadastrarMembroComponent implements OnInit {
     private _avRoute: ActivatedRoute,
     private _contatoService: ContatoService,
     private _etapaVisaoService: EtapaVisaoService,
-    private _cargosService: CargoService) { }
+    private _cargosService: CargoService,
+    private _escolaridadeService:EscolaridadeService) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -60,7 +62,7 @@ export class CadastrarMembroComponent implements OnInit {
 
   getPessoa(id) {
     this._service.obterPessoa(id).pipe(take(1)).subscribe(item => {
-      // console.log(item)
+      console.log(item)
       this.emitirPessoa(item);
       this.getEndereco(item.id)
       this.getContatos(item.id);
@@ -95,7 +97,7 @@ export class CadastrarMembroComponent implements OnInit {
 
   getEscolaridades(id) {
     // console.log(id)
-    this._service.obterEscolaridadePessoa(id).pipe(take(1)).subscribe(item => {
+    this._escolaridadeService.obterEscolaridadePessoa(id).pipe(take(1)).subscribe(item => {
       this.emitirEscolaridades(item);
     }, error => {
       console.log(error)
