@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DateAdapter } from '@angular/material';
+import { DateAdapter, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { take } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { AlertType } from '../../../model/alert-type';
 import { CelulaService } from '../../../service/celula.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { RedeService } from '../../../service/rede.service';
+import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 
 @Component({
   selector: 'app-cadastrar-celula',
@@ -44,7 +45,8 @@ export class CadastrarCelulaComponent implements OnInit {
     private _avRoute: ActivatedRoute,
     private _router: Router,
     private _redeService: RedeService,
-    private _dateAdapter: DateAdapter<Date>) { }
+    private _dateAdapter: DateAdapter<Date>,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -150,9 +152,15 @@ export class CadastrarCelulaComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Erro: escolha um tipo membro da célula!");
       return false;
     }
+    if (this.membros.length != 0) {
+      this.membro.codigo = this.membros[this.membros.length - 1].codigo + 1;
+    } else {
+      this.membro.codigo = 1;
+    }
     this.membro.tipo = this.tipoPessoa.tipoPessoa;
-    this.membro.descTipoPesssoa = this.tipoPessoa.descTipoPesssoa;
+    this.membro.descTipoPessoa =  this.tipoPessoa.descTipoPessoa;
     this.tipoPessoa = null;
+    console.log(this.membro)
     this.membros.push(this.membro);
   }
 
@@ -198,10 +206,23 @@ export class CadastrarCelulaComponent implements OnInit {
       this.observacao = item.observacao;
       this.getRede(item.rede.id)
       this.emitirEnderecos(item.enderecos);
-      this.membros = item.pessoas;
+      this.carregarPessoas(item.pessoas);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });
+  }
+
+  carregarPessoas(item){
+    for (let i = 0; i < item.length; i++) {
+      let pessoa = {} as any;
+      pessoa.codigo = i + 1;
+      pessoa.id = item[i].id;
+      pessoa.nomeCompleto = item[i].nomeCompleto;
+      pessoa.cpf = item[i].cpf;
+      pessoa.tipo = item[i].tipo;
+      pessoa.descTipoPessoa = item[i].descTipoPessoa;
+      this.membros.push(pessoa);
+    }
   }
 
   getRede(id) {
@@ -242,6 +263,18 @@ export class CadastrarCelulaComponent implements OnInit {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+  dialogRemover(item) {
+    // console.log(item)
+    const dialogRef = this._dialog.open(DialogConfirmPessoaComponent, {
+      width: '600px',
+      data: {
+        id: Number.parseInt(this.id),
+        idPessoa: item.id,
+        controller: "celula"
+      }
     });
   }
 

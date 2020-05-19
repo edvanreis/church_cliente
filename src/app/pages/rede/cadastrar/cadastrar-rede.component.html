@@ -47,6 +47,7 @@
       <div class="table-responsive" *ngIf="membros.length > 0">
         <table>
           <thead class="text-primary">
+            <th></th>
             <th>Nome</th>
             <th>Célula</th>
             <th>Igreja</th>       
@@ -54,10 +55,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let m of membros">
+              <td>{{ m.codigo}}</td>
               <td>{{ m.nomeCompleto}}</td>
               <td></td>
               <td></td>
-              <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
+              <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(m)"><i
                     class="material-icons">delete</i></span></td>
             </tr>
           </tbody>

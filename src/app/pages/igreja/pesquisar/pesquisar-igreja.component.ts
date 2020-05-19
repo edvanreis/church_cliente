@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { DialogAtivarInativarComponent } from '../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
 import { IgrejaSedeService } from '../../../service/igreja-sede.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { ExcelService } from '../../../service/excel.service';
 
 const ELEMENT_DATA = [
   { codigo: 'A', value: 'Ativo' },
@@ -39,7 +40,8 @@ export class PesquisarIgrejaComponent implements OnInit {
     private _router: Router,
     private _dialog: MatDialog,
     private _emitirEventoService: EmitirEventoService,
-    private _avRoute: ActivatedRoute) { }
+    private _avRoute: ActivatedRoute,
+    private _excelService: ExcelService) { }
 
   ngOnInit() {
     this.getList();
@@ -178,6 +180,22 @@ export class PesquisarIgrejaComponent implements OnInit {
     } else {
       this.getList();
     }
+  }
+
+  exportAsXLSX() {
+    let dados = [];
+    this.igrejas.forEach(i => {
+      dados.push({
+        "Nome": i.nome,
+        "Cnpj": i.cnpj,
+        "Cep": i.endereco.cep,
+        "Bairro": i.endereco.bairro,
+        "Logradouro": i.endereco.logradouro,
+        "Cidade": i.endereco.localidade,
+        "Estado": i.endereco.uf,
+      });
+    });
+    this._excelService.exportAsExcelFile(dados, "pesquisa");
   }
 
 

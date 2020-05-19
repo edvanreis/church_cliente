@@ -11,6 +11,7 @@ import { MembroComponenteModule } from '../componentes/membro/membro-componente.
 import { CadastrarRedeComponent } from './cadastrar/cadastrar-rede.component';
 import { PesquisarRedeComponent } from './pesquisar/pesquisar-rede.component';
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
+import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
 
 
 
@@ -36,6 +37,7 @@ const routes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     DialogAtivarInativarModule,
+    DialogConfirmPessoaModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

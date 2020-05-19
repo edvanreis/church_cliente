@@ -80,7 +80,7 @@
           <mat-label>Selecione...</mat-label>
           <mat-select  id="comboTipopessoa"  [(ngModel)]="tipoPessoa" >
             <mat-option *ngFor="let item of comboTipoPessoa" [value]="item">
-              {{item.decTipoPesspa}}
+              {{item.descTipoPessoa}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -94,6 +94,7 @@
       <div class="table-responsive" *ngIf="membros.length > 0">
         <table>
           <thead class="text-primary">
+            <th></th> 
             <th>Nome</th> 
             <th>cpf</th>
             <th>Tipo</th>          
@@ -101,10 +102,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let m of membros">
+              <td>{{ m.codigo}}</td>
               <td>{{ m.nomeCompleto}}</td>
-              <td>{{ m.cpf}}</td>
-              <td>{{ m.descTipoPesssoa}}</td>
-              <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
+              <td>{{ m.cpf | cpfCnpj }}</td>
+              <td>{{ m.descTipoPessoa}}</td>
+              <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(m)"><i
                     class="material-icons">delete</i></span></td>
             </tr>
           </tbody>

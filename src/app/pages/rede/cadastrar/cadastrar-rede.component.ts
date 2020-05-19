@@ -1,7 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DateAdapter } from '@angular/material';
+import { DateAdapter, MatDialog } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs';
@@ -10,6 +10,7 @@ import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { IgrejaService } from '../../../service/igreja.service';
 import { RedeService } from '../../../service/rede.service';
+import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 
 @Component({
   selector: 'app-cadastrar-rede',
@@ -41,7 +42,8 @@ export class CadastrarRedeComponent implements OnInit {
     private _avRoute: ActivatedRoute,
     private _router: Router,
     private _igejaService: IgrejaService,
-    private _dateAdapter: DateAdapter<Date>) { }
+    private _dateAdapter: DateAdapter<Date>,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -69,28 +71,38 @@ export class CadastrarRedeComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      // console.log(item.data);
+      
       if (item.type == 'membro-comp') {
+        console.log(item.data);
         this.membro = item.data;
       }
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
+      }
+      if (item.type == 'confirm-dialog-pessoa') {
+        this.membros.splice(item.data, 1);
       }
     });
   }
 
   adicionar() {
     if (!this.membro) {
-      this._notifierService.notify(AlertType.Error, "Erro:campo membro em branco!");
+      console.log(this.membro);
+      this._notifierService.notify(AlertType.Error, "Por favor escolha uma membro.!");
       return false;
+    }
+    let membroAdicionado = this.membros.find(i => i.nome == this.membro.nome);
+    if (membroAdicionado && membroAdicionado.nome == this.membro.nome) {
+      this._notifierService.notify(AlertType.Error, "Membro já adiocionado.!");
+      return false;
+    }
+    if (this.membros.length != 0) {
+      this.membro.codigo = this.membros[this.membros.length - 1].codigo + 1;
+    } else {
+      this.membro.codigo = 1;
     }
     this.membros.push(this.membro);
     this.setEmiter();
-  }
-
-
-  remover(index): void {
-    this.membros.splice(index, 1);
   }
 
 
@@ -112,7 +124,7 @@ export class CadastrarRedeComponent implements OnInit {
       pessoas: this.membros,
       dataAbertura: this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy'),
       rede: this.form.controls['redes'].value,
-      observacao: this.form.controls['descricao'].value
+      descricao: this.form.controls['descricao'].value
     }
   }
 
@@ -145,12 +157,23 @@ export class CadastrarRedeComponent implements OnInit {
       this.form.controls['descricao'].patchValue(item.descricao);
       this.form.controls['redes'].patchValue(item.rede);
       this.form.controls['dataAbertura'].patchValue(new Date(item.dataAbertutaToDate));
-      this.form.controls['descricao'].patchValue(item.observacao);
+      this.form.controls['descricao'].patchValue(item.descricao);
       this.getIgreja(item.idIgreja)
-      this.membros = item.pessoas;
+      this.carregarPessoas(item.pessoas);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });
+  }
+
+  carregarPessoas(item){
+    for (let i = 0; i < item.length; i++) {
+      let pessoa = {} as any;
+      pessoa.codigo = i + 1;
+      pessoa.id = item[i].id;
+      pessoa.nomeCompleto = item[i].nomeCompleto;
+      pessoa.cpf = item[i].cpf;
+      this.membros.push(pessoa);
+    }
   }
 
   getIgreja(id) {
@@ -162,7 +185,7 @@ export class CadastrarRedeComponent implements OnInit {
     });
   }
   voltar() {
-    this._router.navigate(['/auth/rede/pesquisar'],{
+    this._router.navigate(['/auth/rede/pesquisar'], {
       queryParams: {
         pesquisar: 'pesquisar',
       },
@@ -184,7 +207,7 @@ export class CadastrarRedeComponent implements OnInit {
   }
 
   update() {
-    let obj = {} as any; 
+    let obj = {} as any;
     obj = this.obj();
     obj.id = Number.parseInt(this.id);
     console.log(obj)
@@ -192,6 +215,18 @@ export class CadastrarRedeComponent implements OnInit {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+  dialogRemover(item) {
+    // console.log(item)
+    const dialogRef = this._dialog.open(DialogConfirmPessoaComponent, {
+      width: '600px',
+      data: {
+        id: Number.parseInt(this.id),
+        idPessoa: item.id,
+        controller: "rede"
+      }
     });
   }
 

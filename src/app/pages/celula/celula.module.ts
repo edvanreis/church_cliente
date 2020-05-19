@@ -15,6 +15,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { RedesComponenteModule } from '../componentes/redes/redes-componente.module';
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
+import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
 
 
 
@@ -48,6 +49,8 @@ const routes: Routes = [
     MatPaginatorModule,
     MatDividerModule,
     DialogAtivarInativarModule,
+    PipeModule,
+    DialogConfirmPessoaModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
