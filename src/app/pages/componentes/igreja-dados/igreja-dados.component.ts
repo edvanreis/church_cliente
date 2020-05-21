@@ -97,7 +97,7 @@ export class IgrejaDadosComponent implements OnInit {
             let pessoa = {} as any;
             pessoa.codigo = i + 1;
             pessoa.idIgreja = item.data.id;
-            pessoa.idPessoa = item.data.pessoas[i].id;
+            pessoa.id = item.data.pessoas[i].id;
             pessoa.nomeCompleto = item.data.pessoas[i].nomeCompleto;
             pessoa.cpf = item.data.pessoas[i].cpf;
             this.membros.push(pessoa);
@@ -155,7 +155,7 @@ export class IgrejaDadosComponent implements OnInit {
       width: '600px',
       data: {
         id: item.idIgreja,
-        idPessoa: item.idPessoa,
+        idPessoa: item.id,
         controller: this.tipoIgreja
       }
     });

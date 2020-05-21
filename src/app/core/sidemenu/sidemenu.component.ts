@@ -18,7 +18,7 @@ declare interface MenuElement {
 export class SidemenuComponent implements OnInit {
 
     @Input() iconOnly:boolean = false;
-    //public menus = menuElement;
+
     menus: MenuElement[] = [
       {'name': 'Dashboard','icon': 'dashboard','link': '/auth/dashboard','open': false,'chip': { 'value': 1, 'color': 'accent' }, 'visible': this.userService.hasPermission("")},
       {'name': 'Visitantes','icon': 'person','link': false,'open': false,'visible': true  , 'sub': [
@@ -49,6 +49,9 @@ export class SidemenuComponent implements OnInit {
       },
       {'name': 'Agendamentos','icon': 'calendar_today','link': false,'open': false,'visible': true,'sub': [
             {'name': 'Pesquisar','link': 'agendamentos/cadastrar','icon': 'search','chip': false,'open': false,'visible': true}]
+      },
+      {'name': 'Lição','icon': 'school','link': false,'open': false,'visible': true,'sub': [
+        {'name': 'Pesquisar','link': 'licao/pesquisar','icon': 'search','chip': false,'open': false,'visible': true}]
       },
       {'name': 'Configuracões','icon': 'build','open': false,'link': false,'visible': true  ,'sub': [
             {'name': 'Usuario','link': 'usuario/pesquisar', 'icon': 'person','chip': false,'open': false,'visible': true  ,},

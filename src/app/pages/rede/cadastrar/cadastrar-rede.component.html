@@ -26,7 +26,7 @@
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
             <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
-          </mat-form-field>  
+          </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
          <app-igrejas></app-igrejas>
@@ -50,15 +50,15 @@
             <th></th>
             <th>Nome</th>
             <th>Célula</th>
-            <th>Igreja</th>       
+            <th>Igreja</th>
             <th>Remover</th>
           </thead>
           <tbody>
             <tr *ngFor="let m of membros">
               <td>{{ m.codigo}}</td>
               <td>{{ m.nomeCompleto}}</td>
-              <td></td>
-              <td></td>
+              <td>{{ m.celula.nome}}</td>
+              <td>{{ m.igreja.nome}}</td>
               <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(m)"><i
                     class="material-icons">delete</i></span></td>
             </tr>

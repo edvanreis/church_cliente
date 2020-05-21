@@ -72,6 +72,9 @@
     </mat-form-field>
   </div>
   <div class="full-width-field" fxLayoutGap="20px" [hidden]="hideVisitante">
+    <label style="color:#1d68a5">Membro da Célula?</label>
+    <mat-slide-toggle formControlName="membroDaCelula" id="membroDaCelula"  (change)="change()" #membroDaCelula>{{membroDaCelula.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+    <label style="color:#1d68a5">Dizimista?</label>
     <label style="color:#1d68a5">Batizado?</label>
     <mat-slide-toggle formControlName="batizado" id="batizado"  (change)="change()" #batizado>{{batizado.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
     <label style="color:#1d68a5">Dizimista?</label>

@@ -71,7 +71,7 @@ export class CadastrarRedeComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      
+
       if (item.type == 'membro-comp') {
         console.log(item.data);
         this.membro = item.data;
@@ -171,6 +171,8 @@ export class CadastrarRedeComponent implements OnInit {
       pessoa.codigo = i + 1;
       pessoa.id = item[i].id;
       pessoa.nomeCompleto = item[i].nomeCompleto;
+      pessoa.celula = item[i].celula;
+      pessoa.igreja = item[i].igreja;
       pessoa.cpf = item[i].cpf;
       this.membros.push(pessoa);
     }

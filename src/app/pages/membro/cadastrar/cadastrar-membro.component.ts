@@ -207,6 +207,7 @@ export class CadastrarMembroComponent implements OnInit {
       this.pessoa.dizimista = this.dadosPessoais.dizimista;
       this.pessoa.cartaRecomendacao = this.dadosPessoais.cartaRecomendacao;
       this.pessoa.membro = true;
+      this.pessoa.membroDaCelula = this.dadosPessoais.membroDaCelula;
     }
     if (this.enderecos) {
       this.pessoa.enderecos = this.enderecos;
@@ -222,7 +223,7 @@ export class CadastrarMembroComponent implements OnInit {
     }
 
     if (this.igreja) {
-      this.pessoa.igreja = this.celula;
+      this.pessoa.igreja = this.igreja;
     }
 
     if (this.etapas) {

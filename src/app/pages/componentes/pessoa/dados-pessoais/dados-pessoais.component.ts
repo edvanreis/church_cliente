@@ -81,6 +81,7 @@ export class DadosPessoaisComponent implements OnInit {
       'observacao': new FormControl(''),
       'cartaRecomendacao': new FormControl(''),
       'status': new FormControl(''),
+      'membroDaCelula': new FormControl('')
     });
   }
 
@@ -139,6 +140,9 @@ export class DadosPessoaisComponent implements OnInit {
     if(this.igrejaSelecionada){
       this.pessoa.celula = this.celulaSelecionada;
     }
+    if (this.form.controls['membroDaCelula'].value) {
+      this.pessoa.membroDaCelula = this.form.controls['membroDaCelula'].value;
+    }
     //  console.log(this.pessoa)
     return this.pessoa;
   }
@@ -159,6 +163,7 @@ export class DadosPessoaisComponent implements OnInit {
     this.form.controls['dataNascimento'].patchValue(dados.dataNascimento);
     this.form.controls['cartaRecomendacao'].patchValue(dados.cartaRecomendacao);
     this.form.controls['status'].patchValue(dados.status);
+    this.form.controls['membroDaCelula'].patchValue(dados.membroDaCelula);
     this.setObj();
     this.setEmiter();
   }
