@@ -68,4 +68,9 @@ export class CelulaService {
       .pipe(map((response: any) => response))
   }
 
+  getCelulaPessoa(id) {
+    return this.http.get(this._url+id+'/obterCelulaPessoa')
+      .pipe(map((response: any) => response))
+  }
+
 }

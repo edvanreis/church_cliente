@@ -14,6 +14,7 @@ import { LoginModule } from './pages/login/login.module';
 import { MembroModule } from './pages/membro/membro.module';
 import { PerfilModule } from './pages/perfil/perfil.module';
 import { PermissoesModule } from './pages/permissoes/permissoes.module';
+import { ReuniaoModule } from './pages/reuniao/reuniao.module';
 import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
 import { InterceptorService } from './service/interceptor.service';
 
@@ -22,9 +23,10 @@ import { InterceptorService } from './service/interceptor.service';
 
 
 
+
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     BrowserModule,
@@ -39,7 +41,9 @@ import { InterceptorService } from './service/interceptor.service';
     MatDialogModule,
     PerfilModule,
     AlterarSenhaModule,
-    LicaoModule
+    LicaoModule,
+    ReuniaoModule
+
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },DatePipe],
   bootstrap: [AppComponent],

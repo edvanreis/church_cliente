@@ -31,7 +31,7 @@ export class SidemenuComponent implements OnInit {
             {'name': 'Pesquisar','link': 'membro/pesquisar','icon': 'search','chip': false,'open': false,'visible': true  ,},
         ]
       },
-      {'name': 'Igrejas','icon': 'account_balance','link': false,'open': false,'visible': true  ,'sub': [
+      {'name': 'Igrejas','icon': 'location_city','link': false,'open': false,'visible': true  ,'sub': [
             {'name': 'Ver todas','link': 'igreja/pesquisar','icon': 'reorder','chip': false,'open': false,'visible': true  },
         ]
       },
@@ -52,6 +52,9 @@ export class SidemenuComponent implements OnInit {
       },
       {'name': 'Lição','icon': 'school','link': false,'open': false,'visible': true,'sub': [
         {'name': 'Pesquisar','link': 'licao/pesquisar','icon': 'search','chip': false,'open': false,'visible': true}]
+      },
+      {'name': 'Reunião','icon': 'account_tree','link': false,'open': false,'visible': true,'sub': [
+        {'name': 'Pesquisar','link': 'reuniao/pesquisar','icon': 'search','chip': false,'open': false,'visible': true}]
       },
       {'name': 'Configuracões','icon': 'build','open': false,'link': false,'visible': true  ,'sub': [
             {'name': 'Usuario','link': 'usuario/pesquisar', 'icon': 'person','chip': false,'open': false,'visible': true  ,},

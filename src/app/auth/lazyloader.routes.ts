@@ -17,5 +17,6 @@ export const appRoutes: Routes = [{
         { path: 'rede', loadChildren: '../pages/rede/rede.module#RedeModule',  canActivate: [AuthGuardService]},
         { path: 'agendamentos', loadChildren: '../pages/agendamentos/agendamentos.module#AgendamentosModule', canActivate: [AuthGuardService]},
         { path: 'licao', loadChildren: '../pages/licao/licao.module#LicaoModule',  canActivate: [AuthGuardService]},
+        { path: 'reuniao', loadChildren: '../pages/reuniao/reuniao.module#ReuniaoModule',  canActivate: [AuthGuardService]},
     ]
 }];
