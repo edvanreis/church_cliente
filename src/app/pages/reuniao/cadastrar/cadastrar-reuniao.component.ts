@@ -6,6 +6,7 @@ import { take } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { DateAdapter } from '@angular/material';
+import { HelperChurch } from '../../../helper/helper.church';
 
 @Component({
   selector: 'app-cadastrar-reuniao',
@@ -40,6 +41,7 @@ export class CadastrarReuniaoComponent implements OnInit {
       'diaSemana': new FormControl(''),
       'louvor': new FormControl(''),
       'observacao': new FormControl(''),
+      'oferta': new FormControl(''),
     });
   }
 
@@ -67,6 +69,11 @@ export class CadastrarReuniaoComponent implements OnInit {
       this.comboSemana = item;
       // console.log(item);
     });
+  }
+
+  onInputCurrency(event) {
+    // console.log(event.target.value)
+    this.form.controls['oferta'].patchValue(HelperChurch.currencyValue(event.target.value));
   }
 
 

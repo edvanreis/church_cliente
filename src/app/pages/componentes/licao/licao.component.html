@@ -1,9 +1,9 @@
 <div>
   <mat-form-field class="full-width-field">
-    <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControl"
+    <input type="text" placeholder="Lição" aria-label="Number" matInput [formControl]="myControl"
       [matAutocomplete]="auto" [(ngModel)]="nomeValue">
     <mat-autocomplete #auto="matAutocomplete">
-      <mat-option *ngFor="let option of filteredF | async" [value]="option.nome"
+      <mat-option *ngFor="let option of filtered | async" [value]="option.tema"
         (onSelectionChange)="onSelectionChange($event,option)">
         {{option.tema}}
       </mat-option>

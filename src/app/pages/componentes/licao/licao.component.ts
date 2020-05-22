@@ -49,7 +49,7 @@ export class LicaoComponent implements OnInit {
 
   private _filter(value: string, lista): string[] {
     const filterValue = value.toLowerCase();
-    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+    return lista.filter(option => option.tema.toLowerCase().includes(filterValue));
   }
 
   onSelectionChange($event: MatAutocompleteSelectedEvent, option) {

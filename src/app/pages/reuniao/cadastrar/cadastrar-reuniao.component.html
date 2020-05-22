@@ -5,7 +5,15 @@
       <h1 class="mat-headline center-align">Reunião</h1>
     </mat-toolbar>
     <div class="cdk-container">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+        <i class="material-icons">store</i>
+        <h1 class="mat-subheading-2 center-align">Relatório da reunião semanal da célula</h1>
+      </div>
       <app-celula></app-celula>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5"  *ngIf="membros.length > 0">
+        <i class="material-icons">face</i>
+        <h1 class="mat-subheading-2 center-align">Liderança da célula</h1>
+      </div>
       <div class="table-responsive" *ngIf="membros.length > 0">
         <table>
           <thead class="text-primary">
@@ -21,7 +29,12 @@
         </table>
       </div>
       <br />
+      <mat-divider></mat-divider>
       <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+        <i class="material-icons">class</i>
+        <h1 class="mat-subheading-2 center-align">Dados da Reunião</h1>
+      </div>
       <form form [formGroup]="form">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field>
@@ -57,10 +70,27 @@
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="full-width-field">
+              <input id="oferta" matInput  placeholder="Oferta"  formControlName="oferta" (keyup)="onInputCurrency($event)"/>
+            </mat-form-field>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+            <mat-form-field class="full-width-field">
               <textarea matInput placeholder="Nota/Observação" formControlName="observacao"></textarea>
             </mat-form-field>
           </div>
       </form>
+      <app-licao></app-licao>
+      <app-membro [label]="'Palestrante'"></app-membro>
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+        <i class="material-icons">person</i>
+        <h1 class="mat-subheading-2 center-align">Membros</h1>
+      </div>
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+        <i class="material-icons">person_outline</i>
+        <h1 class="mat-subheading-2 center-align">Visitantes</h1>
+      </div>
     </div>
   </div>
 </div>

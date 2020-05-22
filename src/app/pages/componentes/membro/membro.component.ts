@@ -20,11 +20,11 @@ export class MembroComponent implements OnInit {
   public comboMembro = [];
   public filteredMembro: Observable<string[]>;
   public nomeValue: string;
-  @Input('label') label;
+  @Input() label;
   public membro: any;
 
-  constructor(private _service: PessoaService, 
-              private _notifierService: NotifierService, 
+  constructor(private _service: PessoaService,
+              private _notifierService: NotifierService,
               private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {

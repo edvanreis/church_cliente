@@ -24,9 +24,10 @@ import { InterceptorService } from './service/interceptor.service';
 
 
 
+
 @NgModule({
   declarations: [
-    AppComponent,
+    AppComponent
   ],
   imports: [
     BrowserModule,

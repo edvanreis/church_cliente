@@ -5,13 +5,16 @@ import { PesquisarReuniaoComponent } from './pesquisar/pesquisar-reuniao.compone
 import { CadastrarReuniaoComponent } from './cadastrar/cadastrar-reuniao.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule } from '@angular/material';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
 import { LicaoComponenteModule } from '../componentes/licao/licao-componente.module';
 import { CelulaComponentModule } from '../componentes/celula/celula-component.module';
 import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { TextMaskModule } from 'angular2-text-mask';
+import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
+
+
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarReuniaoComponent , data: { animation: 'buttons' }},
@@ -36,6 +39,8 @@ const routes: Routes = [
     CelulaComponentModule,
     PipeModule,
     TextMaskModule,
+    MembroComponenteModule,
+    MatDividerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
