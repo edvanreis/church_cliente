@@ -23,7 +23,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class PesquisarVisitanteComponent implements OnInit {
 
-  
+
   constructor(private _emitirEventoService: EmitirEventoService,
     private _service: PessoaService,
     private _notifierService: NotifierService,
@@ -52,10 +52,10 @@ export class PesquisarVisitanteComponent implements OnInit {
   public dadosPessoais: any;
   public celula:any;
 
-  
+
 
   ngOnInit() {
-    this.dateAdapter.setLocale('br');   
+    this.dateAdapter.setLocale('br');
     this.getEmiter();
     this.columns();
     this._buildFormDate();
@@ -86,6 +86,7 @@ export class PesquisarVisitanteComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       if (item.type == 'dadosPessoais') {
+        console.log(item.data)
         this.dadosPessoais = item.data;
       }
       if (item.type == 'endereco') {
@@ -96,7 +97,7 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   pesquisar() {
     this.setObj();
-    //  console.log(this.pessoa)
+     console.log(this.pessoa)
     this.loading = true;
     this._service.pesquisar(this.pessoa).pipe(take(1)).subscribe(item => {
       console.log(item);
@@ -132,7 +133,7 @@ export class PesquisarVisitanteComponent implements OnInit {
       this.pessoa.observacao = this.dadosPessoais.observacao;
       this.pessoa.membro = false;
       this.pessoa.visitante = true;
-      
+
     }
     if(this.enderecos){
       this.pessoa.enderecos = this.enderecos;
@@ -140,10 +141,10 @@ export class PesquisarVisitanteComponent implements OnInit {
 
     if(this.celula){
       this.pessoa.celula = this.celula;
-    } 
+    }
     this.preencherPeriodos();
   }
-  
+
 
 
   preencherPeriodos() {

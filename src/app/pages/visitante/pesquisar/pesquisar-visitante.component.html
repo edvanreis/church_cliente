@@ -62,8 +62,8 @@
           <mat-table #table [dataSource]="dados" matSort>
             <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
               <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
-              <mat-cell *matCellDef="let element"> 
-                <span  *ngIf="column.id!='id'">{{element[column.id]}}</span> 
+              <mat-cell *matCellDef="let element">
+                <span  *ngIf="column.id!='id'">{{element[column.id]?element[column.id]:'Não informado'}}</span>
                 <span  *ngIf="column.id=='id'">
                       <span style="cursor: pointer;" (click)="editar(element.id)" matTooltip="Editar">
                         <i class="material-icons">create</i>
@@ -71,17 +71,17 @@
                       <span style="cursor: pointer;color: darkblue;" (click)="importar(element.id)" matTooltip="Editar">
                         <i class="material-icons">vertical_align_top</i>
                       </span>
-                </span> 
+                </span>
               </mat-cell>
             </ng-container>
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
           </mat-table>
-          <mat-paginator 
-                #paginator 
-                [length]="dados.length" 
-                [pageSize]="5" 
+          <mat-paginator
+                #paginator
+                [length]="dados.length"
+                [pageSize]="5"
                 [pageSizeOptions]="[5, 10, 20]"
                 showFirstLastButtons
                 (page) = "paginatorEvent($event)"

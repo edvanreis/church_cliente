@@ -5,10 +5,10 @@
         <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
       </mat-form-field>
       <mat-form-field class="full-width-field">
-        <input matInput placeholder="CNPJ" [textMask]="{mask: maskCNPJ}" formControlName="cnpj" id="cnpj" (change)="change()" required>  
+        <input matInput placeholder="CNPJ" [textMask]="{mask: maskCNPJ}" formControlName="cnpj" id="cnpj" (change)="change()" required>
         <mat-error *ngIf="!form.controls.cnpj.valid">Campo Obrigatório</mat-error>
       </mat-form-field>
-    </div> 
+    </div>
     <div class="full-width-field" fxLayoutGap="20px" [hidden]="filial">
       <label style="color:#1d68a5">Visão Célular?</label>
       <mat-slide-toggle formControlName="visaoCelular" id="visaoCelular"  (change)="change()" #visaoCelular>{{visaoCelular.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
@@ -20,7 +20,7 @@
       <i class="material-icons">face</i>
       <h1 class="mat-subheading-2 center-align">Lideres</h1>
     </div>
-    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+    <div>
         <mat-form-field class="full-width-field">
           <input type="text" placeholder="Membros" aria-label="Number" matInput [formControl]="myControlMembro"
             [matAutocomplete]="auto" [(ngModel)]="nomeValue" required>
@@ -58,5 +58,5 @@
             </tbody>
           </table>
         </div>
-      </div> 
+      </div>
   </form>

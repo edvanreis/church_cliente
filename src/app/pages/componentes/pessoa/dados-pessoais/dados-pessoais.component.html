@@ -5,7 +5,7 @@
       <mat-error *ngIf="!pesquisa">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"> 
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="full-width-field">
       <input matInput  class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" (change)="change()">
       <mat-error *ngIf="!form.controls.sobrenome.valid && membroInput">Campo Obrigatório</mat-error>
@@ -17,7 +17,7 @@
       <mat-error *ngIf="!form.controls.rg.valid  && membroInput ">Campo Obrigatório</mat-error>
     </mat-form-field>
     <mat-form-field class="full-width-field">
-      <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" (change)="change()" >  
+      <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" (change)="change()" >
       <mat-error *ngIf="!form.controls.cpf.valid  && membroInput">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
@@ -25,10 +25,10 @@
     <mat-form-field class="full-width-field">
       <input matInput [textMask]="{mask: maskDate}" placeholder="Data nascimento" formControlName="dataNascimento"  (change)="change()">
       <mat-error *ngIf="!form.controls.dataNascimento.valid  && membroInput">Campo Obrigatório</mat-error>
-    </mat-form-field> 
+    </mat-form-field>
     <mat-form-field class="full-width-field">
       <mat-label>Sexo</mat-label>
-      <mat-select formControlName="sexo" id="sexo" (selectionChange)="change()"> 
+      <mat-select formControlName="sexo" id="sexo" (selectionChange)="change()">
         <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
           {{item.value}}
         </mat-option>
@@ -59,7 +59,18 @@
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <app-igrejas></app-igrejas>
-    <app-celula *ngIf="visaoCelular"></app-celula>
+    <div *ngIf="visaoCelular || isCelula">
+      <mat-form-field class="full-width-field">
+        <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
+          [matAutocomplete]="auto" [(ngModel)]="celulaValue">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
+            (onSelectionChange)="onSelectionCelulaChange($event,option)">
+            {{option.nome}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      </div>
   </div>
   <div  class="full-width-field" *ngIf="pesquisa" [hidden]="hideVisitante">
     <mat-form-field>
@@ -71,10 +82,13 @@
       </mat-select>
     </mat-form-field>
   </div>
+  <div class="full-width-field" fxLayoutGap="20px" [hidden]="!hideVisitante">
+    <label style="color:#1d68a5">Visitante da Célula?</label>
+    <mat-slide-toggle formControlName="visitanteDaCelula" id="visitanteDaCelula"  (change)="change()" #visitanteDaCelula>{{visitanteDaCelula.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+  </div>
   <div class="full-width-field" fxLayoutGap="20px" [hidden]="hideVisitante">
     <label style="color:#1d68a5">Membro da Célula?</label>
     <mat-slide-toggle formControlName="membroDaCelula" id="membroDaCelula"  (change)="change()" #membroDaCelula>{{membroDaCelula.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
-    <label style="color:#1d68a5">Dizimista?</label>
     <label style="color:#1d68a5">Batizado?</label>
     <mat-slide-toggle formControlName="batizado" id="batizado"  (change)="change()" #batizado>{{batizado.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
     <label style="color:#1d68a5">Dizimista?</label>

@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
-import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { VisitanteService } from '../../../service/visitante.service';
-import { take } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
+import { Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
-import { PessoaService } from '../../../service/pessoa.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { EnderecoService } from '../../../service/endereco.service';
+import { CelulaService } from '../../../service/celula.service';
 import { ContatoService } from '../../../service/contato.service';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { EnderecoService } from '../../../service/endereco.service';
 import { EscolaridadeService } from '../../../service/escolaridade.service';
+import { PessoaService } from '../../../service/pessoa.service';
 
 @Component({
   selector: 'app-cadastrar-visitante',
@@ -28,8 +30,9 @@ export class CadastrarVisitanteComponent implements OnInit {
   public pesquisa:boolean=false;
 
 
+
   constructor( private _emitirEventoService: EmitirEventoService,
-    private _service:PessoaService, 
+    private _service:PessoaService,
     private _enderecoService:EnderecoService,
     private _notifierService: NotifierService,
     private _router: Router,
@@ -38,8 +41,8 @@ export class CadastrarVisitanteComponent implements OnInit {
     private _escolaridadeService:EscolaridadeService) { }
 
   ngOnInit() {
-    this.getEmiter();
     this.getParams();
+    this.getEmiter();
   }
 
   getParams(){
@@ -52,10 +55,12 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   getPessoa(id) {
     this._service.obterPessoa(id).pipe(take(1)).subscribe(item => {
+      // console.log(item)
       this.emitirPessoa(item);
       this.getEndereco(item.id)
       this.getContatos(item.id);
       this.getEscolaridades(item.id);
+      this.emitirIgreja(item.igreja);
     }, error => {
       // console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -92,7 +97,7 @@ export class CadastrarVisitanteComponent implements OnInit {
     });
   }
 
-  
+
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
@@ -108,9 +113,6 @@ export class CadastrarVisitanteComponent implements OnInit {
       }
       if (item.type == 'contatos') {
         this.contatos = item.data;
-      }
-      if (item.type == 'celula-comp') {
-        this.celula = item.data;
       }
       if (item.type == 'igreja-comp') {
         this.igreja = item.data;
@@ -134,6 +136,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   }
 
   save(){
+    // console.log(this.pessoa)
     this._service.save(this.pessoa).pipe(take(1)).subscribe(item => {
       this.emitiClear();
       this._notifierService.notify(AlertType.Success, item.value);
@@ -143,6 +146,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   }
 
   updade(){
+    // console.log(this.pessoa)
     this._service.update(this.pessoa).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
@@ -176,15 +180,15 @@ export class CadastrarVisitanteComponent implements OnInit {
     }
     if(this.escolaridades){
       this.pessoa.escolaridades = this.escolaridades;
-    } 
+    }
     if(this.celula){
       this.pessoa.celula = {id:this.celula.id};
-    } 
+    }
 
     if(this.igreja){
       this.pessoa.igreja = {id:this.igreja.id};
-    } 
-    
+    }
+
 
   }
 
@@ -208,6 +212,12 @@ export class CadastrarVisitanteComponent implements OnInit {
     this._emitirEventoService.emitir('edit-escolaridades', item);
   }
 
+  emitirIgreja(item): void {
+    this._emitirEventoService.emitir('edit-igreja', item);
+  }
+
+
+
   voltar(){
     this._router.navigate(['/auth/visitante/pesquisar'], {
       queryParams: {
@@ -216,5 +226,6 @@ export class CadastrarVisitanteComponent implements OnInit {
       skipLocationChange: true
     });
   }
+
 
 }

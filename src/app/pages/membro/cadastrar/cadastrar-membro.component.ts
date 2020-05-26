@@ -31,6 +31,7 @@ export class CadastrarMembroComponent implements OnInit {
   public id: any;
   public pesquisa: boolean = false;
   public importacao: boolean = false;
+  public isCelula = true;
 
 
   constructor(private _emitirEventoService: EmitirEventoService,
@@ -45,8 +46,8 @@ export class CadastrarMembroComponent implements OnInit {
     private _escolaridadeService:EscolaridadeService) { }
 
   ngOnInit() {
-    this.getEmiter();
     this.getParams();
+    this.getEmiter();
   }
 
   getParams() {
@@ -62,13 +63,15 @@ export class CadastrarMembroComponent implements OnInit {
 
   getPessoa(id) {
     this._service.obterPessoa(id).pipe(take(1)).subscribe(item => {
-      console.log(item)
+      // console.log(item)
       this.emitirPessoa(item);
       this.getEndereco(item.id)
       this.getContatos(item.id);
       this.getEscolaridades(item.id);
       this.getEtapas(item.id);
       this.getCargos(item.id);
+      this.emitirIgreja(item.igreja);
+      this.emitirCelula(item.celula);
     }, error => {
       // console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -192,6 +195,7 @@ export class CadastrarMembroComponent implements OnInit {
   setObj() {
     this.getEmiter();
     if (this.dadosPessoais) {
+      // console.log(this.pessoa)
       this.pessoa.id = this.id;
       this.pessoa.nome = this.dadosPessoais.nome;
       this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
@@ -208,6 +212,7 @@ export class CadastrarMembroComponent implements OnInit {
       this.pessoa.cartaRecomendacao = this.dadosPessoais.cartaRecomendacao;
       this.pessoa.membro = true;
       this.pessoa.membroDaCelula = this.dadosPessoais.membroDaCelula;
+      this.pessoa.visitante = false;
     }
     if (this.enderecos) {
       this.pessoa.enderecos = this.enderecos;
@@ -263,6 +268,15 @@ export class CadastrarMembroComponent implements OnInit {
 
   emitirPessoaCargo(item): void {
     this._emitirEventoService.emitir('edit-cargos', item);
+  }
+
+  emitirIgreja(item): void {
+    this._emitirEventoService.emitir('edit-igreja', item);
+  }
+
+  emitirCelula(item): void {
+    this.isCelula = true;
+    this._emitirEventoService.emitir('edit-celula', item);
   }
 
 

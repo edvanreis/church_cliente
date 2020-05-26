@@ -65,6 +65,7 @@ export class IgrejasComponent implements OnInit {
       if (item.type == 'edit-igreja') {
         this.igrejaSelecionada = item.data;
         this.nomeValue = item.data.nome;
+        this.setEmiter();
       }
       if (item.type == 'clear') {
         this.igrejaSelecionada = '';

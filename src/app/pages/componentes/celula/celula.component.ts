@@ -26,11 +26,11 @@ export class CelulaComponent implements OnInit {
     private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
-    this.carregarIgrejas();
+    this.carregar();
     this.getEmiter();
   }
 
-  carregarIgrejas() {
+  carregar() {
 
     this._service.getList().pipe(take(1)).subscribe(item => {
       this.comboCelulas = item;
@@ -61,10 +61,11 @@ export class CelulaComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      // console.log(item.type);
-      if (item.type == 'celula') {
-        this.celulaSelecionada = item.data;
-        this.nomeValue = item.data;
+      console.log(item.type);
+      if (item.type == 'edit-celula') {
+          this.celulaSelecionada = item.data;
+          this.nomeValue = item.data.nome;
+          this.setEmiter();
       }
       if (item.type == 'clear') {
         this.celulaSelecionada = '';

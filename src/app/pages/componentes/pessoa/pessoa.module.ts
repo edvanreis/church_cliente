@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule, MatSlideToggleModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule, MatSlideToggleModule, MatAutocompleteSelectedEvent, MatAutocompleteModule } from '@angular/material';
 import { NgxViacepService } from '@brunoc/ngx-viacep';
 import { TextMaskModule } from 'angular2-text-mask';
 import { DadosPessoaisComponent } from './dados-pessoais/dados-pessoais.component';
@@ -41,6 +41,7 @@ import { CelulaComponentModule } from '../../componentes/celula/celula-component
     MatSlideToggleModule,
     IgrejasCompenenteModule,
     CelulaComponentModule,
+    MatAutocompleteModule
   ],
   exports: [
     DadosPessoaisComponent,

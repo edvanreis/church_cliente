@@ -165,16 +165,18 @@ export class CadastrarRedeComponent implements OnInit {
     });
   }
 
-  carregarPessoas(item){
-    for (let i = 0; i < item.length; i++) {
-      let pessoa = {} as any;
-      pessoa.codigo = i + 1;
-      pessoa.id = item[i].id;
-      pessoa.nomeCompleto = item[i].nomeCompleto;
-      pessoa.celula = item[i].celula;
-      pessoa.igreja = item[i].igreja;
-      pessoa.cpf = item[i].cpf;
-      this.membros.push(pessoa);
+  carregarPessoas(item) {
+    if (item) {
+      for (let i = 0; i < item.length; i++) {
+        let pessoa = {} as any;
+        pessoa.codigo = i + 1;
+        pessoa.id = item[i].id;
+        pessoa.nomeCompleto = item[i].nomeCompleto;
+        pessoa.celula = item[i].celula;
+        pessoa.igreja = item[i].igreja;
+        pessoa.cpf = item[i].cpf;
+        this.membros.push(pessoa);
+      }
     }
   }
 

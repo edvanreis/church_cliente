@@ -77,6 +77,16 @@ export class PessoaService {
       .pipe(tap((response: any) => response));
   }
 
+  getMembroCelula(id) {
+    return this.http.get(this._url + id + "/membroCelula")
+      .pipe(tap((response: any) => response));
+  }
+
+
+  getVisitanteCelula(id) {
+    return this.http.get(this._url + id + "/visitanteCelula")
+      .pipe(tap((response: any) => response));
+  }
 
 
 }

@@ -57,8 +57,8 @@
             <tr *ngFor="let m of membros">
               <td>{{ m.codigo}}</td>
               <td>{{ m.nomeCompleto}}</td>
-              <td>{{ m.celula.nome}}</td>
-              <td>{{ m.igreja.nome}}</td>
+              <td>{{ m.celula?.nome}}</td>
+              <td>{{ m.igreja?.nome}}</td>
               <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(m)"><i
                     class="material-icons">delete</i></span></td>
             </tr>
