@@ -73,8 +73,8 @@
         <th>Ação</th>
       </thead>
       <tbody>
-        <tr *ngFor="let e of enderecos">
-          <td>{{ e.codigo}}</td>
+        <tr *ngFor="let e of enderecos;let i= index">
+          <td>{{ i+1}}</td>
           <td>{{ e.cep}}</td>
           <td>{{ e.numero}}</td>
           <td>{{ e.complemento}}</td>
@@ -84,7 +84,7 @@
           <td>{{ e.uf}}</td>
           <td *ngIf="pessoa" >{{ e.descTipoEndereco}}</td>
           <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogAtualizar(e)"><i class="material-icons">create</i></span>
-            <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(e)"><i class="material-icons">delete</i></span>
+            <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,e)"><i class="material-icons">delete</i></span>
           </td>
         </tr>
       </tbody>

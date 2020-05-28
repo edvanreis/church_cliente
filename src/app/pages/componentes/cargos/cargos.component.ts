@@ -17,13 +17,13 @@ import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confi
 })
 export class CargosComponent implements OnInit {
 
- 
+
   public comboCargo = [];
   public filteredCargo: Observable<string[]>;
   public myControlCargo = new FormControl();
   public cargoSelecionado;
   public cargos$: Observable<any[]>;
-  public cargos =[];
+  public cargos = [];
   @Input('idAssociado') idAssociado;
 
   constructor(private _service: CargoService,
@@ -35,7 +35,7 @@ export class CargosComponent implements OnInit {
     this.carregarCargos();
     this.getEmiter();
   }
- 
+
   carregarCargos() {
     this.cargos$ = this._service.getList();
   }
@@ -55,23 +55,14 @@ export class CargosComponent implements OnInit {
         this.cargos = [];
       }
       if (item.type == 'edit-cargos') {
-        // this.cargos = item.data;
-        for (let i = 0; i < item.data.length; i++) {
-          let cargo = {} as any;
-          cargo.codigo = i + 1;
-          cargo.id = item.data[i].id;
-          cargo.nome = item.data[i].nome;
-          this.cargos.push(cargo);
-          console.log(this.cargos)
-          this.setEmiter();
-        }
+        this.cargos = item.data;
         this.setEmiter();
       }
       if (item.type == 'confirm-dialog-cargo') {
         this.cargos.splice(item.data, 1);
         this.setEmiter();
       }
-    }); 
+    });
   }
 
   adicionar() {
@@ -79,25 +70,19 @@ export class CargosComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor escolha um cargo.!");
       return false;
     }
-    let cargo = {} as any;
-    cargo = this.cargoSelecionado;
-    if (this.cargos.length != 0) {
-      cargo.codigo = this.cargos[this.cargos.length - 1].codigo + 1;
-    } else {
-      cargo.codigo = 1;
-    }
-    this.cargos.push(cargo);
+    this.cargos.push(this.cargoSelecionado);
     this.setEmiter();
   }
 
-  dialogRemover(item) {
+  dialogRemover(i, item) {
     console.log(item)
     const dialogRef = this._dialog.open(DialogConfirmComponent, {
       width: '500px',
       data: {
-        controller:'cargo',
-        item:item,
-        idAssociado: this.idAssociado
+        controller: 'cargo',
+        item: item,
+        idAssociado: this.idAssociado,
+        index: i
       }
     });
   }

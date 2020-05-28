@@ -73,13 +73,13 @@ export class CadastrarRedeComponent implements OnInit {
     this._emitirEventoService.mensagem.subscribe(item => {
 
       if (item.type == 'membro-comp') {
-        console.log(item.data);
+        // console.log(item.data);
         this.membro = item.data;
       }
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
       }
-      if (item.type == 'confirm-dialog-pessoa') {
+      if (item.type == 'confirm-dialog-pessoa-rede') {
         this.membros.splice(item.data, 1);
       }
     });
@@ -95,11 +95,6 @@ export class CadastrarRedeComponent implements OnInit {
     if (membroAdicionado && membroAdicionado.nome == this.membro.nome) {
       this._notifierService.notify(AlertType.Error, "Membro já adiocionado.!");
       return false;
-    }
-    if (this.membros.length != 0) {
-      this.membro.codigo = this.membros[this.membros.length - 1].codigo + 1;
-    } else {
-      this.membro.codigo = 1;
     }
     this.membros.push(this.membro);
     this.setEmiter();
@@ -169,7 +164,6 @@ export class CadastrarRedeComponent implements OnInit {
     if (item) {
       for (let i = 0; i < item.length; i++) {
         let pessoa = {} as any;
-        pessoa.codigo = i + 1;
         pessoa.id = item[i].id;
         pessoa.nomeCompleto = item[i].nomeCompleto;
         pessoa.celula = item[i].celula;
@@ -222,14 +216,14 @@ export class CadastrarRedeComponent implements OnInit {
     });
   }
 
-  dialogRemover(item) {
-    // console.log(item)
+  dialogRemover(i,item) {
     const dialogRef = this._dialog.open(DialogConfirmPessoaComponent, {
       width: '600px',
       data: {
         id: Number.parseInt(this.id),
         idPessoa: item.id,
-        controller: "rede"
+        controller: "rede",
+        item:i
       }
     });
   }

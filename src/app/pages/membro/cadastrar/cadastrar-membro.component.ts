@@ -43,7 +43,7 @@ export class CadastrarMembroComponent implements OnInit {
     private _contatoService: ContatoService,
     private _etapaVisaoService: EtapaVisaoService,
     private _cargosService: CargoService,
-    private _escolaridadeService:EscolaridadeService) { }
+    private _escolaridadeService: EscolaridadeService) { }
 
   ngOnInit() {
     this.getParams();
@@ -166,7 +166,6 @@ export class CadastrarMembroComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, mensagem);
       return false;
     }
-    console.log(this.enderecos)
     if (!this.pessoa.id) {
       this.save();
     } else {
@@ -196,23 +195,12 @@ export class CadastrarMembroComponent implements OnInit {
     this.getEmiter();
     if (this.dadosPessoais) {
       // console.log(this.pessoa)
-      this.pessoa.id = this.id;
-      this.pessoa.nome = this.dadosPessoais.nome;
-      this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
-      this.pessoa.rg = this.dadosPessoais.rg;
-      this.pessoa.cpf = this.dadosPessoais.cpf;
-      this.pessoa.sexo = this.dadosPessoais.sexo;
-      this.pessoa.estadoCivil = this.dadosPessoais.estadoCivil;
-      this.pessoa.dataNascimento = this.dadosPessoais.dataNascimento;
-      this.pessoa.nacionalidade = this.dadosPessoais.nacionalidade;
-      this.pessoa.profissao = this.dadosPessoais.profissao;
-      this.pessoa.observacao = this.dadosPessoais.observacao;
-      this.pessoa.batizado = this.dadosPessoais.batizado;
-      this.pessoa.dizimista = this.dadosPessoais.dizimista;
-      this.pessoa.cartaRecomendacao = this.dadosPessoais.cartaRecomendacao;
-      this.pessoa.membro = true;
-      this.pessoa.membroDaCelula = this.dadosPessoais.membroDaCelula;
-      this.pessoa.visitante = false;
+      if (this.dadosPessoais) {
+        this.pessoa = this.dadosPessoais;
+        this.pessoa.id = this.id;
+        this.pessoa.membro = true;
+        this.pessoa.visitante = false;
+      }
     }
     if (this.enderecos) {
       this.pessoa.enderecos = this.enderecos;
@@ -222,13 +210,6 @@ export class CadastrarMembroComponent implements OnInit {
     }
     if (this.escolaridades) {
       this.pessoa.escolaridades = this.escolaridades;
-    }
-    if (this.celula) {
-      this.pessoa.celula = this.celula;
-    }
-
-    if (this.igreja) {
-      this.pessoa.igreja = this.igreja;
     }
 
     if (this.etapas) {
@@ -281,10 +262,10 @@ export class CadastrarMembroComponent implements OnInit {
 
 
   voltar() {
-    let caminho:string ="";
-    if(this.importacao){
+    let caminho: string = "";
+    if (this.importacao) {
       caminho = "/auth/visitante/pesquisar";
-    }else{
+    } else {
       caminho = "/auth/membro/pesquisar";
     }
 
@@ -297,7 +278,6 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   validarCampos(): string {
-    console.log('tes')
     let concat = 'Por favor preencha o campo';
     let concatArray = 'Por favor adicione pelo menos um';
     if (!this.pessoa.nome) {
@@ -335,6 +315,15 @@ export class CadastrarMembroComponent implements OnInit {
     }
     if (this.etapas.length == 0) {
       return concatArray + 'a  Etapa da visão!';
+    }
+    if (!this.igreja) {
+      return concatArray + 'Igreja!';
+    }
+    if (!this.pessoa.celula && this.igreja && (this.igreja.visaoCelular || this.isCelula)) {
+      return concat + 'Célula!';
+    }
+    if (!this.pessoa.rede) {
+      return concat + 'Rede!';
     }
     return null;
   }

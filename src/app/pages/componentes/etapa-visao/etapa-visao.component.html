@@ -20,10 +20,10 @@
         <th>REMOVER</th>
       </thead>
       <tbody>
-        <tr *ngFor="let item of etapas">
-          <td>{{ item.codigo}}</td>
+        <tr *ngFor="let item of etapas;let i = index">
+          <td>{{ i+1}}</td>
           <td>{{ item.nome}}</td>
-          <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(item)"><i
+          <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,item)"><i
                 class="material-icons">delete</i></span></td>
         </tr>
       </tbody>

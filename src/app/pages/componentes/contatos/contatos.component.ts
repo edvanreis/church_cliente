@@ -46,7 +46,7 @@ export class ContatosComponent implements OnInit {
     this._buildForm();
     this.getComboContatos();
     this.getEmiter();
-    
+
   }
 
   public contatos$: Observable<any[]>;
@@ -250,14 +250,15 @@ export class ContatosComponent implements OnInit {
     });
   }
 
-  dialogRemover(item) {
+  dialogRemover(i,item) {
     // console.log(item)
     const dialogRef = this._dialog.open(DialogConfirmComponent, {
       width: '500px',
       data: {
         controller:'contato',
         item:item,
-        idAssociado: this.idAssociado
+        idAssociado: this.idAssociado,
+        index:i
       }
     });
   }

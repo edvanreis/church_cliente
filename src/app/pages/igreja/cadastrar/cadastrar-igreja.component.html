@@ -8,7 +8,7 @@
       <mat-tab-group>
         <mat-tab label="Sede" *ngIf="tipoIgreja=='sede' || !id">
           <br />
-          <app-igreja-dados></app-igreja-dados>
+          <app-igreja-dados [id]="id" [tipoIgreja]="tipoIgreja" ></app-igreja-dados>
           <br />
           <br />
           <mat-divider></mat-divider>

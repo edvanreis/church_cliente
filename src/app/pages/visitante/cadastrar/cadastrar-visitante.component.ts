@@ -123,7 +123,7 @@ export class CadastrarVisitanteComponent implements OnInit {
 
   salvar(){
     this.setObj();
-    console.log(this.pessoa)
+    // console.log(this.pessoa)
     if(!this.pessoa.nome){
       this._notifierService.notify(AlertType.Error,"Por favor digite o nome do visitante!");
       return false;
@@ -146,7 +146,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   }
 
   updade(){
-    // console.log(this.pessoa)
+    console.log(this.pessoa)
     this._service.update(this.pessoa).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
@@ -158,20 +158,12 @@ export class CadastrarVisitanteComponent implements OnInit {
   setObj(){
     this.getEmiter();
     if(this.dadosPessoais){
+      this.pessoa = this.dadosPessoais;
       this.pessoa.id = this.id;
-      this.pessoa.nome = this.dadosPessoais.nome;
-      this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
-      this.pessoa.rg = this.dadosPessoais.rg;
-      this.pessoa.cpf = this.dadosPessoais.cpf;
-      this.pessoa.sexo = this.dadosPessoais.sexo;
-      this.pessoa.estadoCivil = this.dadosPessoais.estadoCivil;
-      this.pessoa.dataNascimento = this.dadosPessoais.dataNascimento;
-      this.pessoa.nacionalidade = this.dadosPessoais.nacionalidade;
-      this.pessoa.profissao = this.dadosPessoais.profissao;
-      this.pessoa.observacao = this.dadosPessoais.observacao;
-      this.pessoa.visitante = true;
       this.pessoa.membro = false;
+      this.pessoa.visitante = true;
     }
+
     if(this.enderecos){
       this.pessoa.enderecos = this.enderecos;
     }
@@ -181,14 +173,7 @@ export class CadastrarVisitanteComponent implements OnInit {
     if(this.escolaridades){
       this.pessoa.escolaridades = this.escolaridades;
     }
-    if(this.celula){
-      this.pessoa.celula = {id:this.celula.id};
-    }
-
-    if(this.igreja){
-      this.pessoa.igreja = {id:this.igreja.id};
-    }
-
+    // console.log(this.pessoa)
 
   }
 

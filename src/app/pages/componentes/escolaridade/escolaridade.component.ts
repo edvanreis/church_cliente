@@ -91,13 +91,11 @@ export class EscolaridadeComponent implements OnInit {
       if (item.type == 'edit-escolaridades') {
         for (let i = 0; i < item.data.length; i++) {
           let escolaridade = {} as any;
-          escolaridade.codigo = i + 1;
           escolaridade.id = item.data[i].id;
           escolaridade.descricao = item.data[i].descricao;
           this.escolaridades.push(escolaridade);
           this.setEmiter();
         }
-        this.setEmiter();
       }
       if (item.type == 'confirm-dialog-escolaridade') {
         this.escolaridades.splice(item.data, 1);
@@ -121,13 +119,14 @@ export class EscolaridadeComponent implements OnInit {
     this._emitirEventoService.emitir("escolaridades", this.escolaridades);
   }
 
-  dialogRemover(item) {
+  dialogRemover(i,item) {
     const dialogRef = this._dialog.open(DialogConfirmComponent, {
       width: '600px',
       data: {
         controller: 'escolaridade',
         item: item,
-        idAssociado: this.idAssociado
+        idAssociado: this.idAssociado,
+        index:i
       }
     });
   }

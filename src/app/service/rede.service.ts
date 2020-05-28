@@ -38,11 +38,16 @@ export class RedeService {
       .pipe(map((response: any) => response))
   }
 
-    
+
   getListForStatus(status) {
     return this.http.get(this._url+status+"/redePorStatus")
       .pipe(map((response: any) => response))
   }
-  
+
+  getRedeIgreja(id) {
+    return this.http.get(this._url+id+"/obterRedesDaIgreja")
+      .pipe(map((response: any) => response))
+  }
+
 
 }

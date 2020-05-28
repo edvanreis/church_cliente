@@ -9,6 +9,7 @@ import { CelulaService } from '../../../../service/celula.service';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../../model/alert-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { RedeService } from '../../../../service/rede.service';
 
 
 const ELEMENT_DATA = [
@@ -46,11 +47,17 @@ export class DadosPessoaisComponent implements OnInit {
   public filteredCelula: Observable<string[]>;
   public myControlCelula = new FormControl();
   public celulaValue: any;
+  public comboRede = [];
+  public filteredRede: Observable<string[]>;
+  public myControlRede = new FormControl();
+  public redeSelecionada: any;
+  public redeValue: any;
 
   constructor(private _pessoaService: PessoaService,
               private _emitirEventoService: EmitirEventoService,
               private _celulaService: CelulaService,
-              private _notifierService: NotifierService) { }
+              private _notifierService: NotifierService,
+              private _redeService:RedeService) { }
 
   ngOnInit() {
     this._buildForm();
@@ -58,7 +65,6 @@ export class DadosPessoaisComponent implements OnInit {
     this.getComboSexo();
     this.getComboEstadoCivil();
     this.getEmiter();
-    // console.log(this.membroInput)
     if (this.membroInput) {
       this.hideVisitante = false;
     }
@@ -116,10 +122,10 @@ export class DadosPessoaisComponent implements OnInit {
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
         this.visaoCelular = this.igrejaSelecionada.visaoCelular;
+        this.carregarRede(this.igrejaSelecionada.id);
+
       }
-      if (item.type == 'celula-comp') {
-        this.celulaSelecionada = item.data;
-      }
+
     });
   }
 
@@ -140,21 +146,24 @@ export class DadosPessoaisComponent implements OnInit {
     this.pessoa.dizimista = HelperChurch.isBoolean(this.form.controls['dizimista'].value);
     this.pessoa.cartaRecomendacao = HelperChurch.isBoolean(this.form.controls['cartaRecomendacao'].value);
     this.pessoa.membroDaCelula = HelperChurch.isBoolean(this.form.controls['membroDaCelula'].value);
-    this.pessoa.vistanteDaCelula = HelperChurch.isBoolean(this.form.controls['visitanteDaCelula'].value);
+    this.pessoa.visitanteDaCelula = HelperChurch.isBoolean(this.form.controls['visitanteDaCelula'].value);
 
     if (this.igrejaSelecionada) {
-      this.pessoa.igreja = this.igrejaSelecionada;
+      this.pessoa.igreja = {id:this.igrejaSelecionada.id};
     }
     if (this.celulaSelecionada) {
-      this.pessoa.celula = this.celulaSelecionada;
+      this.pessoa.celula = { id:this.celulaSelecionada.id};
+    }
+    if (this.redeSelecionada) {
+      this.pessoa.rede = { id:this.redeSelecionada.id};
     }
 
-     console.log(this.pessoa)
+    //  console.log(this.pessoa)
     return this.pessoa;
   }
 
   getObj(dados) {
-    // console.log(dados)
+    console.log(dados)
     this.form.controls['nome'].patchValue(dados.nome);
     this.form.controls['sobrenome'].patchValue(dados.sobreNome);
     this.form.controls['rg'].patchValue(dados.rg);
@@ -175,6 +184,10 @@ export class DadosPessoaisComponent implements OnInit {
       this.celulaValue = dados.celula.nome;
       this.celulaSelecionada = dados.celula;
     }
+    if(dados.rede){
+      this.redeValue = dados.rede.nome;
+      this.redeSelecionada = dados.rede;
+    }
 
     this.setObj();
     this.setEmiter();
@@ -190,9 +203,9 @@ export class DadosPessoaisComponent implements OnInit {
   }
 
 
-  carregarCelula() {
+  carregarCelula(id) {
 
-    this._celulaService.getList().pipe(take(1)).subscribe(item => {
+    this._celulaService.getCelulaRede(id).pipe(take(1)).subscribe(item => {
       this.comboCelulas = item;
       // console.log(item);
       this.filteredCelula = this.myControlCelula.valueChanges
@@ -212,6 +225,35 @@ export class DadosPessoaisComponent implements OnInit {
 
   onSelectionCelulaChange($event: MatAutocompleteSelectedEvent, option) {
     this.celulaSelecionada = option;
+    this.setEmiter();
+  }
+
+  carregarRede(id) {
+
+    this._redeService.getRedeIgreja(id).pipe(take(1)).subscribe(item => {
+      this.comboRede = item;
+      console.log(item);
+      this.filteredRede = this.myControlRede.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterRede(value, this.comboRede))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
+    });
+  }
+
+  private _filterRede(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionRedeChange($event: MatAutocompleteSelectedEvent, option) {
+    this.redeSelecionada = option;
+    if(this.visaoCelular || this.isCelula){
+      this.carregarCelula(this.redeSelecionada.id);
+    }
+    this.setEmiter();
   }
 
 }

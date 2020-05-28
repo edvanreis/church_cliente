@@ -45,11 +45,6 @@ export class EtapaVisaoComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Etapa já adiocionada.!");
       return false;
     }
-    if (this.etapas.length != 0) {
-      this.etapa.codigo = this.etapas[this.etapas.length - 1].codigo + 1;
-    } else {
-      this.etapa.codigo = 1;
-    }
     this.etapas.push(this.etapa);
     this.setEmiter();
   }
@@ -69,7 +64,6 @@ export class EtapaVisaoComponent implements OnInit {
       if (item.type == 'edit-etapa-visao') {
         for (let i = 0; i < item.data.length; i++) {
           let etapa = {} as any;
-          etapa.codigo = i + 1;
           etapa.id = item.data[i].id;
           etapa.nome = item.data[i].nome;
           this.etapas.push(etapa)
@@ -87,14 +81,15 @@ export class EtapaVisaoComponent implements OnInit {
     this._emitirEventoService.emitir('etapas-comp', this.etapas);
   }
 
-  dialogRemover(item) {
+  dialogRemover(i,item) {
     // console.log(item)
     const dialogRef = this._dialog.open(DialogConfirmComponent, {
       width: '500px',
       data: {
         controller: 'etapaVisao',
         item: item,
-        idAssociado: this.idAssociado
+        idAssociado: this.idAssociado,
+        index:i
       }
     });
   }

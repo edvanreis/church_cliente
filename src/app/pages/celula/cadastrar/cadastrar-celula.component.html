@@ -12,7 +12,7 @@
             <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
           <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Data de abertura" 
+            <input matInput [matDatepicker]="picker" placeholder="Data de abertura"
             formControlName="dataAbertura" [(ngModel)]="date"
               readonly>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
@@ -85,7 +85,7 @@
           </mat-select>
         </mat-form-field>
       </div>
-      <div> 
+      <div>
         <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
           <i class="material-icons">add</i>adicionar</button>
       </div>
@@ -94,19 +94,19 @@
       <div class="table-responsive" *ngIf="membros.length > 0">
         <table>
           <thead class="text-primary">
-            <th></th> 
-            <th>Nome</th> 
+            <th></th>
+            <th>Nome</th>
             <th>cpf</th>
-            <th>Tipo</th>          
+            <th>Tipo</th>
             <th>Remover</th>
           </thead>
           <tbody>
-            <tr *ngFor="let m of membros">
-              <td>{{ m.codigo}}</td>
+            <tr *ngFor="let m of membros;let i= index">
+              <td>{{ i+1}}</td>
               <td>{{ m.nomeCompleto}}</td>
               <td>{{ m.cpf | cpfCnpj }}</td>
               <td>{{ m.descTipoPessoa}}</td>
-              <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(m)"><i
+              <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,m)"><i
                     class="material-icons">delete</i></span></td>
             </tr>
           </tbody>

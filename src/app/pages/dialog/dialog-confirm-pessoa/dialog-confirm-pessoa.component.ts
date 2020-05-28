@@ -20,35 +20,32 @@ export class DialogConfirmPessoaComponent implements OnInit {
     private _notifierService: NotifierService,
     private _service: ConfirmService) { }
 
-    ngOnInit() {
-      console.log(this.data)
+  ngOnInit() {
+    console.log(this.data)
+  }
+
+  close(): void {
+    this.dialogRef.close();
+  }
+
+  setEmiter(): void {
+    this._emitirEventoService.emitir('confirm-dialog-pessoa-'+this.data.controller, this.data.item);
+  }
+
+  confirmar() {
+    let controller = this.data.controller;
+    let obj = {
+      id: this.data.id,
+      idPessoa: this.data.idPessoa
     }
-  
-    close(): void {
-      this.dialogRef.close();
-    }
-  
-    setEmiter(): void {
-      this._emitirEventoService.emitir('confirm-dialog-pessoa', this.data.item);
-    }
-  
-    confirmar() {
-      if (!this.data.id) {
-        this.setEmiter();
+    this._service.removerPessoa(obj,controller)
+      .pipe(take(1)).subscribe(item => {
+        this._notifierService.notify(AlertType.Success, item.value);
         this.close();
-      } else {
-         let obj = {
-           id: this.data.id,
-           idPessoa:this.data.idPessoa
-         }
-        this._service.removerPessoaIgreja(obj,this.data.controller)
-        .pipe(take(1)).subscribe(item => {
-          this._notifierService.notify(AlertType.Success, item.value);
-          this.setEmiter();
-          this.close();
-        }, error => {
-          this._notifierService.notify(AlertType.Error, error.message);
-        });
-      }
-    }
+      }, error => {
+        this._notifierService.notify(AlertType.Error, error.message);
+      });
+      this.setEmiter();
+  }
+
 }

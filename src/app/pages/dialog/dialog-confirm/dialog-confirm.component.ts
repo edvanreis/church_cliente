@@ -28,7 +28,7 @@ export class DialogConfirmComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir('confirm-dialog-' + this.data.controller, this.data.item);
+    this._emitirEventoService.emitir('confirm-dialog-' + this.data.controller, this.data.index);
   }
 
   confirmar() {

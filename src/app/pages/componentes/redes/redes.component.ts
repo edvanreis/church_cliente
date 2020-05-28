@@ -14,7 +14,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material';
   styleUrls: ['./redes.component.scss']
 })
 export class RedesComponent implements OnInit {
- 
+
   public comboRede = [];
   public filteredRede: Observable<string[]>;
   public myControlRede = new FormControl();
@@ -26,11 +26,11 @@ export class RedesComponent implements OnInit {
     private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
-    this.carregarCelula();
+    this.carregarRede();
     this.getEmiter();
   }
 
-  carregarCelula() {
+  carregarRede() {
 
     this._redeService.getList().pipe(take(1)).subscribe(item => {
       this.comboRede = item;
@@ -64,6 +64,7 @@ export class RedesComponent implements OnInit {
       if (item.type == 'edit-rede') {
         this.redeSelecionada = item.data;
         this.nomeValue = item.data.nome;
+        this.setEmiter();
       }
 
     });

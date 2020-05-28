@@ -19,15 +19,15 @@ export class ConfirmService {
       .pipe(map((response: any) => response))
   }
 
-  
+
   remove(id,controller) {
     let url = this._url+controller+"/";
     return this.http.delete(url+id)
       .pipe(map((response: any) => response))
   }
 
-  
-  removerPessoaIgreja(obj,controller) {
+
+  removerPessoa(obj,controller) {
     let url = this._url+controller;
     return this.http.post(url+"/removerPessoa", obj)
       .pipe(tap((response: any) => response));

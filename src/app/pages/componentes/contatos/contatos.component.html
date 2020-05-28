@@ -35,8 +35,8 @@
           <th>Ação</th>
         </thead>
         <tbody>
-          <tr *ngFor="let c of contatos;">
-            <td>{{ c.codigo}}</td>
+          <tr *ngFor="let c of contatos;let i = index">
+            <td>{{ i+1}}</td>
             <td>{{ c.tipo.nome}}</td>
             <td>{{ c.descricao }}</td>
             <td><img src="./assets/whatsapp.png" width="20px" *ngIf="c.whatsapp">
@@ -47,7 +47,7 @@
             <td><span style="color:green" *ngIf="c.login"><i class="material-icons">checked</i></span></td>
             <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogAtualizar(c)" title="Atualizar"><i
                   class="material-icons">create</i></span>
-            <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(c)" title="Remover"><i
+            <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,c)" title="Remover"><i
                   class="material-icons">delete</i></span></td>
           </tr>
         </tbody>

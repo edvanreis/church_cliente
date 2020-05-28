@@ -21,10 +21,10 @@
       <th>Remover</th>
     </thead>
     <tbody>
-      <tr *ngFor="let c of cargos">
-        <td>{{ c.codigo}}</td>
+      <tr *ngFor="let c of cargos;let i = index">
+        <td>{{ i+1 }}</td>
         <td>{{ c.nome}}</td>
-        <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(c)"><i
+        <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,c)"><i
               class="material-icons">delete</i></span></td>
       </tr>
     </tbody>

@@ -71,6 +71,11 @@ export class CadastrarCelulaComponent implements OnInit {
       if (item.type == 'membro-comp') {
         this.membro = item.data;
       }
+      if(item.type == 'confirm-dialog-pessoa-celula'){
+        if(this.membros.length > 0){
+          this.membros.splice(item.data, 1);
+        }
+      }
     });
   }
 
@@ -131,7 +136,7 @@ export class CadastrarCelulaComponent implements OnInit {
       dia: this.form.controls['diaSemana'].value,
       turno: this.form.controls['turno'].value,
       tipoCelula: this.form.controls['tipo'].value,
-      idRede: this.redeSelecionada.id,
+      rede: {id:this.redeSelecionada.id},
       enderecos: this.endereco,
       observacao: this.observacao,
       pessoas: this.membros
@@ -152,21 +157,12 @@ export class CadastrarCelulaComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Erro: escolha um tipo membro da célula!");
       return false;
     }
-    if (this.membros.length != 0) {
-      this.membro.codigo = this.membros[this.membros.length - 1].codigo + 1;
-    } else {
-      this.membro.codigo = 1;
-    }
+
     this.membro.tipo = this.tipoPessoa.tipoPessoa;
     this.membro.descTipoPessoa =  this.tipoPessoa.descTipoPessoa;
     this.tipoPessoa = null;
-    console.log(this.membro)
+
     this.membros.push(this.membro);
-  }
-
-
-  remover(index): void {
-    this.membros.splice(index, 1);
   }
 
   clear() {
@@ -215,7 +211,6 @@ export class CadastrarCelulaComponent implements OnInit {
   carregarPessoas(item){
     for (let i = 0; i < item.length; i++) {
       let pessoa = {} as any;
-      pessoa.codigo = i + 1;
       pessoa.id = item[i].id;
       pessoa.nomeCompleto = item[i].nomeCompleto;
       pessoa.cpf = item[i].cpf;
@@ -256,7 +251,7 @@ export class CadastrarCelulaComponent implements OnInit {
 
 
   update() {
-    let obj = {} as any; 
+    let obj = {} as any;
     obj = this.obj();
     obj.id = Number.parseInt(this.id);
     this._service.update(obj).pipe(take(1)).subscribe(item => {
@@ -266,14 +261,14 @@ export class CadastrarCelulaComponent implements OnInit {
     });
   }
 
-  dialogRemover(item) {
-    // console.log(item)
+  dialogRemover(i,item) {
     const dialogRef = this._dialog.open(DialogConfirmPessoaComponent, {
       width: '600px',
       data: {
         id: Number.parseInt(this.id),
         idPessoa: item.id,
-        controller: "celula"
+        controller: "celula",
+        item:i
       }
     });
   }

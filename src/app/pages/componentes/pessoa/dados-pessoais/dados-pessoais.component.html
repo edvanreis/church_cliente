@@ -57,8 +57,20 @@
       <mat-error *ngIf="!form.controls.estadoCivil.valid  && membroInput">Campo Obrigatório</mat-error>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <div>
     <app-igrejas></app-igrejas>
+    <div>
+      <mat-form-field class="full-width-field">
+        <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
+          [matAutocomplete]="a" [(ngModel)]="redeValue">
+        <mat-autocomplete #a="matAutocomplete">
+          <mat-option *ngFor="let option of filteredRede | async" [value]="option.nome"
+            (onSelectionChange)="onSelectionRedeChange($event,option)">
+            {{option.nome}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      </div>
     <div *ngIf="visaoCelular || isCelula">
       <mat-form-field class="full-width-field">
         <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"

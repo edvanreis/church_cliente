@@ -30,9 +30,9 @@ export class IgrejaDadosComponent implements OnInit {
   public nomeValue;
   public membro: any;
   public membros = [];
-  @Input('filial') filial: boolean = false;
-  @Input('idAssociado') idAssociado;
-  @Input('tipoIgreja') tipoIgreja;
+  @Input() filial: boolean = false;
+  @Input() id;
+  @Input() tipoIgreja;
 
   constructor(private _pessoaService: PessoaService,
     private _notifierService: NotifierService,
@@ -95,7 +95,6 @@ export class IgrejaDadosComponent implements OnInit {
           // console.log(item.data)
           for (let i = 0; i < item.data.pessoas.length; i++) {
             let pessoa = {} as any;
-            pessoa.codigo = i + 1;
             pessoa.idIgreja = item.data.id;
             pessoa.id = item.data.pessoas[i].id;
             pessoa.nomeCompleto = item.data.pessoas[i].nomeCompleto;
@@ -107,7 +106,7 @@ export class IgrejaDadosComponent implements OnInit {
         this.form.controls['cnpj'].patchValue(item.data.cnpj);
         this.form.controls['visaoCelular'].patchValue(item.data.visaoCelular);
       }
-      if (item.type == 'confirm-dialog-pessoa') {
+      if (item.type == 'confirm-dialog-pessoa-sede' || item.type == 'confirm-dialog-pessoa-filial') {
         this.membros.splice(item.data, 1);
         this.setEmiter();
       }
@@ -139,24 +138,20 @@ export class IgrejaDadosComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Membro já adiocionado.!");
       return false;
     }
-    if (this.membros.length != 0) {
-      this.membro.codigo = this.membros[this.membros.length - 1].codigo + 1;
-    } else {
-      this.membro.codigo = 1;
-    }
     this.membros.push(this.membro);
     this.setEmiter();
   }
 
 
-  dialogRemover(item) {
+  dialogRemover(i,item) {
     console.log(item)
     const dialogRef = this._dialog.open(DialogConfirmPessoaComponent, {
       width: '600px',
       data: {
-        id: item.idIgreja,
+        id: Number.parseInt(this.id),
         idPessoa: item.id,
-        controller: this.tipoIgreja
+        controller: this.tipoIgreja,
+        item:i
       }
     });
   }

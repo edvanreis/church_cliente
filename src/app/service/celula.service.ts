@@ -73,4 +73,10 @@ export class CelulaService {
       .pipe(map((response: any) => response))
   }
 
+  getCelulaRede(id) {
+    return this.http.get(this._url+id+'/obterCelulasRede')
+      .pipe(map((response: any) => response))
+  }
+
+
 }

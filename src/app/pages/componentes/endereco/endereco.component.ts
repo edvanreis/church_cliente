@@ -83,7 +83,7 @@ export class EnderecoComponent implements OnInit {
     }
   }
 
-  cleanForm(){
+  cleanForm() {
     this.form.controls['logradouro'].patchValue('');
     this.form.controls['localidade'].patchValue('');
     this.form.controls['uf'].patchValue('');
@@ -249,14 +249,15 @@ export class EnderecoComponent implements OnInit {
     });
   }
 
-  dialogRemover(item) {
+  dialogRemover(i, item) {
     console.log(item)
     const dialogRef = this._dialog.open(DialogConfirmComponent, {
       width: '600px',
       data: {
         controller: 'endereco',
         item: item,
-        idAssociado: this.idAssociado
+        idAssociado: this.idAssociado,
+        index: i
       }
     });
   }

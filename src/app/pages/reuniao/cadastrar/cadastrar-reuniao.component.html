@@ -9,8 +9,24 @@
         <i class="material-icons">store</i>
         <h1 class="mat-subheading-2 center-align">Relatório semanal da célula</h1>
       </div>
-      <app-celula></app-celula>
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5"  *ngIf="membros.length > 0">
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
+            [matAutocomplete]="au" [(ngModel)]="celulaValue">
+          <mat-autocomplete #au="matAutocomplete">
+            <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionCelulaChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input matInput placeholder="Rede" [(ngModel)]="rede" style="color:#1d68a5" id="rede" disabled="true">
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" *ngIf="membros.length > 0">
         <i class="material-icons">face</i>
         <h1 class="mat-subheading-2 center-align">Liderança da célula</h1>
       </div>
@@ -38,15 +54,14 @@
       <form form [formGroup]="form">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Data da reunião"
-            formControlName="dataDaReuniao"
+            <input matInput [matDatepicker]="picker" placeholder="Data da reunião" formControlName="dataDaReuniao"
               readonly>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Dia da semana</mat-label>
-            <mat-select formControlName="diaSemana" id="diaSemana" required>
+            <mat-select formControlName="diaDaSemana" id="diaSemana" required>
               <mat-option *ngFor="let item of comboSemana | keyValue" [value]="item.key">
                 {{item.value}}
               </mat-option>
@@ -55,32 +70,72 @@
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Inicio" [textMask]="{mask: maskHorario}" formControlName="horaInicio"
+            <input matInput placeholder="Inicio" [textMask]="{mask: maskHorario}" formControlName="horarioInicio"
               id="horario" required>
           </mat-form-field>
           <mat-form-field class="example-full-width">
-            <input matInput placeholder="Fim" [textMask]="{mask: maskHorario}" formControlName="horaFim"
-              id="horario" required>
+            <input matInput placeholder="Fim" [textMask]="{mask: maskHorario}" formControlName="horarioFim" id="horario"
+              required>
           </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="full-width-field">
-            <input matInput placeholder="Louvor" formControlName="louvor" id="louvor" >
+            <input matInput placeholder="Louvor" formControlName="louvor" id="louvor">
           </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field class="full-width-field">
-              <input id="oferta" matInput  placeholder="Oferta"  formControlName="oferta" (keyup)="onInputCurrency($event)"/>
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field class="full-width-field">
-              <textarea matInput placeholder="Nota/Observação" formControlName="observacao"></textarea>
-            </mat-form-field>
-          </div>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <input id="oferta" matInput placeholder="Oferta" formControlName="oferta"
+              (keyup)="onInputCurrency($event)" />
+          </mat-form-field>
+            <label style="color:#1d68a5">Oração da cadeira da Benção?</label>
+            <mat-slide-toggle formControlName="cadeiraBencao" id="cadeiraBencao"   #cadeiraBencao>{{cadeiraBencao.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <textarea matInput placeholder="Nota/Observação" formControlName="observacao"></textarea>
+          </mat-form-field>
+        </div>
       </form>
       <app-licao></app-licao>
-      <app-membro [label]="'Palestrante'"></app-membro>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Palestrantes" aria-label="Number" matInput
+            [formControl]="myControlPalestrante" [matAutocomplete]="uto" [(ngModel)]="palestranteValue" required>
+          <mat-autocomplete #uto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredPalestrante | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedPalestrantes($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" type="submit" (click)="adicionarPalestrante()">
+          <i class="material-icons">add</i>adicionar</button>
+      </div>
+        <br />
+        <br />
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="palestrantes.length > 0">
+          <div class="table-responsive">
+            <table>
+              <thead class="text-primary">
+                <th></th>
+                <th>Nome</th>
+                <th>Remover</th>
+              </thead>
+              <tbody>
+                <tr *ngFor="let p of palestrantes;let i= index">
+                  <td>{{ i+1}}</td>
+                  <td>{{ p.nomeCompleto}}</td>
+                  <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,m)"><i
+                        class="material-icons">delete</i></span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br />
       <mat-divider></mat-divider>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
         <i class="material-icons">person</i>
@@ -88,8 +143,8 @@
       </div>
       <div>
         <mat-form-field class="full-width-field">
-          <input type="text"  aria-label="Number" matInput [formControl]="myControlMembro"
-            [matAutocomplete]="auto" [(ngModel)]="membroValue" required>
+          <input type="text" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto"
+            [(ngModel)]="membroValue" required>
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
               (onSelectionChange)="onSelectionChangedMembro($event,option)">
@@ -113,10 +168,10 @@
               <th>Remover</th>
             </thead>
             <tbody>
-              <tr *ngFor="let m of membros">
-                <td>{{ m.codigo}}</td>
+              <tr *ngFor="let m of membros;let i= index">
+                <td>{{ i+1}}</td>
                 <td>{{ m.nomeCompleto}}</td>
-                <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(m)"><i
+                <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,m)"><i
                       class="material-icons">delete</i></span></td>
               </tr>
             </tbody>
@@ -131,8 +186,8 @@
       </div>
       <div>
         <mat-form-field class="full-width-field">
-          <input type="text"  aria-label="Number" matInput [formControl]="myControlVisitante"
-            [matAutocomplete]="aut" [(ngModel)]="visitanteValue" required>
+          <input type="text" aria-label="Number" matInput [formControl]="myControlVisitante" [matAutocomplete]="aut"
+            [(ngModel)]="visitanteValue" required>
           <mat-autocomplete #aut="matAutocomplete">
             <mat-option *ngFor="let option of filteredVisitante | async" [value]="option.nomeCompleto"
               (onSelectionChange)="onSelectionChangedVisitante($event,option)">
@@ -156,8 +211,8 @@
               <th>Remover</th>
             </thead>
             <tbody>
-              <tr *ngFor="let v of visitantes">
-                <td>{{ v.codigo}}</td>
+              <tr *ngFor="let v of visitantes;let i= index">
+                <td>{{ i+1}}</td>
                 <td>{{ v.nomeCompleto}}</td>
                 <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(m)"><i
                       class="material-icons">delete</i></span></td>
@@ -188,11 +243,11 @@
               <th>Remover</th>
             </thead>
             <tbody>
-              <tr *ngFor="let v of membrosVisitantes">
-                <td>{{ v.codigo}}</td>
+              <tr *ngFor="let v of membrosVisitantes ;let i= index">
+                <td>{{ i+1}}</td>
                 <td>{{ v.nomeCompleto}}</td>
-                <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(m)"><i
-                      class="material-icons">delete</i></span></td>
+                <td><span style=" color: #1d68a5;cursor: pointer" (click)="dialogRemover(m)"><i
+                  class="material-icons">delete</i></span></td>
               </tr>
             </tbody>
           </table>

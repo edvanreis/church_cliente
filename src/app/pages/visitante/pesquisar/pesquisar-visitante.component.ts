@@ -86,7 +86,6 @@ export class PesquisarVisitanteComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       if (item.type == 'dadosPessoais') {
-        console.log(item.data)
         this.dadosPessoais = item.data;
       }
       if (item.type == 'endereco') {
@@ -97,10 +96,10 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   pesquisar() {
     this.setObj();
-     console.log(this.pessoa)
+    //  console.log(this.pessoa)
     this.loading = true;
     this._service.pesquisar(this.pessoa).pipe(take(1)).subscribe(item => {
-      console.log(item);
+      // console.log(item);
       this.pessoas = item;
       this.dados = new MatTableDataSource(this.pessoas);
       this.dados.sort = this.sort;

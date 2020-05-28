@@ -5,7 +5,7 @@ import { PesquisarReuniaoComponent } from './pesquisar/pesquisar-reuniao.compone
 import { CadastrarReuniaoComponent } from './cadastrar/cadastrar-reuniao.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule, MatSlideToggleModule } from '@angular/material';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
 import { LicaoComponenteModule } from '../componentes/licao/licao-componente.module';
@@ -41,6 +41,7 @@ const routes: Routes = [
     TextMaskModule,
     MembroComponenteModule,
     MatDividerModule,
+    MatSlideToggleModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
