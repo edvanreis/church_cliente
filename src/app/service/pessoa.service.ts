@@ -7,7 +7,7 @@ import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class PessoaService {
+export class PessoaService  implements AbstractService{
 
   private _url = environment.url + "pessoa/";
 
@@ -86,6 +86,11 @@ export class PessoaService {
   getVisitanteCelula(id) {
     return this.http.get(this._url + id + "/visitanteCelula")
       .pipe(tap((response: any) => response));
+  }
+
+  remove(id) {
+    return this.http.delete(this._url+id)
+      .pipe(map((response: any) => response))
   }
 
 

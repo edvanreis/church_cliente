@@ -6,7 +6,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatButtonModule, MatDividerModule, MatExpansionModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatTabsModule, MatToolbarModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
-import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { InterceptorService } from '../../service/interceptor.service';
 import { ContatosModule } from '../componentes/contatos/contatos.module';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
@@ -40,8 +39,7 @@ const routes: Routes = [
     EnderecoModule,
     TextMaskModule,
     ContatosModule,
-    MatButtonModule, 
-    PipeModule,
+    MatButtonModule,
     MatDividerModule,
     MatSlideToggleModule,
     DialogAtivarInativarModule,
@@ -50,7 +48,7 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [
-    CadastrarIgrejaComponent, 
+    CadastrarIgrejaComponent,
     PesquisarIgrejaComponent
   ],
   providers: [

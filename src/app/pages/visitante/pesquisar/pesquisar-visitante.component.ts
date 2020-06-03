@@ -6,7 +6,6 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { MembroService } from '../../../service/membro.service';
 import { ExcelService } from '../../../service/excel.service';
 import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { AlertType } from '../../../model/alert-type';
@@ -196,18 +195,6 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   getComboEtapaVisao() {
     this.etapa$ = this._etapaVisao.getList();
-  }
-
-  limpar(){
-    this.setEmiter();
-    this.pessoas = [];
-    this.pessoa = {} as any;
-    this.dadosPessoais = {} as any;
-    this.formDate.reset();
-  }
-
-  setEmiter(): void {
-    this._emitirEventoService.emitir('clear', '');
   }
 
   setFieldFormControl(field, value) {

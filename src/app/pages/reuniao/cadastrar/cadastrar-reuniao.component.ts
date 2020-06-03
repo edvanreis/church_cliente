@@ -1,15 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { CelulaService } from '../../../service/celula.service';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
-import { DateAdapter, MatAutocompleteSelectedEvent } from '@angular/material';
+import { DateAdapter, MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
 import { HelperChurch } from '../../../helper/helper.church';
 import { Observable } from 'rxjs';
 import { take, startWith, map } from 'rxjs/operators';
 import { PessoaService } from '../../../service/pessoa.service';
+import { ReuniaoService } from '../../../service/reuniao.service';
 import { DatePipe } from '@angular/common';
+import { Router, ActivatedRoute } from '@angular/router';
+import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
+import { DialogConfirmPessoaReuniaoComponent } from '../../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.component';
 
 @Component({
   selector: 'app-cadastrar-reuniao',
@@ -46,10 +50,11 @@ export class CadastrarReuniaoComponent implements OnInit {
   public rede: any;
   public id: any;
   public reuniao = {} as any;
-  public licao: any;
+  public licaoSelecionada: any;
   public palestrante: any;
   public comboPalestrantes = [];
   public palestrantes = [];
+  public pesquisa: boolean = false;
 
 
   constructor(private _emitirEventoService: EmitirEventoService,
@@ -57,7 +62,12 @@ export class CadastrarReuniaoComponent implements OnInit {
     private _notifierService: NotifierService,
     private _dateAdapter: DateAdapter<Date>,
     private _pessoaService: PessoaService,
-    private _datePipe: DatePipe) { }
+    private _datePipe: DatePipe,
+    private _service: ReuniaoService,
+    private _router: Router,
+    private _avRoute: ActivatedRoute,
+    private _dialog: MatDialog) { }
+
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -66,14 +76,15 @@ export class CadastrarReuniaoComponent implements OnInit {
     this.getEmiter();
     this.getComboSemana();
     this.getPalestrantes();
+    this.getParams();
   }
 
   private _buildForm(): void {
     this.form = new FormGroup({
-      'horarioInicio': new FormControl(''),
-      'horarioFim': new FormControl(''),
-      'dataDaReuniao': new FormControl(''),
-      'diaDaSemana': new FormControl(''),
+      'horarioInicio': new FormControl('', Validators.required),
+      'horarioFim': new FormControl('', Validators.required),
+      'dataDaReuniao': new FormControl('', Validators.required),
+      'diaDaSemana': new FormControl('', Validators.required),
       'louvor': new FormControl(''),
       'observacao': new FormControl(''),
       'oferta': new FormControl(''),
@@ -112,11 +123,22 @@ export class CadastrarReuniaoComponent implements OnInit {
     this._emitirEventoService.mensagem.subscribe(item => {
       if (item.type == 'membro-comp') {
         this.membroVisitante = item.data;
-        // console.log(this.membroVisitante)
       } if (item.type == 'licao-comp') {
-        this.licao = item.data;
-        // console.log(this.licao)
+        this.licaoSelecionada = item.data;
       }
+      if (item.type == 'confirm-dialog-pessoa-membro') {
+        this.membros.splice(item.data, 1);
+      }
+      if (item.type == 'confirm-dialog-pessoa-palestrante') {
+        this.palestrantes.splice(item.data, 1);
+      }
+      if (item.type == 'confirm-dialog-pessoa-visitante') {
+        this.visitantes.splice(item.data, 1);
+      }
+      if (item.type == 'confirm-dialog-pessoa-membro-visitante') {
+        this.membrosVisitantes.splice(item.data, 1);
+      }
+
     });
   }
 
@@ -235,24 +257,19 @@ export class CadastrarReuniaoComponent implements OnInit {
   }
 
   salvar() {
-    // this.setObj();
-    // let mensagem = this.validarCampos();
-    // if (mensagem) {
-    //   this._notifierService.notify(AlertType.Error, mensagem);
-    //   return false;
-    // }
+    this.getObj();
+    let mensagem = this.validFields();
+    if (mensagem) {
+      this._notifierService.notify(AlertType.Error, mensagem);
+      return false;
+    }
     if (!this.id) {
       this.save();
     } else {
-      // this.updade();
+      this.updade();
     }
 
 
-  }
-
-  save() {
-    this.getObj();
-    console.log(this.reuniao);
   }
 
   getObj() {
@@ -266,8 +283,8 @@ export class CadastrarReuniaoComponent implements OnInit {
     this.reuniao.dataDaReuniao = this._datePipe.transform(this.form.controls['dataDaReuniao'].value, 'dd/MM/yyyy');
     this.reuniao.diaDaSemana = this.form.controls['diaDaSemana'].value;
 
-    if (this.licao) {
-      this.reuniao.licao = { id: this.licao.id };
+    if (this.licaoSelecionada) {
+      this.reuniao.licao = { id: this.licaoSelecionada.id };
     }
 
     if (this.celulaSelecionada) {
@@ -295,6 +312,9 @@ export class CadastrarReuniaoComponent implements OnInit {
     }
     if (pessoas.length > 0) {
       this.reuniao.pessoas = pessoas;
+    }
+    if (this.id) {
+      this.reuniao.id = this.id;
     }
   }
 
@@ -324,7 +344,7 @@ export class CadastrarReuniaoComponent implements OnInit {
 
   adicionarPalestrante() {
     if (!this.palestrante) {
-      console.log(this.palestrante);
+      // console.log(this.palestrante);
       this._notifierService.notify(AlertType.Error, "Por favor escolha uma palestrante.!");
       return false;
     }
@@ -335,6 +355,170 @@ export class CadastrarReuniaoComponent implements OnInit {
     }
     this.palestrante.tipo = 'PALESTRANTE';
     this.palestrantes.push(this.palestrante);
+  }
+
+  save() {
+    this.getObj();
+    this._service.save(this.reuniao).pipe(take(1)).subscribe(item => {
+      this.voltar();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+
+  updade() {
+    this.getObj();
+    this._service.update(this.reuniao).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+
+  voltar() {
+    this._router.navigate(['/auth/reuniao/pesquisar'], {
+      queryParams: {
+        pesquisa: this.pesquisa
+      },
+      skipLocationChange: true
+    });
+  }
+
+  validFields(): string {
+    let concat = 'Por favor preencha o campo';
+    let concatArray = 'Por favor adicione pelo menos um';
+    if (!this.reuniao.dataDaReuniao) {
+      return concat + ' Data da reunião!';
+    }
+    if (!this.reuniao.diaDaSemana) {
+      return concat + ' Dia da semana!';
+    }
+    if (!this.reuniao.horarioInicio) {
+      return concat + ' Horário de inicio!';
+    }
+    if (!this.reuniao.horarioInicio) {
+      return concat + ' Horário de fim!';
+    }
+    if (this.palestrantes.length == 0) {
+      return concatArray + ' Palestrante!';
+    }
+    if (this.membros.length == 0) {
+      return concatArray + ' Membro!';
+    }
+    return null;
+  }
+
+  getParams() {
+    if (this._avRoute.snapshot.queryParamMap.get("id")) {
+      this.id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.getReuniao(this.id);
+      this.pesquisa = true;
+    }
+  }
+
+  getReuniao(id) {
+    this._service.getReuniao(id).pipe(take(1)).subscribe(item => {
+      // console.log(item)
+      this.form.controls['horarioInicio'].patchValue(item.horarioInicio);
+      this.form.controls['horarioFim'].patchValue(item.horarioFim);
+      this.form.controls['dataDaReuniao'].patchValue(new Date(item.dataDaReuniaoToDate));
+      this.form.controls['diaDaSemana'].patchValue(item.diaDaSemana);
+      this.form.controls['louvor'].patchValue(item.louvor);
+      this.form.controls['observacao'].patchValue(item.observacao);
+      this.form.controls['oferta'].patchValue(item.oferta);
+      this.form.controls['cadeiraBencao'].patchValue(item.cadeiraBencao);
+      this.emitirLicao(item.licao);
+      this.getCelula(item.celula.id);
+      item.pessoas.forEach(item => {
+        if (item.tipo == 'MEMBRO') {
+          this.membros.push(item);
+        }
+        if (item.tipo == 'VISITANTE') {
+          this.visitantes.push(item);
+        }
+        if (item.tipo == 'PALESTRANTE') {
+          this.palestrantes.push(item);
+        }
+        if (item.tipo == 'V_OUTRAS_CELULAS') {
+          this.membrosVisitantes.push(item);
+        }
+      });
+    }, error => {
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  getCelula(id) {
+    this._celulaService.getCelula(id).pipe(take(1)).subscribe(item => {
+      this.celulaSelecionada = item;
+      this.celulaValue = item.nome;
+      this.rede = this.celulaSelecionada.rede.nome;
+      this.getCelulaPessoa(this.celulaSelecionada.id);
+      this.carregarMembro(this.celulaSelecionada.id);
+      this.carregarVisitante(this.celulaSelecionada.id);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as células!");
+    });
+  }
+
+  emitirLicao(item): void {
+    this._emitirEventoService.emitir('edit-licao', item);
+  }
+
+  dialogRemoverPalestrante(i, item) {
+    console.log(item)
+    const dialogRef = this._dialog.open(DialogConfirmPessoaReuniaoComponent, {
+      width: '600px',
+      data: {
+        id: Number.parseInt(this.id),
+        idPessoa: item.id,
+        tipo: "palestrante",
+        item: i
+      }
+    });
+  }
+
+  dialogRemoverMembro(i, item) {
+    console.log(item)
+    const dialogRef = this._dialog.open(DialogConfirmPessoaReuniaoComponent, {
+      width: '600px',
+      data: {
+        id: Number.parseInt(this.id),
+        idPessoa: item.id,
+        tipo: "membro",
+        item: i
+      }
+    });
+  }
+
+  dialogRemoverMembroVisitante(i, item) {
+    console.log(item)
+    const dialogRef = this._dialog.open(DialogConfirmPessoaReuniaoComponent, {
+      width: '600px',
+      data: {
+        id: Number.parseInt(this.id),
+        idPessoa: item.id,
+        tipo: "membro-visitante",
+        item: i
+      }
+    });
+  }
+
+  dialogRemoverVisitante(i, item) {
+    console.log(item)
+    const dialogRef = this._dialog.open(DialogConfirmPessoaReuniaoComponent, {
+      width: '600px',
+      data: {
+        id: Number.parseInt(this.id),
+        idPessoa: item.id,
+        tipo: "vistante",
+        item: i
+      }
+    });
   }
 
 }

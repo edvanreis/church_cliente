@@ -7,11 +7,11 @@ import { NgxViacepService } from '@brunoc/ngx-viacep';
 import { TextMaskModule } from 'angular2-text-mask';
 import { DadosPessoaisComponent } from './dados-pessoais/dados-pessoais.component';
 import { EscolaridadeComponent } from '../escolaridade/escolaridade.component';
-import { PipeModule } from '../../../pipe/pipe/pipe.module';
-import { MembroService } from '../../../service/membro.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { IgrejasCompenenteModule } from '../../componentes/igrejas/igreja-compenente.module';
 import { CelulaComponentModule } from '../../componentes/celula/celula-component.module';
+import { PessoaService } from '../../../service/pessoa.service';
+import { PipeModule } from '../../../pipes/pipe.module';
 
 
 @NgModule({
@@ -34,14 +34,14 @@ import { CelulaComponentModule } from '../../componentes/celula/celula-component
     MatTableModule,
     MatPaginatorModule,
     MatExpansionModule,
-    PipeModule,
     MatDatepickerModule,
     MatNativeDateModule,
     TextMaskModule,
     MatSlideToggleModule,
     IgrejasCompenenteModule,
     CelulaComponentModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    PipeModule
   ],
   exports: [
     DadosPessoaisComponent,
@@ -52,7 +52,7 @@ import { CelulaComponentModule } from '../../componentes/celula/celula-component
     EscolaridadeComponent
   ],
   providers: [
-    MembroService,
+    PessoaService,
     EmitirEventoService,
     NgxViacepService
   ]

@@ -11,6 +11,64 @@
       </div>
       <br />
       <br />
+      <form form [formGroup]="form">
+       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+        <mat-form-field class="full-width-field">
+          <input matInput placeholder="Competência" [textMask]="{mask: maskCompetencia}" formControlName="competencia" id="competencia">
+        </mat-form-field>
+        <mat-form-field class="full-width-field">
+          <mat-label>Dia da semana</mat-label>
+          <mat-select formControlName="diaDaSemana" id="diaDaSemana" required>
+            <mat-option *ngFor="let item of comboSemana | keyValue" [value]="item.key">
+              {{item.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+       </div>
+      </form>
+      <app-celula></app-celula>
+      <app-licao></app-licao>
+      <div>
+        <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
+          <i class="material-icons">search</i>Buscar</button>
+      </div>
+      <br />
+      <br />
+      <div [hidden]="!loading" align="center" style="width: 100%">
+        <h4>Buscando...</h4>
+        <mat-spinner [diameter]="40"></mat-spinner>
+      </div>
+      <br />
+      <br />
+      <div *ngIf="reunioes.length > 0 && !loading">
+      <div  style="padding: 0 20px;">
+        <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+        </mat-form-field>
+      </div>
+      <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;">
+        <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
+            <span *ngIf="column.id=='id'"  class="default-botoes" (click)="editar(element.id)"><i
+                class="material-icons">create</i></span>
+            <span *ngIf="column.id=='id'" class="default-botoes" (click)="dialogRemover(element.id)"><i
+                class="material-icons">delete</i></span>
+            <span *ngIf="column.id=='id'" class="default-botoes" (click)="relatorioReuniaoSemanal(element.id)">
+              <img src="./assets/pdf.png" width="20px">
+            </span>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
+      showFirstLastButtons></mat-paginator>
+      <div>
+        <button mat-raised-button color="success" (click)="exportAsXLSX()"><i
+          class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
+      </div>
     </div>
   </div>
 </div>

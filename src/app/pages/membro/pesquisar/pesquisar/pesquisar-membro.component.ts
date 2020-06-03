@@ -219,18 +219,6 @@ export class PesquisarMembroComponent implements OnInit {
     this.etapa$ = this._etapaVisao.getList();
   }
 
-  limpar() {
-    this.setEmiter();
-    this.pessoas = [];
-    this.pessoa = {} as any;
-    this.dadosPessoais = {} as any;
-    this.formDate.reset();
-  }
-
-  setEmiter(): void {
-    this._emitirEventoService.emitir('clear', '');
-  }
-
   setFieldFormControl(field, value) {
     this.form.controls[field].patchValue(value)
   }

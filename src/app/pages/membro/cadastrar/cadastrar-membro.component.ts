@@ -161,7 +161,7 @@ export class CadastrarMembroComponent implements OnInit {
 
   salvar() {
     this.setObj();
-    let mensagem = this.validarCampos();
+    let mensagem = this.validFields();
     if (mensagem) {
       this._notifierService.notify(AlertType.Error, mensagem);
       return false;
@@ -194,7 +194,7 @@ export class CadastrarMembroComponent implements OnInit {
   setObj() {
     this.getEmiter();
     if (this.dadosPessoais) {
-      // console.log(this.pessoa)
+      // console.log(this.dadosPessoais)
       if (this.dadosPessoais) {
         this.pessoa = this.dadosPessoais;
         this.pessoa.id = this.id;
@@ -277,7 +277,7 @@ export class CadastrarMembroComponent implements OnInit {
     });
   }
 
-  validarCampos(): string {
+  validFields(): string {
     let concat = 'Por favor preencha o campo';
     let concatArray = 'Por favor adicione pelo menos um';
     if (!this.pessoa.nome) {
@@ -316,15 +316,10 @@ export class CadastrarMembroComponent implements OnInit {
     if (this.etapas.length == 0) {
       return concatArray + 'a  Etapa da visão!';
     }
-    if (!this.igreja) {
-      return concatArray + 'Igreja!';
+    if (!this.pessoa.igreja) {
+      return concat + ' Igreja!';
     }
-    if (!this.pessoa.celula && this.igreja && (this.igreja.visaoCelular || this.isCelula)) {
-      return concat + 'Célula!';
-    }
-    if (!this.pessoa.rede) {
-      return concat + 'Rede!';
-    }
+
     return null;
   }
 

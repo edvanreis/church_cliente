@@ -7,9 +7,9 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class IgrejaFilialService {
+export class IgrejaFilialService implements AbstractService {
 
-  
+
   private _url = environment.url + "filial/";
 
   constructor(public http: HttpClient) { }
@@ -29,9 +29,14 @@ export class IgrejaFilialService {
       .pipe(map((response: any) => response))
   }
 
-  
+
   update(igreja) {
     return this.http.put(this._url, igreja)
+      .pipe(map((response: any) => response))
+  }
+
+  remove(id) {
+    return this.http.delete(this._url+id)
       .pipe(map((response: any) => response))
   }
 

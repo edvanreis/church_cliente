@@ -70,7 +70,7 @@ export class PesquisarCelulaComponent implements OnInit {
       { id: 'cep', value: 'CEP' },
       { id: 'logradouro', value: 'Logradouro' },
       { id: 'numero', value: 'Número' },
-      { id: 'bairro', value: 'bairro' },
+      { id: 'bairro', value: 'Bairro' },
       { id: 'localidade', value: 'Localidade' },
       { id: 'uf', value: 'Estado' },
       { id: 'id', value: 'Ação' }

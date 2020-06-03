@@ -114,18 +114,18 @@ export class CadastrarVisitanteComponent implements OnInit {
       if (item.type == 'contatos') {
         this.contatos = item.data;
       }
-      if (item.type == 'igreja-comp') {
-        this.igreja = item.data;
-      }
+      // if (item.type == 'igreja-comp') {
+      //   this.igreja = item.data;
+      // }
 
     });
   }
 
   salvar(){
     this.setObj();
-    // console.log(this.pessoa)
-    if(!this.pessoa.nome){
-      this._notifierService.notify(AlertType.Error,"Por favor digite o nome do visitante!");
+    let mensagem = this.validFields();
+    if (mensagem) {
+      this._notifierService.notify(AlertType.Error, mensagem);
       return false;
     }
     if(!this.pessoa.id){
@@ -210,6 +210,17 @@ export class CadastrarVisitanteComponent implements OnInit {
       },
       skipLocationChange: true
     });
+  }
+
+  validFields(): string {
+    let concat = 'Por favor preencha o campo';
+    if (!this.pessoa.nome) {
+      return concat + ' nome!';
+    }
+    if (!this.pessoa.igreja) {
+      return concat + ' Igreja!';
+    }
+    return null;
   }
 
 

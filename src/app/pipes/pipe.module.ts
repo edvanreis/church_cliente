@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
-import { KeyValuePipe } from '../../pipes/key-value.pipe';
-import { GroupByPipe } from '../../pipes/group-by.pipe';
-import { BooleanPipe } from '../../pipes/boolean.pipe';
-import { CpfCnpjPipe } from '../../pipes/cpf-cnpj.pipe';
+import { KeyValuePipe } from './key-value.pipe';
+import { GroupByPipe } from './group-by.pipe';
+import { BooleanPipe } from './boolean.pipe';
+import { CpfCnpjPipe } from './cpf-cnpj.pipe';
 
 @NgModule({
   declarations: [

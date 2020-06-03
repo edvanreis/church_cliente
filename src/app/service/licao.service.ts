@@ -7,7 +7,7 @@ import { map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class LicaoService {
+export class LicaoService implements AbstractService {
 
   private _url = environment.url + "licao/";
 

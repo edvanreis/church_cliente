@@ -6,25 +6,25 @@
     </mat-toolbar>
     <div class="cdk-container">
       <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
           <i class="material-icons">face</i>
           <h1 class="mat-subheading-2 center-align">Dados Pessoais</h1>
         </div>
         <app-dados-pessoais></app-dados-pessoais>
         <mat-divider></mat-divider>
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
           <i class="material-icons">store_mall_directory</i>
           <h1 class="mat-subheading-2 center-align">Endereço</h1>
         </div>
         <app-endereco [pessoa]="true"  [idAssociado]="id"></app-endereco>
         <mat-divider></mat-divider>
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
           <i class="material-icons">headset_mic</i>
           <h1 class="mat-subheading-2 center-align">Contatos</h1>
         </div>
         <app-contatos [idPessoa]="id"  [idAssociado]="id"></app-contatos>
         <mat-divider></mat-divider>
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
           <i class="material-icons">school</i>
           <h1 class="mat-subheading-2 center-align">Escolaridade</h1>
         </div>

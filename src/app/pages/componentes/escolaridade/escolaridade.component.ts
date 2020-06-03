@@ -1,7 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MembroService } from '../../../service/membro.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { PessoaService } from '../../../service/pessoa.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { AlertType } from '../../../model/alert-type';
 import { NotifierService } from 'angular-notifier';

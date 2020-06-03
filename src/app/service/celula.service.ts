@@ -7,7 +7,8 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class CelulaService {
+export class CelulaService implements AbstractService{
+
 
   private _url = environment.url + "celula/";
 
@@ -75,6 +76,11 @@ export class CelulaService {
 
   getCelulaRede(id) {
     return this.http.get(this._url+id+'/obterCelulasRede')
+      .pipe(map((response: any) => response))
+  }
+
+  remove(id) {
+    return this.http.delete(this._url+id)
       .pipe(map((response: any) => response))
   }
 

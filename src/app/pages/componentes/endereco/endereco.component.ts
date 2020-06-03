@@ -5,10 +5,10 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { EnderecoService } from '../../../service/endereco.service';
-import { MembroService } from '../../../service/membro.service';
 import { DialogAtualizarEnderecoComponent } from '../../dialog/dialog-atualizar-endereco/dialog-atualizar-endereco.component';
 import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confirm.component';
 import { HelperChurch } from '../../../helper/helper.church';
+import { PessoaService } from '../../../service/pessoa.service';
 
 
 
@@ -31,8 +31,7 @@ export class EnderecoComponent implements OnInit {
   public tipoEndereco = [];
   public observacao: boolean = false;
 
-  constructor(private _membroService: MembroService,
-    private _notifierService: NotifierService,
+  constructor(private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
     private _enderecoService: EnderecoService,
     private _dialog: MatDialog) { }

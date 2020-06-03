@@ -63,9 +63,11 @@ export class IgrejasComponent implements OnInit {
     this._emitirEventoService.mensagem.subscribe(item => {
       // console.log(item.type);
       if (item.type == 'edit-igreja') {
-        this.igrejaSelecionada = item.data;
-        this.nomeValue = item.data.nome;
-        this.setEmiter();
+        if(item.data){
+          this.igrejaSelecionada = item.data;
+          this.nomeValue = item.data.nome;
+          this.setEmiter();
+        }
       }
       if (item.type == 'clear') {
         this.igrejaSelecionada = '';

@@ -5,7 +5,8 @@ import { MatToolbarModule, MatCardModule, MatFormFieldModule, MatInputModule, Ma
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { TextMaskModule } from 'angular2-text-mask';
-import { PipeModule } from '../../../pipe/pipe/pipe.module';
+import { PipeModule } from '../../../pipes/pipe.module';
+
 
 @NgModule({
   imports: [
@@ -24,7 +25,7 @@ import { PipeModule } from '../../../pipe/pipe/pipe.module';
     MatOptionModule,
     MatSelectModule,
     MatCheckboxModule,
-    PipeModule,
+    PipeModule
 
   ],
   declarations: [
@@ -32,6 +33,6 @@ import { PipeModule } from '../../../pipe/pipe/pipe.module';
   ],
   entryComponents: [
     DialogAtualizarEnderecoComponent
-  ] 
+  ]
 })
 export class DialogAtualizarEnderecoModule { }

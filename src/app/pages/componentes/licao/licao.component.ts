@@ -64,9 +64,10 @@ export class LicaoComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       // console.log(item.type);
-      if (item.type == 'licao') {
+      if (item.type == 'edit-licao') {
         this.licaoSelecionada = item.data;
-        this.nomeValue = item.data;
+        this.nomeValue = item.data.tema;
+        this.setEmiter();
       }
       if (item.type == 'clear') {
         this.licaoSelecionada = '';

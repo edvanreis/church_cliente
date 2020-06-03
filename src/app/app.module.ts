@@ -17,6 +17,8 @@ import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { ReuniaoModule } from './pages/reuniao/reuniao.module';
 import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
 import { InterceptorService } from './service/interceptor.service';
+import { PipeModule } from './pipes/pipe.module';
+
 
 
 
@@ -44,7 +46,6 @@ import { InterceptorService } from './service/interceptor.service';
     AlterarSenhaModule,
     LicaoModule,
     ReuniaoModule
-
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },DatePipe],
   bootstrap: [AppComponent],

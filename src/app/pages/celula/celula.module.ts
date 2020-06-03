@@ -12,10 +12,12 @@ import { EnderecoModule } from '../componentes/endereco/endereco.module';
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
 import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
 import { TextMaskModule } from 'angular2-text-mask';
-import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { RedesComponenteModule } from '../componentes/redes/redes-componente.module';
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
+import { PipeModule } from '../../pipes/pipe.module';
+
+
 
 
 
@@ -40,7 +42,6 @@ const routes: Routes = [
     MembroComponenteModule,
     IgrejasCompenenteModule,
     TextMaskModule,
-    PipeModule,
     MatSelectModule,
     MatOptionModule,
     RedesComponenteModule,
@@ -49,8 +50,8 @@ const routes: Routes = [
     MatPaginatorModule,
     MatDividerModule,
     DialogAtivarInativarModule,
-    PipeModule,
     DialogConfirmPessoaModule,
+    PipeModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

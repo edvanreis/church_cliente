@@ -5,9 +5,9 @@ import { MatCheckboxModule, MatSelectModule, MatOptionModule, MatButtonModule, M
 import { TextMaskModule } from 'angular2-text-mask';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { PipeModule } from '../../../pipe/pipe/pipe.module';
 import { DialogConfirmModule } from '../../dialog/dialog-confirm/dialog-confirm.module';
 import { DialogAtualizarEnderecoModule } from '../../dialog/dialog-atualizar-endereco/dialog-atualizar-endereco.module';
+import { PipeModule } from '../../../pipes/pipe.module';
 
 
 @NgModule({
@@ -27,9 +27,9 @@ import { DialogAtualizarEnderecoModule } from '../../dialog/dialog-atualizar-end
     MatOptionModule,
     MatSelectModule,
     MatCheckboxModule,
-    PipeModule,
     DialogConfirmModule,
-    DialogAtualizarEnderecoModule
+    DialogAtualizarEnderecoModule,
+    PipeModule
   ],
   exports :[
     EnderecoComponent

@@ -1,11 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { NotifierService } from 'angular-notifier';
-import { ConfirmService } from '../../../service/confirm.service';
-import { AlertType } from '../../../model/alert-type';
 import { take } from 'rxjs/operators';
-import { PessoaService } from '../../../service/pessoa.service';
+import { AlertType } from '../../../model/alert-type';
+import { ConfirmService } from '../../../service/confirm.service';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
 
 @Component({
   selector: 'app-dialog-confirm-pessoa',

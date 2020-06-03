@@ -123,6 +123,7 @@ export class DadosPessoaisComponent implements OnInit {
         this.igrejaSelecionada = item.data;
         this.visaoCelular = this.igrejaSelecionada.visaoCelular;
         this.carregarRede(this.igrejaSelecionada.id);
+        this.setEmiter();
 
       }
 
@@ -232,7 +233,7 @@ export class DadosPessoaisComponent implements OnInit {
 
     this._redeService.getRedeIgreja(id).pipe(take(1)).subscribe(item => {
       this.comboRede = item;
-      console.log(item);
+      // console.log(item);
       this.filteredRede = this.myControlRede.valueChanges
         .pipe(
           startWith(''),

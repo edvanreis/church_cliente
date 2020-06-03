@@ -1,5 +1,4 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { MembroService } from '../../../service/membro.service';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { take, startWith, map } from 'rxjs/operators';
