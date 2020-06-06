@@ -13,6 +13,7 @@ import { IgrejaDadosModule } from '../componentes/igreja-dados/igreja-dados.modu
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 import { CadastrarIgrejaComponent } from './cadastrar/cadastrar-igreja.component';
 import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component';
+import { PipeModule } from '../../pipes/pipe.module';
 
 
 
@@ -45,6 +46,7 @@ const routes: Routes = [
     DialogAtivarInativarModule,
     MatExpansionModule,
     IgrejaDadosModule,
+    PipeModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

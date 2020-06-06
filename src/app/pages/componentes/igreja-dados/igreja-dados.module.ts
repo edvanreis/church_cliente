@@ -6,6 +6,7 @@ import { MatAutocompleteModule, MatButtonModule, MatDividerModule, MatInputModul
 import { TextMaskModule } from 'angular2-text-mask';
 import { IgrejaDadosComponent } from './igreja-dados.component';
 import { DialogConfirmPessoaModule } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
+import { PipeModule } from '../../../pipes/pipe.module';
 
 
 
@@ -24,6 +25,7 @@ import { DialogConfirmPessoaModule } from '../../dialog/dialog-confirm-pessoa/di
     MatAutocompleteModule,
     MatButtonModule,
     DialogConfirmPessoaModule,
+    PipeModule
   ],
   declarations: [
     IgrejaDadosComponent

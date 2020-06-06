@@ -54,10 +54,10 @@ export class DadosPessoaisComponent implements OnInit {
   public redeValue: any;
 
   constructor(private _pessoaService: PessoaService,
-              private _emitirEventoService: EmitirEventoService,
-              private _celulaService: CelulaService,
-              private _notifierService: NotifierService,
-              private _redeService:RedeService) { }
+    private _emitirEventoService: EmitirEventoService,
+    private _celulaService: CelulaService,
+    private _notifierService: NotifierService,
+    private _redeService: RedeService) { }
 
   ngOnInit() {
     this._buildForm();
@@ -113,8 +113,8 @@ export class DadosPessoaisComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       if (item.type == 'clear') {
-        this.form.reset();
-        this.pessoa = {} as any;
+        this.clear();
+
       }
       if (item.type == 'edit-dadosPessoais') {
         this.getObj(item.data);
@@ -128,6 +128,15 @@ export class DadosPessoaisComponent implements OnInit {
       }
 
     });
+  }
+
+  clear() {
+    this.form.reset();
+    this.pessoa = {} as any;
+    this.redeSelecionada = null;
+    this.redeValue = '';
+    this.celulaSelecionada = null;
+    this.celulaValue = '';
   }
 
   setObj() {
@@ -150,13 +159,13 @@ export class DadosPessoaisComponent implements OnInit {
     this.pessoa.visitanteDaCelula = HelperChurch.isBoolean(this.form.controls['visitanteDaCelula'].value);
 
     if (this.igrejaSelecionada) {
-      this.pessoa.igreja = {id:this.igrejaSelecionada.id};
+      this.pessoa.igreja = { id: this.igrejaSelecionada.id };
     }
     if (this.celulaSelecionada) {
-      this.pessoa.celula = { id:this.celulaSelecionada.id};
+      this.pessoa.celula = { id: this.celulaSelecionada.id };
     }
     if (this.redeSelecionada) {
-      this.pessoa.rede = { id:this.redeSelecionada.id};
+      this.pessoa.rede = { id: this.redeSelecionada.id };
     }
 
     //  console.log(this.pessoa)
@@ -181,11 +190,11 @@ export class DadosPessoaisComponent implements OnInit {
     this.form.controls['status'].patchValue(dados.status);
     this.form.controls['membroDaCelula'].patchValue(dados.membroDaCelula);
     this.form.controls['visitanteDaCelula'].patchValue(dados.visitanteDaCelula);
-    if(dados.celula){
+    if (dados.celula) {
       this.celulaValue = dados.celula.nome;
       this.celulaSelecionada = dados.celula;
     }
-    if(dados.rede){
+    if (dados.rede) {
       this.redeValue = dados.rede.nome;
       this.redeSelecionada = dados.rede;
     }
@@ -251,7 +260,7 @@ export class DadosPessoaisComponent implements OnInit {
 
   onSelectionRedeChange($event: MatAutocompleteSelectedEvent, option) {
     this.redeSelecionada = option;
-    if(this.visaoCelular || this.isCelula){
+    if (this.visaoCelular || this.isCelula) {
       this.carregarCelula(this.redeSelecionada.id);
     }
     this.setEmiter();
