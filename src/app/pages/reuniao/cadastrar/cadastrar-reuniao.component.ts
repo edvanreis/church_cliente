@@ -24,6 +24,7 @@ export class CadastrarReuniaoComponent implements OnInit {
 
   public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/]
   public form: FormGroup;
+  public formTow: FormGroup;
   public celulaSelecionada: any;
   public membrosLideres = [];
   public membros = [];
@@ -56,6 +57,9 @@ export class CadastrarReuniaoComponent implements OnInit {
   public palestrantes = [];
   public pesquisa: boolean = false;
 
+  public enderecos = [];
+  public sizeLimitOne: boolean = true;
+
 
   constructor(private _emitirEventoService: EmitirEventoService,
     private _celulaService: CelulaService,
@@ -77,6 +81,7 @@ export class CadastrarReuniaoComponent implements OnInit {
     this.getComboSemana();
     this.getPalestrantes();
     this.getParams();
+    this._buildFormTow();
   }
 
   private _buildForm(): void {
@@ -86,11 +91,19 @@ export class CadastrarReuniaoComponent implements OnInit {
       'dataDaReuniao': new FormControl('', Validators.required),
       'diaDaSemana': new FormControl('', Validators.required),
       'louvor': new FormControl(''),
-      'observacao': new FormControl(''),
+      'observacao': new FormControl('',Validators.required),
       'oferta': new FormControl(''),
       'cadeiraBencao': new FormControl(false),
     });
   }
+
+  private _buildFormTow(): void {
+    this.formTow = new FormGroup({
+      'realizado': new FormControl(true),
+    });
+  }
+
+
 
   carregarCelula() {
 
@@ -137,6 +150,10 @@ export class CadastrarReuniaoComponent implements OnInit {
       }
       if (item.type == 'confirm-dialog-pessoa-membro-visitante') {
         this.membrosVisitantes.splice(item.data, 1);
+      }
+
+      if (item.type == 'endereco') {
+        this.enderecos = item.data;
       }
 
     });
@@ -316,6 +333,10 @@ export class CadastrarReuniaoComponent implements OnInit {
     if (this.id) {
       this.reuniao.id = this.id;
     }
+
+    if (this.enderecos.length > 0) {
+      this.reuniao.enderecos = this.enderecos;
+    }
   }
 
   getPalestrantes() {
@@ -402,6 +423,9 @@ export class CadastrarReuniaoComponent implements OnInit {
     if (!this.reuniao.horarioInicio) {
       return concat + ' Horário de fim!';
     }
+    if (!this.reuniao.observacao) {
+      return concat + ' Nota/Observação!';
+    }
     if (this.palestrantes.length == 0) {
       return concatArray + ' Palestrante!';
     }
@@ -421,7 +445,7 @@ export class CadastrarReuniaoComponent implements OnInit {
 
   getReuniao(id) {
     this._service.getReuniao(id).pipe(take(1)).subscribe(item => {
-      // console.log(item)
+      console.log(item)
       this.form.controls['horarioInicio'].patchValue(item.horarioInicio);
       this.form.controls['horarioFim'].patchValue(item.horarioFim);
       this.form.controls['dataDaReuniao'].patchValue(new Date(item.dataDaReuniaoToDate));
@@ -432,18 +456,23 @@ export class CadastrarReuniaoComponent implements OnInit {
       this.form.controls['cadeiraBencao'].patchValue(item.cadeiraBencao);
       this.emitirLicao(item.licao);
       this.getCelula(item.celula.id);
-      item.pessoas.forEach(item => {
-        if (item.tipo == 'MEMBRO') {
-          this.membros.push(item);
+      if(item.enderecos){
+        this.formTow.controls['realizado'].patchValue(false);
+        this.emitirEndereco(item.enderecos);
+      }
+
+      item.pessoas.forEach(i => {
+        if (i.tipo == 'MEMBRO') {
+          this.membros.push(i);
         }
-        if (item.tipo == 'VISITANTE') {
-          this.visitantes.push(item);
+        if (i.tipo == 'VISITANTE') {
+          this.visitantes.push(i);
         }
-        if (item.tipo == 'PALESTRANTE') {
-          this.palestrantes.push(item);
+        if (i.tipo == 'PALESTRANTE') {
+          this.palestrantes.push(i);
         }
-        if (item.tipo == 'V_OUTRAS_CELULAS') {
-          this.membrosVisitantes.push(item);
+        if (i.tipo == 'V_OUTRAS_CELULAS') {
+          this.membrosVisitantes.push(i);
         }
       });
     }, error => {
@@ -467,6 +496,10 @@ export class CadastrarReuniaoComponent implements OnInit {
 
   emitirLicao(item): void {
     this._emitirEventoService.emitir('edit-licao', item);
+  }
+
+  emitirEndereco(item): void {
+    this._emitirEventoService.emitir("edit-endereco", item);
   }
 
   dialogRemoverPalestrante(i, item) {

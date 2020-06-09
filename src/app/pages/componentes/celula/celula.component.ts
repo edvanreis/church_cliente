@@ -61,7 +61,7 @@ export class CelulaComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      console.log(item.type);
+      // console.log(item.type);
       if (item.type == 'edit-celula') {
           this.celulaSelecionada = item.data;
           this.nomeValue = item.data.nome;

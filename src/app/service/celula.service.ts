@@ -38,12 +38,7 @@ export class CelulaService implements AbstractService{
     return this.http.get(this._url+"list")
       .pipe(map((response: any) => response))
   }
-
-  getTipoPessoaCelula() {
-    return this.http.get(this._url + "tipoPessoa")
-      .pipe(tap((response: any) => response));
-  }
-
+  
   getCelula(id) {
     return this.http.get(this._url+id+'/obterCelula')
       .pipe(map((response: any) => response))

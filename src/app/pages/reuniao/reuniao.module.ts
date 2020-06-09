@@ -15,6 +15,7 @@ import { DialogConfirmPessoaReuniaoModule } from '../dialog/dialog-confirm-pesso
 import { DialogConfirmReuniaoModule } from '../dialog/dialog-confirm-reuniao/dialog-confirm-reuniao.module';
 import { CadastrarReuniaoComponent } from './cadastrar/cadastrar-reuniao.component';
 import { PesquisarReuniaoComponent } from './pesquisar/pesquisar-reuniao.component';
+import { EnderecoModule } from '../componentes/endereco/endereco.module';
 
 
 
@@ -47,6 +48,7 @@ const routes: Routes = [
     DialogConfirmReuniaoModule,
     PipeModule,
     DialogConfirmPessoaReuniaoModule,
+    EnderecoModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

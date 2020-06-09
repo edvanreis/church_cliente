@@ -10,6 +10,7 @@ import { CelulaService } from '../../../service/celula.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { RedeService } from '../../../service/rede.service';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
+import { TipoLiderancaService } from '../../../service/tipo-lideranca.service';
 
 @Component({
   selector: 'app-cadastrar-celula',
@@ -46,7 +47,8 @@ export class CadastrarCelulaComponent implements OnInit {
     private _router: Router,
     private _redeService: RedeService,
     private _dateAdapter: DateAdapter<Date>,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _tipoLiderancaService:TipoLiderancaService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -54,7 +56,7 @@ export class CadastrarCelulaComponent implements OnInit {
     this.getComboSemana();
     this.getComboTurno();
     this.carregarTipoCelula();
-    this.carregarTipoPessoaCelula();
+    this.carregarTipoLiderencaCelula();
     this.getEmiter();
     this.getParams();
   }
@@ -113,8 +115,8 @@ export class CadastrarCelulaComponent implements OnInit {
   }
 
 
-  carregarTipoPessoaCelula() {
-    this._service.getTipoPessoaCelula().subscribe(item => {
+  carregarTipoLiderencaCelula() {
+    this._tipoLiderancaService.getList().subscribe(item => {
       this.comboTipoPessoa = item;
       // console.log(item);
     });
@@ -158,8 +160,7 @@ export class CadastrarCelulaComponent implements OnInit {
       return false;
     }
 
-    this.membro.tipo = this.tipoPessoa.tipoPessoa;
-    this.membro.descTipoPessoa =  this.tipoPessoa.descTipoPessoa;
+    this.membro.tipo = this.tipoPessoa.nome;
     this.tipoPessoa = null;
 
     this.membros.push(this.membro);
@@ -209,14 +210,15 @@ export class CadastrarCelulaComponent implements OnInit {
   }
 
   carregarPessoas(item){
-    for (let i = 0; i < item.length; i++) {
-      let pessoa = {} as any;
-      pessoa.id = item[i].id;
-      pessoa.nomeCompleto = item[i].nomeCompleto;
-      pessoa.cpf = item[i].cpf;
-      pessoa.tipo = item[i].tipo;
-      pessoa.descTipoPessoa = item[i].descTipoPessoa;
-      this.membros.push(pessoa);
+    if(item){
+      for (let i = 0; i < item.length; i++) {
+        let pessoa = {} as any;
+        pessoa.id = item[i].id;
+        pessoa.nomeCompleto = item[i].nomeCompleto;
+        pessoa.cpf = item[i].cpf;
+        pessoa.tipo = item[i].tipo;
+        this.membros.push(pessoa);
+      }
     }
   }
 

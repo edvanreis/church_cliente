@@ -170,6 +170,7 @@ export class EnderecoComponent implements OnInit {
         this.enderecos = [];
       }
       if (item.type == 'edit-endereco') {
+        console.log(item.type)
         for (let i = 0; i < item.data.length; i++) {
           let endereco = {} as any;
           endereco.codigo = i + 1;

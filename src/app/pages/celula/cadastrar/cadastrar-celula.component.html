@@ -80,7 +80,7 @@
           <mat-label>Selecione...</mat-label>
           <mat-select  id="comboTipopessoa"  [(ngModel)]="tipoPessoa" >
             <mat-option *ngFor="let item of comboTipoPessoa" [value]="item">
-              {{item.descTipoPessoa}}
+              {{item.nome}}
             </mat-option>
           </mat-select>
         </mat-form-field>
@@ -105,7 +105,7 @@
               <td>{{ i+1}}</td>
               <td>{{ m.nomeCompleto}}</td>
               <td>{{ m.cpf | cpfCnpj }}</td>
-              <td>{{ m.descTipoPessoa}}</td>
+              <td>{{ m.tipo}}</td>
               <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,m)"><i
                     class="material-icons">delete</i></span></td>
             </tr>
