@@ -18,6 +18,7 @@ const routes: Routes = [
     { path: 'agendamentos', loadChildren: '../pages/agendamentos/agendamentos.module#AgendamentosModule', canActivate: [AuthGuardService] },
     { path: 'licao', loadChildren: '../pages/licao/licao.module#LicaoModule', canActivate: [AuthGuardService] },
     { path: 'reuniao', loadChildren: '../pages/reuniao/reuniao.module#ReuniaoModule', canActivate: [AuthGuardService] },
+    { path: 'justificar', loadChildren: '../pages/justificar/justificar.module#JustificarModule', canActivate: [AuthGuardService] },
     { path: '**', redirectTo: 'auth/dashboard', canActivate: [AuthGuardService] },
 ]
 

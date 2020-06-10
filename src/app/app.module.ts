@@ -9,6 +9,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CoreModule } from './core/core.module';
 import { LazyLoadModule } from './lazy-load/lazy-load.module';
+import { JustificarModule } from './pages/justificar/justificar.module';
 import { LicaoModule } from './pages/licao/licao.module';
 import { LoginModule } from './pages/login/login.module';
 import { MembroModule } from './pages/membro/membro.module';
@@ -17,7 +18,7 @@ import { PermissoesModule } from './pages/permissoes/permissoes.module';
 import { ReuniaoModule } from './pages/reuniao/reuniao.module';
 import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
 import { InterceptorService } from './service/interceptor.service';
-import { PipeModule } from './pipes/pipe.module';
+
 
 
 
@@ -45,7 +46,8 @@ import { PipeModule } from './pipes/pipe.module';
     PerfilModule,
     AlterarSenhaModule,
     LicaoModule,
-    ReuniaoModule
+    ReuniaoModule,
+    JustificarModule
   ],
   providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },DatePipe],
   bootstrap: [AppComponent],

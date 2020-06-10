@@ -42,19 +42,8 @@
               <input matInput placeholder="CPF" formControlName="cpf" >
             </mat-form-field>
           </div>
-            <!-- 
-            <mat-form-field class="example-full-width">
-              <input type="text" placeholder="CPF" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="aut" [(ngModel)]="cpfValue">
-              <mat-autocomplete #aut="matAutocomplete">
-                <mat-option *ngFor="let option of filteredMembro | async" [value]="option.cpf" 
-                (onSelectionChange)="onSelectionChangedMembroCpf($event,option)">
-                  {{option.cpf}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field> -->
-          <!-- </div> -->
           <div [hidden]="titulo=='Novo'">
-            <mat-form-field>
+            <mat-form-field class="full-width-field">
               <mat-label>Status</mat-label>
               <mat-select formControlName="status" id="status">
                 <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
@@ -64,15 +53,6 @@
             </mat-form-field>
           </div>
           <div>
-            <!-- <mat-form-field class="example-full-width">
-              <input type="text"   [(ngModel)]="perfilValue"  placeholder="Perfil" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="at">
-              <mat-autocomplete #at="matAutocomplete">
-                <mat-option *ngFor="let option of filteredPerfil | async" [value]="option.nome" 
-                (onSelectionChange)="onSelectionChangedPerfil($event,option)">
-                  {{option.nome}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>    -->
             <mat-form-field>
               <mat-label>Perfil</mat-label>
               <mat-select formControlName="status" id="status">

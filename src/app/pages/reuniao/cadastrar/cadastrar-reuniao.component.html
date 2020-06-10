@@ -96,9 +96,14 @@
             <input id="oferta" matInput placeholder="Oferta" formControlName="oferta"
               (keyup)="onInputCurrency($event)" />
           </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <label style="color:#1d68a5">Oração da cadeira da Benção?</label>
           <mat-slide-toggle formControlName="cadeiraBencao" id="cadeiraBencao" #cadeiraBencao>
             {{cadeiraBencao.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+            <label style="color:#1d68a5">A reunião foi presencial?</label>
+          <mat-slide-toggle formControlName="presencial" id="presencial" #presencial>
+            {{presencial.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="full-width-field">

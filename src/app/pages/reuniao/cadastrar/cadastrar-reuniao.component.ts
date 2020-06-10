@@ -40,7 +40,7 @@ export class CadastrarReuniaoComponent implements OnInit {
   public filteredVisitante: Observable<string[]>;
   public membroValue: string;
   public visitanteValue: string;
-  public membro;
+  public membroSelecionado;
   public visitante;
   public membroVisitante;
   public membrosVisitantes = [];
@@ -94,6 +94,7 @@ export class CadastrarReuniaoComponent implements OnInit {
       'observacao': new FormControl('',Validators.required),
       'oferta': new FormControl(''),
       'cadeiraBencao': new FormControl(false),
+      'presencial': new FormControl(false),
     });
   }
 
@@ -201,22 +202,22 @@ export class CadastrarReuniaoComponent implements OnInit {
 
 
   onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
-    this.membro = option;
+    this.membroSelecionado = option;
   }
 
   adicionarMembro() {
-    if (!this.membro) {
-      console.log(this.membro);
+    if (!this.membroSelecionado) {
+      console.log(this.membroSelecionado);
       this._notifierService.notify(AlertType.Error, "Por favor escolha uma membro.!");
       return false;
     }
-    let membroAdicionado = this.membros.find(i => i.nome == this.membro.nome);
-    if (membroAdicionado && membroAdicionado.nome == this.membro.nome) {
+    let membroAdicionado = this.membros.find(i => i.nome == this.membroSelecionado.nome);
+    if (membroAdicionado && membroAdicionado.nome == this.membroSelecionado.nome) {
       this._notifierService.notify(AlertType.Error, "Membro já adiocionado.!");
       return false;
     }
-    this.membro.tipo = 'MEMBRO';
-    this.membros.push(this.membro);
+    this.membroSelecionado.tipo = 'MEMBRO';
+    this.membros.push(this.membroSelecionado);
   }
 
   carregarVisitante(id) {
@@ -299,6 +300,7 @@ export class CadastrarReuniaoComponent implements OnInit {
     this.reuniao.cadeiraBencao = HelperChurch.isBoolean(this.form.controls['cadeiraBencao'].value);
     this.reuniao.dataDaReuniao = this._datePipe.transform(this.form.controls['dataDaReuniao'].value, 'dd/MM/yyyy');
     this.reuniao.diaDaSemana = this.form.controls['diaDaSemana'].value;
+    this.reuniao.presencial = HelperChurch.isBoolean(this.form.controls['presencial'].value);
 
     if (this.licaoSelecionada) {
       this.reuniao.licao = { id: this.licaoSelecionada.id };
@@ -454,6 +456,7 @@ export class CadastrarReuniaoComponent implements OnInit {
       this.form.controls['observacao'].patchValue(item.observacao);
       this.form.controls['oferta'].patchValue(item.oferta);
       this.form.controls['cadeiraBencao'].patchValue(item.cadeiraBencao);
+      this.form.controls['presencial'].patchValue(item.presencial);
       this.emitirLicao(item.licao);
       this.getCelula(item.celula.id);
       if(item.enderecos){

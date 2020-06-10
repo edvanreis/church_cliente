@@ -51,12 +51,15 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
             <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
-            <span *ngIf="column.id=='id'"  class="default-botoes" (click)="editar(element.id)"><i
+            <span *ngIf="column.id=='id'" title="Editar" class="default-botoes" (click)="editar(element.id)"><i
                 class="material-icons">create</i></span>
-            <span *ngIf="column.id=='id'" class="default-botoes" (click)="dialogRemover(element.id)"><i
+            <span *ngIf="column.id=='id'" class="default-botoes"  title="Excluir" (click)="dialogRemover(element.id)"><i
                 class="material-icons">delete</i></span>
-            <span *ngIf="column.id=='id'" class="default-botoes" (click)="relatorioReuniaoSemanal(element.id)">
-              <img src="./assets/pdf.png" width="20px">
+            <span *ngIf="column.id=='id'" title="Relatório Reunião Semanal" class="default-botoes" (click)="relatorioReuniaoSemanal(element.id)">
+              <i class="material-icons">assignment_returned</i>
+            </span>
+            <span *ngIf="column.id=='id'" title="Relatório de Faltas" class="default-botoes" >
+              <i class="material-icons">cloud_download</i>
             </span>
           </mat-cell>
         </ng-container>
