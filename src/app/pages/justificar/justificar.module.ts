@@ -6,7 +6,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule, MatExpansionModule, MatCheckboxModule } from '@angular/material';
 import { CadastrarJustificarAusenciaComponent } from './cadastrar/cadastrar-justificar-ausencia.component';
 import { PipeModule } from '../../pipes/pipe.module';
 
@@ -32,6 +32,8 @@ const routes: Routes = [
     MatPaginatorModule,
     MatDividerModule,
     PipeModule,
+    MatExpansionModule,
+    MatCheckboxModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

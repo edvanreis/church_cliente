@@ -10,7 +10,7 @@
         <mat-form-field class="full-width-field">
           <mat-label>Justificativas</mat-label>
           <mat-select formControlName="justificativas" id="justificativas">
-            <mat-option *ngFor="let item of justificativas$ | async" [value]="item">
+            <mat-option *ngFor="let item of justificativas" [value]="item" (click)="onSelectionClick(item.nome)">
               {{item.nome}}
             </mat-option>
           </mat-select>

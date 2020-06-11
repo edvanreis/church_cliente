@@ -8,7 +8,7 @@ import { AlertType } from '../../../model/alert-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { PessoaService } from '../../../service/pessoa.service';
 import { FaltasService } from '../../../service/faltas.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-pesquisar-justificar-ausencia',
@@ -28,15 +28,20 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
   public filteredMembro: Observable<string[]>;
   public membroSelecionado;
   public faltas = [];
+  public checkedFaltasList = [];
+  public retornoCheckedFaltasList:string;
+  public membroValue:any;
 
   constructor(private _celulaService: CelulaService,
     private _notifierService: NotifierService,
     private _pessoaService: PessoaService,
     private _faltasService: FaltasService,
-    private _router: Router) { }
+    private _router: Router,
+    private _avRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.carregarCelula();
+    this.getParams(); 
   }
 
 
@@ -88,27 +93,132 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
 
   onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
     this.membroSelecionado = option;
-    this.getCelulaPessoa(this.membroSelecionado.id); 
+    this.getFaltasPessoa(this.membroSelecionado.id); 
   }
 
-  getCelulaPessoa(id) {
+  getFaltasPessoa(id) {
     this._faltasService.getFaltasByPessoa(id).pipe(take(1)).subscribe(item => {
-      console.log(item);
+      // console.log(item);
       this.faltas = item;
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });
   }
 
-  cadastrar(id) {
-    // console.log(id)
-    localStorage.setItem("pesquisar", JSON.stringify(this.celulaSelecionada));
+  cadastrar() {
+
+    let obj = this.objPesquisa();
+    localStorage.setItem("pesquisar", JSON.stringify(obj));
+    if(this.checkedFaltasList.length == 0){
+      this._notifierService.notify(AlertType.Error, "Por favor selecione pelo menos um dia a ser justificado!");
+      return false;
+    }
+    if(!this.existeDiasJustificado()){
+      return;
+    }
+    
     this._router.navigate(['/auth/justificar/cadastrar'], {
       queryParams: {
-        idFalta: id
+        faltas:this.listaFaltastr()
       },
       skipLocationChange: true
     });
   }
+
+  objPesquisa(){
+    return {
+      celulaSelecionada:this.celulaSelecionada,
+      membroSelecionado:this.membroSelecionado
+    }
+  }
+
+  
+  editar(item) {
+    let obj = this.objPesquisa();
+    localStorage.setItem("pesquisar", JSON.stringify(obj));
+    this._router.navigate(['/auth/justificar/cadastrar'], {
+      queryParams: {
+        id:item.justificativaAusenciaId,
+        faltaId:item.id
+      },
+      skipLocationChange: true
+    });
+  }
+
+  onCheckboxChange(option, event) {
+    
+    // console.log(option);
+    if (event.checked) {
+      this.checkedFaltasList.push(option);
+    } else {
+      for (var i = 0; i < this.checkedFaltasList.length; i++) {
+        if (this.checkedFaltasList[i] == option) {
+          this.checkedFaltasList.splice(i, 1);
+        }
+      }
+    }
+    // console.log(this.checkedFaltasList);
+  }
+
+  listaFaltastr(): string {
+    let idStr: string = null;
+    let i = 0;
+    if (this.checkedFaltasList) {
+      this.checkedFaltasList.forEach(item => {
+        if (i > 0) {
+          idStr += ", " + item.id;
+        } else {
+          idStr = item.id;
+        }
+        i++;
+      });
+    }
+    return idStr;
+  }
+
+  splitListaFaltastr() {
+    let array = null;
+    array = [];
+    if (this.retornoCheckedFaltasList) {
+      if (this.retornoCheckedFaltasList.indexOf(",") != -1) {
+        array = this.retornoCheckedFaltasList.split(",");
+      } else {
+        array.push(this.retornoCheckedFaltasList);
+      }
+    }
+    return array;
+  }
+
+  existeDiasJustificado():boolean{
+    let dias = [];
+    this.checkedFaltasList.forEach(item=>{
+      if(item.justificativaAusenciaId){
+          dias = item.dataDaReuniao;
+      }
+    });
+    if(dias.length > 0){
+      this._notifierService.notify(AlertType.Error, "Já existe uma justificativa para este dias! "+dias);
+      return false;
+    }
+    return true;
+  }
+
+  getParams() {
+    // console.log(this._avRoute.snapshot.queryParamMap);
+    if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
+      let obj = JSON.parse(localStorage.getItem("pesquisar"));
+      localStorage.removeItem("pesquisar");     
+      this.celulaSelecionada = obj.celulaSelecionada;
+      this.celulaValue = this.celulaSelecionada.nome;
+      this.rede = this.celulaSelecionada.rede.nome;
+      this.membroSelecionado = obj.membroSelecionado;
+      this.membroValue = this.membroSelecionado.nomeCompleto;
+      this.getFaltasPessoa(this.membroSelecionado.id); 
+      
+      
+    }
+  }
+
+
 
 }

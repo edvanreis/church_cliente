@@ -47,24 +47,34 @@
       </div>
       <br />
       <br />
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color" *ngIf="faltas.length > 0">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color"
+        *ngIf="faltas.length > 0">
         <i class="material-icons">alarm_off</i>
         <h1 class="mat-subheading-2 center-align">Faltas</h1>
       </div>
-      <div class="table-responsive" style="overflow: auto; height: 300px;"  *ngIf="faltas.length > 0" >
-        <table class="table table-hover">
-          <tbody *ngFor="let group of faltas | groupBy:'competencia'">
-            <tr class="card-header card-header-danger" style="background-color: #5C6BC0;color: white;">
-              <td colspan="9">{{group?.key}}</td>
-              <td></td>
-            </tr>
-            <tr *ngFor="let item of group.value">
-              <!-- <td colspan="9">{{ item.dataDaReuniao }}</td> -->
-              <td colspan="9">{{ item.dataDaReuniao }}</td>
-              <td><span title="Justificar" class="default-botoes" (click)="cadastrar(item.id)"><i class="material-icons">open_in_browser</i></span></td>
-            </tr>
-          </tbody>
-        </table>
+      <div *ngFor="let group of faltas | groupBy:'competencia'" style="overflow: auto; height: 300px;">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header style="background-color:#1d68a5;color:#ffffff">
+            <b>{{group?.key}}</b>
+          </mat-expansion-panel-header>
+          <br />
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngFor="let item of group.value">
+            <mat-checkbox (change)="onCheckboxChange(item,$event)"></mat-checkbox>
+            <span style="color: green;" *ngIf="item.justificativaAusenciaId"><i class="material-icons">check_circle_outline</i></span>
+            <span style="color: red;"   *ngIf="!item.justificativaAusenciaId"><i class="material-icons">highlight_off</i></span>
+            <span><b>{{ item.dataDaReuniao }}</b></span>
+            <span class="default-botoes" *ngIf="item.justificativaAusenciaId" style="text-align: right; float: right;" (click)="editar(item)"><i class="material-icons">create</i></span>
+          </div>
+          <br />
+          <br />
+          <div>
+            <button mat-raised-button color="primary" type="submit" (click)="cadastrar()">
+              <i class="material-icons">more_time</i>Justificar</button>
+            <div fxFlex></div>
+            <button mat-raised-button color="primary" type="submit" (click)="remover()">
+              <i class="material-icons">delete</i>Remover Justificativa</button>
+          </div>
+        </mat-expansion-panel>
       </div>
     </div>
   </div>

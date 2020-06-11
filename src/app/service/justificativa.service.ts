@@ -17,4 +17,9 @@ export class JustificativaService {
     return this.http.get(this._url)
       .pipe(map((response: any) => response))
   }
+
+  getJustificativa(id) {
+    return this.http.get(this._url+id)
+      .pipe(map((response: any) => response))
+  }
 }

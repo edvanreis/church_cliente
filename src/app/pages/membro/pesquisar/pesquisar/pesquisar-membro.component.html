@@ -86,13 +86,13 @@
                   </span>
                 </span>
                 <span *ngIf="column.id=='id'">
-                  <span style="cursor: pointer;" (click)="editar(element.id)" matTooltip="Editar">
+                  <span class="default-botoes" (click)="editar(element.id)" matTooltip="Editar">
                     <i class="material-icons">create</i>
                   </span>
-                  <span  *ngIf="element.cartaRecomendacao" style="cursor: pointer;color: darkblue;" (click)="enviarCarta(element.id)" matTooltip="Editar">
+                  <span  *ngIf="element.cartaRecomendacao" class="default-botoes" (click)="enviarCarta(element.id)" matTooltip="Editar">
                     <i class="material-icons">vertical_align_top</i>
                   </span>
-                  <span style="cursor: pointer;color:#1d68a5"  (click)="status(element.id)" matTooltip="status">
+                  <span class="default-botoes"  (click)="status(element.id)" matTooltip="status">
                     <i class="material-icons">settings</i>
                   </span>
                   <span style="cursor: pointer;" (click)="historico(element.id)" matTooltip="Historico">
