@@ -165,7 +165,6 @@ export class CadastrarReuniaoComponent implements OnInit {
       this.membrosLideres = item;
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
-
     });
   }
 

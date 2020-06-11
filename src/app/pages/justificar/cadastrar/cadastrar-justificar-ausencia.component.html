@@ -5,60 +5,28 @@
       <h1 class="mat-headline center-align">Cadastrar Justificativa Ausência</h1>
     </mat-toolbar>
     <div class="cdk-container">
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
-        <i class="material-icons">group</i>
-        <h1 class="mat-subheading-2 center-align">Célula</h1>
-      </div>
+      <form form [formGroup]="form">
       <div>
         <mat-form-field class="full-width-field">
-          <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
-            [matAutocomplete]="au" [(ngModel)]="celulaValue">
-          <mat-autocomplete #au="matAutocomplete">
-            <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
-              (onSelectionChange)="onSelectionCelulaChange($event,option)">
-              {{option.nome}}
+          <mat-label>Justificativas</mat-label>
+          <mat-select formControlName="justificativas" id="justificativas">
+            <mat-option *ngFor="let item of justificativas$ | async" [value]="item">
+              {{item.nome}}
             </mat-option>
-          </mat-autocomplete>
+          </mat-select>
+          <mat-error *ngIf="!form.controls.justificativas.valid">Campo Obrigatório</mat-error>
         </mat-form-field>
       </div>
+      <mat-form-field class="full-width-field">
+        <textarea matInput placeholder="Nota/Observação" formControlName="observacao"></textarea>
+      </mat-form-field>
+      </form>
       <div>
-        <mat-form-field class="full-width-field">
-          <input matInput placeholder="Rede" [(ngModel)]="rede" style="color:#1d68a5;" id="rede" disabled="true">
-        </mat-form-field>
-      </div>
-      <br />
-      <mat-divider></mat-divider>
-      <br />
-      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
-        <i class="material-icons">person</i>
-        <h1 class="mat-subheading-2 center-align">Membros da célula</h1>
-      </div>
-      <div>
-        <mat-form-field class="full-width-field">
-          <input type="text" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto"
-            [(ngModel)]="membroValue" required>
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
-              (onSelectionChange)="onSelectionChangedMembro($event,option)">
-              {{option.nomeCompleto}}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-      </div>
-      <br />
-      <br />
-      <h2  style="color:#5C6BC0;">Faltas</h2>
-      <div class="table-responsive" style="overflow: auto; height: 300px;">
-          <table class="table table-hover">
-              <tbody  *ngFor="let group of faltas | groupBy:'competencia'">
-                  <tr class="card-header card-header-danger" style="background-color: #5C6BC0;color: white;">
-                      <td colspan="9">{{group?.key}}</td>
-                  </tr>
-                  <tr *ngFor="let item of group.value">
-                      <td colspan="9">{{ item.dataDaReuniao }}</td>
-                  </tr>
-              </tbody>
-          </table>
+        <button mat-raised-button color="primary" type="submit" (click)="salvar()">
+          <i class="material-icons">save</i>Salvar</button>
+        <div fxFlex></div>
+        <button mat-raised-button color="warn" type="submit" (click)="voltar()">
+          <i class="material-icons">reply</i>Voltar</button>
       </div>
     </div>
   </div>

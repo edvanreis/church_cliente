@@ -184,4 +184,22 @@ export class PesquisarCelulaComponent implements OnInit {
       return false;
     }
   }
+
+  membros(id) {
+    let dados = [];
+    this._celulaService.getMembrosDaCelula(id).pipe(take(1)).subscribe(item => {
+      item.forEach(i => {
+        dados.push({
+          "Nome": i.nome,
+          "Batizado": i.batizado
+        });
+      });
+      this._excelService.exportAsExcelFile(dados, "membros");
+    }, error => {
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+
+    });
+   
+  }
 }
