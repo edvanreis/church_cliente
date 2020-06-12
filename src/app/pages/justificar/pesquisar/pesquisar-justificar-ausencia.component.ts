@@ -134,6 +134,7 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
 
   
   editar(item) {
+    // console.log(item);
     let obj = this.objPesquisa();
     localStorage.setItem("pesquisar", JSON.stringify(obj));
     this._router.navigate(['/auth/justificar/cadastrar'], {

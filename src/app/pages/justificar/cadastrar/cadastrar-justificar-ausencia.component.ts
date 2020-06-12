@@ -69,7 +69,7 @@ export class CadastrarJustificarAusenciaComponent implements OnInit {
        this.getJustificativaAusencia();
     }
     if (this._avRoute.snapshot.queryParamMap.get("faltaId")) {
-      this.id = this._avRoute.snapshot.queryParamMap.get("faltaId");
+      this.faltaId = this._avRoute.snapshot.queryParamMap.get("faltaId");
     }
     if (this._avRoute.snapshot.queryParamMap.get("faltas")) {
       this.faltasStr = this._avRoute.snapshot.queryParamMap.get("faltas");
@@ -90,7 +90,7 @@ export class CadastrarJustificarAusenciaComponent implements OnInit {
 
   salvar(){
     if(this.id){
-
+      this.updade()
     }else{
       this.save();
     }
@@ -125,12 +125,14 @@ export class CadastrarJustificarAusenciaComponent implements OnInit {
   }
 
   setObj(){
-    console.log(this.justificativaAusencia)
-    this.justificativaAusencia.faltasId = this.faltas;
+    // console.log(this.justificativaAusencia)
     this.justificativaAusencia.observacao = HelperChurch.isNull(this.form.controls['observacao'].value);
     if(this.form.controls['justificativas'].value){
       let justificativa = this.form.controls['justificativas'].value;
       this.justificativaAusencia.justificativa = {id:justificativa.id};
+    }
+    if(this.id){
+      this.justificativaAusencia.id = this.id;
     }
   }
 
@@ -154,22 +156,12 @@ export class CadastrarJustificarAusenciaComponent implements OnInit {
 
   getJustificativaAusencia(){
     this._service.getJustificativaAusencia(this.id).pipe(take(1)).subscribe(item => {
-    console.log(item);
+    // console.log(item);
      this.form.controls['observacao'].patchValue(item.observacao);
      this.form.controls['justificativas'].patchValue(this.justificativas.find(i=>i.id == item.justificativa.id));
-    //  this.getJustificativa(item.justificativa.id);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
     });
   }
-
-  // getJustificativa(id){
-  //   this._serviceJustificativa.getJustificativa(id).pipe(take(1)).subscribe(item => {
-  //   console.log(item);
-     
-  //   }, error => {
-  //     this._notifierService.notify(AlertType.Error, error.message);
-  //   });
-  // }
-
+  
 }
