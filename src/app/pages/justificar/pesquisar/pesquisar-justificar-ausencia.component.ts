@@ -272,6 +272,7 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
     this._emitirEventoService.mensagem.subscribe(item => {
       if (item.type == 'confirm-dialog-justificativa') {
         this.getFaltasPessoa(this.membroSelecionado.id);
+        this.checkedFaltasList = [];
       }
     });
   }

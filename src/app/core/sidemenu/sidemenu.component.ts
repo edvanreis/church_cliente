@@ -59,6 +59,9 @@ export class SidemenuComponent implements OnInit {
       {'name': 'Justificar Ausencia','icon': 'calendar_today','link': false,'open': false,'visible': true,'sub': [
         {'name': 'Pesquisar','link': 'justificar/pesquisar','icon': 'search','chip': false,'open': false,'visible': true}]
       },
+      {'name': 'Relatórios','icon': 'archive','link': false,'open': false,'visible': true,'sub': [
+        {'name': 'Gerar Relatórios','link': 'relatorios/gerar','icon': 'save_alt','chip': false,'open': false,'visible': true}]
+      },
       {'name': 'Configuracões','icon': 'build','open': false,'link': false,'visible': true  ,'sub': [
             {'name': 'Usuario','link': 'usuario/pesquisar', 'icon': 'person','chip': false,'open': false,'visible': true  ,},
             {'name': 'Perfil','link': 'perfil/pesquisar', 'icon': 'people','chip': false,'open': false,'visible': true  ,},
