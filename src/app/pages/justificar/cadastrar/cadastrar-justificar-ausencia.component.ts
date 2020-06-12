@@ -8,6 +8,7 @@ import { take, startWith, map } from 'rxjs/operators';
 import { JustificativaAusenciaService } from '../../../service/justificativa-ausencia.service';
 import { AlertType } from '../../../model/alert-type';
 import { HelperChurch } from '../../../helper/helper.church';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
 
 @Component({
   selector: 'app-cadastrar-justificar-ausencia',
@@ -130,6 +131,9 @@ export class CadastrarJustificarAusenciaComponent implements OnInit {
     if(this.form.controls['justificativas'].value){
       let justificativa = this.form.controls['justificativas'].value;
       this.justificativaAusencia.justificativa = {id:justificativa.id};
+    }
+    if(this.faltas.length > 0){
+      this.justificativaAusencia.faltasIds = this.faltas;
     }
     if(this.id){
       this.justificativaAusencia.id = this.id;

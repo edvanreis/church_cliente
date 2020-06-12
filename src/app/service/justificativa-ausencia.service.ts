@@ -18,18 +18,18 @@ export class JustificativaAusenciaService {
       .pipe(map((response: any) => response))
   }
 
-  save(reuniao) {
-    return this.http.post(this._url, reuniao)
+  save(justificativaAusencia) {
+    return this.http.post(this._url, justificativaAusencia)
       .pipe(map((response: any) => response))
   }
 
-  update(reuniao) {
-    return this.http.put(this._url, reuniao)
+  update(justificativaAusencia) {
+    return this.http.put(this._url, justificativaAusencia)
       .pipe(map((response: any) => response))
   }
 
-  remove(id) {
-    return this.http.delete(this._url+id+'/remover')
+  remove(justificativaAusencia) {
+    return this.http.put(this._url+'removerJustificativaAusencia',justificativaAusencia)
       .pipe(map((response: any) => response))
   }
 

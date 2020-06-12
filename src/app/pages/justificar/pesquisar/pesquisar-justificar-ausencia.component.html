@@ -52,17 +52,20 @@
         <i class="material-icons">alarm_off</i>
         <h1 class="mat-subheading-2 center-align">Faltas</h1>
       </div>
-      <div *ngFor="let group of faltas | groupBy:'competencia'" style="overflow: auto; height: 300px;">
+      <div *ngFor="let group of faltas | groupBy:'competencia'" style="overflow: auto;">
         <mat-expansion-panel>
           <mat-expansion-panel-header style="background-color:#1d68a5;color:#ffffff">
             <b>{{group?.key}}</b>
           </mat-expansion-panel-header>
           <br />
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngFor="let item of group.value">
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngFor="let item of group.value" [ngStyle]="{'color':item.justificativaAusenciaId?'green':'red'}">
             <mat-checkbox (change)="onCheckboxChange(item,$event)"></mat-checkbox>
-            <span style="color: green;" *ngIf="item.justificativaAusenciaId"><i class="material-icons">check_circle_outline</i></span>
-            <span style="color: red;"   *ngIf="!item.justificativaAusenciaId"><i class="material-icons">highlight_off</i></span>
+            <span *ngIf="item.justificativaAusenciaId"><i class="material-icons">check_circle_outline</i></span>
+            <span  *ngIf="!item.justificativaAusenciaId"><i class="material-icons">highlight_off</i></span>
             <span><b>{{ item.dataDaReuniao }}</b></span>
+            <span><b>{{ item.justificativa }}</b></span>
+            <span><b>{{ item.observacao}}</b></span>
+            <span *ngIf="!item.justificativaAusenciaId" ><b>Não informado o motivo da ausência</b></span>
             <span class="default-botoes" *ngIf="item.justificativaAusenciaId" style="text-align: right; float: right;" (click)="editar(item)"><i class="material-icons">create</i></span>
           </div>
           <br />

@@ -10,6 +10,7 @@ import { PessoaService } from '../../../service/pessoa.service';
 import { FaltasService } from '../../../service/faltas.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DialogConfirmJustificativasComponent } from '../../dialog/dialog-confirm-justificativas/dialog-confirm-justificativas.component';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
 
 @Component({
   selector: 'app-pesquisar-justificar-ausencia',
@@ -30,8 +31,8 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
   public membroSelecionado;
   public faltas = [];
   public checkedFaltasList = [];
-  public retornoCheckedFaltasList:string;
-  public membroValue:any;
+  public retornoCheckedFaltasList: string;
+  public membroValue: any;
 
   constructor(private _celulaService: CelulaService,
     private _notifierService: NotifierService,
@@ -39,11 +40,13 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
     private _faltasService: FaltasService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this.carregarCelula();
-    this.getParams(); 
+    this.getParams();
+    this.getEmiter();
   }
 
 
@@ -95,7 +98,7 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
 
   onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
     this.membroSelecionado = option;
-    this.getFaltasPessoa(this.membroSelecionado.id); 
+    this.getFaltasPessoa(this.membroSelecionado.id);
   }
 
   getFaltasPessoa(id) {
@@ -111,45 +114,45 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
 
     let obj = this.objPesquisa();
     localStorage.setItem("pesquisar", JSON.stringify(obj));
-    if(!this.validList()){
+    if (!this.validList()) {
       return;
     }
-    if(!this.existeDiasJustificado()){
+    if (!this.existeDiasJustificado()) {
       return;
     }
-    
+
     this._router.navigate(['/auth/justificar/cadastrar'], {
       queryParams: {
-        faltas:this.listaFaltastr()
+        faltas: this.listaFaltastr()
       },
       skipLocationChange: true
     });
   }
 
-  objPesquisa(){
+  objPesquisa() {
     return {
-      celulaSelecionada:this.celulaSelecionada,
-      membroSelecionado:this.membroSelecionado
+      celulaSelecionada: this.celulaSelecionada,
+      membroSelecionado: this.membroSelecionado
     }
   }
 
-  
+
   editar(item) {
     // console.log(item);
     let obj = this.objPesquisa();
     localStorage.setItem("pesquisar", JSON.stringify(obj));
     this._router.navigate(['/auth/justificar/cadastrar'], {
       queryParams: {
-        id:item.justificativaAusenciaId,
-        faltaId:item.id
+        id: item.justificativaAusenciaId,
+        faltaId: item.id
       },
       skipLocationChange: true
     });
   }
 
   onCheckboxChange(option, event) {
-    
-    // console.log(option);
+
+    console.log(option);
     if (event.checked) {
       this.checkedFaltasList.push(option);
     } else {
@@ -191,15 +194,15 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
     return array;
   }
 
-  existeDiasJustificado():boolean{
+  existeDiasJustificado(): boolean {
     let dias = [];
-    this.checkedFaltasList.forEach(item=>{
-      if(item.justificativaAusenciaId){
-          dias = item.dataDaReuniao;
+    this.checkedFaltasList.forEach(item => {
+      if (item.justificativaAusenciaId) {
+        dias = item.dataDaReuniao;
       }
     });
-    if(dias.length > 0){
-      this._notifierService.notify(AlertType.Error, "Já existe uma justificativa para este dias! "+dias);
+    if (dias.length > 0) {
+      this._notifierService.notify(AlertType.Error, "Já existe uma justificativa para este dias! " + dias);
       return false;
     }
     return true;
@@ -209,38 +212,68 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
     // console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
       let obj = JSON.parse(localStorage.getItem("pesquisar"));
-      localStorage.removeItem("pesquisar");     
+      localStorage.removeItem("pesquisar");
       this.celulaSelecionada = obj.celulaSelecionada;
       this.celulaValue = this.celulaSelecionada.nome;
       this.rede = this.celulaSelecionada.rede.nome;
       this.membroSelecionado = obj.membroSelecionado;
       this.membroValue = this.membroSelecionado.nomeCompleto;
-      this.getFaltasPessoa(this.membroSelecionado.id); 
-      
-      
+      this.checkedFaltasList = [];
+      this.getFaltasPessoa(this.membroSelecionado.id);
+
+
     }
   }
 
   dialogRemover() {
     // console.log(id)
-    if(!this.validList()){
+    if (!this.validRemoveList()) {
       return;
     }
     const dialogRef = this._dialog.open(DialogConfirmJustificativasComponent, {
-      width: '600px',
+      width: '700px',
       data: {
         faltas: this.checkedFaltasList,
       }
     });
   }
 
-  validList():boolean{
-    if(this.checkedFaltasList.length == 0){
+  validList(): boolean {
+    if (this.checkedFaltasList.length == 0) {
       this._notifierService.notify(AlertType.Error, "Por favor selecione pelo menos um dia a ser justificado!");
       return false;
-    }else{
+    } else {
       return true;
     }
+  }
+
+  validRemoveList(): boolean {
+    if (this.checkedFaltasList.length == 0) {
+      this._notifierService.notify(AlertType.Error, "Por favor selecione pelo menos um dia a ser justificado!");
+      return false;
+    }
+    let dias = [];
+    this.checkedFaltasList.forEach(element => {
+      if (!element.justificativaAusenciaId) {
+        dias.push(element.dataDaReuniao);
+      }
+    });
+
+    if (dias.length > 0) {
+      this._notifierService.notify(AlertType.Error, "Já não existe justificativa para este dias! " + dias);
+      return false;
+    }
+    return true;
+  }
+
+
+
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'confirm-dialog-justificativa') {
+        this.getFaltasPessoa(this.membroSelecionado.id);
+      }
+    });
   }
 
 
