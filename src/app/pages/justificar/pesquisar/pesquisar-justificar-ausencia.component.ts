@@ -5,10 +5,11 @@ import { CelulaService } from '../../../service/celula.service';
 import { take, startWith, map } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
 import { PessoaService } from '../../../service/pessoa.service';
 import { FaltasService } from '../../../service/faltas.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DialogConfirmJustificativasComponent } from '../../dialog/dialog-confirm-justificativas/dialog-confirm-justificativas.component';
 
 @Component({
   selector: 'app-pesquisar-justificar-ausencia',
@@ -37,7 +38,8 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
     private _pessoaService: PessoaService,
     private _faltasService: FaltasService,
     private _router: Router,
-    private _avRoute: ActivatedRoute) { }
+    private _avRoute: ActivatedRoute,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this.carregarCelula();
@@ -109,9 +111,8 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
 
     let obj = this.objPesquisa();
     localStorage.setItem("pesquisar", JSON.stringify(obj));
-    if(this.checkedFaltasList.length == 0){
-      this._notifierService.notify(AlertType.Error, "Por favor selecione pelo menos um dia a ser justificado!");
-      return false;
+    if(!this.validList()){
+      return;
     }
     if(!this.existeDiasJustificado()){
       return;
@@ -220,6 +221,27 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
     }
   }
 
+  dialogRemover() {
+    // console.log(id)
+    if(!this.validList()){
+      return;
+    }
+    const dialogRef = this._dialog.open(DialogConfirmJustificativasComponent, {
+      width: '600px',
+      data: {
+        faltas: this.checkedFaltasList,
+      }
+    });
+  }
+
+  validList():boolean{
+    if(this.checkedFaltasList.length == 0){
+      this._notifierService.notify(AlertType.Error, "Por favor selecione pelo menos um dia a ser justificado!");
+      return false;
+    }else{
+      return true;
+    }
+  }
 
 
 }

@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule, MatExpansionModule, MatCheckboxModule } from '@angular/material';
 import { CadastrarJustificarAusenciaComponent } from './cadastrar/cadastrar-justificar-ausencia.component';
 import { PipeModule } from '../../pipes/pipe.module';
+import { DialogConfirmJustificativasModule } from '../dialog/dialog-confirm-justificativas/dialog-confirm-justificativas.module';
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarJustificarAusenciaComponent , data: { animation: 'buttons' }},
@@ -34,6 +35,7 @@ const routes: Routes = [
     PipeModule,
     MatExpansionModule,
     MatCheckboxModule,
+    DialogConfirmJustificativasModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
