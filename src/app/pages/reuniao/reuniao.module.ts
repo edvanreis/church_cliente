@@ -13,15 +13,15 @@ import { LicaoComponenteModule } from '../componentes/licao/licao-componente.mod
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
 import { DialogConfirmPessoaReuniaoModule } from '../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.module';
 import { DialogConfirmReuniaoModule } from '../dialog/dialog-confirm-reuniao/dialog-confirm-reuniao.module';
-import { CadastrarReuniaoComponent } from './cadastrar/cadastrar-reuniao.component';
-import { PesquisarReuniaoComponent } from './pesquisar/pesquisar-reuniao.component';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
+import { PesquisarReuniaoCelulaComponent } from './pesquisar-reuniao-celula/pesquisar-reuniao-celula.component';
+import { CadastrarReuniaoCelulaComponent } from './cadastrar-reuniao-celula/cadastrar-reuniao-celula.component';
 
 
 
 const routes: Routes = [
-  { path: 'pesquisar', component:  PesquisarReuniaoComponent , data: { animation: 'buttons' }},
-  { path: 'cadastrar', component:  CadastrarReuniaoComponent , data: { animation: 'buttons' }},
+  { path: 'pesquisar-reuniao-celula', component:  PesquisarReuniaoCelulaComponent , data: { animation: 'buttons' }},
+  { path: 'cadastrar-reuniao-celula', component:  CadastrarReuniaoCelulaComponent , data: { animation: 'buttons' }},
 ];
 @NgModule({
   imports: [
@@ -52,8 +52,8 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   declarations: [
-    PesquisarReuniaoComponent,
-    CadastrarReuniaoComponent
+    PesquisarReuniaoCelulaComponent,
+    CadastrarReuniaoCelulaComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }

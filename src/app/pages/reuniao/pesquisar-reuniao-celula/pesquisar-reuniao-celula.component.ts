@@ -15,10 +15,10 @@ import { LicaoService } from '../../../service/licao.service';
 
 @Component({
   selector: 'app-pesquisar-reuniao',
-  templateUrl: './pesquisar-reuniao.component.html',
-  styleUrls: ['./pesquisar-reuniao.component.scss']
+  templateUrl: './pesquisar-reuniao-celula.component.html',
+  styleUrls: ['./pesquisar-reuniao-celula.component.scss']
 })
-export class PesquisarReuniaoComponent implements OnInit {
+export class PesquisarReuniaoCelulaComponent implements OnInit {
 
   public maskCompetencia = [/\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
   public form: FormGroup;
@@ -57,7 +57,7 @@ export class PesquisarReuniaoComponent implements OnInit {
 
   cadastrar() {
     // localStorage.setItem("pesquisar", JSON.stringify(this.statusSelecionado));
-    this._router.navigate(['/auth/reuniao/cadastrar'], {
+    this._router.navigate(['/auth/reuniao/cadastrar-reuniao-celula'], {
       queryParams: {
         janela: 'Nova',
       },

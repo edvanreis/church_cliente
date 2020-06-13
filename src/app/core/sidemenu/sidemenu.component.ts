@@ -54,7 +54,7 @@ export class SidemenuComponent implements OnInit {
         {'name': 'Pesquisar','link': 'licao/pesquisar','icon': 'search','chip': false,'open': false,'visible': true}]
       },
       {'name': 'Reunião','icon': 'account_tree','link': false,'open': false,'visible': true,'sub': [
-        {'name': 'Pesquisar','link': 'reuniao/pesquisar','icon': 'search','chip': false,'open': false,'visible': true}]
+        {'name': 'Reunião Célula','link': 'reuniao/pesquisar-reuniao-celula','icon': 'group','chip': false,'open': false,'visible': true}]
       },
       {'name': 'Justificar Ausencia','icon': 'calendar_today','link': false,'open': false,'visible': true,'sub': [
         {'name': 'Pesquisar','link': 'justificar/pesquisar','icon': 'search','chip': false,'open': false,'visible': true}]

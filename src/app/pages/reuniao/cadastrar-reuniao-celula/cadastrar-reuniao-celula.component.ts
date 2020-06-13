@@ -16,11 +16,11 @@ import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa
 import { DialogConfirmPessoaReuniaoComponent } from '../../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.component';
 
 @Component({
-  selector: 'app-cadastrar-reuniao',
-  templateUrl: './cadastrar-reuniao.component.html',
-  styleUrls: ['./cadastrar-reuniao.component.scss']
+  selector: 'app-cadastrar-reuniao-celula',
+  templateUrl: './cadastrar-reuniao-celula.component.html',
+  styleUrls: ['./cadastrar-reuniao-celula.component.scss']
 })
-export class CadastrarReuniaoComponent implements OnInit {
+export class CadastrarReuniaoCelulaComponent implements OnInit {
 
   public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/]
   public form: FormGroup;
@@ -401,7 +401,7 @@ export class CadastrarReuniaoComponent implements OnInit {
 
 
   voltar() {
-    this._router.navigate(['/auth/reuniao/pesquisar'], {
+    this._router.navigate(['/auth/reuniao/pesquisar-reuniao-celula'], {
       queryParams: {
         pesquisa: this.pesquisa
       },

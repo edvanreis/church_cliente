@@ -6,7 +6,8 @@ import { InterceptorService } from '../../service/interceptor.service';
 import { RelatorioComponent } from './gerar/relatorios.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatSelectModule, MatOptionModule, MatAutocompleteModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatDatepickerModule, MatProgressSpinnerModule } from '@angular/material';
+import { TextMaskModule } from 'angular2-text-mask';
 
 const routes: Routes = [
   { path: 'gerar', component:  RelatorioComponent , data: { animation: 'buttons' }},
@@ -24,6 +25,9 @@ const routes: Routes = [
     MatSelectModule,
     MatOptionModule,
     MatAutocompleteModule,
+    MatDatepickerModule,
+    TextMaskModule,
+    MatProgressSpinnerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

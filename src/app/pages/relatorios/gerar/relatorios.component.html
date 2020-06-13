@@ -5,6 +5,65 @@
       <h1 class="mat-headline center-align">Relatórios</h1>
     </mat-toolbar>
     <div class="cdk-container">
+      <form form [formGroup]="form">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <mat-label>Relatórios</mat-label>
+            <mat-select id="relatorios" formControlName="relatorios">
+              <mat-option *ngFor="let item of relatorios$ | async" [value]="item" (click)="onSelectionClick(item)">
+                {{item.nome}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="!form.controls.relatorios.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+          <mat-form-field *ngIf="showDateReuniao">
+            <input matInput [matDatepicker]="picker" placeholder="Data da reunião" formControlName="dataDaReuniao"
+              required readonly>
+            <mat-error *ngIf="!form.controls.dataDaReuniao.valid">Campo Obrigatório</mat-error>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field class="full-width-field"  *ngIf="!showDateReuniao">
+            <input matInput placeholder="Competência" [textMask]="{mask: maskCompetencia}"
+              formControlName="competencia" id="competencia" required>
+            <mat-error *ngIf="!form.controls.competencia.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
+            [matAutocomplete]="au" (blur)="blurCelula($event)" >
+          <mat-autocomplete #au="matAutocomplete">
+            <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionCelulaChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div *ngIf="!showDateReuniao">
+        <mat-form-field class="full-width-field">
+          <input type="text" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto"
+            [(ngModel)]="membroValue" required>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionMembroChange($event,option)" >
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <br />
+      <br />
+      <div [hidden]="!loading" align="center" style="width: 100%">
+        <h4>Buscando...</h4>
+        <mat-spinner [diameter]="40"></mat-spinner>
+      </div>
+      <div *ngIf="!loading">
+        <button mat-raised-button color="primary" type="submit" (click)="gerar()">
+          <i class="material-icons">vertical_align_bottom</i>Gerar</button>
+      </div>
     </div>
   </div>
 </div>
