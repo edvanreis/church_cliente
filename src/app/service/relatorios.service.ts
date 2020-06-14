@@ -13,18 +13,18 @@ export class RelatoriosService {
 
   constructor(public http: HttpClient) { }
 
-  getList(){
+  getList() {
     return this.http.get(this._url)
-    .pipe(tap((response: any) => response));
+      .pipe(tap((response: any) => response));
   }
 
-   relatorioReniaoSemanal(obj) {
-    return this.http.post(this._url+"relatorioReuniaoSemenal",obj,{ responseType: "blob" })
-    .pipe(map((response: any) => response))
+  relatorioReniaoSemanal(obj) {
+    return this.http.post(this._url + "relatorioReuniaoSemenal", obj, { responseType: "blob" })
+      .pipe(map((response: any) => response))
   }
 
   relatorioFaltas(obj) {
-    return this.http.post(this._url+"relatorioFaltas",obj,{ responseType: "blob" })
-    .pipe(map((response: any) => response))
+    return this.http.post(this._url + "relatorioFaltas", obj)
+      .pipe(map((response: any) => response))
   }
 }

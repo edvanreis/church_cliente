@@ -10,6 +10,8 @@ import { PessoaService } from '../../../service/pessoa.service';
 import { RelatoriosService } from '../../../service/relatorios.service';
 import { HelperChurch } from '../../../helper/helper.church';
 import { DatePipe } from '@angular/common';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { ExcelService } from '../../../service/excel.service';
 
 @Component({
   selector: 'app-relatorios',
@@ -32,19 +34,25 @@ export class RelatorioComponent implements OnInit {
   public maskCompetencia = [/\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
   public showDateReuniao: boolean = false;
   public loading: boolean = false;
+  public showMultSelectCelula: boolean = false;
+  public checkedList = [];
+  public celulasId = [];
 
   constructor(private _celulaService: CelulaService,
     private _notifierService: NotifierService,
     private _pessoaService: PessoaService,
     private _service: RelatoriosService,
     private _dateAdapter: DateAdapter<Date>,
-    private _datePipe: DatePipe) { }
+    private _datePipe: DatePipe,
+    private _emitirEventoService: EmitirEventoService,
+    private _excelService: ExcelService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
     this._buildForm();
     this.getComboRelatorios();
     this.carregarCelula();
+    this.getEmiter();
   }
 
   getComboRelatorios() {
@@ -116,10 +124,15 @@ export class RelatorioComponent implements OnInit {
     } else {
       this.showDateReuniao = false;
     }
+    if (this.relatorioSelecionado === 'Relatório de faltas') {
+      this.showMultSelectCelula = true;
+    } else {
+      this.showMultSelectCelula = false;
+    }
   }
 
   validFields(): boolean {
-    if (!this.celulaSelecionada) {
+    if ((!this.celulaSelecionada && !this.showMultSelectCelula) || (this.checkedList.length == 0 && this.showMultSelectCelula) ) {
       this._notifierService.notify(AlertType.Error, 'Selecione pelo menos uma célula!');
       return false;
     }
@@ -142,9 +155,9 @@ export class RelatorioComponent implements OnInit {
       case 'Relatório reunião semanal':
         this.gerarRelatorioSemanalCelula();
         break;
-        case 'Relatório de faltas':
-          this.gerarRelatorioFaltas();
-          break;
+      case 'Relatório de faltas':
+        this.gerarRelatorioFaltas();
+        break;
       default:
         break;
     }
@@ -152,15 +165,16 @@ export class RelatorioComponent implements OnInit {
 
   setObj() {
     return {
-      celulaId: this.celulaSelecionada.id,
+      celulaId: this.celulaSelecionada ? this.celulaSelecionada.id : null,
       pessoaId: this.membroSelecionado ? this.membroSelecionado.id : null,
-      competeencia: HelperChurch.isNull(this.form.controls['competencia'].value),
-      dataDaReuniao: this.getDateReuniao()
+      competencia: HelperChurch.isNull(this.form.controls['competencia'].value),
+      dataDaReuniao: this.getDateReuniao(),
+      celulas:this.checkedList
     }
   }
 
-  blurCelula(event){
-    if(!event.target.value){
+  blurCelula(event) {
+    if (!event.target.value) {
       this.celulaSelecionada = null;
     }
   }
@@ -176,8 +190,7 @@ export class RelatorioComponent implements OnInit {
 
   gerarRelatorioSemanalCelula() {
     this.loading = true;
-    this._service.relatorioReniaoSemanal(this.setObj())
-      .subscribe(item => {
+    this._service.relatorioReniaoSemanal(this.setObj()).pipe(take(1)).subscribe(item => {
         const url = window.URL.createObjectURL(item);
         const type = item.type.split("/");
         const a = document.createElement('a');
@@ -196,22 +209,45 @@ export class RelatorioComponent implements OnInit {
 
   gerarRelatorioFaltas() {
     this.loading = true;
-    this._service.relatorioFaltas(this.setObj())
-      .subscribe(item => {
-        const url = window.URL.createObjectURL(item);
-        const type = item.type.split("/");
-        const a = document.createElement('a');
-        a.setAttribute('style', 'display:none;');
-        document.body.appendChild(a);
-        a.href = url;
-        a.download = "relatorio_reuniao_semanal_celula" + "." + type[1];
-        a.click();
-        this.loading = false;
+    let dados = [];
+    this._service.relatorioFaltas(this.setObj()).pipe(take(1)).subscribe(item => {
+      this.loading = false;
+      item.forEach(i => {
+        dados.push({
+          "Data da Reunião": i.dataDaReuniao,
+          "Nome": i.nome,
+          "Célula": i.celula
+        });
+      });
+      this._excelService.exportAsExcelFile(dados, "membros");
       }, error => {
-        // console.log(error)
         this.loading = false;
         this._notifierService.notify(AlertType.Error, "Arquivo não localizado!");
       });
+  }
+
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(obj => {
+      if (obj.type == 'mult-select-celulas') {
+        this.checkedList = obj.data;
+        console.log(this.checkedList);
+        this.carregarMembroCelulas(this.checkedList);
+      }
+    });
+  }
+
+  carregarMembroCelulas(checkedList) {
+    this._pessoaService.getMembroCelulas(checkedList).pipe(take(1)).subscribe(item => {
+      // console.log(item);
+      this.comboMembro = item;
+      this.filteredMembro = this.myControlMembro.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterMembro(value, this.comboMembro))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+    });
   }
 
 }

@@ -93,5 +93,10 @@ export class PessoaService  implements AbstractService{
       .pipe(map((response: any) => response))
   }
 
+  getMembroCelulas(list) {
+    return this.http.post(this._url + "membroCelula",list)
+      .pipe(tap((response: any) => response));
+  }
+
 
 }

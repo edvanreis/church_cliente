@@ -8,6 +8,8 @@ import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatInputModule, MatButtonModule, MatToolbarModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatDatepickerModule, MatProgressSpinnerModule } from '@angular/material';
 import { TextMaskModule } from 'angular2-text-mask';
+import { MultSelectCelulasModule } from '../componentes/mult-select-celulas/mult-select-celulas.module';
+
 
 const routes: Routes = [
   { path: 'gerar', component:  RelatorioComponent , data: { animation: 'buttons' }},
@@ -28,6 +30,7 @@ const routes: Routes = [
     MatDatepickerModule,
     TextMaskModule,
     MatProgressSpinnerModule,
+    MultSelectCelulasModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

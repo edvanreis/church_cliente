@@ -31,7 +31,7 @@
         </div>
       </form>
       <div>
-        <mat-form-field class="full-width-field">
+        <mat-form-field class="full-width-field"  *ngIf="!showMultSelectCelula">
           <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
             [matAutocomplete]="au" (blur)="blurCelula($event)" >
           <mat-autocomplete #au="matAutocomplete">
@@ -42,10 +42,11 @@
           </mat-autocomplete>
         </mat-form-field>
       </div>
+      <app-mult-select-celulas *ngIf="showMultSelectCelula"></app-mult-select-celulas>
       <div *ngIf="!showDateReuniao">
         <mat-form-field class="full-width-field">
-          <input type="text" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto"
-            [(ngModel)]="membroValue" required>
+          <input type="text" aria-label="Number" placeholder="Membros"  matInput [formControl]="myControlMembro" [matAutocomplete]="auto"
+            [(ngModel)]="membroValue">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
               (onSelectionChange)="onSelectionMembroChange($event,option)" >
