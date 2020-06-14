@@ -140,7 +140,7 @@ export class RelatorioComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Selecione a data da reunião!");
       return false;
     }
-    if (!this.showDateReuniao && !this.form.controls['competencia'].value) {
+    if (!this.showDateReuniao && !this.form.controls['competencia'].value && !this.membroSelecionado) {
       this._notifierService.notify(AlertType.Error, "Digite a competencia do relatório");
       return false;
     }

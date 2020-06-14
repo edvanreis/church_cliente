@@ -20,5 +20,6 @@ export const appRoutes: Routes = [{
         { path: 'reuniao', loadChildren: '../pages/reuniao/reuniao.module#ReuniaoModule',  canActivate: [AuthGuardService]},
         { path: 'justificar', loadChildren: '../pages/justificar/justificar.module#JustificarModule',  canActivate: [AuthGuardService]},
         { path: 'relatorios', loadChildren: '../pages/relatorios/relatorios.module#RelatoriosModule',  canActivate: [AuthGuardService]},
+        { path: 'grupo', loadChildren: '../pages/grupo/grupo.module#GrupoModule',  canActivate: [AuthGuardService]},
     ]
 }];
