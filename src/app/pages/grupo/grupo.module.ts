@@ -5,6 +5,8 @@ import { CadastrarGrupoComponent } from './cadastrar/cadastrar-grupo.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatTabsModule, MatSelectModule, MatOptionModule } from '@angular/material';
+import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarGrupoComponent , data: { animation: 'buttons' }},
@@ -17,6 +19,14 @@ const routes: Routes = [
     FormsModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    MatToolbarModule,
+    MatInputModule,
+    MatButtonModule,
+    MatTableModule,
+    MatTabsModule,
+    MatSelectModule,
+    MatOptionModule,
+    IgrejasCompenenteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
