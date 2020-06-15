@@ -216,6 +216,7 @@ export class RelatorioComponent implements OnInit {
         dados.push({
           "Data da Reunião": i.dataDaReuniao,
           "Nome": i.nome,
+          "Justificativa":i.justificativa?i.justificativa:"Não informada",
           "Célula": i.celula
         });
       });
