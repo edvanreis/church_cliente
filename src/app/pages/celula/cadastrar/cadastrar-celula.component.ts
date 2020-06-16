@@ -1,16 +1,18 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DateAdapter, MatDialog } from '@angular/material';
+import { DateAdapter, MatDialog, MatAutocompleteSelectedEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
-import { take } from 'rxjs/operators';
+import { take, startWith, map } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
 import { CelulaService } from '../../../service/celula.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { RedeService } from '../../../service/rede.service';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 import { TipoLiderancaService } from '../../../service/tipo-lideranca.service';
+import { Observable } from 'rxjs';
+import { PessoaService } from '../../../service/pessoa.service';
 
 @Component({
   selector: 'app-cadastrar-celula',
@@ -34,7 +36,10 @@ export class CadastrarCelulaComponent implements OnInit {
   public tipoPessoa: any;
   public sizeLimitOne: boolean = true;
   public id: any;
-
+  public myControlMembro = new FormControl();
+  public comboMembro = [];
+  public filteredMembro: Observable<string[]>;
+  public membroSelecionado: any;
 
 
 
@@ -48,7 +53,8 @@ export class CadastrarCelulaComponent implements OnInit {
     private _redeService: RedeService,
     private _dateAdapter: DateAdapter<Date>,
     private _dialog: MatDialog,
-    private _tipoLiderancaService:TipoLiderancaService) { }
+    private _tipoLiderancaService:TipoLiderancaService,
+    private _pessoaService:PessoaService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -66,6 +72,7 @@ export class CadastrarCelulaComponent implements OnInit {
       // console.log(item.data);
       if (item.type == 'rede-comp') {
         this.redeSelecionada = item.data;
+        this.carregarMembro( this.redeSelecionada.id)
       }
       if (item.type == 'endereco') {
         this.endereco = item.data;
@@ -273,6 +280,29 @@ export class CadastrarCelulaComponent implements OnInit {
         item:i
       }
     });
+  }
+
+  carregarMembro(id) {
+    this._pessoaService.getMembroIgrejaByRede(id).pipe(take(1)).subscribe(item => {
+      // console.log(item);
+      this.comboMembro = item;
+      this.filteredMembro = this.myControlMembro.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterMembros(value, this.comboMembro))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+    });
+  }
+
+  private _filterMembros(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
+    this.membroSelecionado = option;
   }
 
 }

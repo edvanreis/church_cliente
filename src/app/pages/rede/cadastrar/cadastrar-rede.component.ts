@@ -1,16 +1,17 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DateAdapter, MatDialog } from '@angular/material';
+import { DateAdapter, MatDialog, MatAutocompleteSelectedEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { IgrejaService } from '../../../service/igreja.service';
 import { RedeService } from '../../../service/rede.service';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
+import { PessoaService } from '../../../service/pessoa.service';
+import { take, startWith, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cadastrar-rede',
@@ -26,7 +27,7 @@ export class CadastrarRedeComponent implements OnInit {
   public comboMembro = [];
   public filteredMembro: Observable<string[]>;
   //public nomeValue;
-  public membro: any;
+  public membroSelecionado: any;
   public membros: any = [];
   public igrejaSelecionada: any;
   public rede = {} as any;
@@ -43,7 +44,8 @@ export class CadastrarRedeComponent implements OnInit {
     private _router: Router,
     private _igejaService: IgrejaService,
     private _dateAdapter: DateAdapter<Date>,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _pessoaService:PessoaService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -72,12 +74,9 @@ export class CadastrarRedeComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
 
-      if (item.type == 'membro-comp') {
-        // console.log(item.data);
-        this.membro = item.data;
-      }
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
+        this.carregarMembro(this.igrejaSelecionada.id);
       }
       if (item.type == 'confirm-dialog-pessoa-rede') {
         this.membros.splice(item.data, 1);
@@ -86,17 +85,17 @@ export class CadastrarRedeComponent implements OnInit {
   }
 
   adicionar() {
-    if (!this.membro) {
-      console.log(this.membro);
+    if (!this.membroSelecionado) {
+      console.log(this.membroSelecionado);
       this._notifierService.notify(AlertType.Error, "Por favor escolha uma membro.!");
       return false;
     }
-    let membroAdicionado = this.membros.find(i => i.nome == this.membro.nome);
-    if (membroAdicionado && membroAdicionado.nome == this.membro.nome) {
+    let membroAdicionado = this.membros.find(i => i.nome == this.membroSelecionado.nome);
+    if (membroAdicionado && membroAdicionado.nome == this.membroSelecionado.nome) {
       this._notifierService.notify(AlertType.Error, "Membro já adiocionado.!");
       return false;
     }
-    this.membros.push(this.membro);
+    this.membros.push(this.membroSelecionado);
     this.setEmiter();
   }
 
@@ -228,5 +227,28 @@ export class CadastrarRedeComponent implements OnInit {
     });
   }
 
+  
+  carregarMembro(id) {
+    this._pessoaService.getMembroIgreja(id).pipe(take(1)).subscribe(item => {
+      // console.log(item);
+      this.comboMembro = item;
+      this.filteredMembro = this.myControlMembro.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterMembros(value, this.comboMembro))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+    });
+  }
+
+  private _filterMembros(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
+    this.membroSelecionado = option;
+  }
 
 }

@@ -5,8 +5,9 @@ import { CadastrarGrupoComponent } from './cadastrar/cadastrar-grupo.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatTabsModule, MatSelectModule, MatOptionModule } from '@angular/material';
+import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatTabsModule, MatSelectModule, MatOptionModule, MatDividerModule, MatAutocompleteModule } from '@angular/material';
 import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarGrupoComponent , data: { animation: 'buttons' }},
@@ -27,6 +28,9 @@ const routes: Routes = [
     MatSelectModule,
     MatOptionModule,
     IgrejasCompenenteModule,
+    MatDividerModule,
+    MembroComponenteModule,
+    MatAutocompleteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

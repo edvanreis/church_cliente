@@ -7,10 +7,11 @@
     <div class="cdk-container">
       <mat-tab-group>
         <mat-tab label="Grupo de Trabalho">
+          <br />
           <form form [formGroup]="form">
             <div>
               <mat-form-field class="full-width-field">
-                <input matInput placeholder="Nome"  formControlName="nome" id="nome" required>
+                <input matInput placeholder="Nome" formControlName="nome" id="nome" style="text-transform: uppercase;" required>
                 <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
               </mat-form-field>
             </div>
@@ -18,7 +19,7 @@
               <mat-form-field class="full-width-field">
                 <mat-label>Tipo de Grupos de Trabalho</mat-label>
                 <mat-select id="tipo" formControlName="tipo">
-                  <mat-option *ngFor="let item of tipoGrupo$| async" [value]="item" (click)="onSelectionClick(item)">
+                  <mat-option *ngFor="let item of tipoGrupo$| async" [value]="item.id" >
                     {{item.nome}}
                   </mat-option>
                 </mat-select>
@@ -31,11 +32,105 @@
                 <mat-error *ngIf="!form.controls.descricao.valid">Campo Obrigatório</mat-error>
               </mat-form-field>
             </div>
-           </form> 
-           <app-igrejas></app-igrejas>
+          </form>
+          <app-igrejas></app-igrejas>
+          <br />
+          <br />
+          <mat-divider></mat-divider>
+          <br />
+          <br />
+          <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+              <i class="material-icons">face</i>
+              <h1 class="mat-subheading-2 center-align">Membros</h1>
+            </div>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" >
+            <mat-form-field class="full-width-field">
+              <input type="text" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto"
+                [(ngModel)]="membroValue" required>
+              <mat-autocomplete #auto="matAutocomplete">
+                <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+                  (onSelectionChange)="onSelectionChangedMembro($event,option)">
+                  {{option.nomeCompleto}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field>
+              <mat-label>Selecione...</mat-label>
+              <mat-select id="comboTipopessoa" [(ngModel)]="tipoPessoa">
+                <mat-option *ngFor="let item of comboTipoPessoa" [value]="item">
+                  {{item.nome}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div>
+            <button mat-raised-button color="primary" type="submit" (click)="adicionarMembro()">
+              <i class="material-icons">add</i>adicionar</button>
+          </div>
+          <br />
+          <br />
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="membros.length > 0">
+            <div class="table-responsive">
+              <table>
+                <thead class="text-primary">
+                  <th></th>
+                  <th>Nome</th>
+                  <th></th>
+                  <th>Remover</th>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of membros;let i= index">
+                    <td>{{ i+1}}</td>
+                    <td>{{ item.nomeCompleto}}</td>
+                    <td>{{ item.tipoNome}}</td>
+                    <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemoverMembro(i,item)"><i
+                          class="material-icons">delete</i></span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <br />
+          <br />
+          <div>
+            <button mat-raised-button color="primary" type="submit" (click)="salvarGrupo()">
+              <i class="material-icons">save</i>Salvar</button>
+            <div fxFlex></div>
+            <button mat-raised-button color="warn" type="submit" (click)="voltar()">
+              <i class="material-icons">reply</i>Voltar</button>
+          </div>
         </mat-tab>
         <mat-tab label="Sub Grupo de Trabalho">
-
+          <br />
+          <form form [formGroup]="formSub">
+            <div>
+              <mat-form-field class="full-width-field">
+                <input matInput placeholder="Nome" formControlName="nome" id="nomeSub" style="text-transform: uppercase;" required>
+                <mat-error *ngIf="!formSub.controls.nome.valid">Campo Obrigatório</mat-error>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field class="full-width-field">
+                <textarea matInput placeholder="Descrição" formControlName="descricao"></textarea>
+                <mat-error *ngIf="!formSub.controls.descricao.valid">Campo Obrigatório</mat-error>
+              </mat-form-field>
+            </div>
+          </form>
+          <app-igrejas></app-igrejas>
+          <div>
+            <mat-form-field class="full-width-field">
+              <input type="text" aria-label="Number" placeholder="Grupos Trabalho" matInput [formControl]="myControlGrupos" [matAutocomplete]="aut"
+                [(ngModel)]="grupoValue" required>
+              <mat-autocomplete #aut="matAutocomplete">
+                <mat-option *ngFor="let option of filteredGrupos | async" [value]="option.nome"
+                  (onSelectionChange)="onSelectionChangedGrupos($event,option)">
+                  {{option.nome}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
         </mat-tab>
       </mat-tab-group>
     </div>

@@ -9,7 +9,7 @@ import { environment } from '../../environments/environment';
 })
 export class GrupoService {
 
-  private _url = environment.url + "tipoGrupoTrabalho/";
+  private _url = environment.url + "grupoTrabalho/";
 
   constructor(public http: HttpClient) { }
 
@@ -17,5 +17,31 @@ export class GrupoService {
     return this.http.get(this._url)
       .pipe(map((response: any) => response))
   }
+
+  save(grupo) {
+    return this.http.post(this._url, grupo)
+      .pipe(map((response: any) => response))
+  }
+
+  update(grupo) {
+    return this.http.put(this._url, grupo)
+      .pipe(map((response: any) => response))
+  }
+
+  getGrupo(id) {
+    return this.http.get(this._url+id+"/obterGrupo")
+      .pipe(map((response: any) => response))
+  }
+
+  getGruposByIgrejas(id) {
+    return this.http.get(this._url+id+"/gruposByIgrejas")
+      .pipe(map((response: any) => response))
+  }
+
+  search(grupo) {
+    return this.http.post(this._url+"pesquisar", grupo)
+      .pipe(map((response: any) => response))
+  }
+
 
 }

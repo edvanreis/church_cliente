@@ -28,9 +28,6 @@
             <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-         <app-igrejas></app-igrejas>
-        </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="100px">
           <mat-form-field class="full-width-field">
             <textarea matInput placeholder="Descrição" formControlName="descricao"></textarea>
@@ -38,8 +35,18 @@
           </mat-form-field>
         </div>
       </form>
+      <app-igrejas></app-igrejas>
       <div>
-        <app-membro [label]="label"></app-membro>
+        <mat-form-field class="full-width-field">
+          <input type="text" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto" placeholder="Membros"
+            [(ngModel)]="membroValue" required>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedMembro($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
         <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
           <i class="material-icons">add</i>adicionar</button>
       </div>
