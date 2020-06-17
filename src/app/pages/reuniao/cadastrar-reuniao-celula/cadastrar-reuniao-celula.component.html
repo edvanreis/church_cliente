@@ -272,15 +272,14 @@
       <br />
       <div>
         <form form [formGroup]="formTow">  
-        <label class="default-font-color" style="font-size:15px;">A reunião foi realizada no mesmo endereço da
-          célula?</label>
+        <label class="default-font-color" style="font-size:15px;">A reunião foi realizada em outro endereço ?</label>
         <mat-slide-toggle id="realizado" formControlName="realizado"  #realizado>{{realizado.checked | boolean : ['Sim', 'Não']}}
         </mat-slide-toggle>
         </form>
       </div>
       <br />
       <br />
-        <app-endereco [sizeLimitOne]="sizeLimitOne" [hidden]="realizado.checked"></app-endereco>
+        <app-endereco [sizeLimitOne]="sizeLimitOne" [hidden]="!realizado.checked"></app-endereco>
       <br />
       <br />
       <div>

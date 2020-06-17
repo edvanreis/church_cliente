@@ -459,7 +459,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
       this.emitirLicao(item.licao);
       this.getCelula(item.celula.id);
       if(item.enderecos){
-        this.formTow.controls['realizado'].patchValue(false);
+        this.formTow.controls['realizado'].patchValue(true);
         this.emitirEndereco(item.enderecos);
       }
 

@@ -211,7 +211,7 @@ export class PesquisarReuniaoCelulaComponent implements OnInit {
   editar(id) {
     this.setObj();
     localStorage.setItem("pesquisa", JSON.stringify(this.reuniao));
-    this._router.navigate(['/auth/reuniao/cadastrar'], {
+    this._router.navigate(['/auth/reuniao/cadastrar-reuniao-celula'], {
       queryParams: {
         janela: 'Editar',
         id: id
