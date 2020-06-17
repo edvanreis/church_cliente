@@ -24,7 +24,7 @@ const ELEMENT_DATA = [
 export class PesquisarGrupoComponent implements OnInit {
 
   public comboStatus = ELEMENT_DATA;
-  public statusSelecionado = 'A';
+  public statusSelecionado:any;
   public form: FormGroup;
   public check: boolean = false;
   public igrejaSelecionada:any;
@@ -76,7 +76,7 @@ export class PesquisarGrupoComponent implements OnInit {
 
   carregarGruposGroupBy(id) {
     this._serviceGruop.getGruposByIgrejasGroupBy(id).pipe(take(1)).subscribe(item => {
-      console.log(item);
+      // console.log(item);
       this.grupos = item;
       this.filteredGrupos = this.myControl.valueChanges
         .pipe(
@@ -119,6 +119,35 @@ export class PesquisarGrupoComponent implements OnInit {
       });
     });
     this._excelService.exportAsExcelFile(dados, "pesquisa");
+  }
+
+  
+  getListForStatus(status) {
+    this._serviceGruop.getListForStatus(status).pipe(take(1)).subscribe(item => {
+      // console.log(item);
+      this.grupos = item;
+      this.filteredGrupos = this.myControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+    }, error => {
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+
+    });
+  }
+
+  
+  onSelection() {
+    if (this.statusSelecionado == 'I') {
+      this.form.controls['group'].patchValue(false);
+      this.check = true;
+      this.getListForStatus(this.statusSelecionado);
+    } else {
+      this.check = false;
+      this.getListForStatus(this.statusSelecionado);
+    }
   }
  
 

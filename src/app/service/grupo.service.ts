@@ -48,5 +48,11 @@ export class GrupoService {
       .pipe(map((response: any) => response))
   }
 
+  getListForStatus(status) {
+    return this.http.get(this._url+status+"/grupoPorStatus")
+      .pipe(map((response: any) => response))
+  }
+
+
 
 }
