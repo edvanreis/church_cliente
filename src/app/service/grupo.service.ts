@@ -38,6 +38,11 @@ export class GrupoService {
       .pipe(map((response: any) => response))
   }
 
+  getGruposByIgrejasGroupBy(id) {
+    return this.http.get(this._url+id+"/gruposByIgrejasGrupoby")
+      .pipe(map((response: any) => response))
+  }
+
   search(grupo) {
     return this.http.post(this._url+"pesquisar", grupo)
       .pipe(map((response: any) => response))

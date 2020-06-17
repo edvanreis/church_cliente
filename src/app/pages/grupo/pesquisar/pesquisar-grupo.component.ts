@@ -1,10 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { NotifierService } from 'angular-notifier';
 import { MatDialog } from '@angular/material';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { ExcelService } from '../../../service/excel.service';
-import { TipoGrupoService } from '../../../service/tipo-grupo.service';
+import { FormGroup, FormControl } from '@angular/forms';
+import { GrupoService } from '../../../service/grupo.service';
+import { AlertType } from '../../../model/alert-type';
+import { take, startWith, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+
+
+const ELEMENT_DATA = [
+  { codigo: 'A', value: 'Ativo' },
+  { codigo: 'I', value: 'Inativo' },
+];
 
 @Component({
   selector: 'app-pesquisar-grupo',
@@ -13,15 +23,26 @@ import { TipoGrupoService } from '../../../service/tipo-grupo.service';
 })
 export class PesquisarGrupoComponent implements OnInit {
 
+  public comboStatus = ELEMENT_DATA;
+  public statusSelecionado = 'A';
+  public form: FormGroup;
+  public check: boolean = false;
+  public igrejaSelecionada:any;
+  public grupos = [];
+  public filteredGrupos: Observable<string[]>;
+  public myControl = new FormControl();
+
   constructor( private _notifierService: NotifierService,
     private _router: Router,
     private _dialog: MatDialog,
     private _emitirEventoService: EmitirEventoService,
     private _avRoute: ActivatedRoute,
-    private _excelService: ExcelService ) { }
+    private _excelService: ExcelService,
+    private _serviceGruop: GrupoService ) { }
 
   ngOnInit() {
-   
+   this.getEmiter();
+   this._buildForm();
   }
 
   cadastrar() {
@@ -29,6 +50,76 @@ export class PesquisarGrupoComponent implements OnInit {
     this._router.navigate(['/auth/grupo/cadastrar']);
   }
 
+  getEmiter() {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'igreja-comp') {
+        this.igrejaSelecionada = item.data;
+        this.carregarGrupos(this.igrejaSelecionada.id);
+      }
+    });
+  }
+
+  
+  carregarGrupos(id) {
+    this._serviceGruop.getGruposByIgrejas(id).pipe(take(1)).subscribe(item => {
+      console.log(item);
+      this.grupos = item;
+      this.filteredGrupos = this.myControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os grupos!");
+    });
+  }
+
+  carregarGruposGroupBy(id) {
+    this._serviceGruop.getGruposByIgrejasGroupBy(id).pipe(take(1)).subscribe(item => {
+      console.log(item);
+      this.grupos = item;
+      this.filteredGrupos = this.myControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os grupos!");
+    });
+  }
+  private _filter(value: string): string[] {
+    // console.log(value)
+    const filterValue = value.toLowerCase();
+    return this.grupos.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  private _buildForm(): void {
+    this.form = new FormGroup({
+      'group': new FormControl(false),
+    });
+  }
+
+  changeAgrupar(agrupar) {
+    if (this.igrejaSelecionada && agrupar) {
+      this.carregarGruposGroupBy(this.igrejaSelecionada.id);
+    } else {
+      this.carregarGrupos(this.igrejaSelecionada.id);
+    }
+  }
+
+  
+  exportAsXLSX() {
+    let dados = [];
+    this.grupos.forEach(i => {
+      dados.push({
+        "Sub Grupo": i.isSubGrupo?"Sim":"Não",
+        "Nome": i.nome,
+        "Líder": i.lider,
+        "Tipo de Grupo": i.tipo.nome,
+      });
+    });
+    this._excelService.exportAsExcelFile(dados, "pesquisa");
+  }
  
 
 }

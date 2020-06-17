@@ -5,9 +5,10 @@ import { CadastrarGrupoComponent } from './cadastrar/cadastrar-grupo.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatTabsModule, MatSelectModule, MatOptionModule, MatDividerModule, MatAutocompleteModule } from '@angular/material';
+import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatTabsModule, MatSelectModule, MatOptionModule, MatDividerModule, MatAutocompleteModule, MatSlideToggleModule } from '@angular/material';
 import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
+import { PipeModule } from '../../pipes/pipe.module';
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarGrupoComponent , data: { animation: 'buttons' }},
@@ -31,6 +32,8 @@ const routes: Routes = [
     MatDividerModule,
     MembroComponenteModule,
     MatAutocompleteModule,
+    PipeModule,
+    MatSlideToggleModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

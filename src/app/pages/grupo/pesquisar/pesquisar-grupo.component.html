@@ -9,6 +9,95 @@
         <button mat-raised-button color="primary" type="submit" (click)="cadastrar()">
           <i class="material-icons">add</i>Novo</button>
       </div>
+      <br/>
+      <app-igrejas></app-igrejas>
+      <div>
+        <mat-form-field class="full-width-field">
+          <mat-label>Status</mat-label>
+          <mat-select [(ngModel)]="statusSelecionado" id="status">
+            <mat-option *ngFor="let item of comboStatus" [value]="item.codigo" (click)="onSelection()">
+              {{item.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div [hidden]="grupos.length == 0">
+        <form form [formGroup]="form">
+          <div [hidden]="check">
+            <label style="color:#1d68a5">Agrupar por Grupo?</label>
+            <mat-slide-toggle id="agrupar" formControlName="group" (change)="changeAgrupar(agrupar.checked)" #agrupar>
+              {{agrupar.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="grupos.length > 0" >
+      <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
+        <input placeholder="Filtrar" aria-label="Number" matInput [formControl]="myControl">
+      </mat-form-field>
+    </div>
+    <div class="table-responsive" *ngIf="agrupar.checked" style="overflow: auto; height: 300px;">
+      <table>
+        <thead class="text-primary">
+          <th>Sub Grupo</th>
+          <th>Nome</th>
+          <th>Líder</th>
+          <th>Tipo de grupo</th>
+          <th></th>
+        </thead>
+        <tbody *ngFor="let g of filteredGrupos | async">
+          <tr style="background-color: #5C6BC0;color: white;">
+            <td>Não</td>
+            <td>{{g.nome}}</td>
+            <td>{{g.lider}}</td>
+            <td>{{g.tipo?.nome}}</td>
+            <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(i.id,'sede')"><i
+                  class="material-icons">create</i></span>
+              <span title="Inativar" style="cursor: pointer;color:white" (click)="dialogStatus(i.id,'sede')"><i
+                  class="material-icons">settings</i></span>
+            </td>
+          </tr>
+
+          <tr *ngFor="let s of g.subGrupos">
+            <td>Não</td>
+            <td>{{s.nome}}</td>
+            <td>{{s.lider}}</td>
+            <td>{{g.tipo?.nome}}</td>
+            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(f.id,'filial')"><i
+                  class="material-icons">create</i></span>
+              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(f.id,'filial')"><i
+                  class="material-icons">settings</i></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="table-responsive" *ngIf="!agrupar.checked && grupos.length > 0"  style="overflow: auto; height: 300px;">
+      <table>
+        <thead class="text-primary">
+          <th>Sub Grupo</th>
+          <th>Nome</th>
+          <th>Líder</th>
+          <th>Tipo de grupo</th>
+          <th></th>
+        </thead>
+        <tbody *ngFor="let item of filteredGrupos | async">
+          <tr>
+            <td *ngIf="true">{{item.isSubGrupo | boolean : ['Sim', 'Não']}}</td>
+            <td>{{item.nome}}</td>
+            <td>{{item.lider}}</td>
+            <td>{{item.tipo?.nome}}</td>
+            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(i.id,i.isSede?'sede':'filial')"><i
+                  class="material-icons">create</i></span>
+              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id,i.isSede?'sede':'filial')"><i
+                  class="material-icons">settings</i></span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <br />
+      <button mat-raised-button color="success" (click)="exportAsXLSX()" *ngIf="!agrupar.checked"><i
+        class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
+    </div>
     </div>
   </div>
 </div>

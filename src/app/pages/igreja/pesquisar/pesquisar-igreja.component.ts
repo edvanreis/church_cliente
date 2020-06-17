@@ -74,7 +74,7 @@ export class PesquisarIgrejaComponent implements OnInit {
 
 
   private _filter(value: string): string[] {
-    console.log(value)
+    // console.log(value)
     const filterValue = value.toLowerCase();
     return this.igrejas.filter(option => option.nome.toLowerCase().includes(filterValue));
   }

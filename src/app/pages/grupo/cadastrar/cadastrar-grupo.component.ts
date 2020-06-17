@@ -10,6 +10,7 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { GrupoService } from '../../../service/grupo.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SubGrupoService } from '../../../service/sub-groupo.service';
 
 const ELEMENT_DATA_TIPO_PESSOA: any = [
   { id: 'L', nome: 'Líder' },
@@ -40,13 +41,16 @@ export class CadastrarGrupoComponent implements OnInit {
   public tipoPessoa: any;
   public id: any;
   public pesquisa: boolean = false;
+  public membroValue:any;
+  public label:any;
 
 
   constructor(private _tipoGrupoService: TipoGrupoService,
     private _pessoaService: PessoaService,
     private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
-    private _service: GrupoService,
+    private _serviceGruop: GrupoService,
+    private _serviceSubGruop: SubGrupoService,
     private _router: Router,
     private _avRoute: ActivatedRoute) { }
 
@@ -97,7 +101,7 @@ export class CadastrarGrupoComponent implements OnInit {
   }
 
   carregarGrupos(id) {
-    this._service.getGruposByIgrejas(id).pipe(take(1)).subscribe(item => {
+    this._serviceGruop.getGruposByIgrejas(id).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboGrupos = item;
       this.filteredGrupos = this.myControlGrupos.valueChanges
@@ -149,29 +153,51 @@ export class CadastrarGrupoComponent implements OnInit {
     this.membros.push(this.membroSelecionado);
   }
 
-  salvarGrupo() {
-    if (this.id) {
+  salvar() {
+    if(!this.label || this.label=='Grupo de Trabalho'){
+        if(this.id){
 
-    } else {
-      this.save()
+        }else{
+          this.saveGrupo();
+        }
+    }
+    if(this.label=='Sub Grupo de Trabalho'){
+      if(this.id){
+
+      }else{
+        this.saveSubGrupo();
+      }
     }
   }
-  save() {
+  saveGrupo() {
     console.log(this.setObjGrupo());
-    if (!this.validField()) {
-      return;
-    }
     if (!this.validFieldGrupo()) {
       return;
     }
-    this._service.save(this.setObjGrupo()).pipe(take(1)).subscribe(item => {
-      // this.voltar();
+    this._serviceGruop.save(this.setObjGrupo()).pipe(take(1)).subscribe(item => {
+      this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
     });
 
   }
+
+  saveSubGrupo() {
+    console.log(this.setObjSubGrupo());
+    if (!this.validFieldSubGrupo()) {
+      return;
+    }
+    this._serviceSubGruop.save(this.setObjSubGrupo()).pipe(take(1)).subscribe(item => {
+      this.voltar();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+    });
+
+  }
+
+  
 
   setObjGrupo() {
     return {
@@ -183,7 +209,17 @@ export class CadastrarGrupoComponent implements OnInit {
     }
   }
 
-  validField(): boolean {
+  setObjSubGrupo() {
+    return {
+      nome: this.formSub.controls['nome'].value,
+      descricao: this.formSub.controls['descricao'].value,
+      pessoas: this.membros,
+      grupo:{id:this.grupoSelecionado.id},
+      igreja: { id: this.igrejaSelecionada.id ,visaoCelular:this.igrejaSelecionada.visaoCelular},
+    }
+  }
+
+  validFieldGrupo(): boolean {
     if (!this.form.controls['nome'].value) {
       this._notifierService.notify(AlertType.Error, "Por favor preencha o campo Nome");
       return false;
@@ -196,10 +232,6 @@ export class CadastrarGrupoComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor preencha o campo Descrição");
       return false;
     }
-    return true;
-  }
-
-  validFieldGrupo() {
     if (!this.igrejaSelecionada) {
       this._notifierService.notify(AlertType.Error, "Por favor selecione uma igreja!");
       return false;
@@ -211,6 +243,31 @@ export class CadastrarGrupoComponent implements OnInit {
     return true;
   }
 
+  validFieldSubGrupo(): boolean {
+    if (!this.formSub.controls['nome'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor preencha o campo Nome");
+      return false;
+    }
+    if (this.membros.length == 0) {
+      this._notifierService.notify(AlertType.Error, "Por favor adicione pelo menos um Membro");
+      return false;
+    }
+    if (!this.formSub.controls['descricao'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor preencha o campo Descrição");
+      return false;
+    }
+    if (!this.igrejaSelecionada) {
+      this._notifierService.notify(AlertType.Error, "Por favor selecione uma igreja!");
+      return false;
+    }
+    if (!this.grupoSelecionado) {
+      this._notifierService.notify(AlertType.Error, "Por favor selecione um grupo de trabalho!");
+      return false;
+    }
+    return true;
+  }
+
+ 
   voltar() {
     this._router.navigate(['/auth/grupo/pesquisar'], {
       queryParams: {
@@ -222,5 +279,15 @@ export class CadastrarGrupoComponent implements OnInit {
 
   onSelectionChangedGrupos($event: MatAutocompleteSelectedEvent, option) {
     this.grupoSelecionado = option;
+  }
+
+  onTabChanged(event) {
+    console.log(event.tab.textLabel);
+    this.label = event.tab.textLabel;
+    if(event){
+      this.membros = [];
+      this.membroValue = "";
+      this.tipoPessoa = null;
+    }
   }
 }
