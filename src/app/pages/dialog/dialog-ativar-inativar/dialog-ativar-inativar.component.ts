@@ -33,7 +33,7 @@ export class DialogAtivarInativarComponent implements OnInit {
 
   ngOnInit() {
     this._buildForm();
-
+    console.log(this.data)
   }
 
   private _buildForm(): void {
@@ -56,6 +56,7 @@ export class DialogAtivarInativarComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Campo observação obrigatório!");
       return false;
     }
+    console.log(obj)
     if (this.form.controls['status'].value == 'A') {
       this.ativar(obj);
     } else {
@@ -85,7 +86,7 @@ export class DialogAtivarInativarComponent implements OnInit {
       this.setEmiter();
       this.close();
     }, error => {
-      this._notifierService.notify(AlertType.Error, error.message);
+      this._notifierService.notify(AlertType.Error, error.error.message);
     });
   }
 
@@ -95,7 +96,7 @@ export class DialogAtivarInativarComponent implements OnInit {
       this.setEmiter();
       this.close();
     }, error => {
-      this._notifierService.notify(AlertType.Error, error.message);
+      this._notifierService.notify(AlertType.Error, error.error.message);
     });
   }
 
@@ -105,10 +106,10 @@ export class DialogAtivarInativarComponent implements OnInit {
         return 'Deseja Realmente Ativar esta Célula?';
       case 'pessoa':
         return 'Deseja Realmente Ativar este Membro?';
-      case 'sede':
-        return 'Deseja Realmente Ativar esta Igreja Sede?';
-      case 'filial':
-        return 'Deseja Realmente Ativar esta Igreja Filial?'
+      case 'igreja':
+        return 'Deseja Realmente Ativar esta Igreja?';
+        case 'grupo':
+        return 'Deseja Realmente Ativar este Grupo?';
       default:
         break;
     }
@@ -120,10 +121,10 @@ export class DialogAtivarInativarComponent implements OnInit {
         return 'Deseja Realmente Inativar esta Célula?';
       case 'pessoa':
         return 'Deseja Realmente Inativar este Membro?';
-      case 'sede':
-        return 'Deseja Realmente Inativar esta Igreja Sede?';
-      case 'filial':
-        return 'Deseja Realmente Inativar esta Igreja Filial?';
+      case 'igreja':
+        return 'Deseja Realmente Inativar esta Igreja?';
+        case 'grupo':
+          return 'Deseja Realmente Ativar este Grupo?';
       default:
         break;
     }

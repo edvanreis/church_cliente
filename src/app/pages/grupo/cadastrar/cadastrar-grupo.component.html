@@ -6,7 +6,7 @@
     </mat-toolbar>
     <div class="cdk-container">
       <mat-tab-group  (selectedTabChange)="onTabChanged($event)">
-        <mat-tab label="Grupo de Trabalho">
+        <mat-tab label="Grupo de Trabalho"  *ngIf="tipo=='grupoTrabalho' || !id">
           <br />
           <form form [formGroup]="form">
             <div>
@@ -97,7 +97,7 @@
               <i class="material-icons">reply</i>Voltar</button>
           </div> -->
         </mat-tab>
-        <mat-tab label="Sub Grupo de Trabalho">
+        <mat-tab label="Sub Grupo de Trabalho" *ngIf="tipo=='subGrupoTrabalho' || !id">
           <br />
           <form form [formGroup]="formSub">
             <div>
@@ -172,7 +172,7 @@
               <tr *ngFor="let item of membros;let i= index">
                 <td>{{ i+1}}</td>
                 <td>{{ item.nomeCompleto}}</td>
-                <td>{{ item.tipoNome}}</td>
+                <td>{{ item.tipo=='L'?'Líder':item.tipo=='C'?'Co-Líder':'Membro'}}</td>
                 <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemoverMembro(i,item)"><i
                       class="material-icons">delete</i></span></td>
               </tr>

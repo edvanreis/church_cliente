@@ -41,8 +41,9 @@ export class CadastrarGrupoComponent implements OnInit {
   public tipoPessoa: any;
   public id: any;
   public pesquisa: boolean = false;
-  public membroValue:any;
-  public label:any;
+  public membroValue: any;
+  public label: any;
+  public tipo: any;
 
 
   constructor(private _tipoGrupoService: TipoGrupoService,
@@ -59,6 +60,7 @@ export class CadastrarGrupoComponent implements OnInit {
     this._buildFormSub();
     this.carregarTiposGruposTrabalho();
     this.getEmiter();
+    this.getParams();
   }
 
   private _buildForm(): void {
@@ -139,7 +141,7 @@ export class CadastrarGrupoComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor escolha uma membro.!");
       return false;
     }
-    if(!this.tipoPessoa){
+    if (!this.tipoPessoa) {
       this._notifierService.notify(AlertType.Error, "Por favor escola um tipo de pessoa.!");
       return false;
     }
@@ -154,17 +156,17 @@ export class CadastrarGrupoComponent implements OnInit {
   }
 
   salvar() {
-    if(!this.label || this.label=='Grupo de Trabalho'){
-        if(this.id){
+    if (!this.label || this.label == 'Grupo de Trabalho') {
+      if (this.id) {
 
-        }else{
-          this.saveGrupo();
-        }
+      } else {
+        this.saveGrupo();
+      }
     }
-    if(this.label=='Sub Grupo de Trabalho'){
-      if(this.id){
+    if (this.label == 'Sub Grupo de Trabalho') {
+      if (this.id) {
 
-      }else{
+      } else {
         this.saveSubGrupo();
       }
     }
@@ -197,13 +199,13 @@ export class CadastrarGrupoComponent implements OnInit {
 
   }
 
-  
+
 
   setObjGrupo() {
     return {
       nome: this.form.controls['nome'].value,
       descricao: this.form.controls['descricao'].value,
-      igreja: { id: this.igrejaSelecionada.id ,visaoCelular:this.igrejaSelecionada.visaoCelular},
+      igreja: { id: this.igrejaSelecionada.id, visaoCelular: this.igrejaSelecionada.visaoCelular },
       pessoas: this.membros,
       tipo: { id: this.form.controls['tipo'].value },
     }
@@ -214,8 +216,8 @@ export class CadastrarGrupoComponent implements OnInit {
       nome: this.formSub.controls['nome'].value,
       descricao: this.formSub.controls['descricao'].value,
       pessoas: this.membros,
-      grupo:{id:this.grupoSelecionado.id},
-      igreja: { id: this.igrejaSelecionada.id ,visaoCelular:this.igrejaSelecionada.visaoCelular},
+      grupo: { id: this.grupoSelecionado.id },
+      igreja: { id: this.igrejaSelecionada.id, visaoCelular: this.igrejaSelecionada.visaoCelular },
     }
   }
 
@@ -267,7 +269,7 @@ export class CadastrarGrupoComponent implements OnInit {
     return true;
   }
 
- 
+
   voltar() {
     this._router.navigate(['/auth/grupo/pesquisar'], {
       queryParams: {
@@ -282,12 +284,66 @@ export class CadastrarGrupoComponent implements OnInit {
   }
 
   onTabChanged(event) {
-    console.log(event.tab.textLabel);
+    // console.log(event.tab.textLabel);
     this.label = event.tab.textLabel;
-    if(event){
+    if (event) {
       this.membros = [];
       this.membroValue = "";
       this.tipoPessoa = null;
     }
+  }
+
+  getParams() {
+    if (this._avRoute.snapshot.queryParamMap.get("id")) {
+      this.id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.tipo = this._avRoute.snapshot.queryParamMap.get("tipo");
+      if (this.tipo && this.tipo == 'grupoTrabalho') {
+        this.getGrupo(this.id);
+      } else {
+        this.getSubGrupo(this.id);
+      }
+    }
+  }
+
+  getGrupo(id) {
+    this._serviceGruop.getGrupo(id).pipe(take(1)).subscribe(item => {
+      console.log(item);
+      this.form.controls['nome'].patchValue(item.nome);
+      this.form.controls['descricao'].patchValue(item.descricao);
+      if (item.tipo) {
+        this.form.controls['tipo'].patchValue(item.tipo.id);
+      }
+      if (item.pessoas) {
+        this.membros = item.pessoas;
+      }
+
+      if (item.igreja) {
+        this.igrejaSelecionada = item.igreja;
+        this.setEmiterIgreja();
+      }
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  getSubGrupo(id) {
+    this._serviceSubGruop.getSubGrupo(id).pipe(take(1)).subscribe(item => {
+      console.log(item);
+      this.formSub.controls['nome'].patchValue(item.nome);
+      this.formSub.controls['descricao'].patchValue(item.descricao);
+      if (item.pessoas) {
+        this.membros = item.pessoas;
+      }
+      if (item.igreja) {
+        this.igrejaSelecionada = item.igreja;
+        this.setEmiterIgreja();
+      }
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  setEmiterIgreja(): void {
+    this._emitirEventoService.emitir("edit-igreja", this.igrejaSelecionada);
   }
 }

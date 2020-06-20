@@ -9,6 +9,7 @@ import { GrupoService } from '../../../service/grupo.service';
 import { AlertType } from '../../../model/alert-type';
 import { take, startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { DialogAtivarInativarComponent } from '../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
 
 
 const ELEMENT_DATA = [
@@ -59,9 +60,9 @@ export class PesquisarGrupoComponent implements OnInit {
     });
   }
 
-  
+
   carregarGrupos(id) {
-    this._serviceGruop.getGruposByIgrejas(id).pipe(take(1)).subscribe(item => {
+    this._serviceGruop.findGruposTrabalhoESubByIgreja(id).pipe(take(1)).subscribe(item => {
       console.log(item);
       this.grupos = item;
       this.filteredGrupos = this.myControl.valueChanges
@@ -107,7 +108,7 @@ export class PesquisarGrupoComponent implements OnInit {
     }
   }
 
-  
+
   exportAsXLSX() {
     let dados = [];
     this.grupos.forEach(i => {
@@ -121,7 +122,7 @@ export class PesquisarGrupoComponent implements OnInit {
     this._excelService.exportAsExcelFile(dados, "pesquisa");
   }
 
-  
+
   getListForStatus(status) {
     this._serviceGruop.getListForStatus(status).pipe(take(1)).subscribe(item => {
       // console.log(item);
@@ -138,7 +139,7 @@ export class PesquisarGrupoComponent implements OnInit {
     });
   }
 
-  
+
   onSelection() {
     if (this.statusSelecionado == 'I') {
       this.form.controls['group'].patchValue(false);
@@ -149,6 +150,29 @@ export class PesquisarGrupoComponent implements OnInit {
       this.getListForStatus(this.statusSelecionado);
     }
   }
- 
+
+  dialogStatus(id, controller) {
+    const dialogRef = this._dialog.open(DialogAtivarInativarComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        controller: controller
+      }
+    });
+  }
+
+
+  editar(id, tipo) {
+   // localStorage.setItem("pesquisar", JSON.stringify(this.statusSelecionado));
+    this._router.navigate(['/auth/grupo/cadastrar'], {
+      queryParams: {
+        janela: 'Editar',
+        id: id,
+        tipo: tipo
+      },
+      skipLocationChange: true
+    });
+  }
+
 
 }

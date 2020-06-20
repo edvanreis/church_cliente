@@ -23,24 +23,26 @@
       </div>
       <div>
         <form form [formGroup]="form">
-          <div [hidden]="check">
+          <div [hidden]="check || igrejas.length == 0">
             <label style="color:#1d68a5">Agrupar por Igreja Sede?</label>
             <mat-slide-toggle id="agrupar" formControlName="group" (change)="changeAgrupar(agrupar.checked)" #agrupar>
               {{agrupar.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
           </div>
         </form>
       </div>
-      <div>
+      <div *ngIf="igrejas.lenght > 0">
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input placeholder="Filtrar" aria-label="Number" matInput [formControl]="myControl">
         </mat-form-field>
       </div>
+      <br />
       <div class="table-responsive" *ngIf="agrupar.checked" style="overflow: auto; height: 300px;">
         <table>
           <thead class="text-primary">
             <th>SEDE</th>
             <th>Nome</th>
             <th>CNPJ</th>
+            <th>Idade</th>
             <th>CEP</th>
             <th>Bairro</th>
             <th>logradouro</th>
@@ -53,42 +55,45 @@
               <td>Sim</td>
               <td>{{i.nome}}</td>
               <td>{{i.cnpj | cpfCnpj }}</td>
+              <td>{{i.idade}}</td>
               <td>{{i.endereco.cep}}</td>
               <td>{{i.endereco.bairro}}</td>
               <td>{{i.endereco.logradouro}}</td>
               <td>{{i.endereco.localidade}}</td>
               <td>{{i.endereco.uf}}</td>
-              <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(i.id,'sede')"><i
+              <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(i.id)"><i
                     class="material-icons">create</i></span>
-                <span title="Excluir" style="cursor: pointer;color:white" (click)="dialogStatus(i.id,'sede')"><i
+                <span title="Excluir" style="cursor: pointer;color:white" (click)="dialogStatus(i.id)"><i
                     class="material-icons">settings</i></span>
               </td>
             </tr>
 
-            <tr *ngFor="let f of i.filial">
+            <tr *ngFor="let f of i.filiais">
               <td>Não</td>
               <td>{{f.nome}}</td>
               <td>{{f.cnpj | cpfCnpj }}</td>
+              <td>{{f.idade}}</td>
               <td>{{f.endereco.cep}}</td>
               <td>{{f.endereco.bairro}}</td>
               <td>{{f.endereco.logradouro}}</td>
               <td>{{f.endereco.localidade}}</td>
               <td>{{f.endereco.uf}}</td>
-              <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(f.id,'filial')"><i
+              <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(f.id)"><i
                     class="material-icons">create</i></span>
-                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(f.id,'filial')"><i
+                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(f.id)"><i
                     class="material-icons">settings</i></span>
               </td>
             </tr>
           </tbody>
         </table>
       </div>
-      <div class="table-responsive" *ngIf="!agrupar.checked"  style="overflow: auto; height: 300px;">
+      <div class="table-responsive" *ngIf="!agrupar.checked && igrejas.length > 0"  style="overflow: auto; height: 300px;">
         <table>
           <thead class="text-primary">
             <th>SEDE</th>
             <th>Nome</th>
             <th>CNPJ</th>
+            <th>Idade</th>
             <th>CEP</th>
             <th>Bairro</th>
             <th>logradouro</th>
@@ -101,14 +106,15 @@
               <td *ngIf="true">{{i.isSede?'Sim':'Não'}}</td>
               <td>{{i.nome}}</td>
               <td>{{i?.cnpj | cpfCnpj }}</td>
+              <td>{{i.idade}}</td>
               <td>{{i.endereco.cep}}</td>
               <td>{{i.endereco.bairro}}</td>
               <td>{{i.endereco.logradouro}}</td>
               <td>{{i.endereco.localidade}}</td>
               <td>{{i.endereco.uf}}</td>
-              <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(i.id,i.isSede?'sede':'filial')"><i
+              <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(i.id)"><i
                     class="material-icons">create</i></span>
-                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id,i.isSede?'sede':'filial')"><i
+                <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id)"><i
                     class="material-icons">settings</i></span>
               </td>
             </tr>

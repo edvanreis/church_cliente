@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatDialog, DateAdapter } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
@@ -9,6 +9,7 @@ import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { PessoaService } from '../../../service/pessoa.service';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
+import { DatePipe } from '@angular/common';
 
 
 
@@ -30,16 +31,19 @@ export class IgrejaDadosComponent implements OnInit {
   public nomeValue;
   public membro: any;
   public membros = [];
-  @Input() filial: boolean = false;
+  public filial:boolean = false;
   @Input() id;
   @Input() tipoIgreja;
 
   constructor(private _pessoaService: PessoaService,
     private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _dateAdapter: DateAdapter<Date>,
+    private _datePipe: DatePipe) { }
 
   ngOnInit() {
+    this._dateAdapter.setLocale("br");
     this._buildForm();
     this.carregarComboMembro();
     this.getEmiter();
@@ -50,6 +54,8 @@ export class IgrejaDadosComponent implements OnInit {
       'nome': new FormControl('', Validators.required),
       'cnpj': new FormControl('', Validators.required),
       'visaoCelular': new FormControl(false),
+      'radio': new FormControl('1'),
+      'dataAbertura': new FormControl('',Validators.required),
     });
   }
   carregarComboMembro() {
@@ -91,8 +97,8 @@ export class IgrejaDadosComponent implements OnInit {
         this.membros = [];
       }
       if (item.type == 'edit-dadosIgreja') {
-        if (item.data.pessoas) {
-          // console.log(item.data)
+        if (item.data) {
+          console.log(item.data)
           for (let i = 0; i < item.data.pessoas.length; i++) {
             let pessoa = {} as any;
             pessoa.idIgreja = item.data.id;
@@ -105,6 +111,14 @@ export class IgrejaDadosComponent implements OnInit {
         this.form.controls['nome'].patchValue(item.data.nome);
         this.form.controls['cnpj'].patchValue(item.data.cnpj);
         this.form.controls['visaoCelular'].patchValue(item.data.visaoCelular);
+        this.form.controls['dataAbertura'].patchValue(new Date(item.data.dataAberturaToDate));
+        if(item.data.sede){
+          this.form.controls['radio'].patchValue('2');
+          this.filial = true;
+        }else{
+          this.form.controls['radio'].patchValue('1');
+          this.filial = false;
+        }
       }
       if (item.type == 'confirm-dialog-pessoa-sede' || item.type == 'confirm-dialog-pessoa-filial') {
         this.membros.splice(item.data, 1);
@@ -119,6 +133,7 @@ export class IgrejaDadosComponent implements OnInit {
     igreja.cnpj = HelperChurch.retirarFormatacaoCNPJ(this.form.controls['cnpj'].value);
     igreja.pessoas = this.membros;
     igreja.visaoCelular = this.form.controls['visaoCelular'].value;
+    igreja.dataAbertura = this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy');
     return igreja;
   }
 
@@ -154,6 +169,20 @@ export class IgrejaDadosComponent implements OnInit {
         item:i
       }
     });
+  }
+
+  changeRadio(){
+    console.log(this.form.controls['radio'].value);
+    if(this.form.controls['radio'].value=='2'){
+      this.filial = true;
+    }else{
+      this.filial = false;
+    }
+    this.setEmiterRadio(this.filial);
+  }
+
+  setEmiterRadio(filial): void {
+    this._emitirEventoService.emitir("dadosIgrejaRadio", filial);
   }
 
 }

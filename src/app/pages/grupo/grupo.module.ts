@@ -9,6 +9,7 @@ import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatT
 import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
 import { PipeModule } from '../../pipes/pipe.module';
+import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarGrupoComponent , data: { animation: 'buttons' }},
@@ -34,10 +35,11 @@ const routes: Routes = [
     MatAutocompleteModule,
     PipeModule,
     MatSlideToggleModule,
+    DialogAtivarInativarModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
-    PesquisarGrupoComponent, 
+    PesquisarGrupoComponent,
     CadastrarGrupoComponent]
 })
 export class GrupoModule { }

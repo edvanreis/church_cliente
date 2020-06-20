@@ -9,9 +9,23 @@
         <mat-error *ngIf="!form.controls.cnpj.valid">Campo Obrigatório</mat-error>
       </mat-form-field>
     </div>
-    <div class="full-width-field" fxLayoutGap="20px" [hidden]="filial">
-      <label style="color:#1d68a5">Visão Célular?</label>
-      <mat-slide-toggle formControlName="visaoCelular" id="visaoCelular"  (change)="change()" #visaoCelular>{{visaoCelular.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+    <div class="full-width-field" fxLayoutGap="20px" fxLayout.lt-sm="column"  >
+      <mat-radio-group  formControlName="radio" (change)="changeRadio()" >
+        <mat-radio-button   value="1" >Sede</mat-radio-button>
+        <mat-radio-button   value="2" >Filial</mat-radio-button>
+      </mat-radio-group>
+      <label style="color:#1d68a5"  *ngIf="!filial">Visão Célular?</label>
+      <mat-slide-toggle *ngIf="!filial" formControlName="visaoCelular" id="visaoCelular"  (change)="change()" #visaoCelular>{{visaoCelular.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+    </div>
+    <br />
+    <div class="full-width-field" >
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Data de Abertura" formControlName="dataAbertura"
+        (dateChange)="change()"  required readonly>
+        <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
     </div>
     <br/>
     <br/>

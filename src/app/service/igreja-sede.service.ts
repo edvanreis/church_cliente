@@ -14,7 +14,7 @@ export class IgrejaSedeService implements AbstractService {
   constructor(public http: HttpClient) { }
 
   getList() {
-    return this.http.get(this._url+"list")
+    return this.http.get(this._url+"listSede")
       .pipe(map((response: any) => response))
   }
 

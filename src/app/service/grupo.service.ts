@@ -29,7 +29,7 @@ export class GrupoService {
   }
 
   getGrupo(id) {
-    return this.http.get(this._url+id+"/obterGrupo")
+    return this.http.get(this._url+id+"/getGrupoTrabalho")
       .pipe(map((response: any) => response))
   }
 
@@ -37,6 +37,12 @@ export class GrupoService {
     return this.http.get(this._url+id+"/gruposByIgrejas")
       .pipe(map((response: any) => response))
   }
+
+  findGruposTrabalhoESubByIgreja(id) {
+    return this.http.get(this._url+id+"/gruposSubByIgrejas")
+      .pipe(map((response: any) => response))
+  }
+
 
   getGruposByIgrejasGroupBy(id) {
     return this.http.get(this._url+id+"/gruposByIgrejasGrupoby")
@@ -52,7 +58,6 @@ export class GrupoService {
     return this.http.get(this._url+status+"/grupoPorStatus")
       .pipe(map((response: any) => response))
   }
-
 
 
 }

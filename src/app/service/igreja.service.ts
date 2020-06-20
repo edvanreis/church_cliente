@@ -34,7 +34,32 @@ export class IgrejaService {
   }
 
   getList() {
-    return this.http.get(this._url+"list")
+    return this.http.get(this._url+"listIgrejas")
+      .pipe(map((response: any) => response))
+  }
+
+  save(igreja) {
+    return this.http.post(this._url, igreja)
+      .pipe(map((response: any) => response))
+  }
+
+  getSede(id) {
+    return this.http.get(this._url+id+"/obterIgreja")
+      .pipe(map((response: any) => response))
+  }
+
+  update(igreja) {
+    return this.http.put(this._url, igreja)
+      .pipe(map((response: any) => response))
+  }
+
+  remove(id) {
+    return this.http.delete(this._url+id)
+      .pipe(map((response: any) => response))
+  }
+
+  getListGroup() {
+    return this.http.get(this._url+"listSede")
       .pipe(map((response: any) => response))
   }
 }

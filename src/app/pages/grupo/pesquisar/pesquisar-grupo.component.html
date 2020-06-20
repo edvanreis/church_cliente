@@ -51,9 +51,9 @@
             <td>{{g.nome}}</td>
             <td>{{g.lider}}</td>
             <td>{{g.tipo?.nome}}</td>
-            <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(i.id,'sede')"><i
+            <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(g.id,'grupoTrabalho')"><i
                   class="material-icons">create</i></span>
-              <span title="Inativar" style="cursor: pointer;color:white" (click)="dialogStatus(i.id,'sede')"><i
+              <span title="Inativar" style="cursor: pointer;color:white" (click)="dialogStatus(g.id,'grupoTrabalho')"><i
                   class="material-icons">settings</i></span>
             </td>
           </tr>
@@ -63,9 +63,9 @@
             <td>{{s.nome}}</td>
             <td>{{s.lider}}</td>
             <td>{{g.tipo?.nome}}</td>
-            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(f.id,'filial')"><i
+            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(s.id,'subGrupoTrabalho')"><i
                   class="material-icons">create</i></span>
-              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(f.id,'filial')"><i
+              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(s.id,'subGrupoTrabalho')"><i
                   class="material-icons">settings</i></span>
             </td>
           </tr>
@@ -87,9 +87,9 @@
             <td>{{item.nome}}</td>
             <td>{{item.lider}}</td>
             <td>{{item.tipo?.nome}}</td>
-            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(i.id,i.isSede?'sede':'filial')"><i
+            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(item.id,!item.isSubGrupo?'grupoTrabalho':'subGrupoTrabalho')"><i
                   class="material-icons">create</i></span>
-              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id,i.isSede?'sede':'filial')"><i
+              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(item.id,!item.isSubGrupo?'grupoTrabalho':'subGrupoTrabalho')"><i
                   class="material-icons">settings</i></span>
             </td>
           </tr>

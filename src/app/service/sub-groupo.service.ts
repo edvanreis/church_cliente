@@ -27,4 +27,9 @@ export class SubGrupoService {
     return this.http.put(this._url, grupo)
       .pipe(map((response: any) => response))
   }
+
+  getSubGrupo(id) {
+    return this.http.get(this._url+id+"/getSubGrupoTrabalho")
+      .pipe(map((response: any) => response))
+  }
 }

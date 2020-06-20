@@ -34,6 +34,7 @@ export class PesquisarIgrejaComponent implements OnInit {
   public form: FormGroup;
   public check: boolean = false;
 
+
   constructor(private _igrejaService: IgrejaService,
     private _sedeService: IgrejaSedeService,
     private _notifierService: NotifierService,
@@ -57,9 +58,9 @@ export class PesquisarIgrejaComponent implements OnInit {
   }
 
   getListGroup() {
-    this._sedeService.getList().pipe(take(1)).subscribe(item => {
+    this._igrejaService.getListGroup().pipe(take(1)).subscribe(item => {
       this.igrejas = item;
-      // console.log(item);
+      console.log(item);
       this.filteredIgrejas = this.myControl.valueChanges
         .pipe(
           startWith(''),
@@ -102,12 +103,12 @@ export class PesquisarIgrejaComponent implements OnInit {
   }
 
 
-  dialogStatus(id, controller) {
+  dialogStatus(id) {
     const dialogRef = this._dialog.open(DialogAtivarInativarComponent, {
       width: '600px',
       data: {
         id: id,
-        controller: controller
+        controller: "igreja"
       }
     });
   }
