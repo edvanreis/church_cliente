@@ -5,8 +5,6 @@
       <h1 class="mat-headline center-align">Igreja</h1>
     </mat-toolbar>
     <div class="cdk-container">
-      <!-- <mat-tab-group> -->
-        <!-- <mat-tab label="Sede" *ngIf="tipoIgreja=='sede' || !id"> -->
           <br />
           <app-igreja-dados [id]="id"></app-igreja-dados>
           <br />
@@ -46,54 +44,6 @@
             <button mat-raised-button color="warn" type="submit" (click)="voltar()">
               <i class="material-icons">reply</i>Voltar</button>
           </div>
-        <!-- </mat-tab> -->
-        <!-- <mat-tab label="Filial" *ngIf="tipoIgreja=='filial' || !id">
-          <app-igreja-dados [filial]="true" [tipoIgreja]="tipoIgreja"></app-igreja-dados>
-          <br/>
-          <br/>
-          <mat-divider></mat-divider>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
-            <i class="material-icons">markunread_mailbox</i>
-            <h1 class="mat-subheading-2 center-align">Igreja Sede</h1>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field class="full-width-field">
-              <input type="text" placeholder="Igreja Sede" aria-label="Number" matInput [formControl]="myControlIgrejaSede"
-                [matAutocomplete]="auto" [(ngModel)]="nomeValue">
-              <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let option of filteredIgrejaSede | async" [value]="option.nome"
-                  (onSelectionChange)="onSelectionChangedIgreja($event,option)">
-                  {{option.nome}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </div>
-          <br />
-          <br />
-          <mat-divider></mat-divider>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
-            <i class="material-icons">store_mall_directory</i>
-            <h1 class="mat-subheading-2 center-align">Endereço</h1>
-          </div>
-          <app-endereco [sizeLimitOne]="sizeLimitOne"></app-endereco>
-          <br />
-          <br />
-          <mat-divider></mat-divider>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
-            <i class="material-icons">headset_mic</i>
-            <h1 class="mat-subheading-2 center-align">Contatos</h1>
-          </div>
-          <app-contatos></app-contatos>
-          <br /><br />
-          <div>
-            <button mat-raised-button color="primary" type="submit" (click)="salvarFilial()">
-              <i class="material-icons">save</i>Salvar</button>
-            <div fxFlex></div>
-            <button mat-raised-button color="warn" type="submit" (click)="voltar()">
-              <i class="material-icons">reply</i>Voltar</button>
-          </div>
-        </mat-tab> -->
-      <!-- </mat-tab-group> -->
     </div>
   </div>
 </div>

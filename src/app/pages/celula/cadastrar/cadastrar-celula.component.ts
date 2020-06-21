@@ -28,7 +28,7 @@ export class CadastrarCelulaComponent implements OnInit {
   public comboTurno = [];
   public comboTipoCelula = [];
   public observacao: string;
-  public endereco: any;
+  public enderecos = [];
   public membro: any;
   public membros: any = [];
   public comboTipoPessoa = [];
@@ -75,7 +75,7 @@ export class CadastrarCelulaComponent implements OnInit {
         this.carregarMembro( this.redeSelecionada.id)
       }
       if (item.type == 'endereco') {
-        this.endereco = item.data;
+        this.enderecos = item.data;
       }
       if (item.type == 'membro-comp') {
         this.membro = item.data;
@@ -130,6 +130,9 @@ export class CadastrarCelulaComponent implements OnInit {
   }
 
   salvar() {
+    if(!this.validFields()){
+      return;
+    }
     if (this.id) {
       this.update();
     } else {
@@ -146,7 +149,7 @@ export class CadastrarCelulaComponent implements OnInit {
       turno: this.form.controls['turno'].value,
       tipoCelula: this.form.controls['tipo'].value,
       rede: {id:this.redeSelecionada.id},
-      enderecos: this.endereco,
+      enderecos: this.enderecos,
       observacao: this.observacao,
       pessoas: this.membros
     }
@@ -173,13 +176,6 @@ export class CadastrarCelulaComponent implements OnInit {
     this.membros.push(this.membro);
   }
 
-  clear() {
-    this.form.reset();
-    this._emitirEventoService.emitir("clear", "");
-    this.membros = [];
-    this.observacao = null;
-
-  }
 
   voltar() {
     this._router.navigate(['/auth/celula/pesquisar'], {
@@ -243,7 +239,7 @@ export class CadastrarCelulaComponent implements OnInit {
   }
 
   emitirEnderecos(item): void {
-    this.endereco = item;
+    this.enderecos = item;
     this._emitirEventoService.emitir('edit-endereco', item);
   }
 
@@ -251,7 +247,7 @@ export class CadastrarCelulaComponent implements OnInit {
   save() {
     console.log(this.obj());
     this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
-      this.clear();
+      this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -303,6 +299,43 @@ export class CadastrarCelulaComponent implements OnInit {
 
   onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
     this.membroSelecionado = option;
+  }
+
+  validFields():boolean{
+    if(!this.form.controls['nome'].value){
+      this._notifierService.notify(AlertType.Error, "Por favor digite o nome da célula!");
+      return false;
+    }
+    if(!this.form.controls['dataAbertura'].value){
+      this._notifierService.notify(AlertType.Error, "Por favor selecione a Data de Abertura!");
+      return false;
+    }
+    if(!this.form.controls['diaSemana'].value){
+      this._notifierService.notify(AlertType.Error, "Por favor selecione o Dia da semana!");
+      return false;
+    }
+    if(!this.form.controls['turno'].value){
+      this._notifierService.notify(AlertType.Error, "Por favor selecione um turno!");
+      return false;
+    }
+    if(!this.form.controls['tipo'].value){
+      this._notifierService.notify(AlertType.Error, "Por favor selecione um Tipo de Célula!");
+      return false;
+    }
+
+    if(!this.redeSelecionada){
+      this._notifierService.notify(AlertType.Error, "Por favor selecione uma Rede!");
+      return false;
+    }
+    if(this.enderecos.length == 0 ){
+      this._notifierService.notify(AlertType.Error, "Por favor Adicione um endereço!");
+      return false;
+    }
+    if(this.membros.length == 0 ){
+      this._notifierService.notify(AlertType.Error, "Por favor Adicione a liderença da célula!");
+      return false;
+    }
+    return true;
   }
 
 }

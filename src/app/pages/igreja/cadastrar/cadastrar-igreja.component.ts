@@ -34,6 +34,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   public tipoIgreja: any;
   public sizeLimitOne: boolean = true;
   public filial: boolean = false;
+  public pesquisa: boolean = false;
 
   constructor(private _emitirEventoService: EmitirEventoService,
     private _service: IgrejaService,
@@ -107,7 +108,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   getParams() {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
-      this.tipoIgreja = this._avRoute.snapshot.queryParamMap.get("tipo");
+      this.pesquisa = true;
       this.getIgreja(this.id);
     }
   }
@@ -163,7 +164,7 @@ export class CadastrarIgrejaComponent implements OnInit {
   voltar() {
     this._router.navigate(['/auth/igreja/pesquisar'], {
       queryParams: {
-        //janela: 'Novo',
+        pesquisa: this.pesquisa
       },
       skipLocationChange: true
     });

@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DateAdapter, MatDialog, MatAutocompleteSelectedEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
@@ -45,7 +45,7 @@ export class CadastrarRedeComponent implements OnInit {
     private _igejaService: IgrejaService,
     private _dateAdapter: DateAdapter<Date>,
     private _dialog: MatDialog,
-    private _pessoaService:PessoaService) { }
+    private _pessoaService: PessoaService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -57,10 +57,10 @@ export class CadastrarRedeComponent implements OnInit {
 
   private _buildForm(): void {
     this.form = new FormGroup({
-      'nome': new FormControl(''),
-      'dataAbertura': new FormControl(''),
-      'descricao': new FormControl(''),
-      'redes': new FormControl(''),
+      'nome': new FormControl('',Validators.required),
+      'dataAbertura': new FormControl('',Validators.required),
+      'descricao': new FormControl('',Validators.required),
+      'redes': new FormControl('',Validators.required),
     });
   }
 
@@ -96,14 +96,12 @@ export class CadastrarRedeComponent implements OnInit {
       return false;
     }
     this.membros.push(this.membroSelecionado);
-    this.setEmiter();
   }
 
 
   save() {
     // console.log(this.obj());
     this._service.save(this.obj()).pipe(take(1)).subscribe(item => {
-      this.clean();
       this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
@@ -126,16 +124,16 @@ export class CadastrarRedeComponent implements OnInit {
     this._emitirEventoService.emitir("clear", "");
   }
 
-  clean() {
-    this.form.controls['nome'].patchValue('');
-    this.form.controls['redes'].patchValue('');
-    this.form.controls['descricao'].patchValue('');
-    this.form.controls['dataAbertura'].patchValue('');
-    this.igrejaSelecionada = "";
-    this.membros = [];
-    this.setEmiter();
+  // clean() {
+  //   this.form.controls['nome'].patchValue('');
+  //   this.form.controls['redes'].patchValue('');
+  //   this.form.controls['descricao'].patchValue('');
+  //   this.form.controls['dataAbertura'].patchValue('');
+  //   this.igrejaSelecionada = "";
+  //   this.membros = [];
+  //   this.setEmiter();
 
-  }
+  // }
 
   getParams() {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
@@ -151,7 +149,6 @@ export class CadastrarRedeComponent implements OnInit {
       this.form.controls['descricao'].patchValue(item.descricao);
       this.form.controls['redes'].patchValue(item.rede);
       this.form.controls['dataAbertura'].patchValue(new Date(item.dataAbertutaToDate));
-      this.form.controls['descricao'].patchValue(item.descricao);
       this.getIgreja(item.idIgreja)
       this.carregarPessoas(item.pessoas);
     }, error => {
@@ -196,6 +193,9 @@ export class CadastrarRedeComponent implements OnInit {
   }
 
   salvar() {
+    if (!this.validFields()) {
+      return;
+    }
     if (this.id) {
       this.update();
     } else {
@@ -215,19 +215,19 @@ export class CadastrarRedeComponent implements OnInit {
     });
   }
 
-  dialogRemover(i,item) {
+  dialogRemover(i, item) {
     const dialogRef = this._dialog.open(DialogConfirmPessoaComponent, {
       width: '600px',
       data: {
         id: Number.parseInt(this.id),
         idPessoa: item.id,
         controller: "rede",
-        item:i
+        item: i
       }
     });
   }
 
-  
+
   carregarMembro(id) {
     this._pessoaService.getMembroIgreja(id).pipe(take(1)).subscribe(item => {
       // console.log(item);
@@ -249,6 +249,34 @@ export class CadastrarRedeComponent implements OnInit {
 
   onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
     this.membroSelecionado = option;
+  }
+
+  validFields(): boolean {
+    if (!this.form.controls['nome'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor Informe o nome da Rede!");
+      return false;
+    }
+    if (!this.form.controls['dataAbertura'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor Informe a Data de Abertura!");
+      return false;
+    }
+    if (!this.form.controls['descricao'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor Informe uma descrição!");
+      return false;
+    }
+    if (!this.form.controls['redes'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor Informe uma tipo de rede!");
+      return false;
+    }
+    if (!this.igrejaSelecionada) {
+      this._notifierService.notify(AlertType.Error, "Por favor Informe uma Igreja!");
+      return false;
+    }
+    if (this.membros.length == 0) {
+      this._notifierService.notify(AlertType.Error, "Por adicione os lideres!");
+      return false;
+    }
+    return true;
   }
 
 }

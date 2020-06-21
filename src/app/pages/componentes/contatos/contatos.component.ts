@@ -75,7 +75,7 @@ export class ContatosComponent implements OnInit {
   }
 
   tipo(event) {
-    console.log(event.value);
+    // console.log(event.value);
     this.tipoSelected = event.value;
     if (event.value.nome == 'CELULAR' || event.value.nome == 'CELULAR DO TRABALHO') {
       this.isCelular = true;

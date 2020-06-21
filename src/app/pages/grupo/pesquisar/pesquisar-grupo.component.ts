@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatAutocompleteSelectedEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
@@ -10,6 +10,8 @@ import { AlertType } from '../../../model/alert-type';
 import { take, startWith, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { DialogAtivarInativarComponent } from '../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
+import { IgrejaService } from '../../../service/igreja.service';
+import { HelperChurch } from '../../../helper/helper.church';
 
 
 const ELEMENT_DATA = [
@@ -25,25 +27,33 @@ const ELEMENT_DATA = [
 export class PesquisarGrupoComponent implements OnInit {
 
   public comboStatus = ELEMENT_DATA;
-  public statusSelecionado:any;
+  public statusSelecionado: any;
   public form: FormGroup;
   public check: boolean = false;
-  public igrejaSelecionada:any;
+  public igrejaSelecionada: any;
   public grupos = [];
   public filteredGrupos: Observable<string[]>;
   public myControl = new FormControl();
+  public comboIgrejas = [];
+  public filteredIgreja: Observable<string[]>;
+  public myControlIgreja = new FormControl();
+  public igrejaValue: any;
+  public statusValue: any;
 
-  constructor( private _notifierService: NotifierService,
+  constructor(private _notifierService: NotifierService,
     private _router: Router,
     private _dialog: MatDialog,
     private _emitirEventoService: EmitirEventoService,
     private _avRoute: ActivatedRoute,
     private _excelService: ExcelService,
-    private _serviceGruop: GrupoService ) { }
+    private _serviceGruop: GrupoService,
+    private _igrejaService: IgrejaService) { }
 
   ngOnInit() {
-   this.getEmiter();
-   this._buildForm();
+    this.carregarIgrejas();
+    this._buildForm();
+    this.getEmiter();
+    this.getParams();
   }
 
   cadastrar() {
@@ -51,32 +61,42 @@ export class PesquisarGrupoComponent implements OnInit {
     this._router.navigate(['/auth/grupo/cadastrar']);
   }
 
-  getEmiter() {
-    this._emitirEventoService.mensagem.subscribe(item => {
-      if (item.type == 'igreja-comp') {
-        this.igrejaSelecionada = item.data;
-        this.carregarGrupos(this.igrejaSelecionada.id);
-      }
-    });
-  }
+  carregarIgrejas() {
 
-
-  carregarGrupos(id) {
-    this._serviceGruop.findGruposTrabalhoESubByIgreja(id).pipe(take(1)).subscribe(item => {
-      console.log(item);
-      this.grupos = item;
-      this.filteredGrupos = this.myControl.valueChanges
+    this._igrejaService.getList().pipe(take(1)).subscribe(item => {
+      this.comboIgrejas = item;
+      // console.log(item);
+      this.filteredIgreja = this.myControlIgreja.valueChanges
         .pipe(
           startWith(''),
-          map(value => this._filter(value))
+          map(value => this._filterIgreja(value, this.comboIgrejas))
         );
     }, error => {
-      this._notifierService.notify(AlertType.Error, "Erro ao carregar os grupos!");
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
     });
   }
 
-  carregarGruposGroupBy(id) {
-    this._serviceGruop.getGruposByIgrejasGroupBy(id).pipe(take(1)).subscribe(item => {
+  private _filterIgreja(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
+    this.igrejaSelecionada = option;
+    this.carregarLista();
+  }
+
+  carregarLista() {
+    this.setObj();
+    if (this.form.controls['group'].value) {
+      this.carregarGruposGroupBy();
+    } else {
+      this.carregarGrupos();
+    }
+  }
+
+  carregarGrupos() {
+    this._serviceGruop.findGruposTrabalhoESubByIgreja(this.setObj()).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.grupos = item;
       this.filteredGrupos = this.myControl.valueChanges
@@ -88,6 +108,36 @@ export class PesquisarGrupoComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar os grupos!");
     });
   }
+
+  carregarGruposGroupBy() {
+    this._serviceGruop.getGruposByIgrejasGroupBy(this.setObj()).pipe(take(1)).subscribe(item => {
+      // console.log(item);
+      this.grupos = item;
+      this.filteredGrupos = this.myControl.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os grupos!");
+    });
+  }
+
+  setObj() {
+    return {
+      status: HelperChurch.isNull(this.statusSelecionado),
+      igreja: this.getIgrejaSelecionada()
+    }
+  }
+
+  getIgrejaSelecionada() {
+    if (!this.igrejaSelecionada) {
+      return null;
+    } else {
+      return { id: this.igrejaSelecionada.id };
+    }
+  }
+
   private _filter(value: string): string[] {
     // console.log(value)
     const filterValue = value.toLowerCase();
@@ -101,10 +151,11 @@ export class PesquisarGrupoComponent implements OnInit {
   }
 
   changeAgrupar(agrupar) {
+    this.setObj();
     if (this.igrejaSelecionada && agrupar) {
-      this.carregarGruposGroupBy(this.igrejaSelecionada.id);
+      this.carregarGruposGroupBy();
     } else {
-      this.carregarGrupos(this.igrejaSelecionada.id);
+      this.carregarGrupos();
     }
   }
 
@@ -113,7 +164,7 @@ export class PesquisarGrupoComponent implements OnInit {
     let dados = [];
     this.grupos.forEach(i => {
       dados.push({
-        "Sub Grupo": i.isSubGrupo?"Sim":"Não",
+        "Sub Grupo": i.isSubGrupo ? "Sim" : "Não",
         "Nome": i.nome,
         "Líder": i.lider,
         "Tipo de Grupo": i.tipo.nome,
@@ -151,28 +202,60 @@ export class PesquisarGrupoComponent implements OnInit {
     }
   }
 
-  dialogStatus(id, controller) {
+  dialogStatus(id) {
     const dialogRef = this._dialog.open(DialogAtivarInativarComponent, {
       width: '600px',
       data: {
         id: id,
-        controller: controller
+        controller: "grupoTrabalho"
       }
     });
   }
 
 
-  editar(id, tipo) {
-   // localStorage.setItem("pesquisar", JSON.stringify(this.statusSelecionado));
+  editar(id) {
+    let obj = {
+      status: this.statusSelecionado,
+      igreja: this.igrejaSelecionada
+    }
+    localStorage.setItem("pesquisar", JSON.stringify(obj));
     this._router.navigate(['/auth/grupo/cadastrar'], {
       queryParams: {
         janela: 'Editar',
         id: id,
-        tipo: tipo
       },
       skipLocationChange: true
     });
   }
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(obj => {
+      if (obj.data == 'status') {
+        this.carregarLista();
+      }
+    });
+  }
 
+  getParams() {
+    // console.log(this._avRoute.snapshot.queryParamMap);
+    if (this._avRoute.snapshot.queryParamMap.get("pesquisar")) {
+      let obj = JSON.parse(localStorage.getItem("pesquisar"));
+      this.igrejaSelecionada = obj.igreja;
+      this.statusSelecionado = obj.status;
+      if (obj && obj.igreja) {
+        if (this.igrejaSelecionada) {
+          this.igrejaValue = this.igrejaSelecionada.nome;
+        }
+      }
+      if (obj && obj.status) {
+        if (this.statusSelecionado) {
+          this.statusValue = this.statusSelecionado.codigo;
+        }
+      }
+
+
+      localStorage.removeItem("pesquisar");
+      this.carregarLista();
+    }
+  }
 
 }

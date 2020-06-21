@@ -10,7 +10,18 @@
           <i class="material-icons">add</i>Novo</button>
       </div>
       <br/>
-      <app-igrejas></app-igrejas>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
+            [matAutocomplete]="auto" [(ngModel)]="igrejaValue" style="width: 100%;">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        </div >
       <div>
         <mat-form-field class="full-width-field">
           <mat-label>Status</mat-label>
@@ -47,25 +58,25 @@
         </thead>
         <tbody *ngFor="let g of filteredGrupos | async">
           <tr style="background-color: #5C6BC0;color: white;">
-            <td>Não</td>
+            <td>{{g.isSubGrupo | boolean : ['Sim', 'Não']}}</td>
             <td>{{g.nome}}</td>
             <td>{{g.lider}}</td>
             <td>{{g.tipo?.nome}}</td>
-            <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(g.id,'grupoTrabalho')"><i
+            <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(g.id)"><i
                   class="material-icons">create</i></span>
-              <span title="Inativar" style="cursor: pointer;color:white" (click)="dialogStatus(g.id,'grupoTrabalho')"><i
+              <span title="Inativar" style="cursor: pointer;color:white" (click)="dialogStatus(g.id)"><i
                   class="material-icons">settings</i></span>
             </td>
           </tr>
 
           <tr *ngFor="let s of g.subGrupos">
-            <td>Não</td>
+            <td>{{s.isSubGrupo | boolean : ['Sim', 'Não']}}</td>
             <td>{{s.nome}}</td>
             <td>{{s.lider}}</td>
             <td>{{g.tipo?.nome}}</td>
-            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(s.id,'subGrupoTrabalho')"><i
+            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(s.id)"><i
                   class="material-icons">create</i></span>
-              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(s.id,'subGrupoTrabalho')"><i
+              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(s.id)"><i
                   class="material-icons">settings</i></span>
             </td>
           </tr>
@@ -83,13 +94,13 @@
         </thead>
         <tbody *ngFor="let item of filteredGrupos | async">
           <tr>
-            <td *ngIf="true">{{item.isSubGrupo | boolean : ['Sim', 'Não']}}</td>
+            <td>{{item.isSubGrupo | boolean : ['Sim', 'Não']}}</td>
             <td>{{item.nome}}</td>
             <td>{{item.lider}}</td>
             <td>{{item.tipo?.nome}}</td>
-            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(item.id,!item.isSubGrupo?'grupoTrabalho':'subGrupoTrabalho')"><i
+            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(item.id)"><i
                   class="material-icons">create</i></span>
-              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(item.id,!item.isSubGrupo?'grupoTrabalho':'subGrupoTrabalho')"><i
+              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(item.id)"><i
                   class="material-icons">settings</i></span>
             </td>
           </tr>

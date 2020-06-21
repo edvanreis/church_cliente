@@ -29,7 +29,7 @@ export class DialogAtualizarEnderecoComponent implements OnInit {
     private _service: EnderecoService) { }
 
   ngOnInit() {
-    console.log(this.data)
+    // console.log(this.data)
     this._buildForm();
     this.tipoEndereco = this.data.tipoEndereco;
     this.comboEstados = this.data.comboEstados;

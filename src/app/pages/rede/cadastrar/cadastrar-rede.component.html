@@ -20,6 +20,7 @@
                 {{item.descRede}}
               </mat-option>
             </mat-select>
+            <mat-error *ngIf="!form.controls.redes.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
           <mat-form-field>
             <input matInput [matDatepicker]="picker"  placeholder="Data de abertura" formControlName="dataAbertura" readonly>

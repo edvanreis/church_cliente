@@ -33,19 +33,19 @@ export class GrupoService {
       .pipe(map((response: any) => response))
   }
 
-  getGruposByIgrejas(id) {
-    return this.http.get(this._url+id+"/gruposByIgrejas")
+  getGruposByIgrejas(obj) {
+    return this.http.post(this._url+"gruposByIgrejas",obj)
       .pipe(map((response: any) => response))
   }
 
-  findGruposTrabalhoESubByIgreja(id) {
-    return this.http.get(this._url+id+"/gruposSubByIgrejas")
+  findGruposTrabalhoESubByIgreja(obj) {
+    return this.http.post(this._url+"gruposSubByIgrejas",obj)
       .pipe(map((response: any) => response))
   }
 
 
-  getGruposByIgrejasGroupBy(id) {
-    return this.http.get(this._url+id+"/gruposByIgrejasGrupoby")
+  getGruposByIgrejasGroupBy(obj) {
+    return this.http.post(this._url+"gruposByIgrejasGrupby",obj)
       .pipe(map((response: any) => response))
   }
 

@@ -48,11 +48,11 @@ export class PesquisarRedeComponent implements OnInit {
       this.getEmiter();
       this.getParams();
     }
-  
+
     applyFilter(value) {
       this.dados.filter = value.trim().toLowerCase();
     }
-  
+
     paginatorEvent(event) {
       this.pageIndex = event.pageIndex;
     }
@@ -61,6 +61,7 @@ export class PesquisarRedeComponent implements OnInit {
       this.columnNames = [
         { id: 'nome', value: 'Nome' },
         { id: 'dataAbertura', value: 'Data Abertura' },
+        { id: 'idade', value: 'Idade' },
         { id: 'nomeIgreja', value: 'Igreja' },
         { id: 'descricao', value: 'Descrição' },
         { id: 'id', value: 'Ação' }
@@ -96,11 +97,11 @@ export class PesquisarRedeComponent implements OnInit {
         this.dados.paginator = this.paginator;
       }, error => {
         this._notifierService.notify(AlertType.Error, error.errors.message);
-  
+
       });
     }
 
-    
+
     getEmiter(): void {
       this._emitirEventoService.mensagem.subscribe(obj => {
         if (obj.data == 'status') {
@@ -109,9 +110,9 @@ export class PesquisarRedeComponent implements OnInit {
       });
     }
 
-  
 
-    
+
+
   exportAsXLSX() {
     let dados = [];
     this.redes.forEach(i => {
@@ -125,7 +126,7 @@ export class PesquisarRedeComponent implements OnInit {
     this._excelService.exportAsExcelFile(dados, "pesquisa");
   }
 
-  
+
   onSelection(){
     // console.log(this.statusSelecionado);
     this.getListForStatus(this.statusSelecionado);

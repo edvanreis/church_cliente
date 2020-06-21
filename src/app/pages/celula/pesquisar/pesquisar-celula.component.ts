@@ -65,6 +65,7 @@ export class PesquisarCelulaComponent implements OnInit {
       { id: 'turno', value: 'Turno' },
       { id: 'horario', value: 'Horário' },
       { id: 'dataAbertura', value: 'Data Abertura' },
+      { id: 'idade', value: 'Idade' },
       { id: 'nomeRede', value: 'Rede' },
       { id: 'tipoCelula', value: 'Tipo Pessoas' },
       { id: 'cep', value: 'CEP' },
@@ -200,6 +201,6 @@ export class PesquisarCelulaComponent implements OnInit {
       // this._notifierService.notify(AlertType.Error, error.errors.message);
 
     });
-   
+
   }
 }

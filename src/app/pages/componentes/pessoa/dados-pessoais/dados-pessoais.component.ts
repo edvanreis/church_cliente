@@ -173,7 +173,7 @@ export class DadosPessoaisComponent implements OnInit {
   }
 
   getObj(dados) {
-    console.log(dados)
+    // console.log(dados)
     this.form.controls['nome'].patchValue(dados.nome);
     this.form.controls['sobrenome'].patchValue(dados.sobreNome);
     this.form.controls['rg'].patchValue(dados.rg);

@@ -170,7 +170,6 @@ export class EnderecoComponent implements OnInit {
         this.enderecos = [];
       }
       if (item.type == 'edit-endereco') {
-        console.log(item.type)
         for (let i = 0; i < item.data.length; i++) {
           let endereco = {} as any;
           endereco.codigo = i + 1;
@@ -250,7 +249,7 @@ export class EnderecoComponent implements OnInit {
   }
 
   dialogRemover(i, item) {
-    console.log(item)
+    // console.log(item)
     const dialogRef = this._dialog.open(DialogConfirmComponent, {
       width: '600px',
       data: {

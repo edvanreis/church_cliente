@@ -42,6 +42,7 @@
             <th>SEDE</th>
             <th>Nome</th>
             <th>CNPJ</th>
+            <th>Data Abertura</th>
             <th>Idade</th>
             <th>CEP</th>
             <th>Bairro</th>
@@ -55,6 +56,7 @@
               <td>Sim</td>
               <td>{{i.nome}}</td>
               <td>{{i.cnpj | cpfCnpj }}</td>
+              <td>{{i.dataAbertura}}</td>
               <td>{{i.idade}}</td>
               <td>{{i.endereco.cep}}</td>
               <td>{{i.endereco.bairro}}</td>
@@ -72,6 +74,7 @@
               <td>Não</td>
               <td>{{f.nome}}</td>
               <td>{{f.cnpj | cpfCnpj }}</td>
+              <td>{{f.dataAbertura}}</td>
               <td>{{f.idade}}</td>
               <td>{{f.endereco.cep}}</td>
               <td>{{f.endereco.bairro}}</td>
@@ -93,6 +96,7 @@
             <th>SEDE</th>
             <th>Nome</th>
             <th>CNPJ</th>
+            <th>Data Abertura</th>
             <th>Idade</th>
             <th>CEP</th>
             <th>Bairro</th>
@@ -106,6 +110,7 @@
               <td *ngIf="true">{{i.isSede?'Sim':'Não'}}</td>
               <td>{{i.nome}}</td>
               <td>{{i?.cnpj | cpfCnpj }}</td>
+              <td>{{i.dataAbertura}}</td>
               <td>{{i.idade}}</td>
               <td>{{i.endereco.cep}}</td>
               <td>{{i.endereco.bairro}}</td>
