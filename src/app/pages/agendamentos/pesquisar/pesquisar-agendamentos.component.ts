@@ -7,8 +7,12 @@ import { Moment } from 'moment';
 import * as _moment from 'moment';
 import { DatePipe } from '@angular/common';
 import { AgendamentoService } from '../../../service/agendamento.service';
-import { take } from 'rxjs/operators';
-import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
+import { MatSort, MatTableDataSource, MatPaginator, MatAutocompleteSelectedEvent } from '@angular/material';
+import { IgrejaService } from '../../../service/igreja.service';
+import { Observable } from 'rxjs';
+import { take, startWith, map } from 'rxjs/operators';
+import { NotifierService } from 'angular-notifier';
+import { AlertType } from '../../../model/alert-type';
 
 const moment = _moment;
 export const MY_FORMATS = {
@@ -49,14 +53,26 @@ export class PesquisarAgendamentosComponent implements OnInit {
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
   public dias = new Array();
+  public myControl = new FormControl();
+  public comboIgrejas = [];
+  public filteredIgreja: Observable<string[]>;
+  public myControlIgreja = new FormControl();
+  public igrejaValue: any;
+  public statusValue: any;
+  public igrejaSelecionada: any;
+  public competenciaSelecionada:any;
+
 
   constructor(private _dateAdapter: DateAdapter<Date>,
     private _datePipe: DatePipe,
-    private _service: AgendamentoService) { }
+    private _service: AgendamentoService,
+    private _igrejaService: IgrejaService,
+    private _notifierService: NotifierService) { }
 
   ngOnInit() {
     this._buildForm();
     this.columns();
+    this.carregarIgrejas()
   }
 
   private _buildForm(): void {
@@ -76,13 +92,12 @@ export class PesquisarAgendamentosComponent implements OnInit {
     ctrlValue.month(normalizedMonth.month());
     this.date.setValue(ctrlValue);
     datepicker.close();
-    console.log(this._datePipe.transform(this.date.value, 'MM/yyyy'));
+    this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
   }
 
 
-  getDias(mesAno) {
-    mesAno = '01/'+mesAno;
-    this._service.getDias(mesAno).pipe(take(1)).subscribe(item => {
+  getDias(obj) {
+    this._service.getDias(obj).pipe(take(1)).subscribe(item => {
       // console.log(item)
       this.dias = item;
       this.dados = new MatTableDataSource(item);
@@ -98,11 +113,42 @@ export class PesquisarAgendamentosComponent implements OnInit {
 
   columns() {
     this.columnNames = [
-      { id: 'data', value: 'Data' },
+      { id: 'dataAgendamento', value: 'Data' },
       { id: 'agendamento', value: 'agendamento' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
   }
+
+  carregarIgrejas() {
+
+    this._igrejaService.getList().pipe(take(1)).subscribe(item => {
+      this.comboIgrejas = item;
+      // console.log(item);
+      this.filteredIgreja = this.myControlIgreja.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterIgreja(value, this.comboIgrejas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
+    });
+  }
+
+  private _filterIgreja(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
+    this.igrejaSelecionada = option;
+    let obj = {
+      dataAgendamento:"01/"+this.competenciaSelecionada,
+
+    }
+    console.log(obj)
+    this.getDias(obj);
+  }
+
 
 }

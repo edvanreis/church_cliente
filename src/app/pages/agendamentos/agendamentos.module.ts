@@ -5,7 +5,7 @@ import { PesquisarAgendamentosComponent } from './pesquisar/pesquisar-agendament
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Routes, RouterModule } from '@angular/router';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatTableModule, MatPaginatorModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatTableModule, MatPaginatorModule, MatAutocompleteModule } from '@angular/material';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
 
@@ -26,6 +26,7 @@ const routes: Routes = [
     MatDatepickerModule,
     MatTableModule,
     MatPaginatorModule,
+    MatAutocompleteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

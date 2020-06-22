@@ -6,21 +6,29 @@
     </mat-toolbar>
     <div class="cdk-container">
       <br />
-        <div class="full-width-field" style="padding: 0 20px;">
-          <mat-form-field>
-            <mat-label>Mês e Ano</mat-label>
-            <input matInput [matDatepicker]="dp" [formControl]="date">
-            <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-            <mat-datepicker #dp
-                            startView="multi-year"
-                            (yearSelected)="chosenYearHandler($event)"
-                            (monthSelected)="chosenMonthHandler($event, dp)"
-                            panelClass="example-month-picker">
-            </mat-datepicker>
-          </mat-form-field>
-        </div>
-      <!-- </form> -->
-      <div  style="padding: 0 20px;">
+      <div style="padding: 0 20px;">
+        <mat-form-field class="full-width-field">
+          <mat-label>Mês e Ano</mat-label>
+          <input matInput [matDatepicker]="dp" [formControl]="date">
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+          </mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div style="padding: 0 20px;">
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
+            [matAutocomplete]="auto" [(ngModel)]="igrejaValue" style="width: 100%;">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div style="padding: 0 20px;">
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
         </mat-form-field>
@@ -31,9 +39,11 @@
           <mat-cell *matCellDef="let element">
             <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
             <span title="Editar" *ngIf="column.id=='id'" class="default-botoes" (click)="editar(element.id)"><i
-                class="material-icons">create</i></span>
-            <span title="Mudar Status da Célula" *ngIf="column.id=='id'" class="default-botoes" (click)="status(element.id)"><i
-                class="material-icons">settings</i></span>
+                class="material-icons">add_circle</i></span>
+            <span title="Mudar Status da Célula" *ngIf="column.id=='id'" class="default-botoes"
+              (click)="status(element.id)"><i class="material-icons">create</i></span>
+            <span title="Mudar Status da Célula" *ngIf="column.id=='id'" class="default-botoes"
+              (click)="status(element.id)"><i class="material-icons">delete</i></span>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
