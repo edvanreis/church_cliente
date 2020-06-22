@@ -48,7 +48,7 @@ export class SidemenuComponent implements OnInit {
         ]
       },
       {'name': 'Agendamentos','icon': 'calendar_today','link': false,'open': false,'visible': true,'sub': [
-            {'name': 'Pesquisar','link': 'agendamentos/cadastrar','icon': 'search','chip': false,'open': false,'visible': true}]
+            {'name': 'Pesquisar','link': 'agendamentos/pesquisar','icon': 'date_range','chip': false,'open': false,'visible': true}]
       },
       {'name': 'Lição','icon': 'school','link': false,'open': false,'visible': true,'sub': [
         {'name': 'Pesquisar','link': 'licao/pesquisar','icon': 'search','chip': false,'open': false,'visible': true}]

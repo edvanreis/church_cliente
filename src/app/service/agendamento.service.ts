@@ -4,13 +4,13 @@ import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
 import { map } from 'rxjs/operators';
 
+
 @Injectable({
   providedIn: 'root'
 })
-export class IgrejaFilialService implements AbstractService {
+export class AgendamentoService implements AbstractService {
 
-
-  private _url = environment.url + "filial/";
+  private _url = environment.url + "agendamento/";
 
   constructor(public http: HttpClient) { }
 
@@ -19,19 +19,14 @@ export class IgrejaFilialService implements AbstractService {
       .pipe(map((response: any) => response))
   }
 
-  save(igreja) {
-    return this.http.post(this._url, igreja)
-      .pipe(map((response: any) => response))
-  }
-
-  getFilial(id) {
-    return this.http.get(this._url+id+"/obterFilial")
+  save(agendamento) {
+    return this.http.post(this._url, agendamento)
       .pipe(map((response: any) => response))
   }
 
 
-  update(igreja) {
-    return this.http.put(this._url, igreja)
+  update(agendamento) {
+    return this.http.put(this._url, agendamento)
       .pipe(map((response: any) => response))
   }
 
@@ -39,5 +34,12 @@ export class IgrejaFilialService implements AbstractService {
     return this.http.delete(this._url+id)
       .pipe(map((response: any) => response))
   }
+
+
+  getDias(dias) {
+    return this.http.post(this._url+"getDias",dias)
+      .pipe(map((response: any) => response))
+  }
+
 
 }

@@ -9,7 +9,6 @@ import { Observable } from 'rxjs';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material';
 import { DialogAtivarInativarComponent } from '../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
-import { IgrejaSedeService } from '../../../service/igreja-sede.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { ExcelService } from '../../../service/excel.service';
 
@@ -36,7 +35,6 @@ export class PesquisarIgrejaComponent implements OnInit {
 
 
   constructor(private _igrejaService: IgrejaService,
-    private _sedeService: IgrejaSedeService,
     private _notifierService: NotifierService,
     private _router: Router,
     private _dialog: MatDialog,

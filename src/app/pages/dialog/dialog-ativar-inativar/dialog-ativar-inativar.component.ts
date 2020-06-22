@@ -108,7 +108,7 @@ export class DialogAtivarInativarComponent implements OnInit {
         return 'Deseja Realmente Ativar este Membro?';
       case 'igreja':
         return 'Deseja Realmente Ativar esta Igreja?';
-        case 'grupo':
+        case 'grupoTrabalho':
         return 'Deseja Realmente Ativar este Grupo?';
       default:
         break;
@@ -123,7 +123,7 @@ export class DialogAtivarInativarComponent implements OnInit {
         return 'Deseja Realmente Inativar este Membro?';
       case 'igreja':
         return 'Deseja Realmente Inativar esta Igreja?';
-        case 'grupo':
+        case 'grupoTrabalho':
           return 'Deseja Realmente Ativar este Grupo?';
       default:
         break;

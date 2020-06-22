@@ -25,7 +25,7 @@
       <div>
         <mat-form-field class="full-width-field">
           <mat-label>Status</mat-label>
-          <mat-select [(ngModel)]="statusSelecionado" id="status">
+          <mat-select [(ngModel)]="statusValue" id="status">
             <mat-option *ngFor="let item of comboStatus" [value]="item.codigo" (click)="onSelection()">
               {{item.value}}
             </mat-option>

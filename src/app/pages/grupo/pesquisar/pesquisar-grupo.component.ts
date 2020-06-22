@@ -96,7 +96,7 @@ export class PesquisarGrupoComponent implements OnInit {
   }
 
   carregarGrupos() {
-    this._serviceGruop.findGruposTrabalhoESubByIgreja(this.setObj()).pipe(take(1)).subscribe(item => {
+    this._serviceGruop.getGruposByIgrejas(this.setObj()).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.grupos = item;
       this.filteredGrupos = this.myControl.valueChanges
@@ -110,7 +110,7 @@ export class PesquisarGrupoComponent implements OnInit {
   }
 
   carregarGruposGroupBy() {
-    this._serviceGruop.getGruposByIgrejasGroupBy(this.setObj()).pipe(take(1)).subscribe(item => {
+    this._serviceGruop.findGruposTrabalhoESubByIgreja(this.setObj()).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.grupos = item;
       this.filteredGrupos = this.myControl.valueChanges
