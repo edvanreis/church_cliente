@@ -5,9 +5,11 @@ import { PesquisarAgendamentosComponent } from './pesquisar/pesquisar-agendament
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { Routes, RouterModule } from '@angular/router';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatTableModule, MatPaginatorModule, MatAutocompleteModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatTableModule, MatPaginatorModule, MatAutocompleteModule, MatExpansionModule, MatCardModule } from '@angular/material';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
+import { PipeModule } from '../../pipes/pipe.module';
+import { TextMaskModule } from 'angular2-text-mask';
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarAgendamentosComponent , data: { animation: 'buttons' }},
@@ -27,6 +29,10 @@ const routes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     MatAutocompleteModule,
+    PipeModule,
+    MatExpansionModule,
+    MatCardModule,
+    TextMaskModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

@@ -9,7 +9,7 @@
       <div style="padding: 0 20px;">
         <mat-form-field class="full-width-field">
           <mat-label>Mês e Ano</mat-label>
-          <input matInput [matDatepicker]="dp" [formControl]="date">
+          <input matInput [matDatepicker]="dp" [formControl]="date" readonly required>
           <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
           <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
             (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
@@ -28,29 +28,33 @@
           </mat-autocomplete>
         </mat-form-field>
       </div>
-      <div style="padding: 0 20px;">
-        <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
-          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
-        </mat-form-field>
-      </div>
-      <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;">
-        <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
-          <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
-          <mat-cell *matCellDef="let element">
-            <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
-            <span title="Editar" *ngIf="column.id=='id'" class="default-botoes" (click)="editar(element.id)"><i
-                class="material-icons">add_circle</i></span>
-            <span title="Mudar Status da Célula" *ngIf="column.id=='id'" class="default-botoes"
-              (click)="status(element.id)"><i class="material-icons">create</i></span>
-            <span title="Mudar Status da Célula" *ngIf="column.id=='id'" class="default-botoes"
-              (click)="status(element.id)"><i class="material-icons">delete</i></span>
-          </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-      </mat-table>
-      <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
-        showFirstLastButtons></mat-paginator>
+      <mat-card *ngIf="agendamentos.length > 0" style="overflow: auto; height: 500px;padding: 0 20px;">
+        <mat-card-header>
+          <br />
+          <mat-card-title style="color:#1d68a5;"><b>Agenda</b></mat-card-title>
+          <mat-card-subtitle style="color:#1d68a5;"><i class="col-md material-icons ">wysiwyg</i></mat-card-subtitle>
+        </mat-card-header>
+        <div *ngFor="let group of agendamentos | groupBy:'dataAgendamento'" >
+          <mat-expansion-panel>
+            <mat-expansion-panel-header  [ngStyle]="{'background-color':naoExisteAgendamento(group)?'#d9f2d9':''}">
+              <span style="font-size: 12px;"><b>{{group?.key}}</b></span>
+              <span class="default-botoes" style="text-align: right; float: right;" (click)="cadastrar(group.key)">
+                <i class="col-md material-icons ">add_circle</i>
+              </span>
+              <span class="default-botoes" style="text-align: right; float: right;" *ngIf="!naoExisteAgendamento(group)">
+                <i class="col-md material-icons ">create</i>
+              </span>
+              <span class="default-botoes" style="text-align: right; float: right;" *ngIf="!naoExisteAgendamento(group)">
+                <i class="col-md material-icons ">delete</i>
+              </span>
+            </mat-expansion-panel-header>
+            <br />
+            <div *ngFor="let item of group.value">
+              <span>{{ item.horaInicio }}</span><span>{{ item.horaFim }}</span>
+            </div>
+          </mat-expansion-panel>
+        </div>
+    </mat-card>
     </div>
   </div>
 </div>

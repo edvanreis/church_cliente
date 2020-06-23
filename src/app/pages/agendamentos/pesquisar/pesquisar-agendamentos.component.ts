@@ -13,6 +13,8 @@ import { Observable } from 'rxjs';
 import { take, startWith, map } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
+import { Router, ActivatedRoute } from '@angular/router';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
 
 const moment = _moment;
 export const MY_FORMATS = {
@@ -46,13 +48,9 @@ export class PesquisarAgendamentosComponent implements OnInit {
   public form: FormGroup;
   public date = new FormControl(moment().locale('pt-br'));
   public mesAno:any;
-  @ViewChild(MatSort) sort: MatSort;
-  public displayedColumns: string[] = [];
-  public columnNames;
-  public dados = new MatTableDataSource();
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
-  public dias = new Array();
+  public agendamentos = new Array();
   public myControl = new FormControl();
   public comboIgrejas = [];
   public filteredIgreja: Observable<string[]>;
@@ -67,12 +65,15 @@ export class PesquisarAgendamentosComponent implements OnInit {
     private _datePipe: DatePipe,
     private _service: AgendamentoService,
     private _igrejaService: IgrejaService,
-    private _notifierService: NotifierService) { }
+    private _notifierService: NotifierService,
+    private _router: Router,
+    private _avRoute: ActivatedRoute,
+    private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this._buildForm();
-    this.columns();
-    this.carregarIgrejas()
+    this.carregarIgrejas();
+    this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
   }
 
   private _buildForm(): void {
@@ -83,8 +84,10 @@ export class PesquisarAgendamentosComponent implements OnInit {
 
   chosenYearHandler(normalizedYear: Moment) {
     const ctrlValue = this.date.value;
-    ctrlValue.year(normalizedYear.year());
-    this.date.setValue(ctrlValue);
+    if(ctrlValue){
+      ctrlValue.year(normalizedYear.year());
+      this.date.setValue(ctrlValue);
+    }
   }
 
   chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
@@ -93,32 +96,26 @@ export class PesquisarAgendamentosComponent implements OnInit {
     this.date.setValue(ctrlValue);
     datepicker.close();
     this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
+    this.getDias();
   }
 
 
-  getDias(obj) {
+  getDias() {
+    let obj = {
+      dataAgendamento:"01/"+this.competenciaSelecionada,
+      igreja:{id:this.igrejaSelecionada.id}
+    }
     this._service.getDias(obj).pipe(take(1)).subscribe(item => {
       // console.log(item)
-      this.dias = item;
-      this.dados = new MatTableDataSource(item);
-      this.dados.sort = this.sort;
-      this.dados.paginator = this.paginator;
+      this.agendamentos = item;
     }, error => {
       console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
+      this._notifierService.notify(AlertType.Error, error.errors.message);
 
     });
   }
 
 
-  columns() {
-    this.columnNames = [
-      { id: 'dataAgendamento', value: 'Data' },
-      { id: 'agendamento', value: 'agendamento' },
-      { id: 'id', value: 'Ação' }
-    ];
-    this.displayedColumns = this.columnNames.map(x => x.id);
-  }
 
   carregarIgrejas() {
 
@@ -142,13 +139,27 @@ export class PesquisarAgendamentosComponent implements OnInit {
 
   onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
-    let obj = {
-      dataAgendamento:"01/"+this.competenciaSelecionada,
-
-    }
-    console.log(obj)
-    this.getDias(obj);
+    this.getDias();
   }
 
+naoExisteAgendamento(e):boolean{
+  let array = [];
+  e.value.forEach(element => {
+    if(element.id){
+      array.push(element);
+    }
+  });
+  return array.length == 0;
+}
+
+cadastrar(data) {
+  this._router.navigate(['/auth/agendamentos/cadastrar'], {
+    queryParams: {
+      igreja: this.igrejaSelecionada,
+      data:data
+    },
+    skipLocationChange: true
+  });
+}
 
 }
