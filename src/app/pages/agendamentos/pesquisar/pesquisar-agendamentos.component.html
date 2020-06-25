@@ -6,7 +6,7 @@
     </mat-toolbar>
     <div class="cdk-container">
       <br />
-      <div style="padding: 0 20px;">
+      <div>
         <mat-form-field class="full-width-field">
           <mat-label>Mês e Ano</mat-label>
           <input matInput [matDatepicker]="dp" [formControl]="date" readonly required>
@@ -16,7 +16,7 @@
           </mat-datepicker>
         </mat-form-field>
       </div>
-      <div style="padding: 0 20px;">
+      <div>
         <mat-form-field class="full-width-field">
           <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
             [matAutocomplete]="auto" [(ngModel)]="igrejaValue" style="width: 100%;">
@@ -28,6 +28,11 @@
           </mat-autocomplete>
         </mat-form-field>
       </div>
+      <div *ngIf="agendamentos.length > 0">
+        <button mat-raised-button color="primary" type="submit" (click)="cadastrar()">
+          <i class="material-icons">add_circle</i>Criar Agendamento</button>
+      </div>
+      <br />
       <mat-card *ngIf="agendamentos.length > 0" style="overflow: auto; height: 500px;padding: 0 20px;">
         <mat-card-header>
           <br />
@@ -38,9 +43,9 @@
           <mat-expansion-panel>
             <mat-expansion-panel-header  [ngStyle]="{'background-color':naoExisteAgendamento(group)?'#d9f2d9':''}">
               <span style="font-size: 12px;"><b>{{group?.key}}</b></span>
-              <span class="default-botoes" style="text-align: right; float: right;" (click)="cadastrar(group.key)">
+              <!-- <span class="default-botoes" style="text-align: right; float: right;" (click)="cadastrar(group.key)">
                 <i class="col-md material-icons ">add_circle</i>
-              </span>
+              </span> -->
               <span class="default-botoes" style="text-align: right; float: right;" *ngIf="!naoExisteAgendamento(group)">
                 <i class="col-md material-icons ">create</i>
               </span>

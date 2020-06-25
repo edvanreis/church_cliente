@@ -1,15 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { RouterModule, Routes } from '@angular/router';
+import { TextMaskModule } from 'angular2-text-mask';
+import { PipeModule } from '../../pipes/pipe.module';
+import { InterceptorService } from '../../service/interceptor.service';
 import { CadastrarAgendamentosComponent } from './cadastrar/cadastrar-agendamentos.component';
 import { PesquisarAgendamentosComponent } from './pesquisar/pesquisar-agendamentos.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import { Routes, RouterModule } from '@angular/router';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatTableModule, MatPaginatorModule, MatAutocompleteModule, MatExpansionModule, MatCardModule } from '@angular/material';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { InterceptorService } from '../../service/interceptor.service';
-import { PipeModule } from '../../pipes/pipe.module';
-import { TextMaskModule } from 'angular2-text-mask';
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarAgendamentosComponent , data: { animation: 'buttons' }},
@@ -33,6 +33,9 @@ const routes: Routes = [
     MatExpansionModule,
     MatCardModule,
     TextMaskModule,
+    MatCheckboxModule,
+    MatDividerModule,
+    MatProgressSpinnerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

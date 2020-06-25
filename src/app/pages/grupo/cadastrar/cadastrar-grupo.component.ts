@@ -124,7 +124,7 @@ export class CadastrarGrupoComponent implements OnInit {
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
         this.carregarMembro(this.igrejaSelecionada.id);
-        this.carregarGrupos({id:this.igrejaSelecionada.id});
+        this.carregarGrupos({igreja:{id:this.igrejaSelecionada.id}});
       }
     });
   }

@@ -61,6 +61,7 @@ export class PesquisarAgendamentosComponent implements OnInit {
   public competenciaSelecionada:any;
 
 
+
   constructor(private _dateAdapter: DateAdapter<Date>,
     private _datePipe: DatePipe,
     private _service: AgendamentoService,
@@ -155,11 +156,14 @@ naoExisteAgendamento(e):boolean{
 cadastrar(data) {
   this._router.navigate(['/auth/agendamentos/cadastrar'], {
     queryParams: {
-      igreja: this.igrejaSelecionada,
+      igrejaId: this.igrejaSelecionada.id,
       data:data
     },
     skipLocationChange: true
   });
 }
+
+
+
 
 }
