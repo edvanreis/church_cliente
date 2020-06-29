@@ -59,6 +59,7 @@ export class PesquisarAgendamentosComponent implements OnInit {
   public statusValue: any;
   public igrejaSelecionada: any;
   public competenciaSelecionada:any;
+  public competencia:any;
 
 
 
@@ -72,16 +73,11 @@ export class PesquisarAgendamentosComponent implements OnInit {
     private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
-    this._buildForm();
     this.carregarIgrejas();
     this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
+    this.getParams();
   }
 
-  private _buildForm(): void {
-    this.form = new FormGroup({
-      'dataSelecionada': new FormControl('', Validators.required)
-    });
-  }
 
   chosenYearHandler(normalizedYear: Moment) {
     const ctrlValue = this.date.value;
@@ -97,11 +93,11 @@ export class PesquisarAgendamentosComponent implements OnInit {
     this.date.setValue(ctrlValue);
     datepicker.close();
     this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
-    this.getDias();
+    this.getDayList();
   }
 
 
-  getDias() {
+  getDayList() {
     let obj = {
       dataAgendamento:"01/"+this.competenciaSelecionada,
       igreja:{id:this.igrejaSelecionada.id}
@@ -140,30 +136,68 @@ export class PesquisarAgendamentosComponent implements OnInit {
 
   onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
-    this.getDias();
+    this.getDayList();
   }
 
-naoExisteAgendamento(e):boolean{
-  let array = [];
+existeAgendamento(e):boolean{
+  let possui:boolean = false;
+  // console.log(e);
   e.value.forEach(element => {
-    if(element.id){
-      array.push(element);
+    if(element.possuiAgendamento){
+      possui =  true;
     }
   });
-  return array.length == 0;
+  return possui;
 }
 
-cadastrar(data) {
+cadastrar() {
+  localStorage.setItem("pesquisar", JSON.stringify(this.setObj()));
   this._router.navigate(['/auth/agendamentos/cadastrar'], {
     queryParams: {
       igrejaId: this.igrejaSelecionada.id,
-      data:data
     },
     skipLocationChange: true
   });
 }
 
+editar(id) {
+  localStorage.setItem("pesquisar", JSON.stringify(this.setObj()));
+  this._router.navigate(['/auth/agendamentos/cadastrar'], {
+    queryParams: {
+      igrejaId: this.igrejaSelecionada.id,
+      id:id
+    },
+    skipLocationChange: true
+  });
+}
 
+setObj(){
+  return {
+    competenciaSelecionada: this.competenciaSelecionada,
+    igrejaSelecionada:this.igrejaSelecionada
+  }
+}
+
+getParams(): boolean {
+   console.log(this._avRoute.snapshot.queryParamMap);
+  if (this._avRoute.snapshot.queryParamMap.get("pesquisar")) {
+    let obj  = JSON.parse(localStorage.getItem("pesquisar"));
+
+    if(obj.competenciaSelecionada){
+      this.competenciaSelecionada = obj.competenciaSelecionada;
+      // this.date.patchValue(new Date(this.competenciaSelecionada ));
+    }
+    if(obj.igrejaSelecionada){
+      this.igrejaSelecionada = obj.igrejaSelecionada;
+      this.igrejaValue = this.igrejaSelecionada.nome;
+    }
+    localStorage.removeItem("pesquisar");
+    this.getDayList();
+    return true;
+  } else {
+    return false;
+  }
+}
 
 
 }

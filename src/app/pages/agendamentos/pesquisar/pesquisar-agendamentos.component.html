@@ -9,7 +9,7 @@
       <div>
         <mat-form-field class="full-width-field">
           <mat-label>Mês e Ano</mat-label>
-          <input matInput [matDatepicker]="dp" [formControl]="date" readonly required>
+          <input matInput [matDatepicker]="dp" [formControl]="date"  readonly required>
           <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
           <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
             (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
@@ -33,7 +33,7 @@
           <i class="material-icons">add_circle</i>Criar Agendamento</button>
       </div>
       <br />
-      <mat-card *ngIf="agendamentos.length > 0" style="overflow: auto; height: 500px;padding: 0 20px;">
+      <mat-card *ngIf="agendamentos.length > 0" >
         <mat-card-header>
           <br />
           <mat-card-title style="color:#1d68a5;"><b>Agenda</b></mat-card-title>
@@ -41,22 +41,39 @@
         </mat-card-header>
         <div *ngFor="let group of agendamentos | groupBy:'dataAgendamento'" >
           <mat-expansion-panel>
-            <mat-expansion-panel-header  [ngStyle]="{'background-color':naoExisteAgendamento(group)?'#d9f2d9':''}">
+            <mat-expansion-panel-header  [ngStyle]="{'background-color':!existeAgendamento(group)?'#d9f2d9':''}">
               <span style="font-size: 12px;"><b>{{group?.key}}</b></span>
               <!-- <span class="default-botoes" style="text-align: right; float: right;" (click)="cadastrar(group.key)">
                 <i class="col-md material-icons ">add_circle</i>
               </span> -->
-              <span class="default-botoes" style="text-align: right; float: right;" *ngIf="!naoExisteAgendamento(group)">
-                <i class="col-md material-icons ">create</i>
-              </span>
-              <span class="default-botoes" style="text-align: right; float: right;" *ngIf="!naoExisteAgendamento(group)">
-                <i class="col-md material-icons ">delete</i>
-              </span>
             </mat-expansion-panel-header>
             <br />
             <div *ngFor="let item of group.value">
-              <span>{{ item.horaInicio }}</span><span>{{ item.horaFim }}</span>
+            <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngFor="let element of item.agendamentos"
+            [ngStyle]="{'background-color':element.statusAgendamento==='P'?'#ffff80':element.statusAgendamento==='A'?'#349C55':''}">
+
+              <span>{{ element.nome }}</span>
+              <span>{{ element.horaInicio }}</span>
+              <span>{{ element.horaFim }}</span>
+              <span title="{{element.concatPessoas}}" *ngIf="element.concatPessoas">
+                {{(element.concatPessoas.length > 20) ? ((element.concatPessoas).slice(0, 20) + '...') : element.concatPessoas}}</span>
+              <span title="{{element.grupoTrabalho.nome}}" *ngIf="element.grupoTrabalho">
+                {{(element.grupoTrabalho.nome.length > 20) ? ((element.grupoTrabalho.nome).slice(0, 20) + '...') : element.grupoTrabalho.nome}}
+              </span>
+              <span title="Aprovar" style="color:green; cursor: pointer; text-align: right; float: right;" *ngIf="element.id">
+                <i class="col-md material-icons ">done</i>
+              </span>
+              <span title="Reprovar"  style="color:red; cursor: pointer; text-align: right; float: right;" *ngIf="element.id">
+                <i class="col-md material-icons ">not_interested</i>
+              </span>
+              <span title="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id" (click)="editar(element.id)">
+                <i class="col-md material-icons ">create</i>
+              </span>
+              <span title="Excluir" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id">
+                <i class="col-md material-icons ">delete</i>
+              </span>
             </div>
+          </div>
           </mat-expansion-panel>
         </div>
     </mat-card>

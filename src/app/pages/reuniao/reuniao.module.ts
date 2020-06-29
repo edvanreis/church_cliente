@@ -19,6 +19,8 @@ import { CadastrarReuniaoCelulaComponent } from './cadastrar-reuniao-celula/cada
 
 
 
+
+
 const routes: Routes = [
   { path: 'pesquisar-reuniao-celula', component:  PesquisarReuniaoCelulaComponent , data: { animation: 'buttons' }},
   { path: 'cadastrar-reuniao-celula', component:  CadastrarReuniaoCelulaComponent , data: { animation: 'buttons' }},

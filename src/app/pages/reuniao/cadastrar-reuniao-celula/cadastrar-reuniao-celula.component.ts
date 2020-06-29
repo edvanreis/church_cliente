@@ -24,7 +24,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
   public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/]
   public form: FormGroup;
-  public formTow: FormGroup;
+  public formTwo: FormGroup;
   public celulaSelecionada: any;
   public membrosLideres = [];
   public membros = [];
@@ -99,7 +99,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   }
 
   private _buildFormTow(): void {
-    this.formTow = new FormGroup({
+    this.formTwo = new FormGroup({
       'realizado': new FormControl(true),
     });
   }
@@ -459,7 +459,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
       this.emitirLicao(item.licao);
       this.getCelula(item.celula.id);
       if(item.enderecos){
-        this.formTow.controls['realizado'].patchValue(true);
+        this.formTwo.controls['realizado'].patchValue(true);
         this.emitirEndereco(item.enderecos);
       }
 

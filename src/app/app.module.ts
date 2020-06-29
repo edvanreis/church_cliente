@@ -19,10 +19,19 @@ import { ReuniaoModule } from './pages/reuniao/reuniao.module';
 import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
 import { InterceptorService } from './service/interceptor.service';
 import { RelatoriosModule } from './pages/relatorios/relatorios.module';
+import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
 
 
 
-
+export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
+  align: "right",
+  allowNegative: true,
+  decimal: ",",
+  precision: 2,
+  prefix: "",
+  suffix: "",
+  thousands: "."
+};
 
 
 
@@ -51,9 +60,14 @@ import { RelatoriosModule } from './pages/relatorios/relatorios.module';
     LicaoModule,
     ReuniaoModule,
     JustificarModule,
-    RelatoriosModule
+    RelatoriosModule,
+    CurrencyMaskModule
   ],
-  providers: [{ provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },DatePipe],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
+    { provide: CURRENCY_MASK_CONFIG, useValue: CustomCurrencyMaskConfig },
+    DatePipe
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

@@ -21,6 +21,7 @@ import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confi
 export class CadastrarAgendamentosComponent implements OnInit {
 
   public form: FormGroup;
+  public formTwo: FormGroup;
   public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/];
   public id: any;
   public igrejaId: any;
@@ -34,7 +35,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
   public myControlMembro = new FormControl();
   public membroSelecionado: any;
   public membros = [];
-  public processado:boolean= false;
+  public processado: boolean = false;
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = [];
   public columnNames;
@@ -43,6 +44,10 @@ export class CadastrarAgendamentosComponent implements OnInit {
   public pageIndex: number = 0;
   public agendamentos = new Array();
   public loading: boolean = false;
+  public isEditar: boolean = false;
+  public grupoValue: any;
+  public sizeLimitOne: boolean = true;
+  public enderecos = [];
 
   constructor(private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
@@ -60,7 +65,8 @@ export class CadastrarAgendamentosComponent implements OnInit {
     this._buildForm();
     this.getParams();
     this.columns();
-    this. getEmiter();
+    this.getEmiter();
+    this._buildFormTow();
   }
 
   private _buildForm(): void {
@@ -72,6 +78,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
       'dataInicio': new FormControl('', Validators.required),
       'dataFim': new FormControl(''),
       'qtdDias': new FormControl(''),
+      'dataAgendamento': new FormControl('', Validators.required),
     });
   }
 
@@ -91,6 +98,9 @@ export class CadastrarAgendamentosComponent implements OnInit {
     console.log(this._avRoute.snapshot.queryParamMap)
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.isEditar = true;
+      this.getAgendamanto(this.id);
+
     }
     if (this._avRoute.snapshot.queryParamMap.get("igrejaId")) {
       this.igrejaId = this._avRoute.snapshot.queryParamMap.get("igrejaId");
@@ -111,8 +121,8 @@ export class CadastrarAgendamentosComponent implements OnInit {
     });
   }
 
-  calcularDias(){
-    if(!this.form.controls['dataInicio'].value){
+  calcularDias() {
+    if (!this.form.controls['dataInicio'].value) {
       this._notifierService.notify(AlertType.Error, "Por favor selecione a Data de Inicio do agendamento!");
     }
     let data = this.adicionarDiasData(this.form.controls['qtdDias'].value, this.form.controls['dataInicio'].value);
@@ -120,8 +130,8 @@ export class CadastrarAgendamentosComponent implements OnInit {
   }
 
   adicionarDiasData(dias, dataInicio) {
-      let dataVenc = new Date(dataInicio.getTime() + (dias * 24 * 60 * 60 * 1000)-1);
-      return dataVenc;
+    let dataVenc = new Date(dataInicio.getTime() + (dias * 24 * 60 * 60 * 1000) - 1);
+    return dataVenc;
   }
 
   transformDate(data) {
@@ -129,7 +139,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
   }
 
   carregarGrupos() {
-    this._serviceGruop.getGruposByIgrejas({igreja:{id:this.igrejaId}}).pipe(take(1)).subscribe(item => {
+    this._serviceGruop.getGruposByIgrejas({ igreja: { id: this.igrejaId } }).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboGrupos = item;
       this.filteredGrupos = this.myControlGrupos.valueChanges
@@ -191,8 +201,11 @@ export class CadastrarAgendamentosComponent implements OnInit {
   }
 
   processar() {
+    if (!this.validFieds()) {
+      return;
+    }
     this.loading = true;
-    this._service.processar(this.objProcessar()).pipe(take(1)).subscribe(item => {
+    this._service.processar(this.setObjToProcessar()).pipe(take(1)).subscribe(item => {
       // console.log(item)
       this.agendamentos = item;
       this.dados = new MatTableDataSource(item);
@@ -208,16 +221,48 @@ export class CadastrarAgendamentosComponent implements OnInit {
     });
   }
 
-  objProcessar(){
-    return {
-      dataInicio: this._datePipe.transform(this.form.controls['dataInicio'].value, 'dd/MM/yyyy'),
-      qtdDias:this.form.controls['qtdDias'].value,
-      horaInicio:this.form.controls['horaInicio'].value,
-      horaFim:this.form.controls['horaFim'].value,
-      descricao:this.form.controls['descricao'].value,
-      nome:this.form.controls['nome'].value,
-      igreja:{id:this.igrejaId}
+  setObjToProcessar() {
+    let agendamento = {} as any;
+    agendamento.dataInicio = this._datePipe.transform(this.form.controls['dataInicio'].value, 'dd/MM/yyyy');
+    agendamento.qtdDias = this.form.controls['qtdDias'].value;
+    agendamento.horaInicio =  this.form.controls['horaInicio'].value;
+    agendamento.horaFim =  this.form.controls['horaFim'].value;
+    agendamento.descricao =  this.form.controls['descricao'].value;
+    agendamento.nome =  this.form.controls['nome'].value;
+    agendamento.igreja =  { id: this.igrejaId };
+
+    if (this.membros.length > 0) {
+      agendamento.pessoas = this.membros
     }
+    if (this.grupoSelecionado) {
+      agendamento.grupoTrabalho = { id: this.grupoSelecionado.id }
+    }
+    if (this.enderecos.length > 0) {
+      agendamento.enderecos = this.enderecos
+    }
+    return agendamento;
+  }
+
+  setObjToUpdate() {
+    let agendamento = {} as any;
+    agendamento.dataAgendamento = this._datePipe.transform(this.form.controls['dataAgendamento'].value, 'dd/MM/yyyy');
+      agendamento.horaInicio = this.form.controls['horaInicio'].value;
+      agendamento.horaFim = this.form.controls['horaFim'].value;
+      agendamento.descricao = this.form.controls['descricao'].value;
+      agendamento.nome = this.form.controls['nome'].value;
+      agendamento.igreja = { id: this.igrejaId };
+      agendamento.id = this.id;
+
+    if (this.membros.length > 0) {
+      agendamento.pessoas = this.membros
+    }
+    if (this.grupoSelecionado) {
+      agendamento.grupoTrabalho = { id: this.grupoSelecionado.id }
+    }
+    if (this.enderecos.length > 0) {
+      agendamento.enderecos = this.enderecos
+    }
+    return agendamento;
   }
 
 
@@ -231,7 +276,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
       data: {
         controller: 'agendamento',
         index: i,
-        item:item
+        item: item
       }
     });
   }
@@ -241,8 +286,103 @@ export class CadastrarAgendamentosComponent implements OnInit {
       if (item.type == 'confirm-dialog-agendamento') {
         this.agendamentos.splice(item.data, 1);
         this.dados = new MatTableDataSource<Element>(this.agendamentos);
-
       }
+      if (item.type == 'endereco') {
+        this.enderecos = item.data;
+      }
+    });
+  }
+
+  validFieds(): boolean {
+    if (!this.form.controls['nome'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor digite o nome do agendamento!");
+      return false;
+    }
+    if (!this.form.controls['descricao'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor escreva a descrição do agendamento");
+      return false;
+    }
+    if (!this.form.controls['dataInicio'].value && !this.isEditar) {
+      this._notifierService.notify(AlertType.Error, "Por favor selecione a Data de Inicio do agendamento!");
+      return false;
+    }
+    if (!this.form.controls['dataFim'].value && !this.isEditar) {
+      this._notifierService.notify(AlertType.Error, "Por favor Data fim não pode esta vazia!");
+      return false;
+    }
+    if (!this.form.controls['qtdDias'].value && !this.isEditar) {
+      this._notifierService.notify(AlertType.Error, "Por favor digite a quantidade de dias!");
+      return false;
+    }
+    if (!this.form.controls['dataAgendamento'].value && this.isEditar) {
+      this._notifierService.notify(AlertType.Error, "Por favor selecione a Data do agendamento!");
+      return false;
+    }
+    if (!this.igrejaId) {
+      this._notifierService.notify(AlertType.Error, "A igreja não pode ser null!");
+      return false;
+    }
+
+    if (this.membros.length == 0 && !this.grupoSelecionado) {
+      this._notifierService.notify(AlertType.Error, "Por favor selecione os responsáveis pelo agendamento!");
+      return false;
+    }
+    return true;
+  }
+
+
+  salvar() {
+    this._service.saveListAgendamentos(this.agendamentos).pipe(take(1)).subscribe(item => {
+      this.voltar();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+  update() {
+    if (!this.validFieds()) {
+      return;
+    }
+    this._service.update(this.setObjToUpdate()).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+  getAgendamanto(id) {
+    this._service.getAgendamento(id).pipe(take(1)).subscribe(item => {
+      // console.log(item)
+      this.form.controls['nome'].patchValue(item.nome);
+      this.form.controls['horaInicio'].patchValue(item.horaInicio);
+      this.form.controls['horaFim'].patchValue(item.horaFim);
+      this.form.controls['descricao'].patchValue(item.descricao);
+      this.form.controls['dataAgendamento'].patchValue(new Date(item.dataAgendamentoToDate));
+      if (item.pessoas) {
+        this.membros = item.pessoas;
+      }
+      if (item.grupoTrabalho) {
+        this.grupoSelecionado = item.grupoTrabalho;
+        this.grupoValue = this.grupoSelecionado.nome;
+      }
+      if (item.enderecos && item.enderecos.length > 0) {
+        this.enderecos = item.enderecos;
+        this.formTwo.controls['outro'].patchValue(true);
+        this.emitirEndereco(item.enderecos);
+      }
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  emitirEndereco(item): void {
+    this._emitirEventoService.emitir("edit-endereco", item);
+  }
+
+  private _buildFormTow(): void {
+    this.formTwo = new FormGroup({
+      'outro': new FormControl(false),
     });
   }
 
