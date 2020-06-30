@@ -60,16 +60,16 @@
               <span title="{{element.grupoTrabalho.nome}}" *ngIf="element.grupoTrabalho">
                 {{(element.grupoTrabalho.nome.length > 20) ? ((element.grupoTrabalho.nome).slice(0, 20) + '...') : element.grupoTrabalho.nome}}
               </span>
-              <span title="Aprovar" style="color:green; cursor: pointer; text-align: right; float: right;" (click)="dialogAprovar(element.id)" *ngIf="element.id">
+              <span title="Aprovar" style="color:green; cursor: pointer; text-align: right; float: right;" (click)="dialogAprovar(element.id)" *ngIf="element.id && element.statusAgendamento=='P'">
                 <i class="col-md material-icons ">done</i>
               </span>
-              <span title="Reprovar"  style="color:red; cursor: pointer; text-align: right; float: right;" (click)="dialogReprovar(element.id)" *ngIf="element.id">
+              <span title="Reprovar"  style="color:red; cursor: pointer; text-align: right; float: right;" (click)="dialogReprovar(element.id)" *ngIf="element.id && element.statusAgendamento!='A'">
                 <i class="col-md material-icons ">not_interested</i>
               </span>
-              <span title="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id" (click)="editar(element.id)">
+              <span title="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id && element.statusAgendamento!='A'" (click)="editar(element.id)">
                 <i class="col-md material-icons ">create</i>
               </span>
-              <span title="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id">
+              <span title="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id && element.statusAgendamento!='A'">
                 <i class="col-md material-icons ">delete</i>
               </span>
             </div>
