@@ -1,20 +1,22 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatDialog, MatPaginator } from '@angular/material';
+import { MAT_MOMENT_DATE_ADAPTER_OPTIONS, MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
 import { MatDatepicker } from '@angular/material/datepicker';
-import { Moment } from 'moment';
-import * as _moment from 'moment';
-import { DatePipe } from '@angular/common';
-import { AgendamentoService } from '../../../service/agendamento.service';
-import { MatSort, MatTableDataSource, MatPaginator, MatAutocompleteSelectedEvent } from '@angular/material';
-import { IgrejaService } from '../../../service/igreja.service';
-import { Observable } from 'rxjs';
-import { take, startWith, map } from 'rxjs/operators';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
+import * as _moment from 'moment';
+import { Moment } from 'moment';
+import { Observable } from 'rxjs';
+import { map, startWith, take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
-import { Router, ActivatedRoute } from '@angular/router';
+import { AgendamentoService } from '../../../service/agendamento.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { IgrejaService } from '../../../service/igreja.service';
+import { DialogAprovarReprovarAgendamentoComponent } from '../../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.component';
+import { DialogConfirmAgandamentoComponent } from '../../dialog/dialog-confirm-agandamento/dialog-confirm-agandamento.component';
 
 const moment = _moment;
 export const MY_FORMATS = {
@@ -70,12 +72,14 @@ export class PesquisarAgendamentosComponent implements OnInit {
     private _notifierService: NotifierService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
-    private _emitirEventoService: EmitirEventoService) { }
+    private _emitirEventoService: EmitirEventoService,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this.carregarIgrejas();
     this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
     this.getParams();
+    this.getEmiter();
   }
 
 
@@ -197,6 +201,48 @@ getParams(): boolean {
   } else {
     return false;
   }
+}
+
+dialogAprovar(id) {
+  const dialogRef = this._dialog.open(DialogAprovarReprovarAgendamentoComponent, {
+    width: '600px',
+    data: {
+      id: id,
+      aprovar:true,
+      reprovar:false,
+    }
+  });
+}
+
+dialogReprovar(id) {
+  const dialogRef = this._dialog.open(DialogAprovarReprovarAgendamentoComponent, {
+    width: '600px',
+    data: {
+      id: id,
+      aprovar:false,
+      reprovar:true,
+    }
+  });
+}
+
+dialogRemover(id) {
+  const dialogRef = this._dialog.open(DialogConfirmAgandamentoComponent, {
+    width: '600px',
+    data: {
+      id: id,
+    }
+  });
+}
+
+getEmiter(): void {
+  this._emitirEventoService.mensagem.subscribe(item => {
+    if (item.type == 'dialog-aprovar-reprovar-agendamento') {
+      this.getDayList();
+    }
+      if (item.type == 'confirm-dialog-remover-agendamento') {
+        this.getDayList();
+      }
+  });
 }
 
 

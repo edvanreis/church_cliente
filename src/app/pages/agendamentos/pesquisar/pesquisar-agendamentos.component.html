@@ -41,7 +41,7 @@
         </mat-card-header>
         <div *ngFor="let group of agendamentos | groupBy:'dataAgendamento'" >
           <mat-expansion-panel>
-            <mat-expansion-panel-header  [ngStyle]="{'background-color':!existeAgendamento(group)?'#d9f2d9':''}">
+            <mat-expansion-panel-header  [ngStyle]="{'background-color':!existeAgendamento(group)?'#F2F2F2':''}">
               <span style="font-size: 12px;"><b>{{group?.key}}</b></span>
               <!-- <span class="default-botoes" style="text-align: right; float: right;" (click)="cadastrar(group.key)">
                 <i class="col-md material-icons ">add_circle</i>
@@ -50,7 +50,7 @@
             <br />
             <div *ngFor="let item of group.value">
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngFor="let element of item.agendamentos"
-            [ngStyle]="{'background-color':element.statusAgendamento==='P'?'#ffff80':element.statusAgendamento==='A'?'#349C55':''}">
+            [ngStyle]="{'background-color':element.statusAgendamento==='P'?'#ffff80':element.statusAgendamento==='A'?'#d9f2d9':''}">
 
               <span>{{ element.nome }}</span>
               <span>{{ element.horaInicio }}</span>
@@ -60,16 +60,16 @@
               <span title="{{element.grupoTrabalho.nome}}" *ngIf="element.grupoTrabalho">
                 {{(element.grupoTrabalho.nome.length > 20) ? ((element.grupoTrabalho.nome).slice(0, 20) + '...') : element.grupoTrabalho.nome}}
               </span>
-              <span title="Aprovar" style="color:green; cursor: pointer; text-align: right; float: right;" *ngIf="element.id">
+              <span title="Aprovar" style="color:green; cursor: pointer; text-align: right; float: right;" (click)="dialogAprovar(element.id)" *ngIf="element.id">
                 <i class="col-md material-icons ">done</i>
               </span>
-              <span title="Reprovar"  style="color:red; cursor: pointer; text-align: right; float: right;" *ngIf="element.id">
+              <span title="Reprovar"  style="color:red; cursor: pointer; text-align: right; float: right;" (click)="dialogReprovar(element.id)" *ngIf="element.id">
                 <i class="col-md material-icons ">not_interested</i>
               </span>
               <span title="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id" (click)="editar(element.id)">
                 <i class="col-md material-icons ">create</i>
               </span>
-              <span title="Excluir" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id">
+              <span title="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id">
                 <i class="col-md material-icons ">delete</i>
               </span>
             </div>

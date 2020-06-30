@@ -11,6 +11,10 @@ import { InterceptorService } from '../../service/interceptor.service';
 import { CadastrarAgendamentosComponent } from './cadastrar/cadastrar-agendamentos.component';
 import { PesquisarAgendamentosComponent } from './pesquisar/pesquisar-agendamentos.component';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
+import { DialogAprovarReprovarAgendamentoComponent } from '../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.component';
+import { DialogAprovarReprovarAgendamentoModule } from '../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
+import { DialogConfirmAgandamentoModule } from '../dialog/dialog-confirm-agandamento/dialog-confirm-agandamento.module';
+
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarAgendamentosComponent , data: { animation: 'buttons' }},
@@ -39,6 +43,8 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MatSlideToggleModule,
     EnderecoModule,
+    DialogAprovarReprovarAgendamentoModule,
+    DialogConfirmAgandamentoModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

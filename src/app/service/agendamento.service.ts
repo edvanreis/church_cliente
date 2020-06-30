@@ -56,5 +56,14 @@ export class AgendamentoService implements AbstractService {
       .pipe(map((response: any) => response))
   }
 
+  aprovar(agendamento) {
+    return this.http.post(this._url+"aprovar",agendamento)
+      .pipe(map((response: any) => response))
+  }
+
+  reprovar(agendamento) {
+    return this.http.post(this._url+"reprovar",agendamento)
+      .pipe(map((response: any) => response))
+  }
 
 }
