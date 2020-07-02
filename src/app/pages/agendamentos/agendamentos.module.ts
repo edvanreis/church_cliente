@@ -14,6 +14,7 @@ import { EnderecoModule } from '../componentes/endereco/endereco.module';
 import { DialogAprovarReprovarAgendamentoComponent } from '../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.component';
 import { DialogAprovarReprovarAgendamentoModule } from '../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
 import { DialogConfirmAgandamentoModule } from '../dialog/dialog-confirm-agandamento/dialog-confirm-agandamento.module';
+import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
 
 
 const routes: Routes = [
@@ -45,6 +46,7 @@ const routes: Routes = [
     EnderecoModule,
     DialogAprovarReprovarAgendamentoModule,
     DialogConfirmAgandamentoModule,
+    DialogConfirmPessoaModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

@@ -66,7 +66,7 @@
           </mat-form-field>
         </div>
       </form>
-      <div>
+
         <br />
         <mat-divider></mat-divider>
         <br />
@@ -74,6 +74,19 @@
           <i class="material-icons">class</i>
           <h1 class="mat-subheading-2 center-align">Responsáveis pelo agendamento</h1>
         </div>
+          <div *ngIf="!igrejaId && !isEditar">
+            <mat-form-field class="full-width-field">
+              <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
+                [matAutocomplete]="au"  style="width: 100%;">
+              <mat-autocomplete #au="matAutocomplete">
+                <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
+                  (onSelectionChange)="onSelectionIgrejaChange($event,option)">
+                  {{option.nome}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </div>
+        <div>
         <mat-form-field class="full-width-field">
           <input type="text" aria-label="Number" placeholder="Grupos Trabalho" matInput [formControl]="myControlGrupos"
             [matAutocomplete]="aut" [(ngModel)]="grupoValue" required>
@@ -114,7 +127,7 @@
               <tr *ngFor="let item of membros;let i= index">
                 <td>{{ i+1}}</td>
                 <td>{{ item.nomeCompleto}}</td>
-                <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemoverMembro(i,item)"><i
+                <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemoverPessoa(i,item)"><i
                       class="material-icons">delete</i></span></td>
               </tr>
             </tbody>

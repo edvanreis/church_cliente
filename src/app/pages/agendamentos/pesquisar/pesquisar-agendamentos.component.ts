@@ -158,7 +158,7 @@ cadastrar() {
   localStorage.setItem("pesquisar", JSON.stringify(this.setObj()));
   this._router.navigate(['/auth/agendamentos/cadastrar'], {
     queryParams: {
-      igrejaId: this.igrejaSelecionada.id,
+      igrejaId: this.igrejaSelecionada?this.igrejaSelecionada.id:null,
     },
     skipLocationChange: true
   });
@@ -196,6 +196,9 @@ getParams(): boolean {
       this.igrejaValue = this.igrejaSelecionada.nome;
     }
     localStorage.removeItem("pesquisar");
+    if(!this.igrejaSelecionada){
+      return false;
+    }
     this.getDayList();
     return true;
   } else {

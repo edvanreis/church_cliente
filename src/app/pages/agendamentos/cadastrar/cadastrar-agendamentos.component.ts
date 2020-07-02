@@ -12,6 +12,8 @@ import { take, startWith, map } from 'rxjs/operators';
 import { PessoaService } from '../../../service/pessoa.service';
 import { AgendamentoService } from '../../../service/agendamento.service';
 import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confirm.component';
+import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
+import { IgrejaService } from '../../../service/igreja.service';
 
 @Component({
   selector: 'app-cadastrar-agendamentos',
@@ -48,6 +50,12 @@ export class CadastrarAgendamentosComponent implements OnInit {
   public grupoValue: any;
   public sizeLimitOne: boolean = true;
   public enderecos = [];
+  public comboIgrejas = [];
+  public filteredIgreja: Observable<string[]>;
+  public myControlIgreja = new FormControl();
+  public igrejaValue: any;
+  public igrejaSelecionada: any;
+
 
   constructor(private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
@@ -58,7 +66,8 @@ export class CadastrarAgendamentosComponent implements OnInit {
     private _serviceGruop: GrupoService,
     private _pessoaService: PessoaService,
     private _service: AgendamentoService,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _igrejaService: IgrejaService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -109,6 +118,9 @@ export class CadastrarAgendamentosComponent implements OnInit {
     }
     if (this._avRoute.snapshot.queryParamMap.get("data")) {
       this.data = this._avRoute.snapshot.queryParamMap.get("data");
+    }
+    if (!this.igrejaId) {
+      this.carregarIgrejas();
     }
   }
 
@@ -163,7 +175,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
   }
 
   carregarMembro() {
-    this._pessoaService.getMembroIgreja(this.igrejaId).pipe(take(1)).subscribe(item => {
+    this._pessoaService.getMembroIgreja(this.getIgrejaId()).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges
@@ -216,7 +228,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
     }, error => {
       this.loading = false;
       console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
+      this._notifierService.notify(AlertType.Error, error.error.message);
 
     });
   }
@@ -225,11 +237,11 @@ export class CadastrarAgendamentosComponent implements OnInit {
     let agendamento = {} as any;
     agendamento.dataInicio = this._datePipe.transform(this.form.controls['dataInicio'].value, 'dd/MM/yyyy');
     agendamento.qtdDias = this.form.controls['qtdDias'].value;
-    agendamento.horaInicio =  this.form.controls['horaInicio'].value;
-    agendamento.horaFim =  this.form.controls['horaFim'].value;
-    agendamento.descricao =  this.form.controls['descricao'].value;
-    agendamento.nome =  this.form.controls['nome'].value;
-    agendamento.igreja =  { id: this.igrejaId };
+    agendamento.horaInicio = this.form.controls['horaInicio'].value;
+    agendamento.horaFim = this.form.controls['horaFim'].value;
+    agendamento.descricao = this.form.controls['descricao'].value;
+    agendamento.nome = this.form.controls['nome'].value;
+    agendamento.igreja = { id: this.getIgrejaId() };
 
     if (this.membros.length > 0) {
       agendamento.pessoas = this.membros
@@ -246,12 +258,12 @@ export class CadastrarAgendamentosComponent implements OnInit {
   setObjToUpdate() {
     let agendamento = {} as any;
     agendamento.dataAgendamento = this._datePipe.transform(this.form.controls['dataAgendamento'].value, 'dd/MM/yyyy');
-      agendamento.horaInicio = this.form.controls['horaInicio'].value;
-      agendamento.horaFim = this.form.controls['horaFim'].value;
-      agendamento.descricao = this.form.controls['descricao'].value;
-      agendamento.nome = this.form.controls['nome'].value;
-      agendamento.igreja = { id: this.igrejaId };
-      agendamento.id = this.id;
+    agendamento.horaInicio = this.form.controls['horaInicio'].value;
+    agendamento.horaFim = this.form.controls['horaFim'].value;
+    agendamento.descricao = this.form.controls['descricao'].value;
+    agendamento.nome = this.form.controls['nome'].value;
+    agendamento.igreja = { id: this.igrejaId };
+    agendamento.id = this.id;
 
     if (this.membros.length > 0) {
       agendamento.pessoas = this.membros
@@ -290,6 +302,11 @@ export class CadastrarAgendamentosComponent implements OnInit {
       if (item.type == 'endereco') {
         this.enderecos = item.data;
       }
+      if (item.type == 'confirm-dialog-pessoa-agendamento') {
+        if (this.membros.length > 0) {
+          this.membros.splice(item.data, 1);
+        }
+      }
     });
   }
 
@@ -318,8 +335,8 @@ export class CadastrarAgendamentosComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor selecione a Data do agendamento!");
       return false;
     }
-    if (!this.igrejaId) {
-      this._notifierService.notify(AlertType.Error, "A igreja não pode ser null!");
+    if (!this.igrejaId && !this.igrejaSelecionada) {
+      this._notifierService.notify(AlertType.Error, "Por favor selecone uma igreja!");
       return false;
     }
 
@@ -384,6 +401,51 @@ export class CadastrarAgendamentosComponent implements OnInit {
     this.formTwo = new FormGroup({
       'outro': new FormControl(false),
     });
+  }
+
+  dialogRemoverPessoa(i, item) {
+    const dialogRef = this._dialog.open(DialogConfirmPessoaComponent, {
+      width: '600px',
+      data: {
+        id: Number.parseInt(this.id),
+        idPessoa: item.id,
+        controller: "agendamento",
+        item: i
+      }
+    });
+  }
+
+  carregarIgrejas() {
+
+    this._igrejaService.getList().pipe(take(1)).subscribe(item => {
+      this.comboIgrejas = item;
+      // console.log(item);
+      this.filteredIgreja = this.myControlIgreja.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterIgreja(value, this.comboIgrejas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
+    });
+  }
+
+  private _filterIgreja(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionIgrejaChange($event: MatAutocompleteSelectedEvent, option) {
+    this.igrejaSelecionada = option;
+    this.carregarMembro();
+  }
+
+  getIgrejaId() {
+    if (this.igrejaId) {
+      return this.igrejaId;
+    } else if (this.igrejaSelecionada) {
+      return this.igrejaSelecionada.id
+    }
   }
 
 }
