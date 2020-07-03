@@ -5,6 +5,7 @@ import { DashboardCrmComponent } from './dashboard-crm.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatCardModule } from '@angular/material/card';
 import { DashboardWidgetModule } from '../dashboard-widget/dashboard-widget.module';
+import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
 
 export const appRoutes: Routes = [
     { path: '', component: DashboardCrmComponent },
@@ -16,7 +17,11 @@ export const appRoutes: Routes = [
     RouterModule.forChild(appRoutes),
     FlexLayoutModule,
     MatCardModule,
-    DashboardWidgetModule
+    DashboardWidgetModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatCardModule
   ],
   declarations: [DashboardCrmComponent],
   exports: [ ]
