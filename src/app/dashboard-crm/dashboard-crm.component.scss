@@ -3,7 +3,18 @@ mat-card {
   margin: 5px;
 }
 
-.example-card {
+.max-width-card {
   max-width: 400px;
 }
 
+::ng-deep .mat-card-header {
+  padding: 5px !important;
+}
+
+::ng-deep .mat-card {
+  padding: 0 !important;
+}
+
+::ng-deep .mat-card-content {
+  padding: 5px !important;
+}

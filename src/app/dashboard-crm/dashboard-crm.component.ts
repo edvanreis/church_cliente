@@ -1,9 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { DashboardService } from '../service/dashboard.service';
-import { map, startWith, take } from 'rxjs/operators';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
+import { take } from 'rxjs/operators';
 import { AlertType } from '../model/alert-type';
-import { MatSort, MatTableDataSource, MatPaginator } from '@angular/material';
+import { DialogAprovarReprovarAgendamentoComponent } from '../pages/dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.component';
+import { AgendamentoService } from '../service/agendamento.service';
+import { DashboardService } from '../service/dashboard.service';
+import { DialogConfirmComponent } from '../pages/dialog/dialog-confirm/dialog-confirm.component';
+import { EmitirEventoService } from '../service/emitir-evento.service';
 
 @Component({
   selector: 'app-dashboard-crm',
@@ -26,7 +30,14 @@ export class DashboardCrmComponent implements OnInit {
   public displayedMembrosColumns: string[] = [];
   public columnNamesMembros;
   public dadosMembros = new MatTableDataSource();
-  @ViewChild('paginator') paginatorMembros: MatPaginator;
+  @ViewChild('paginatorMembro') paginatorMembros: MatPaginator;
+
+  public agendamentosPendentes = [];
+  @ViewChild(MatSort) sortAgendamentos: MatSort;
+  public displayedAgendamentosColumns: string[] = [];
+  public columnNamesAgendamntos;
+  public dadosAgendamentos = new MatTableDataSource();
+  @ViewChild('paginatorAgendamento') paginatorAgendamentos: MatPaginator;
 
 
   tableData = [
@@ -39,11 +50,15 @@ export class DashboardCrmComponent implements OnInit {
   ];
 
   constructor(private _service: DashboardService,
-    private _notifierService: NotifierService) { }
+    private _notifierService: NotifierService,
+    private _dialog: MatDialog,
+    private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this.carregarCardsTop();
     this.columnsMembros();
+    this.columnsAgendamentos();
+    this.getEmiter();
   }
 
   carregarCardsTop() {
@@ -51,6 +66,7 @@ export class DashboardCrmComponent implements OnInit {
       console.log(item)
       this.cardsTop(item);
       this.tableMembrosPendentes(item.membrosPendentes);
+      this.tableAgendamentosPendentes(item.agendamentosPendentes);
     }, error => {
       console.log(error)
       this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -60,9 +76,17 @@ export class DashboardCrmComponent implements OnInit {
 
   cardsTop(item){
     this.dashCard = [
-      { colorDark: '#5C6BC0', colorLight: '#7986CB', number: item.totalMembrosAprovados, title: 'Membros Aprovados', icon: 'person' },
-      { colorDark: '#42A5F5', colorLight: '#64B5F6', number: item.totalMembrosPendentes, title: 'Membros Pendentes Aprovação', icon: 'person' },
+      { colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalMembrosPendentes, title: 'Membros Pendentes Aprovação', icon: 'warning' },
+      { colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalAgendamentosPendentes, title: 'Agendamentos Pendentes Aprovação', icon: 'warning' },
+      { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalMembrosAprovados, title: 'Membros', icon: 'person' },
+      { colorDark: '#42A5F5', colorLight: '#64B5F6', number: item.totalIgrejas, title: 'Igrejas', icon: 'location_city' },
+      { colorDark: '#26A69A', colorLight: '#4DB6AC', title: 'Redes', icon: 'device_hub' },
+      { colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalGruposTrabalho, title: 'Grupo de trabalho', icon: 'work' },
+
     ];
+    if(item.totalCelulas > 0 ){
+      this.dashCard.push( { colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalCelulas, title: 'Células', icon: 'group' },)
+    }
   }
 
   tableMembrosPendentes(item){
@@ -72,6 +96,13 @@ export class DashboardCrmComponent implements OnInit {
     this.dadosMembros.paginator = this.paginatorMembros;
   }
 
+  tableAgendamentosPendentes(item){
+    this.agendamentosPendentes = item;
+    this.dadosAgendamentos = new MatTableDataSource(item);
+    this.dadosAgendamentos.sort = this.sortAgendamentos;
+    this.dadosAgendamentos.paginator = this.paginatorAgendamentos;
+  }
+
   columnsMembros() {
     this.columnNamesMembros = [
       { id: 'nome', value: 'Nome' },
@@ -79,4 +110,64 @@ export class DashboardCrmComponent implements OnInit {
     ];
     this.displayedMembrosColumns = this.columnNamesMembros.map(x => x.id);
   }
+
+  columnsAgendamentos() {
+    this.columnNamesAgendamntos = [
+      { id: 'dataAgendamento', value: 'Data Agendamento' },
+      { id: 'nome', value: 'Nome' },
+      { id: 'id', value: 'Ação' }
+    ];
+    this.displayedAgendamentosColumns = this.columnNamesAgendamntos.map(x => x.id);
+  }
+
+  applyFilterMembros(value) {
+    this.dadosMembros.filter = value.trim().toLowerCase();
+  }
+
+  applyFilterAgendamentos(value) {
+    this.dadosAgendamentos.filter = value.trim().toLowerCase();
+  }
+
+  dialogAprovarAgendamento(id) {
+    const dialogRef = this._dialog.open(DialogAprovarReprovarAgendamentoComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        aprovar:true,
+        reprovar:false,
+      }
+    });
+  }
+
+  dialogReprovarAgendamento(id) {
+    const dialogRef = this._dialog.open(DialogAprovarReprovarAgendamentoComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        aprovar:false,
+        reprovar:true,
+      }
+    });
+  }
+
+  dialogAprovarMembro(id) {
+    const dialogRef = this._dialog.open(DialogAprovarReprovarAgendamentoComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        aprovar:true,
+        reprovar:false,
+      }
+    });
+  }
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+
+      if (item.type == 'dialog-aprovar-reprovar-agendamento') {
+        this.carregarCardsTop();
+      }
+    });
+  }
+
+
 }

@@ -1,11 +1,15 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { DashboardCrmComponent } from './dashboard-crm.component';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTableModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
+import { RouterModule, Routes } from '@angular/router';
 import { DashboardWidgetModule } from '../dashboard-widget/dashboard-widget.module';
-import { MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
+import { AgendamentoService } from '../service/agendamento.service';
+import { DashboardCrmComponent } from './dashboard-crm.component';
+import { DialogAprovarReprovarAgendamentoModule } from '../pages/dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
+
 
 export const appRoutes: Routes = [
     { path: '', component: DashboardCrmComponent },
@@ -21,9 +25,20 @@ export const appRoutes: Routes = [
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    MatCardModule
+    MatCardModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    DialogAprovarReprovarAgendamentoModule
   ],
-  declarations: [DashboardCrmComponent],
-  exports: [ ]
+  declarations: [
+    DashboardCrmComponent
+  ],
+  exports: [
+
+   ],
+   providers:[
+     AgendamentoService
+   ]
 })
 export class DashboardCrmModule { }

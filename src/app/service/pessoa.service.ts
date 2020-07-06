@@ -81,7 +81,7 @@ export class PessoaService  implements AbstractService{
     return this.http.get(this._url + id + "/membroCelula")
       .pipe(tap((response: any) => response));
   }
-  
+
 
 
   getVisitanteCelula(id) {
@@ -109,6 +109,15 @@ export class PessoaService  implements AbstractService{
       .pipe(tap((response: any) => response));
   }
 
+  aprovar(id) {
+    return this.http.get(this._url+id+"/aprovar")
+      .pipe(map((response: any) => response))
+  }
+
+  reprovar(pessoa) {
+    return this.http.post(this._url+"reprovar",pessoa)
+      .pipe(map((response: any) => response))
+  }
 
 
 }

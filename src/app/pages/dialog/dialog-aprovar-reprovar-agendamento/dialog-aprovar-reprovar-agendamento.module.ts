@@ -20,6 +20,6 @@ import { DialogAprovarReprovarAgendamentoComponent } from './dialog-aprovar-repr
   ],
   entryComponents:[
     DialogAprovarReprovarAgendamentoComponent
-  ]
+  ],
 })
 export class DialogAprovarReprovarAgendamentoModule { }

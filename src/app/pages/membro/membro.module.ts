@@ -20,6 +20,7 @@ import { DialogEnviarCartaModule } from '../dialog/dialog-enviar-carta/dialog-en
 import { DialogHistoricoPessoaModule } from '../dialog/dialog-historico-pessoa/dialog-historico-pessoa.module';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro.component';
+import { DialogAprovarReprovarAgendamentoModule } from '../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
 
 
 
@@ -61,6 +62,7 @@ const routes: Routes = [
     CargosModule,
     DialogAtivarInativarModule,
     DialogConfirmPessoaModule,
+    DialogAprovarReprovarAgendamentoModule,
     RouterModule.forChild(routes)
   ],
   exports: [

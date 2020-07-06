@@ -1,27 +1,65 @@
 <div fxLayout="row" fxLayout="row wrap">
-    <div *ngFor="let dash of dashCard" fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25">
-        <cdk-dashcard [dashData]="dash"></cdk-dashcard>
-    </div>
+  <div *ngFor="let dash of dashCard" fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25">
+    <cdk-dashcard [dashData]="dash"></cdk-dashcard>
+  </div>
 </div>
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <mat-card class="max-width-card">
+    <mat-card-header [style.backgroundColor]="'#ffff80'">
+      <mat-card-title fxLayout.lt-sm="column" f><i class="col-md material-icons" style="color:#ff8000;">warning</i>Membros</mat-card-title>
+      <mat-card-subtitle>Membros Pendente Aprovação</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
+        <input matInput (keyup)="applyFilterMembros($event.target.value)" placeholder="Filtrar">
+      </mat-form-field>
+      <mat-table #table [dataSource]="dadosMembros" matSort style="margin-top: 20px;">
+        <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNamesMembros">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
+            <span [style.color]="'green'" *ngIf="column.id=='id'"><i class="col-md material-icons ">done</i></span>
+            <span [style.color]="'red'" *ngIf="column.id=='id'"><i
+                class="col-md material-icons ">not_interested</i></span>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedMembrosColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedMembrosColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginatorMembro [length]="dadosMembros.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
+        showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+  </mat-card>
 
-<mat-card class="example-card">
-  <mat-card-title>Membros</mat-card-title>
-  <mat-card-subtitle>Membros Pendente Aprovação</mat-card-subtitle>
-  <mat-card-content>
-    <mat-table #table [dataSource]="dadosMembros" matSort style="margin-top: 20px;">
-      <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNamesMembros">
-        <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
-        <mat-cell *matCellDef="let element">
-          <span>{{element[column.id]}}</span>
-        </mat-cell>
-      </ng-container>
-      <mat-header-row *matHeaderRowDef="displayedMembrosColumns"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: displayedMembrosColumns;"></mat-row>
-    </mat-table>
-    <mat-paginator #paginator [length]="dadosMembros.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
-            showFirstLastButtons></mat-paginator>
-  </mat-card-content>
-</mat-card>
+  <mat-card class="max-width-card">
+    <mat-card-header [style.backgroundColor]="'#ffff80'">
+      <mat-card-title fxLayout.lt-sm="column" f><i style="color:#ff8000;" class="col-md material-icons ">warning</i>Agendamentos</mat-card-title>
+      <mat-card-subtitle>Agendamentos Pendente Aprovação</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
+        <input matInput (keyup)="applyFilterAgendamentos($event.target.value)" placeholder="Filtrar">
+      </mat-form-field>
+      <mat-table #table [dataSource]="dadosAgendamentos" matSort style="margin-top: 20px;">
+        <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNamesAgendamntos">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
+            <span [style.color]="'green'" *ngIf="column.id=='id'" class="default-botoes"
+              (click)="dialogAprovarAgendamento(element.id)" title="Aprovar"><i class="col-md material-icons ">done</i></span>
+            <span [style.color]="'red'" *ngIf="column.id=='id'" class="default-botoes"
+              (click)="dialogReprovarAgendamento(element.id)" title="Reprovar"><i
+                class="col-md material-icons ">not_interested</i></span>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedAgendamentosColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedAgendamentosColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginatorAgendamento [length]="dadosAgendamentos.length" [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>
 
 
 

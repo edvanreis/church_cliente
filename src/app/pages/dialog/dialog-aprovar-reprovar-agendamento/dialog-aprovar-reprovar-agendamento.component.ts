@@ -61,7 +61,7 @@ export class DialogAprovarReprovarAgendamentoComponent implements OnInit {
   }
 
   aprovar(){
-    this._service.aprovar(this.setObj()).pipe(take(1)).subscribe(item => {
+    this._service.aprovar(this.data.id).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
       this.setEmiter();
       this.close();

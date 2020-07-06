@@ -20,7 +20,8 @@ export class SidemenuComponent implements OnInit {
     @Input() iconOnly:boolean = false;
 
     menus: MenuElement[] = [
-      {'name': 'Dashboard','icon': 'dashboard','link': '/auth/dashboard','open': false,'chip': { 'value': 1, 'color': 'accent' }, 'visible': this.userService.hasPermission("")},
+      // {'name': 'Dashboard','icon': 'dashboard','link': '/auth/dashboard','open': false,'chip': { 'value': 1, 'color': 'accent' }, 'visible': this.userService.hasPermission("")},
+      {'name': 'Dashboard','icon': 'dashboard','link': '/auth/dashboard','open': false,'chip': { 'value': 1, 'color': 'accent' }, 'visible': true},
       {'name': 'Visitantes','icon': 'person','link': false,'open': false,'visible': true  , 'sub': [
             {'name': 'Cadastrar','link': 'visitante/cadastrar','icon': 'person_add','chip': false,'open': false,'visible': true  },
             {'name': 'Pesquisar','link': 'visitante/pesquisar','icon': 'search','chip': false,'open': false,'visible': true  },
