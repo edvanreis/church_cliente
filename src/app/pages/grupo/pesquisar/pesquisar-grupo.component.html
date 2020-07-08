@@ -62,9 +62,9 @@
             <td>{{g.nome}}</td>
             <td>{{g.lider}}</td>
             <td>{{g.tipo?.nome}}</td>
-            <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(g.id)"><i
+            <td><span matTooltip="Editar" style="cursor: pointer;color:white" (click)="editar(g.id)"><i
                   class="material-icons">create</i></span>
-              <span title="Inativar" style="cursor: pointer;color:white" (click)="dialogStatus(g.id)"><i
+              <span matTooltip="Inativar" style="cursor: pointer;color:white" (click)="dialogStatus(g.id)"><i
                   class="material-icons">settings</i></span>
             </td>
           </tr>
@@ -74,9 +74,9 @@
             <td>{{s.nome}}</td>
             <td>{{s.lider}}</td>
             <td>{{g.tipo?.nome}}</td>
-            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(s.id)"><i
+            <td><span matTooltip="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(s.id)"><i
                   class="material-icons">create</i></span>
-              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(s.id)"><i
+              <span matTooltip="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(s.id)"><i
                   class="material-icons">settings</i></span>
             </td>
           </tr>
@@ -98,9 +98,9 @@
             <td>{{item.nome}}</td>
             <td>{{item.lider}}</td>
             <td>{{item.tipo?.nome}}</td>
-            <td><span title="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(item.id)"><i
+            <td><span matTooltip="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(item.id)"><i
                   class="material-icons">create</i></span>
-              <span title="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(item.id)"><i
+              <span matTooltip="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(item.id)"><i
                   class="material-icons">settings</i></span>
             </td>
           </tr>

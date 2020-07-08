@@ -5,7 +5,7 @@ import { PesquisarPermissoesComponent } from './pesquisar/pesquisar-permissoes.c
 import { CadastrarPermissoesComponent } from './cadastrar/cadastrar-permissoes.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
+import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatTooltipModule } from '@angular/material';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
 import { DialogRemoverPermissaoModule } from '../dialog/dialog-remover-permissao/dialog-remover-permissao.module';
@@ -28,6 +28,7 @@ const routes: Routes = [
     MatPaginatorModule,
     MatSortModule,
     DialogRemoverPermissaoModule,
+    MatTooltipModule,
     RouterModule.forChild(routes)
   ],
   exports: [

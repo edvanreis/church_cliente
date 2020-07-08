@@ -29,7 +29,6 @@ export class CadastrarCelulaComponent implements OnInit {
   public comboTipoCelula = [];
   public observacao: string;
   public enderecos = [];
-  public membro: any;
   public membros: any = [];
   public comboTipoPessoa = [];
   public label: string = "Membro";
@@ -40,6 +39,7 @@ export class CadastrarCelulaComponent implements OnInit {
   public comboMembro = [];
   public filteredMembro: Observable<string[]>;
   public membroSelecionado: any;
+  public membroValue:any;
 
 
 
@@ -77,9 +77,7 @@ export class CadastrarCelulaComponent implements OnInit {
       if (item.type == 'endereco') {
         this.enderecos = item.data;
       }
-      if (item.type == 'membro-comp') {
-        this.membro = item.data;
-      }
+
       if(item.type == 'confirm-dialog-pessoa-celula'){
         if(this.membros.length > 0){
           this.membros.splice(item.data, 1);
@@ -161,7 +159,7 @@ export class CadastrarCelulaComponent implements OnInit {
 
   adicionar() {
     this.getEmiter();
-    if (!this.membro) {
+    if (!this.membroSelecionado) {
       this._notifierService.notify(AlertType.Error, "Erro:campo membro em branco!");
       return false;
     }
@@ -170,10 +168,11 @@ export class CadastrarCelulaComponent implements OnInit {
       return false;
     }
 
-    this.membro.tipo = this.tipoPessoa.nome;
+    this.membroSelecionado.tipo = this.tipoPessoa.nome;
     this.tipoPessoa = null;
 
-    this.membros.push(this.membro);
+    this.membros.push(this.membroSelecionado);
+    this.membroValue = '';
   }
 
 

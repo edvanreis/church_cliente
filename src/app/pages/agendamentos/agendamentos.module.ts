@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatTableModule, MatToolbarModule, MatSlideToggleModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatTableModule, MatToolbarModule, MatSlideToggleModule, MatTooltipModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipes/pipe.module';
@@ -47,6 +47,7 @@ const routes: Routes = [
     DialogAprovarReprovarAgendamentoModule,
     DialogConfirmAgandamentoModule,
     DialogConfirmPessoaModule,
+    MatTooltipModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

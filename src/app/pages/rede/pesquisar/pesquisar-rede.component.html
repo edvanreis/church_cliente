@@ -34,9 +34,9 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
             <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
-            <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" (click)="editar(element.id)"><i
+            <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" matTooltip="Editar" (click)="editar(element.id)"><i
                 class="material-icons">create</i></span>
-            <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" (click)="status(element.id)"><i
+            <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" matTooltip="Status" (click)="status(element.id)"><i
                 class="material-icons">settings</i></span>
           </mat-cell>
         </ng-container>

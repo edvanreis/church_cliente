@@ -24,12 +24,12 @@
       </div>
       <br />
       <br />
-      <div  style="padding: 0 20px;">
+      <div  style="padding: 0 20px;" *ngIf="celulas.length > 0">
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
         </mat-form-field>
       </div>
-      <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;">
+      <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;" *ngIf="celulas.length > 0">
         <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
@@ -39,7 +39,7 @@
             <span title="Mudar Status da Célula" *ngIf="column.id=='id'" class="default-botoes" (click)="status(element.id)"><i
                 class="material-icons">settings</i></span>
                 <span title="Lista de membros" *ngIf="column.id=='id'" class="default-botoes" (click)="membros(element.id)"><i
-                  class="material-icons">group</i></span>   
+                  class="material-icons">group</i></span>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
@@ -48,7 +48,7 @@
       <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
         showFirstLastButtons></mat-paginator>
       <div>
-        <button mat-raised-button color="success" (click)="exportAsXLSX()"><i
+        <button mat-raised-button color="success" (click)="exportAsXLSX()" *ngIf="celulas.length > 0"><i
             class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
       </div>
     </div>

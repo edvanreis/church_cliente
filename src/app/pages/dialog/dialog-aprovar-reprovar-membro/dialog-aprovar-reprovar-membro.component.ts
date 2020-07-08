@@ -100,6 +100,6 @@ export class DialogAprovarReprovarMembroComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir('dialog-aprovar-reprovar-agendamento', '');
+    this._emitirEventoService.emitir('dialog-aprovar-reprovar-membro', '');
   }
 }

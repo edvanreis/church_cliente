@@ -8,6 +8,7 @@ import { AgendamentoService } from '../service/agendamento.service';
 import { DashboardService } from '../service/dashboard.service';
 import { DialogConfirmComponent } from '../pages/dialog/dialog-confirm/dialog-confirm.component';
 import { EmitirEventoService } from '../service/emitir-evento.service';
+import { DialogAprovarReprovarMembroComponent } from '../pages/dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.component';
 
 @Component({
   selector: 'app-dashboard-crm',
@@ -74,29 +75,29 @@ export class DashboardCrmComponent implements OnInit {
     });
   }
 
-  cardsTop(item){
+  cardsTop(item) {
     this.dashCard = [
       { colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalMembrosPendentes, title: 'Membros Pendentes Aprovação', icon: 'warning' },
       { colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalAgendamentosPendentes, title: 'Agendamentos Pendentes Aprovação', icon: 'warning' },
       { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalMembrosAprovados, title: 'Membros', icon: 'person' },
       { colorDark: '#42A5F5', colorLight: '#64B5F6', number: item.totalIgrejas, title: 'Igrejas', icon: 'location_city' },
-      { colorDark: '#26A69A', colorLight: '#4DB6AC', title: 'Redes', icon: 'device_hub' },
+      { colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalRedes, title: 'Redes', icon: 'device_hub' },
       { colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalGruposTrabalho, title: 'Grupo de trabalho', icon: 'work' },
 
     ];
-    if(item.totalCelulas > 0 ){
-      this.dashCard.push( { colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalCelulas, title: 'Células', icon: 'group' },)
+    if (item.totalCelulas > 0) {
+      this.dashCard.push({ colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalCelulas, title: 'Células', icon: 'group' },)
     }
   }
 
-  tableMembrosPendentes(item){
+  tableMembrosPendentes(item) {
     this.membrosPendentes = item;
     this.dadosMembros = new MatTableDataSource(item);
     this.dadosMembros.sort = this.sortMembros;
     this.dadosMembros.paginator = this.paginatorMembros;
   }
 
-  tableAgendamentosPendentes(item){
+  tableAgendamentosPendentes(item) {
     this.agendamentosPendentes = item;
     this.dadosAgendamentos = new MatTableDataSource(item);
     this.dadosAgendamentos.sort = this.sortAgendamentos;
@@ -105,7 +106,7 @@ export class DashboardCrmComponent implements OnInit {
 
   columnsMembros() {
     this.columnNamesMembros = [
-      { id: 'nome', value: 'Nome' },
+      { id: 'nomeCompleto', value: 'Nome' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedMembrosColumns = this.columnNamesMembros.map(x => x.id);
@@ -115,6 +116,8 @@ export class DashboardCrmComponent implements OnInit {
     this.columnNamesAgendamntos = [
       { id: 'dataAgendamento', value: 'Data Agendamento' },
       { id: 'nome', value: 'Nome' },
+      { id: 'horaInicio', value: 'Inicio' },
+      { id: 'horaFim', value: 'Fim' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedAgendamentosColumns = this.columnNamesAgendamntos.map(x => x.id);
@@ -133,8 +136,8 @@ export class DashboardCrmComponent implements OnInit {
       width: '600px',
       data: {
         id: id,
-        aprovar:true,
-        reprovar:false,
+        aprovar: true,
+        reprovar: false,
       }
     });
   }
@@ -144,28 +147,47 @@ export class DashboardCrmComponent implements OnInit {
       width: '600px',
       data: {
         id: id,
-        aprovar:false,
-        reprovar:true,
+        aprovar: false,
+        reprovar: true,
       }
     });
   }
 
   dialogAprovarMembro(id) {
-    const dialogRef = this._dialog.open(DialogAprovarReprovarAgendamentoComponent, {
+    const dialogRef = this._dialog.open(DialogAprovarReprovarMembroComponent, {
       width: '600px',
       data: {
         id: id,
-        aprovar:true,
-        reprovar:false,
+        aprovar: true,
+        reprovar: false,
+      }
+    });
+  }
+
+  dialogReprovarMembros(id) {
+    const dialogRef = this._dialog.open(DialogAprovarReprovarMembroComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        aprovar: false,
+        reprovar: true,
       }
     });
   }
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-
+      let carregarTop: boolean = false;
       if (item.type == 'dialog-aprovar-reprovar-agendamento') {
+        carregarTop = true;
+      }
+
+      if (item.type == 'dialog-aprovar-reprovar-membro') {
+        carregarTop = true;
+      }
+      if (carregarTop) {
         this.carregarCardsTop();
       }
+
     });
   }
 

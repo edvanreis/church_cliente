@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatDividerModule, MatExpansionModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatTabsModule, MatToolbarModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatDividerModule, MatExpansionModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatTabsModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { InterceptorService } from '../../service/interceptor.service';
@@ -47,6 +47,7 @@ const routes: Routes = [
     MatExpansionModule,
     IgrejaDadosModule,
     PipeModule,
+    MatTooltipModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

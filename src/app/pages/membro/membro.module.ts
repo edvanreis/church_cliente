@@ -21,6 +21,7 @@ import { DialogHistoricoPessoaModule } from '../dialog/dialog-historico-pessoa/d
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
 import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro.component';
 import { DialogAprovarReprovarAgendamentoModule } from '../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
+import { DialogAprovarReprovarMembroModule } from '../dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.module';
 
 
 
@@ -63,6 +64,7 @@ const routes: Routes = [
     DialogAtivarInativarModule,
     DialogConfirmPessoaModule,
     DialogAprovarReprovarAgendamentoModule,
+    DialogAprovarReprovarMembroModule,
     RouterModule.forChild(routes)
   ],
   exports: [

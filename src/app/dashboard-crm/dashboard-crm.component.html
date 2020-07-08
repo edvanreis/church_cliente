@@ -4,12 +4,12 @@
   </div>
 </div>
 <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-  <mat-card class="max-width-card">
-    <mat-card-header [style.backgroundColor]="'#ffff80'">
+  <mat-card class="max-width-card" *ngIf="membrosPendentes.length > 0" [ngStyle]="{'padding':0}">
+    <mat-card-header [ngStyle]="{'padding':'5px','background-color':'#ffff80'}">
       <mat-card-title fxLayout.lt-sm="column" f><i class="col-md material-icons" style="color:#ff8000;">warning</i>Membros</mat-card-title>
       <mat-card-subtitle>Membros Pendente Aprovação</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content [ngStyle]="{'padding':'5px'}">
       <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
         <input matInput (keyup)="applyFilterMembros($event.target.value)" placeholder="Filtrar">
       </mat-form-field>
@@ -17,10 +17,14 @@
         <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNamesMembros">
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
-            <span [style.color]="'green'" *ngIf="column.id=='id'"><i class="col-md material-icons ">done</i></span>
-            <span [style.color]="'red'" *ngIf="column.id=='id'"><i
-                class="col-md material-icons ">not_interested</i></span>
+            <span *ngIf="column.id!='id'"  matTooltip="{{element[column.id]}}">
+              {{(element[column.id].length > 15) ? ((element[column.id]).slice(0, 15) + '...') : element[column.id]}}
+            </span>
+            <span [style.color]="'green'" *ngIf="column.id=='id'" class="default-botoes"
+            (click)="dialogAprovarMembro(element.id)" matTooltip="Aprovar"><i class="col-md material-icons ">done</i></span>
+          <span [style.color]="'red'" *ngIf="column.id=='id'" class="default-botoes"
+            (click)="dialogReprovarMembros(element.id)" matTooltip="Reprovar"><i
+              class="col-md material-icons ">not_interested</i></span>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedMembrosColumns"></mat-header-row>
@@ -31,12 +35,12 @@
     </mat-card-content>
   </mat-card>
 
-  <mat-card class="max-width-card">
-    <mat-card-header [style.backgroundColor]="'#ffff80'">
+  <mat-card class="max-width-card" *ngIf="agendamentosPendentes.length > 0" [ngStyle]="{'padding':0}">
+    <mat-card-header [ngStyle]="{'padding':'5px','background-color':'#ffff80'}">
       <mat-card-title fxLayout.lt-sm="column" f><i style="color:#ff8000;" class="col-md material-icons ">warning</i>Agendamentos</mat-card-title>
       <mat-card-subtitle>Agendamentos Pendente Aprovação</mat-card-subtitle>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content [ngStyle]="{'padding':'5px'}">
       <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
         <input matInput (keyup)="applyFilterAgendamentos($event.target.value)" placeholder="Filtrar">
       </mat-form-field>
@@ -44,11 +48,13 @@
         <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNamesAgendamntos">
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
+            <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
+              {{(element[column.id].length > 7) ? ((element[column.id]).slice(0, 7) + '...') : element[column.id]}}
+            </span>
             <span [style.color]="'green'" *ngIf="column.id=='id'" class="default-botoes"
-              (click)="dialogAprovarAgendamento(element.id)" title="Aprovar"><i class="col-md material-icons ">done</i></span>
+              (click)="dialogAprovarAgendamento(element.id)" matTooltip="Aprovar"><i class="col-md material-icons ">done</i></span>
             <span [style.color]="'red'" *ngIf="column.id=='id'" class="default-botoes"
-              (click)="dialogReprovarAgendamento(element.id)" title="Reprovar"><i
+              (click)="dialogReprovarAgendamento(element.id)" matTooltip="Reprovar"><i
                 class="col-md material-icons ">not_interested</i></span>
           </mat-cell>
         </ng-container>

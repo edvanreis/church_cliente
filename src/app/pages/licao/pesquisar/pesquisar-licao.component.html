@@ -21,7 +21,8 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
             <span *ngIf="column.id!='id'" title="{{element[column.id]}}" >
-              {{(element[column.id].length > 100) ? ((element[column.id]).slice(0, 100) + '...') : element[column.id]}}</span>
+              {{(element[column.id].length > 100) ? ((element[column.id]).slice(0, 100) + '...') : element[column.id]}}
+            </span>
             <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" (click)="dialogEdit(element.id)"><i
                 class="material-icons">create</i></span>
             <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" (click)="dialogRemove(element.id)"><i

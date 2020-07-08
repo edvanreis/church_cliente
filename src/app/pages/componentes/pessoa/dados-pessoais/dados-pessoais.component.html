@@ -94,11 +94,11 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div class="full-width-field" fxLayoutGap="20px" [hidden]="!hideVisitante">
+  <div class="full-width-field" fxLayoutGap="20px" [hidden]="hideVisitante">
     <label style="color:#1d68a5">Visitante da Célula?</label>
     <mat-slide-toggle formControlName="visitanteDaCelula" id="visitanteDaCelula"  (change)="change()" #visitanteDaCelula>{{visitanteDaCelula.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
   </div>
-  <div class="full-width-field" fxLayoutGap="20px" [hidden]="hideVisitante">
+  <div class="full-width-field" fxLayoutGap="20px" [hidden]="!hideVisitante">
     <label style="color:#1d68a5">Membro da Célula?</label>
     <mat-slide-toggle formControlName="membroDaCelula" id="membroDaCelula"  (change)="change()" #membroDaCelula>{{membroDaCelula.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
     <label style="color:#1d68a5">Batizado?</label>

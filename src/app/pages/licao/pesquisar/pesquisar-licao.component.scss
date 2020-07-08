@@ -33,14 +33,14 @@ table {
 
 
 /* Column Widths */
-.mat-column-tema{
+::ng-deep .mat-column-tema{
   max-width: 800px;
 }
 
-.mat-column-dataCriacao {
+::ng-deep .mat-column-dataCriacao {
   max-width: 100px;
 }
-.mat-column-acao {
+::ng-deep .mat-column-acao {
   max-width: 100px;
 }
 

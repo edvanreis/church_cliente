@@ -51,9 +51,9 @@
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
             <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
-            <span *ngIf="column.id=='id'" title="Editar" class="default-botoes" (click)="editar(element.id)"><i
+            <span *ngIf="column.id=='id'" matTooltip="Editar" class="default-botoes" (click)="editar(element.id)"><i
                 class="material-icons">create</i></span>
-            <span *ngIf="column.id=='id'" class="default-botoes"  title="Excluir" (click)="dialogRemover(element.id)"><i
+            <span *ngIf="column.id=='id'" class="default-botoes"  matTooltip="Excluir" (click)="dialogRemover(element.id)"><i
                 class="material-icons">delete</i></span>
             <!-- <span *ngIf="column.id=='id'" title="Relatório Reunião Semanal" class="default-botoes" (click)="relatorioReuniaoSemanal(element.id)">
               <i class="material-icons">assignment_returned</i>

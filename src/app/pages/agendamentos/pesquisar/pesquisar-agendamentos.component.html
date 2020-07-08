@@ -51,25 +51,26 @@
             <div *ngFor="let item of group.value">
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngFor="let element of item.agendamentos"
             [ngStyle]="{'background-color':element.statusAgendamento==='P'?'#ffff80':element.statusAgendamento==='A'?'#d9f2d9':''}">
-
+              <span *ngIf="element.id && element.statusAgendamento=='P'" style="color:#ff8000;" ><i class="col-md material-icons ">warning</i></span>
+              <span *ngIf="element.id && element.statusAgendamento=='A'" style="color:green;" ><i class="col-md material-icons ">done_all</i></span>
               <span>{{ element.nome }}</span>
               <span>{{ element.horaInicio }}</span>
               <span>{{ element.horaFim }}</span>
-              <span title="{{element.concatPessoas}}" *ngIf="element.concatPessoas">
+              <span matTooltip="{{element.concatPessoas}}" *ngIf="element.concatPessoas">
                 {{(element.concatPessoas.length > 20) ? ((element.concatPessoas).slice(0, 20) + '...') : element.concatPessoas}}</span>
-              <span title="{{element.grupoTrabalho.nome}}" *ngIf="element.grupoTrabalho">
+              <span matTooltip="{{element.grupoTrabalho.nome}}" *ngIf="element.grupoTrabalho">
                 {{(element.grupoTrabalho.nome.length > 20) ? ((element.grupoTrabalho.nome).slice(0, 20) + '...') : element.grupoTrabalho.nome}}
               </span>
-              <span title="Aprovar" style="color:green; cursor: pointer; text-align: right; float: right;" (click)="dialogAprovar(element.id)" *ngIf="element.id && element.statusAgendamento=='P'">
+              <span matTooltip="Aprovar" style="color:green; cursor: pointer; text-align: right; float: right;" (click)="dialogAprovar(element.id)" *ngIf="element.id && element.statusAgendamento=='P'">
                 <i class="col-md material-icons ">done</i>
               </span>
-              <span title="Reprovar"  style="color:red; cursor: pointer; text-align: right; float: right;" (click)="dialogReprovar(element.id)" *ngIf="element.id && element.statusAgendamento!='A'">
+              <span matTooltip="Reprovar"  style="color:red; cursor: pointer; text-align: right; float: right;" (click)="dialogReprovar(element.id)" *ngIf="element.id && element.statusAgendamento!='A'">
                 <i class="col-md material-icons ">not_interested</i>
               </span>
-              <span title="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id && element.statusAgendamento!='A'" (click)="editar(element.id)">
+              <span matTooltip="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id && element.statusAgendamento!='A'" (click)="editar(element.id)">
                 <i class="col-md material-icons ">create</i>
               </span>
-              <span title="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id && element.statusAgendamento!='A'">
+              <span matTooltip="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id && element.statusAgendamento!='A'">
                 <i class="col-md material-icons ">delete</i>
               </span>
             </div>

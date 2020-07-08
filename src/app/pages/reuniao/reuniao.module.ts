@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatDatepickerModule, MatDividerModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatDatepickerModule, MatDividerModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule, MatTableModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipes/pipe.module';
@@ -51,6 +51,7 @@ const routes: Routes = [
     PipeModule,
     DialogConfirmPessoaReuniaoModule,
     EnderecoModule,
+    MatTooltipModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

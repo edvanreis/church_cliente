@@ -97,7 +97,10 @@ export class PesquisarAgendamentosComponent implements OnInit {
     this.date.setValue(ctrlValue);
     datepicker.close();
     this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
-    this.getDayList();
+    if(this.igrejaSelecionada){
+      this.getDayList();
+    }
+
   }
 
 

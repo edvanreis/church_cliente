@@ -179,7 +179,12 @@ export class PesquisarCelulaComponent implements OnInit {
     if (this._avRoute.snapshot.queryParamMap.get("pesquisar")) {
       this.statusSelecionado = JSON.parse(localStorage.getItem("pesquisar"));
       localStorage.removeItem("pesquisar");
-      this.getListForStatus(this.statusSelecionado);
+      if(this.statusSelecionado){
+        this.getListForStatus(this.statusSelecionado);
+      }else{
+        this.getList();
+      }
+
       return true;
     } else {
       return false;

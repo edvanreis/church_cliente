@@ -75,13 +75,17 @@
             <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
               <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <span *ngIf="column.id!='id' && element.situacao != 'APROVADO'">{{element[column.id]}}</span>
-                <span *ngIf="column.id!='id' && element.situacao == 'APROVADO'" style="color:green;">{{element[column.id]}}</span>
+                <span *ngIf="column.id!='id'" [ngStyle]="{'color':element.situacao === 'APROVADO'?'green':element.situacao != 'APROVADO'?'#ff8000':''}" matTooltip="{{element[column.id]}}">
+                  {{(element[column.id]?.length > 10) ? ((element[column.id])?.slice(0, 10) + '...') : element[column.id]}}
+                </span>
                 <span *ngIf="column.id=='icon'">
-                  <span style="color: green;" *ngIf="element.status=='A'">
+                  <span style="color: green;" *ngIf="element.status=='A' && element.situacao=='APROVADO'">
                     <i class="material-icons">person</i>
                   </span>
-                  <span style="color: grey;" *ngIf="element.status=='I'">
+                  <span style="color:#ff8000;"  *ngIf="element.situacao!='APROVADO' && element.status!='I'">
+                    <i class="col-md material-icons ">warning</i>
+                  </span>
+                  <span style="color: grey;" *ngIf="element.status=='I' && element.situacao=='APROVADO'">
                     <i class="material-icons">person</i>
                   </span>
                 </span>

@@ -4,6 +4,8 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { AuthService } from '../../service/auth.service';
 import { TokenService } from '../../service/token.service';
 import { UserService } from '../../service/user.service';
+import { NotifierService } from 'angular-notifier';
+import { AlertType } from '../../model/alert-type';
 
 @Component({
   selector: 'cdk-login',
@@ -20,9 +22,14 @@ export class LoginComponent implements OnInit {
 
   returnUrl: string = '';
 
-  constructor(private route: ActivatedRoute, private router: Router, private _compiler: Compiler,
-    private _auth: AuthService, private _tokenService: TokenService, private _userData: UserService,
-    private _router: Router) { }
+  constructor(private route: ActivatedRoute,
+    private router: Router,
+    private _compiler: Compiler,
+    private _auth: AuthService,
+    private _tokenService: TokenService,
+    private _userData: UserService,
+    private _router: Router,
+    private _notifierService: NotifierService) { }
 
   ngOnInit() {
     this._buildForm();
@@ -44,8 +51,8 @@ export class LoginComponent implements OnInit {
       this._storeToken(user);
       this._storeUser();
     }, erro => {
-      console.log(erro.error.error_description);
-      // this._helper.showMessageError(erro.error.error_description);
+      // console.log(erro.error.error_description);
+      this._notifierService.notify(AlertType.Error, "Usuáro e senha Inválidos!");
     })
 
   }

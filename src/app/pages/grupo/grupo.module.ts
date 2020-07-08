@@ -5,7 +5,7 @@ import { CadastrarGrupoComponent } from './cadastrar/cadastrar-grupo.component';
 import { Routes, RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatTabsModule, MatSelectModule, MatOptionModule, MatDividerModule, MatAutocompleteModule, MatSlideToggleModule, MatRadioModule, MatDatepickerModule } from '@angular/material';
+import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatTabsModule, MatSelectModule, MatOptionModule, MatDividerModule, MatAutocompleteModule, MatSlideToggleModule, MatRadioModule, MatDatepickerModule, MatTooltipModule } from '@angular/material';
 import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
 import { PipeModule } from '../../pipes/pipe.module';
@@ -38,6 +38,7 @@ const routes: Routes = [
     DialogAtivarInativarModule,
     MatRadioModule,
     MatDatepickerModule,
+    MatTooltipModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
