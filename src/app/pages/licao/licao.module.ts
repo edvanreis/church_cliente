@@ -5,7 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { InterceptorService } from '../../service/interceptor.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule } from '@angular/material';
+import { MatToolbarModule, MatInputModule, MatButtonModule, MatTableModule, MatPaginatorModule, MatSortModule, MatTooltipModule } from '@angular/material';
 import { PesquisarLicaoComponent } from './pesquisar/pesquisar-licao.component';
 import { DialogAddTitulosLicaoModule } from '../dialog/dialog-add-titulos-licao/dialog-add-titulos-licao.module';
 import { LicaoService } from '../../service/licao.service';
@@ -28,6 +28,7 @@ const routes: Routes = [
     MatSortModule,
     DialogAddTitulosLicaoModule,
     DialogConfirmLicaoModule,
+    MatTooltipModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

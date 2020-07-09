@@ -39,7 +39,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   public filteredMembro: Observable<string[]>;
   public filteredPerfil: Observable<string[]>;
   public myControlMembro = new FormControl();
-  // public myControlPerfil = new FormControl();
+  public myControlPerfil = new FormControl();
   public perfilValue;
   public comboStatus = ELEMENT_DATA;
   // public cpfValue;
@@ -57,7 +57,7 @@ export class CadastrarUsuarioComponent implements OnInit {
     this._buildForm();
     this.getParams();
     this.carregarComboPerfis();
-    this.carregarComboPessoa(); 
+    this.carregarComboPessoa();
   }
 
   private _buildForm(): void {
@@ -164,20 +164,20 @@ export class CadastrarUsuarioComponent implements OnInit {
 
   carregarComboPerfis() {
     this._perfilService.getList().pipe(take(1)).subscribe(item => {
-      this.comboPerfil = item;
-      this.comboPerfil.forEach(element => {
-        if(element.nome=='basico' && this.perfis.length == 0){
-              this.perfis.push(element);
-              this.perfilUsuario = element;
-        }
-      });
-      // this.filteredPerfil = this.myControlPerfil.valueChanges
-      // .pipe(
-      //   startWith(''),
-      //   map(value => this._filter(value, this.comboPerfil))
-      // );
+      // this.comboPerfil = item;
+      // this.comboPerfil.forEach(element => {
+      //   if(element.nome=='basico' && this.perfis.length == 0){
+      //         this.perfis.push(element);
+      //         this.perfilUsuario = element;
+      //   }
+      // });
+      this.filteredPerfil = this.myControlPerfil.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filterPerfil(value, this.comboPerfil))
+      );
     }, error => {
-      this._notifierService.notify(AlertType.Error, "Erro ao carregar as permissões!");
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os perfis!");
     });
   }
 
@@ -202,7 +202,7 @@ export class CadastrarUsuarioComponent implements OnInit {
     this.perfis.splice(index, 1);
   }
 
-  onSelectionChangedPerfil(option) {
+  onSelectionChangedPerfil($event: MatAutocompleteSelectedEvent,option) {
     this.perfilUsuario = option.source.value;
   }
 
@@ -218,14 +218,19 @@ export class CadastrarUsuarioComponent implements OnInit {
       this.filteredMembro = this.myControlMembro.valueChanges
         .pipe(
           startWith(''),
-          map(value => this._filter(value, this.comboMembro))
+          map(value => this._filterMembro(value, this.comboMembro))
         );
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
     });
   }
 
-  private _filter(value: string, lista): string[] {
+  private _filterMembro(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  private _filterPerfil(value: string, lista): string[] {
     const filterValue = value.toLowerCase();
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
