@@ -11,17 +11,19 @@
       </div>
       <br />
       <br />
-      <div class="example-header" style="padding: 0 20px;" *ngIf="dados.length > 0">
+      <div class="example-header" style="padding: 0 20px;" *ngIf="permissoes.length > 0">
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
         </mat-form-field>
       </div>
-      <div *ngIf="dados.length > 0">
+      <div *ngIf="permissoes.length > 0">
         <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;">
           <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
             <mat-cell *matCellDef="let element">
-              <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
+              <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
+                {{(element[column.id].length > 50) ? ((element[column.id]).slice(0, 50) + '...') : element[column.id]}}
+              </span>
               <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" (click)="editar(element.id)"><i
                   class="material-icons" matTooltip="Editar">create</i></span>
               <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" (click)="remover(element.id)"><i

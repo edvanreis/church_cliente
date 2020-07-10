@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import { PermissoesService } from '../../../service/permissoes.service';
 import { take } from 'rxjs/operators';
@@ -8,6 +7,7 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { DialogRemoverPermissaoComponent } from '../../dialog/dialog-remover-permissao/dialog-remover-permissao.component';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
 @Component({
   selector: 'app-pesquisar-permissoes',
@@ -17,12 +17,15 @@ import { DialogRemoverPermissaoComponent } from '../../dialog/dialog-remover-per
 export class PesquisarPermissoesComponent implements OnInit {
 
   public form: FormGroup;
+
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = [];
   public columnNames;
   public dados = new MatTableDataSource();
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
+
+  public permissoes = new Array();
 
   constructor(private _router: Router,
     private _permissoesService: PermissoesService,
@@ -75,13 +78,17 @@ export class PesquisarPermissoesComponent implements OnInit {
 
   getList() {
     this._permissoesService.getList().pipe(take(1)).subscribe(item => {
-      // console.log(item);
+      // console.log(item)
+      this.permissoes = item;
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;
+      console.log(this.dados)
+      console.log(this.sort)
+      console.log(this.paginator)
     }, error => {
+      console.log(error)
       this._notifierService.notify(AlertType.Error, error.errors.message);
-
     });
   }
 
@@ -90,7 +97,7 @@ export class PesquisarPermissoesComponent implements OnInit {
       width: '600px',
       data: {
         id: id,
-        tela:'permissoes',
+        tela: 'permissoes',
         panelClass: 'components-container-gt-xs'
       }
     });

@@ -73,6 +73,8 @@
               <span matTooltip="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id && element.statusAgendamento!='A'">
                 <i class="col-md material-icons ">delete</i>
               </span>
+              <span style="color:red; cursor: pointer; text-align: right; float: right;"  *ngIf="element.statusAgendamento=='A'" class="default-botoes"
+              (click)="dialogCancelar(element.id)" matTooltip="Cancelar"><i class="col-md material-icons ">event_busy</i></span>
             </div>
           </div>
           </mat-expansion-panel>

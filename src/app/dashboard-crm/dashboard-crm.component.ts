@@ -26,6 +26,7 @@ export class DashboardCrmComponent implements OnInit {
   // ];
 
   public dashCard = [];
+
   public membrosPendentes = [];
   @ViewChild(MatSort) sortMembros: MatSort;
   public displayedMembrosColumns: string[] = [];
@@ -34,11 +35,27 @@ export class DashboardCrmComponent implements OnInit {
   @ViewChild('paginatorMembro') paginatorMembros: MatPaginator;
 
   public agendamentosPendentes = [];
+  @ViewChild(MatSort) sortAgendamentosPendentes: MatSort;
+  public displayedAgendamentosPendentesColumns: string[] = [];
+  public columnNamesAgendamntosPendentes;
+  public dadosAgendamentosPendentes = new MatTableDataSource();
+  @ViewChild('paginatorAgendamento') paginatorAgendamentosPendentes: MatPaginator;
+
+
+  public agendamentos = [];
   @ViewChild(MatSort) sortAgendamentos: MatSort;
   public displayedAgendamentosColumns: string[] = [];
   public columnNamesAgendamntos;
   public dadosAgendamentos = new MatTableDataSource();
   @ViewChild('paginatorAgendamento') paginatorAgendamentos: MatPaginator;
+
+
+  public celulasReuniaoPendente = [];
+  @ViewChild(MatSort) sortCelulasReuniaoPendente: MatSort;
+  public displayedCelulasReuniaoPendenteColumns: string[] = [];
+  public columnNamesCelulasReuniaoPendente;
+  public dadosCelulasReuniaoPendente = new MatTableDataSource();
+  @ViewChild('paginatorCelulasReuniaoPendente') paginatorCelulasReuniaoPendente: MatPaginator;
 
 
   tableData = [
@@ -59,6 +76,8 @@ export class DashboardCrmComponent implements OnInit {
     this.carregarCardsTop();
     this.columnsMembros();
     this.columnsAgendamentos();
+    this.columnsAgendamentosPendentes();
+    this.columnCelulasReuniaoPendente();
     this.getEmiter();
   }
 
@@ -68,6 +87,8 @@ export class DashboardCrmComponent implements OnInit {
       this.cardsTop(item);
       this.tableMembrosPendentes(item.membrosPendentes);
       this.tableAgendamentosPendentes(item.agendamentosPendentes);
+      this.tableAgendamentos(item.agendamentos);
+      this.tableCelulasReuniaoAgendamentos(item.groupByCelulaRelatorio);
     }, error => {
       console.log(error)
       this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -102,9 +123,23 @@ export class DashboardCrmComponent implements OnInit {
 
   tableAgendamentosPendentes(item) {
     this.agendamentosPendentes = item;
+    this.dadosAgendamentosPendentes = new MatTableDataSource(item);
+    this.dadosAgendamentosPendentes.sort = this.sortAgendamentosPendentes;
+    this.dadosAgendamentosPendentes.paginator = this.paginatorAgendamentosPendentes;
+  }
+
+  tableAgendamentos(item) {
+    this.agendamentos = item;
     this.dadosAgendamentos = new MatTableDataSource(item);
     this.dadosAgendamentos.sort = this.sortAgendamentos;
     this.dadosAgendamentos.paginator = this.paginatorAgendamentos;
+  }
+
+  tableCelulasReuniaoAgendamentos(item) {
+    this.celulasReuniaoPendente = item;
+    this.dadosCelulasReuniaoPendente = new MatTableDataSource(item);
+    this.dadosCelulasReuniaoPendente.sort = this.sortCelulasReuniaoPendente;
+    this.dadosCelulasReuniaoPendente.paginator = this.paginatorCelulasReuniaoPendente;
   }
 
   columnsMembros() {
@@ -114,6 +149,18 @@ export class DashboardCrmComponent implements OnInit {
     ];
     this.displayedMembrosColumns = this.columnNamesMembros.map(x => x.id);
   }
+
+  columnsAgendamentosPendentes() {
+    this.columnNamesAgendamntosPendentes = [
+      { id: 'dataAgendamento', value: 'Data Agendamento' },
+      { id: 'nome', value: 'Nome' },
+      { id: 'horaInicio', value: 'Inicio' },
+      { id: 'horaFim', value: 'Fim' },
+      { id: 'id', value: 'Ação' }
+    ];
+    this.displayedAgendamentosPendentesColumns = this.columnNamesAgendamntosPendentes.map(x => x.id);
+  }
+
 
   columnsAgendamentos() {
     this.columnNamesAgendamntos = [
@@ -126,12 +173,29 @@ export class DashboardCrmComponent implements OnInit {
     this.displayedAgendamentosColumns = this.columnNamesAgendamntos.map(x => x.id);
   }
 
+  columnCelulasReuniaoPendente() {
+    this.columnNamesCelulasReuniaoPendente = [
+      { id: 'nome', value: 'Célula' },
+      { id: 'totalReuniao', value: 'Relatórios Enviados' },
+      { id: 'lideresCelula', value: 'Liderança' }
+    ];
+    this.displayedCelulasReuniaoPendenteColumns = this.columnNamesCelulasReuniaoPendente.map(x => x.id);
+  }
+
   applyFilterMembros(value) {
     this.dadosMembros.filter = value.trim().toLowerCase();
   }
 
   applyFilterAgendamentos(value) {
     this.dadosAgendamentos.filter = value.trim().toLowerCase();
+  }
+
+  applyFilterAgendamentosPendentes(value) {
+    this.dadosAgendamentosPendentes.filter = value.trim().toLowerCase();
+  }
+
+  applyFilterCelulasReuniaoPendente(value) {
+    this.dadosCelulasReuniaoPendente.filter = value.trim().toLowerCase();
   }
 
   dialogAprovarAgendamento(id) {
@@ -141,6 +205,7 @@ export class DashboardCrmComponent implements OnInit {
         id: id,
         aprovar: true,
         reprovar: false,
+        cancelar:false
       }
     });
   }
@@ -152,6 +217,19 @@ export class DashboardCrmComponent implements OnInit {
         id: id,
         aprovar: false,
         reprovar: true,
+        cancelar:false
+      }
+    });
+  }
+
+  dialogCancelarAgendamento(id) {
+    const dialogRef = this._dialog.open(DialogAprovarReprovarAgendamentoComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        aprovar: false,
+        reprovar: false,
+        cancelar:true
       }
     });
   }

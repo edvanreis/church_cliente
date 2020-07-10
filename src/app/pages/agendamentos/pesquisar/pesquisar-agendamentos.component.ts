@@ -214,8 +214,9 @@ dialogAprovar(id) {
     width: '600px',
     data: {
       id: id,
-      aprovar:true,
-      reprovar:false,
+      aprovar: true,
+      reprovar: false,
+      cancelar:false
     }
   });
 }
@@ -225,8 +226,21 @@ dialogReprovar(id) {
     width: '600px',
     data: {
       id: id,
-      aprovar:false,
-      reprovar:true,
+      aprovar: false,
+      reprovar: true,
+      cancelar:false
+    }
+  });
+}
+
+dialogCancelar(id) {
+  const dialogRef = this._dialog.open(DialogAprovarReprovarAgendamentoComponent, {
+    width: '600px',
+    data: {
+      id: id,
+      aprovar: false,
+      reprovar: false,
+      cancelar:true
     }
   });
 }

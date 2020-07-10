@@ -9,7 +9,7 @@
       <div>
         <span style="color:gray" >{{mensagem}}</span>
       </div>
-      <div *ngIf="data.reprovar">
+      <div *ngIf="data.reprovar || data.cancelar">
       <mat-form-field class="full-width-field">
         <textarea matInput placeholder="Observação" [(ngModel)]="observacao" maxlength="100"></textarea>
       </mat-form-field>

@@ -42,10 +42,10 @@
     </mat-card-header>
     <mat-card-content [ngStyle]="{'padding':'5px'}">
       <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
-        <input matInput (keyup)="applyFilterAgendamentos($event.target.value)" placeholder="Filtrar">
+        <input matInput (keyup)="applyFilterAgendamentosPendentes($event.target.value)" placeholder="Filtrar">
       </mat-form-field>
-      <mat-table #table [dataSource]="dadosAgendamentos" matSort style="margin-top: 20px;">
-        <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNamesAgendamntos">
+      <mat-table #table [dataSource]="dadosAgendamentosPendentes" matSort style="margin-top: 20px;">
+        <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNamesAgendamntosPendentes">
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
             <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
@@ -58,6 +58,65 @@
                 class="col-md material-icons ">not_interested</i></span>
           </mat-cell>
         </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedAgendamentosPendentesColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedAgendamentosPendentesColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginatorAgendamentosPendentes [length]="dadosAgendamentosPendentes.length" [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+  <mat-card class="max-width-card" *ngIf="celulasReuniaoPendente.length > 0" [ngStyle]="{'padding':0}">
+    <mat-card-header [ngStyle]="{'padding':'5px','background-color':'#ffff80'}">
+        <mat-card-title fxLayout.lt-sm="column" f><i style="color:#ff8000;" class="col-md material-icons ">warning</i>
+          Células</mat-card-title>
+      <mat-card-subtitle>Lista de Células que não Enviaram o relatório</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content [ngStyle]="{'padding':'5px'}">
+      <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
+        <input matInput (keyup)="applyFilterCelulasReuniaoPendente($event.target.value)" placeholder="Filtrar">
+      </mat-form-field>
+      <mat-table #table [dataSource]="dadosCelulasReuniaoPendente" matSort style="margin-top: 20px;">
+        <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNamesCelulasReuniaoPendente">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
+              {{(element[column.id].length > 10) ? ((element[column.id]).slice(0, 10) + '...') : element[column.id]}}
+            </span>
+          </mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedCelulasReuniaoPendenteColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedCelulasReuniaoPendenteColumns;"></mat-row>
+      </mat-table>
+      <mat-paginator #paginatorCelulasReuniaoPendente [length]="dadosCelulasReuniaoPendente.length" [pageSize]="5"
+        [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="max-width-card" *ngIf="agendamentos.length > 0" [ngStyle]="{'padding':0}">
+    <mat-card-header [ngStyle]="{'padding':'5px','background-color':'#d9f2d9'}">
+      <mat-card-title fxLayout.lt-sm="column" f>
+        <i style="color:green;" class="col-md material-icons ">event_available</i>
+        Agendamentos</mat-card-title>
+      <mat-card-subtitle>Agendamentos Aprovados</mat-card-subtitle>
+    </mat-card-header>
+    <mat-card-content [ngStyle]="{'padding':'5px'}">
+      <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
+        <input matInput (keyup)="applyFilterAgendamentos($event.target.value)" placeholder="Filtrar">
+      </mat-form-field>
+      <mat-table #table [dataSource]="dadosAgendamentos" matSort style="margin-top: 20px;">
+        <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNamesAgendamntos">
+          <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
+          <mat-cell *matCellDef="let element">
+            <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
+              {{(element[column.id].length > 7) ? ((element[column.id]).slice(0, 7) + '...') : element[column.id]}}
+            </span>
+            <span [style.color]="'red'" *ngIf="column.id=='id'" class="default-botoes"
+              (click)="dialogCancelarAgendamento(element.id)" matTooltip="Cancelar"><i class="col-md material-icons ">event_busy</i></span>
+          </mat-cell>
+        </ng-container>
         <mat-header-row *matHeaderRowDef="displayedAgendamentosColumns"></mat-header-row>
         <mat-row *matRowDef="let row; columns: displayedAgendamentosColumns;"></mat-row>
       </mat-table>
@@ -66,8 +125,6 @@
     </mat-card-content>
   </mat-card>
 </div>
-
-
 
 <!-- <div fxLayout="row" fxLayout="row wrap">
     <cdk-bar-graph fxFlex="37.5" fxFlex.lt-sm="100" fxFlex.sm="50"></cdk-bar-graph>

@@ -94,6 +94,7 @@ export class PesquisarCelulaComponent implements OnInit {
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;
+      console.log(this.dados)
     }, error => {
       console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
