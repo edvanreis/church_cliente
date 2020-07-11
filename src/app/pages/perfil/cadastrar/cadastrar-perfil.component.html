@@ -20,28 +20,45 @@
               <mat-error *ngIf="!form.controls.descricao.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
           </div>
-          <div>
-            <mat-form-field>
-                <mat-label>Permissões</mat-label>
-              <input type="text" matInput formControlName="permissao" [matAutocomplete]="auto" >
-            </mat-form-field>        
-            <mat-autocomplete #auto="matAutocomplete" >
-              <mat-option (onSelectionChange)="onSelectionChanged($event,option)" *ngFor="let option of comboPermissao" [value]="option.nome" >{{option.nome}}</mat-option>
-            </mat-autocomplete>
-            <button mat-raised-button color="primary" type="button" (click)="adicionar()">
-              <i class="material-icons">add</i>adicionar</button>
-          </div>
         </form>
+        <!-- <div >
+          <mat-form-field class="full-width-field">
+              <mat-label>Permissões</mat-label>
+            <input type="text" matInput formControlName="permissao" [matAutocomplete]="auto" >
+          </mat-form-field>
+          <mat-autocomplete #auto="matAutocomplete" >
+            <mat-option (onSelectionChange)="onSelectionChanged($event,option)" *ngFor="let option of comboPermissao" [value]="option.nome" >{{option.nome}}</mat-option>
+          </mat-autocomplete>
+        </div> -->
+        <div>
+          <mat-form-field class="full-width-field">
+            <input type="text" placeholder="Permissao" aria-label="Number" matInput [formControl]="myControl"
+              [matAutocomplete]="auto" [(ngModel)]="nomeValue">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filtered | async" [value]="option.nome"
+                (onSelectionChange)="onSelectionChanged($event,option)">
+                {{option.nome}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div>
+          <button mat-raised-button color="primary" type="button" (click)="adicionar()">
+            <i class="material-icons">add</i>adicionar</button>
+        </div>
+        <br />
         <div class="table-responsive" *ngIf="permissoes.length > 0">
           <table>
             <thead class="text-primary">
+              <th></th>
               <th>Nome</th>
               <th>Remover</th>
             </thead>
             <tbody>
-              <tr *ngFor="let item of permissoes">
+              <tr *ngFor="let item of permissoes;let i = index">
+                <td>{{ i+1 }}</td>
                 <td>{{ item.nome}}</td>
-                <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(item)"><i
+                <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i,item)"><i
                       class="material-icons">delete</i></span></td>
               </tr>
             </tbody>

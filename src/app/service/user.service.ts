@@ -35,32 +35,34 @@ export class UserService {
 
   /**
  * verifica se usuário logado tem determinada permissão
- * @param permissao 
+ * @param permissao
  */
   hasPermission(permissao): boolean {
     const user = this.currentUser();
+
     let temPermissao = false;
     if ( user ){
-      const permissoes = this.permissions();
+      const permissoes = this.permissions().authorities;
+      // console.log(permissoes)
       if( permissoes ){
         permissoes.forEach(map =>{
-          if( map == permissao){
+          if( map.authority === permissao){
             temPermissao = true;
           }
         });
       }
     }
-    
+
     return temPermissao;
   }
 
   /**
  * Obtem as permissões do usuário logado
  */
-  permissions(): Array<string> {
+  permissions() {
     const user = this.currentUser();
     if ( user ){
-      return JSON.parse(user).permissoes;
+      return JSON.parse(user);
     }
     return ;
   }
@@ -98,5 +100,5 @@ export class UserService {
     return this.http.post(this._url+"esqueceuSenha",obj)
       .pipe(map((response: any) => response))
   }
-  
+
 }

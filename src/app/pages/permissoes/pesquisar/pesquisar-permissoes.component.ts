@@ -9,6 +9,7 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { DialogRemoverPermissaoComponent } from '../../dialog/dialog-remover-permissao/dialog-remover-permissao.component';
 import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 
+
 @Component({
   selector: 'app-pesquisar-permissoes',
   templateUrl: './pesquisar-permissoes.component.html',
@@ -22,7 +23,7 @@ export class PesquisarPermissoesComponent implements OnInit {
   public displayedColumns: string[] = [];
   public columnNames;
   public dados = new MatTableDataSource();
-  @ViewChild('paginator') paginator: MatPaginator;
+  @ViewChild('paginat') paginator: MatPaginator;
   public pageIndex: number = 0;
 
   public permissoes = new Array();

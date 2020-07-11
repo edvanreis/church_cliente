@@ -25,6 +25,7 @@ export class PesquisarPerfilComponent implements OnInit {
   public dados = new MatTableDataSource();
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
+  public perfis = new Array();
 
   constructor(private _router: Router,
     private _perfilService: PerfilService,
@@ -78,6 +79,7 @@ export class PesquisarPerfilComponent implements OnInit {
   getList() {
     this._perfilService.getList().pipe(take(1)).subscribe(item => {
       // console.log(item);
+      this.perfis = item;
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;

@@ -28,7 +28,7 @@ const routes: Routes = [
     MatTooltipModule,
     MatPaginatorModule,
     MatTableModule,
-    MatSortModule,
+    MatSortModule,  
     RouterModule.forChild(routes)
   ],
   exports: [

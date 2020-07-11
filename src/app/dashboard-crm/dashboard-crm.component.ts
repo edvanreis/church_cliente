@@ -101,6 +101,7 @@ export class DashboardCrmComponent implements OnInit {
       { colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalMembrosPendentes, title: 'Membros Pendentes Aprovação', icon: 'warning' },
       { colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalAgendamentosPendentes, title: 'Agendamentos Pendentes Aprovação', icon: 'warning' },
       { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalMembrosAprovados, title: 'Membros', icon: 'person' },
+      { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalMembrosCelulas, title: 'Membros Células', icon: 'person' },
       { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalBatizados, title: 'Membros Batizados', icon: 'person' },
       { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalDizimistas, title: 'Membros Dizimistas', icon: 'person' },
       { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalVisitantes, title: 'Visitantes Mês Atual', icon: 'person' },
@@ -145,6 +146,7 @@ export class DashboardCrmComponent implements OnInit {
   columnsMembros() {
     this.columnNamesMembros = [
       { id: 'nomeCompleto', value: 'Nome' },
+      { id: 'descSitucao', value: 'Situação' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedMembrosColumns = this.columnNamesMembros.map(x => x.id);

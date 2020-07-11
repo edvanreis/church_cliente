@@ -4,9 +4,10 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { PerfilService } from '../../../service/perfil.service';
 import { AlertType } from '../../../model/alert-type';
-import { take } from 'rxjs/operators';
 import { PermissoesService } from '../../../service/permissoes.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { Observable } from 'rxjs';
+import { map, startWith, take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cadastrar-perfil',
@@ -22,6 +23,11 @@ export class CadastrarPerfilComponent implements OnInit {
   public comboPermissao = [];
   public permissoes = [];
   public permissao: any;
+
+  public filtered: Observable<string[]>;
+  public myControl = new FormControl();
+  public licaoSelecionada: any;
+  public nomeValue: any;
 
   constructor(private _router: Router,
     private _notifierService: NotifierService,
@@ -119,11 +125,21 @@ export class CadastrarPerfilComponent implements OnInit {
 
   carregarPermissao() {
     this._permissoesService.getList().pipe(take(1)).subscribe(item => {
+      // console.log(item)
       this.comboPermissao = item;
-      console.log(item);
+      this.filtered = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value, this.comboPermissao))
+      );
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar as permissões!");
     });
+  }
+
+  private _filter(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
   adicionar() {
@@ -140,11 +156,12 @@ export class CadastrarPerfilComponent implements OnInit {
       this.permissoes.push(this.permissao);
       this.form.controls['permissao'].patchValue('');
     }
+    this.nomeValue = '';
   }
 
   //  remove uma linha da grid
-  remover(index): void {
-    this.permissoes.splice(index, 1);
+  remover(i,index): void {
+    this.permissoes.splice(i, 1);
   }
 
   onSelectionChanged($event: MatAutocompleteSelectedEvent, option) {
