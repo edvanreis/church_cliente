@@ -114,6 +114,11 @@ export class PessoaService  implements AbstractService{
       .pipe(map((response: any) => response))
   }
 
+  aprovarReprovado(id) {
+    return this.http.get(this._url+id+"/aprovarReprovado")
+      .pipe(map((response: any) => response))
+  }
+
   reprovar(pessoa) {
     return this.http.post(this._url+"reprovar",pessoa)
       .pipe(map((response: any) => response))

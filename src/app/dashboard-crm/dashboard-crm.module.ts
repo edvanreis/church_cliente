@@ -10,6 +10,7 @@ import { AgendamentoService } from '../service/agendamento.service';
 import { DashboardCrmComponent } from './dashboard-crm.component';
 import { DialogAprovarReprovarAgendamentoModule } from '../pages/dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
 import { DialogAprovarReprovarMembroModule } from '../pages/dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.module';
+import { DiretivesModule } from '../diretives/diretives.module';
 
 
 export const appRoutes: Routes = [
@@ -33,9 +34,11 @@ export const appRoutes: Routes = [
     DialogAprovarReprovarAgendamentoModule,
     DialogAprovarReprovarMembroModule,
     MatTooltipModule,
+    DiretivesModule
   ],
   declarations: [
-    DashboardCrmComponent
+    DashboardCrmComponent,
+    // HasPermissionDirective
   ],
    providers:[
      AgendamentoService

@@ -13,10 +13,10 @@ import { PessoaService } from '../../../service/pessoa.service';
 })
 export class DialogAprovarReprovarMembroComponent implements OnInit {
 
-  public titulo:string;
-  public mensagem:string;
-  public icon:string;
-  public observacao:string;
+  public titulo: string;
+  public mensagem: string;
+  public icon: string;
+  public observacao: string;
 
   constructor(public dialogRef: MatDialogRef<DialogAprovarReprovarMembroComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
@@ -30,20 +30,20 @@ export class DialogAprovarReprovarMembroComponent implements OnInit {
     this.getMensagem();
   }
 
-  getTitulo(){
-    if(this.data.reprovar){
-       this.titulo = 'Reprovar';
-       this.icon = 'not_interested';
-    }else{
+  getTitulo() {
+    if (this.data.reprovar) {
+      this.titulo = 'Reprovar';
+      this.icon = 'not_interested';
+    } else {
       this.titulo = 'Aprovar';
       this.icon = 'done';
     }
   }
 
-  getMensagem(){
-    if(this.data.reprovar){
+  getMensagem() {
+    if (this.data.reprovar) {
       this.mensagem = 'Deseja Realmente reprovar este membro';
-    }else{
+    } else {
       this.mensagem = 'Deseja Realmente aprovar este membro';
     }
   }
@@ -52,15 +52,17 @@ export class DialogAprovarReprovarMembroComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  confirmar(){
-    if(this.data.reprovar){
-    this.reprovar();
-   }else{
-    this.aprovar();
-   }
+  confirmar() {
+    if (this.data.reprovar) {
+      this.reprovar();
+    } else if (this.data.aprovarReprovado) {
+      this.aprovarReprovado();
+    } else {
+      this.aprovar();
+    }
   }
 
-  aprovar(){
+  aprovar() {
     this._service.aprovar(this.data.id).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
       this.setEmiter();
@@ -70,9 +72,19 @@ export class DialogAprovarReprovarMembroComponent implements OnInit {
     });
   }
 
-  reprovar(){
-    if(!this.validField()){
-        return;
+  aprovarReprovado() {
+    this._service.aprovarReprovado(this.data.id).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+      this.setEmiter();
+      this.close();
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.error.message);
+    });
+  }
+
+  reprovar() {
+    if (!this.validField()) {
+      return;
     }
     this._service.reprovar(this.setObj()).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
@@ -83,18 +95,18 @@ export class DialogAprovarReprovarMembroComponent implements OnInit {
     });
   }
 
-  setObj(){
+  setObj() {
     return {
-      id:this.data.id,
-      observacao:this.observacao
+      id: this.data.id,
+      observacao: this.observacao
     }
   }
 
-  validField():boolean{
-    if(!this.observacao && !this.data.aprovar){
+  validField(): boolean {
+    if (!this.observacao && !this.data.aprovar) {
       this._notifierService.notify(AlertType.Error, "Campo observação obrigatório!");
       return false;
-    }else{
+    } else {
       return true;
     }
   }

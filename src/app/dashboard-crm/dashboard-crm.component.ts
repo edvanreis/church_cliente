@@ -34,6 +34,13 @@ export class DashboardCrmComponent implements OnInit {
   public dadosMembros = new MatTableDataSource();
   @ViewChild('paginatorMembro') paginatorMembros: MatPaginator;
 
+  public membrosReprovados = [];
+  @ViewChild(MatSort) sortMembrosRep: MatSort;
+  public displayedMembrosRepColumns: string[] = [];
+  public columnNamesMembrosRep;
+  public dadosMembrosRep = new MatTableDataSource();
+  @ViewChild('paginatorMembroRep') paginatorMembrosRep: MatPaginator;
+
   public agendamentosPendentes = [];
   @ViewChild(MatSort) sortAgendamentosPendentes: MatSort;
   public displayedAgendamentosPendentesColumns: string[] = [];
@@ -75,6 +82,7 @@ export class DashboardCrmComponent implements OnInit {
   ngOnInit() {
     this.carregarCardsTop();
     this.columnsMembros();
+    this.columnsMembrosRep();
     this.columnsAgendamentos();
     this.columnsAgendamentosPendentes();
     this.columnCelulasReuniaoPendente();
@@ -86,6 +94,7 @@ export class DashboardCrmComponent implements OnInit {
       console.log(item)
       this.cardsTop(item);
       this.tableMembrosPendentes(item.membrosPendentes);
+      this.tableMembrosReprovados(item.membrosReprovados)
       this.tableAgendamentosPendentes(item.agendamentosPendentes);
       this.tableAgendamentos(item.agendamentos);
       this.tableCelulasReuniaoAgendamentos(item.groupByCelulaRelatorio);
@@ -122,6 +131,13 @@ export class DashboardCrmComponent implements OnInit {
     this.dadosMembros.paginator = this.paginatorMembros;
   }
 
+  tableMembrosReprovados(item) {
+    this.membrosReprovados = item;
+    this.dadosMembrosRep = new MatTableDataSource(item);
+    this.dadosMembrosRep.sort = this.sortMembrosRep;
+    this.dadosMembrosRep.paginator = this.paginatorMembrosRep;
+  }
+
   tableAgendamentosPendentes(item) {
     this.agendamentosPendentes = item;
     this.dadosAgendamentosPendentes = new MatTableDataSource(item);
@@ -150,6 +166,14 @@ export class DashboardCrmComponent implements OnInit {
       { id: 'id', value: 'Ação' }
     ];
     this.displayedMembrosColumns = this.columnNamesMembros.map(x => x.id);
+  }
+
+  columnsMembrosRep() {
+    this.columnNamesMembrosRep = [
+      { id: 'nomeCompleto', value: 'Nome' },
+      { id: 'id', value: 'Ação' }
+    ];
+    this.displayedMembrosRepColumns = this.columnNamesMembrosRep.map(x => x.id);
   }
 
   columnsAgendamentosPendentes() {
@@ -186,6 +210,10 @@ export class DashboardCrmComponent implements OnInit {
 
   applyFilterMembros(value) {
     this.dadosMembros.filter = value.trim().toLowerCase();
+  }
+
+  applyFilterMembrosRep(value) {
+    this.dadosMembrosRep.filter = value.trim().toLowerCase();
   }
 
   applyFilterAgendamentos(value) {
@@ -243,6 +271,7 @@ export class DashboardCrmComponent implements OnInit {
         id: id,
         aprovar: true,
         reprovar: false,
+        aprovarReprovado:false
       }
     });
   }
@@ -254,9 +283,23 @@ export class DashboardCrmComponent implements OnInit {
         id: id,
         aprovar: false,
         reprovar: true,
+        aprovarReprovado:false
       }
     });
   }
+
+  dialogAprovarMembroRep(id) {
+    const dialogRef = this._dialog.open(DialogAprovarReprovarMembroComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        aprovar: false,
+        reprovar: false,
+        aprovarReprovado:true
+      }
+    });
+  }
+
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       let carregarTop: boolean = false;

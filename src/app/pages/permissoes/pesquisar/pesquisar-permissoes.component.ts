@@ -23,7 +23,7 @@ export class PesquisarPermissoesComponent implements OnInit {
   public displayedColumns: string[] = [];
   public columnNames;
   public dados = new MatTableDataSource();
-  @ViewChild('paginat') paginator: MatPaginator;
+  @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
 
   public permissoes = new Array();
@@ -84,9 +84,6 @@ export class PesquisarPermissoesComponent implements OnInit {
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;
-      console.log(this.dados)
-      console.log(this.sort)
-      console.log(this.paginator)
     }, error => {
       console.log(error)
       this._notifierService.notify(AlertType.Error, error.errors.message);
