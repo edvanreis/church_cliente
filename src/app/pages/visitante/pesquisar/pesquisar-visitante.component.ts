@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { take } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
-import { MatSort, MatPaginator, MatTableDataSource, DateAdapter } from '@angular/material';
+import { MatSort, MatPaginator, MatTableDataSource, DateAdapter, MatDialog } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -11,6 +11,7 @@ import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { AlertType } from '../../../model/alert-type';
 import { PessoaService } from '../../../service/pessoa.service';
 import { Router, ActivatedRoute } from '@angular/router';
+import { DialogConfirmExcluirVisitanteComponent } from '../../dialog/dialog-confirm-excluir-visitante/dialog-confirm-excluir-visitante.component';
 
 
 
@@ -31,7 +32,8 @@ export class PesquisarVisitanteComponent implements OnInit {
     private _etapaVisao: EtapaVisaoService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
-    private dateAdapter: DateAdapter<Date>) { }
+    private dateAdapter: DateAdapter<Date>,
+    private _dialog: MatDialog) { }
 
   public etapa$: Observable<any[]>;
   public pessoa:any= {} as any;
@@ -90,6 +92,10 @@ export class PesquisarVisitanteComponent implements OnInit {
       if (item.type == 'endereco') {
         this.enderecos = item.data;
       }
+      if (item.type == 'confirm-dialog-excluir-visitante') {
+        this.pesquisar();
+      }
+
     });
   }
 
@@ -223,6 +229,15 @@ export class PesquisarVisitanteComponent implements OnInit {
         importacao:true
       },
       skipLocationChange: true
+    });
+  }
+
+  dialogExcluirVisitante(id) {
+    const dialogRef = this._dialog.open(DialogConfirmExcluirVisitanteComponent, {
+      width: '600px',
+      data: {
+        id: id
+      }
     });
   }
 

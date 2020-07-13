@@ -124,5 +124,11 @@ export class PessoaService  implements AbstractService{
       .pipe(map((response: any) => response))
   }
 
+  avisoVisitanteJaCadastrado(pessoa) {
+    return this.http.post(this._url+"avisoVisitanteJaCadastrado",pessoa)
+      .pipe(map((response: any) => response))
+  }
+
+
 
 }

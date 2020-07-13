@@ -11,6 +11,8 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { EnderecoService } from '../../../service/endereco.service';
 import { EscolaridadeService } from '../../../service/escolaridade.service';
 import { PessoaService } from '../../../service/pessoa.service';
+import { MatDialog } from '@angular/material';
+import { DialogConfirmCriarVisitanteComponent } from '../../dialog/dialog-confirm-criar-visitante/dialog-confirm-criar-visitante.component';
 
 @Component({
   selector: 'app-cadastrar-visitante',
@@ -38,7 +40,8 @@ export class CadastrarVisitanteComponent implements OnInit {
     private _router: Router,
     private _avRoute: ActivatedRoute,
     private _contatoService:ContatoService,
-    private _escolaridadeService:EscolaridadeService) { }
+    private _escolaridadeService:EscolaridadeService,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this.getParams();
@@ -114,6 +117,9 @@ export class CadastrarVisitanteComponent implements OnInit {
       if (item.type == 'contatos') {
         this.contatos = item.data;
       }
+      if (item.type == 'confirm-dialog-criar-visitante') {
+        this.emitiClear();
+      }
       // if (item.type == 'igreja-comp') {
       //   this.igreja = item.data;
       // }
@@ -129,21 +135,12 @@ export class CadastrarVisitanteComponent implements OnInit {
       return false;
     }
     if(!this.pessoa.id){
-      this.save();
+      this.dialogAvisoVisitanteJaCadastrado(this.pessoa);
     }else{
       this.updade();
     }
   }
 
-  save(){
-    // console.log(this.pessoa)
-    this._service.save(this.pessoa).pipe(take(1)).subscribe(item => {
-      this.emitiClear();
-      this._notifierService.notify(AlertType.Success, item.value);
-    }, error => {
-      this._notifierService.notify(AlertType.Error, error.message);
-    });
-  }
 
   updade(){
     console.log(this.pessoa)
@@ -217,10 +214,28 @@ export class CadastrarVisitanteComponent implements OnInit {
     if (!this.pessoa.nome) {
       return concat + ' nome!';
     }
+    if (!this.pessoa.sobreNome) {
+      return concat + ' Sobre Nome!';
+    }
     if (!this.pessoa.igreja) {
       return concat + ' Igreja!';
     }
     return null;
+  }
+
+  dialogAvisoVisitanteJaCadastrado(pessoa) {
+    let obj = {} as any;
+    obj.nome = pessoa.nome;
+    obj.sobreNome = pessoa.sobreNome;
+    obj.visitante = true;
+
+    const dialogRef = this._dialog.open(DialogConfirmCriarVisitanteComponent, {
+      width: '600px',
+      data: {
+        pessoaCadastrada: this._service.avisoVisitanteJaCadastrado(obj),
+        pessoa:this.pessoa
+      }
+    });
   }
 
 

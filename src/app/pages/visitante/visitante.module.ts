@@ -14,6 +14,8 @@ import { ContatosModule } from '../componentes/contatos/contatos.module';
 import { VisitanteService } from '../../service/visitante.service';
 import { EtapaVisaoModule } from '../componentes/etapa-visao/etapa-visao.module';
 import { EscolaridadeService } from '../../service/escolaridade.service';
+import { DialogConfirmExcluirVisitanteModule } from '../dialog/dialog-confirm-excluir-visitante/dialog-confirm-excluir-visitante.module';
+import { DialogConfirmCriarVisitanteModule } from '../dialog/dialog-confirm-criar-visitante/dialog-confirm-criar-visitante.module';
 
 const routes: Routes = [
   { path: 'pesquisar', component:  PesquisarVisitanteComponent , data: { animation: 'buttons' }},
@@ -40,6 +42,8 @@ const routes: Routes = [
     MatPaginatorModule,
     EtapaVisaoModule,
     MatTooltipModule,
+    DialogConfirmExcluirVisitanteModule,
+    DialogConfirmCriarVisitanteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
