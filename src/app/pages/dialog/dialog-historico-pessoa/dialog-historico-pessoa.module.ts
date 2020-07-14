@@ -24,6 +24,8 @@ import { PesquisarMembroComponent } from '../../membro/pesquisar/pesquisar/pesqu
   declarations: [
     DialogHistoricoPessoaComponent
   ],
-  entryComponents: [DialogHistoricoPessoaComponent,PesquisarMembroComponent]
+  entryComponents: [
+    DialogHistoricoPessoaComponent
+  ]
 })
 export class DialogHistoricoPessoaModule { }

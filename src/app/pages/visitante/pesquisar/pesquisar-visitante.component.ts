@@ -11,7 +11,8 @@ import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { AlertType } from '../../../model/alert-type';
 import { PessoaService } from '../../../service/pessoa.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { DialogConfirmExcluirVisitanteComponent } from '../../dialog/dialog-confirm-excluir-visitante/dialog-confirm-excluir-visitante.component';
+import { DialogConfirmExcluirPesssoaComponent } from '../../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.component';
+
 
 
 
@@ -92,7 +93,7 @@ export class PesquisarVisitanteComponent implements OnInit {
       if (item.type == 'endereco') {
         this.enderecos = item.data;
       }
-      if (item.type == 'confirm-dialog-excluir-visitante') {
+      if (item.type == 'confirm-dialog-excluir-pessoa') {
         this.pesquisar();
       }
 
@@ -233,7 +234,7 @@ export class PesquisarVisitanteComponent implements OnInit {
   }
 
   dialogExcluirVisitante(id) {
-    const dialogRef = this._dialog.open(DialogConfirmExcluirVisitanteComponent, {
+    const dialogRef = this._dialog.open(DialogConfirmExcluirPesssoaComponent, {
       width: '600px',
       data: {
         id: id

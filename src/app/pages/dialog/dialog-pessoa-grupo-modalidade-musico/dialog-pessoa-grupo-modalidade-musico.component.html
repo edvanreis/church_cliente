@@ -1,0 +1,50 @@
+<div mat-dialog-content>
+  <h4 mat-dialog-title>
+    <mat-toolbar class="cdk-header">
+      <i class="material-icons">music_video</i>
+      <h1 class="mat-headline center-align">Modalidade Pessoa</h1>
+    </mat-toolbar>
+  </h4>
+  <div class="cdk-container">
+    <div>
+      <mat-form-field class="full-width-field">
+        <mat-label>Selecione...</mat-label>
+        <mat-select id="modalidades" [(ngModel)]="modalidade">
+          <mat-option *ngFor="let item of modalidades" [value]="item">
+            {{item.nome}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div>
+      <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
+        <i class="material-icons">add</i>adicionar</button>
+    </div>
+    <br />
+    <br />
+    <div class="table-responsive" *ngIf="modalidadesPessoa.length > 0">
+      <table>
+        <thead class="text-primary">
+          <th></th>
+          <th>Modalidade</th>
+          <th>Remover</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let item of modalidadesPessoa;let i = index">
+            <td>{{ i+1 }}</td>
+            <td>{{ item.nome}}</td>
+            <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
+                  class="material-icons">delete</i></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" type="submit" (click)="confirmar()">
+      <i class="material-icons">delete_forever</i>Confirmar</button>
+    <div fxFlex></div>
+    <button mat-raised-button color="warn" type="submit" (click)="close()">
+      <i class="material-icons">close</i>Fechar</button>
+  </div>
+</div>

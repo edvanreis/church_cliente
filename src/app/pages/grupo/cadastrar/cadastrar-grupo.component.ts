@@ -7,10 +7,11 @@ import { take, startWith, map } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { MatAutocompleteSelectedEvent, DateAdapter } from '@angular/material';
+import { MatAutocompleteSelectedEvent, DateAdapter, MatDialog } from '@angular/material';
 import { GrupoService } from '../../../service/grupo.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
+import { DialogPessoaGrupoModalidadeMusicoComponent } from '../../dialog/dialog-pessoa-grupo-modalidade-musico/dialog-pessoa-grupo-modalidade-musico.component';
 
 const ELEMENT_DATA_TIPO_PESSOA: any = [
   { id: 'L', nome: 'Líder' },
@@ -46,6 +47,7 @@ export class CadastrarGrupoComponent implements OnInit {
   public tipo: any;
   public subGrupo: boolean = false;
   public grupoValue:any;
+  public isLouvor:boolean = false;
 
 
   constructor(private _tipoGrupoService: TipoGrupoService,
@@ -56,7 +58,8 @@ export class CadastrarGrupoComponent implements OnInit {
     private _datePipe: DatePipe,
     private _router: Router,
     private _avRoute: ActivatedRoute,
-    private _dateAdapter: DateAdapter<Date>) { }
+    private _dateAdapter: DateAdapter<Date>,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -126,6 +129,13 @@ export class CadastrarGrupoComponent implements OnInit {
         this.carregarMembro(this.igrejaSelecionada.id);
         this.carregarGrupos({igreja:{id:this.igrejaSelecionada.id}});
       }
+      if (item.type == 'dialog-pessoa-modalidade') {
+          this.membros.forEach(element => {
+            if(element.id == item.data.id){
+                element.modalidades = item.data.modalidades;
+            }
+          });
+      }
     });
   }
 
@@ -155,7 +165,7 @@ export class CadastrarGrupoComponent implements OnInit {
 
   salvar() {
     if (this.id) {
-
+      this.update();
     } else {
       this.save();
     }
@@ -169,9 +179,21 @@ export class CadastrarGrupoComponent implements OnInit {
       this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
-      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+      this._notifierService.notify(AlertType.Error, "Erro ao salvar o grupo de trabalho!");
     });
+  }
 
+  update() {
+    console.log(this.setObj());
+    if (!this.validField()) {
+      return;
+    }
+    this._serviceGruop.update(this.setObj()).pipe(take(1)).subscribe(item => {
+      this.voltar();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao salvar o grupo de trabalho!");
+    });
   }
 
 
@@ -300,6 +322,25 @@ export class CadastrarGrupoComponent implements OnInit {
       this.subGrupo = true;
     } else {
       this.subGrupo = false;
+    }
+  }
+
+
+  dialogPessoaGrupoModalidadeMusico(id) {
+    const dialogRef = this._dialog.open(DialogPessoaGrupoModalidadeMusicoComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        modalidades:this._serviceGruop.getModalidade()
+      }
+    });
+  }
+
+  onSelectionChanged(nome){
+    if(nome=='Louvor'){
+      this.isLouvor = true;
+    }else{
+      this.isLouvor = false;
     }
   }
 }

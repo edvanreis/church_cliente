@@ -14,7 +14,7 @@ import { ContatosModule } from '../componentes/contatos/contatos.module';
 import { VisitanteService } from '../../service/visitante.service';
 import { EtapaVisaoModule } from '../componentes/etapa-visao/etapa-visao.module';
 import { EscolaridadeService } from '../../service/escolaridade.service';
-import { DialogConfirmExcluirVisitanteModule } from '../dialog/dialog-confirm-excluir-visitante/dialog-confirm-excluir-visitante.module';
+import {  DialogConfirmExcluirPessoaModule } from '../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.module';
 import { DialogConfirmCriarVisitanteModule } from '../dialog/dialog-confirm-criar-visitante/dialog-confirm-criar-visitante.module';
 
 const routes: Routes = [
@@ -42,7 +42,7 @@ const routes: Routes = [
     MatPaginatorModule,
     EtapaVisaoModule,
     MatTooltipModule,
-    DialogConfirmExcluirVisitanteModule,
+    DialogConfirmExcluirPessoaModule,
     DialogConfirmCriarVisitanteModule,
     RouterModule.forChild(routes)
   ],

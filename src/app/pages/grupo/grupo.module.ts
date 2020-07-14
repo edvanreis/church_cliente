@@ -10,6 +10,7 @@ import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenent
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
 import { PipeModule } from '../../pipes/pipe.module';
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
+import { DialogPessoaGrupoModalidadeMusicoModule } from '../dialog/dialog-pessoa-grupo-modalidade-musico/dialog-pessoa-grupo-modalidade-musico.module';
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarGrupoComponent , data: { animation: 'buttons' }},
@@ -39,6 +40,7 @@ const routes: Routes = [
     MatRadioModule,
     MatDatepickerModule,
     MatTooltipModule,
+    DialogPessoaGrupoModalidadeMusicoModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

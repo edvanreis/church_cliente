@@ -22,6 +22,8 @@ import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component
 import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro.component';
 import { DialogAprovarReprovarAgendamentoModule } from '../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
 import { DialogAprovarReprovarMembroModule } from '../dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.module';
+import { DialogConfirmExcluirPessoaModule } from '../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.module';
+
 
 
 
@@ -65,6 +67,7 @@ const routes: Routes = [
     DialogConfirmPessoaModule,
     DialogAprovarReprovarAgendamentoModule,
     DialogAprovarReprovarMembroModule,
+    DialogConfirmExcluirPessoaModule,
     RouterModule.forChild(routes)
   ],
   exports: [

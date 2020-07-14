@@ -23,7 +23,7 @@
               <mat-form-field class="full-width-field"  >
                 <mat-label>Tipo de Grupos de Trabalho</mat-label>
                 <mat-select id="tipo" formControlName="tipo">
-                  <mat-option *ngFor="let item of tipoGrupo$| async" [value]="item.id" >
+                  <mat-option *ngFor="let item of tipoGrupo$| async" [value]="item.id" (onSelectionChange)="onSelectionChanged(item.nome)" >
                     {{item.nome}}
                   </mat-option>
                 </mat-select>
@@ -104,8 +104,14 @@
                 <td>{{ i+1}}</td>
                 <td>{{ item.nomeCompleto}}</td>
                 <td>{{ item.tipo=='L'?'Líder':item.tipo=='C'?'Co-Líder':'Membro'}}</td>
-                <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemoverMembro(i,item)"><i
-                      class="material-icons">delete</i></span></td>
+                <td>
+                  <span *ngIf="isLouvor" style="color: #1d68a5;cursor: pointer" (click)="dialogPessoaGrupoModalidadeMusico(item.id)">
+                    <i class="material-icons">music_video</i>
+                  </span>
+                  <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemoverMembro(i,item)">
+                    <i class="material-icons">delete</i>
+                  </span>
+                </td>
               </tr>
             </tbody>
           </table>

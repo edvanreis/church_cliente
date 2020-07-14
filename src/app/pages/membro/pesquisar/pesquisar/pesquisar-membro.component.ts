@@ -14,6 +14,8 @@ import { PessoaService } from '../../../../service/pessoa.service';
 import { DialogEnviarCartaComponent } from '../../../dialog/dialog-enviar-carta/dialog-enviar-carta.component';
 import { DialogHistoricoPessoaComponent } from '../../../dialog/dialog-historico-pessoa/dialog-historico-pessoa.component';
 import { DialogAtivarInativarComponent } from '../../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
+import { DialogConfirmExcluirPesssoaComponent } from '../../../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.component';
+
 
 
 
@@ -97,6 +99,9 @@ export class PesquisarMembroComponent implements OnInit {
         this.enderecos = item.data;
       }
       if (item.type == 'status') {
+        this.pesquisar();
+      }
+      if (item.type == 'confirm-dialog-excluir-pessoa') {
         this.pesquisar();
       }
     });
@@ -263,6 +268,15 @@ export class PesquisarMembroComponent implements OnInit {
       data: {
         id: id,
         controller: 'pessoa'
+      }
+    });
+  }
+
+  dialogExcluirMembro(id) {
+    const dialogRef = this._dialog.open(DialogConfirmExcluirPesssoaComponent, {
+      width: '600px',
+      data: {
+        id: id
       }
     });
   }

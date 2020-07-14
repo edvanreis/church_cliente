@@ -60,4 +60,9 @@ export class GrupoService {
   }
 
 
+  getModalidade() {
+    return this.http.get(this._url+"musicoModalidades")
+      .pipe(map((response: any) => response))
+  }
+
 }

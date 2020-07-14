@@ -7,13 +7,13 @@ import { take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
 
 @Component({
-  selector: 'app-dialog-confirm-excluir-visitante',
-  templateUrl: './dialog-confirm-excluir-visitante.component.html',
-  styleUrls: ['./dialog-confirm-excluir-visitante.component.scss']
+  selector: 'app-dialog-confirm-excluir-pessoa',
+  templateUrl: './dialog-confirm-excluir-pessoa.component.html',
+  styleUrls: ['./dialog-confirm-excluir-pessoa.component.scss']
 })
-export class DialogConfirmExcluirVisitanteComponent implements OnInit {
+export class DialogConfirmExcluirPesssoaComponent implements OnInit {
 
-  constructor(public dialogRef: MatDialogRef<DialogConfirmExcluirVisitanteComponent>,
+  constructor(public dialogRef: MatDialogRef<DialogConfirmExcluirPesssoaComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     private _emitirEventoService: EmitirEventoService,
     private _notifierService: NotifierService,
@@ -28,7 +28,7 @@ export class DialogConfirmExcluirVisitanteComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir('confirm-dialog-excluir-visitante','');
+    this._emitirEventoService.emitir('confirm-dialog-excluir-pessoa','');
   }
 
   confirmar() {

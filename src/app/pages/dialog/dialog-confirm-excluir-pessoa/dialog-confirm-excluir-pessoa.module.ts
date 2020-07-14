@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DialogConfirmExcluirVisitanteComponent } from './dialog-confirm-excluir-visitante.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatInputModule, MatButtonModule, MatToolbarModule } from '@angular/material';
+import { DialogConfirmExcluirPesssoaComponent } from './dialog-confirm-excluir-pessoa.component';
 
 @NgModule({
   imports: [
@@ -16,10 +16,10 @@ import { MatInputModule, MatButtonModule, MatToolbarModule } from '@angular/mate
     MatToolbarModule
   ],
   declarations: [
-    DialogConfirmExcluirVisitanteComponent
+    DialogConfirmExcluirPesssoaComponent
   ],
   entryComponents: [
-    DialogConfirmExcluirVisitanteComponent
+    DialogConfirmExcluirPesssoaComponent
   ]
 })
-export class DialogConfirmExcluirVisitanteModule { }
+export class DialogConfirmExcluirPessoaModule { }
