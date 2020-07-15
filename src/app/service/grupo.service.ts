@@ -65,4 +65,9 @@ export class GrupoService {
       .pipe(map((response: any) => response))
   }
 
+  removerPessoaModalidade(obj) {
+    return this.http.post(this._url+"removerPessoaModalidade",obj)
+      .pipe(map((response: any) => response))
+  }
+
 }

@@ -12,6 +12,7 @@ import { GrupoService } from '../../../service/grupo.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DatePipe } from '@angular/common';
 import { DialogPessoaGrupoModalidadeMusicoComponent } from '../../dialog/dialog-pessoa-grupo-modalidade-musico/dialog-pessoa-grupo-modalidade-musico.component';
+import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 
 const ELEMENT_DATA_TIPO_PESSOA: any = [
   { id: 'L', nome: 'Líder' },
@@ -46,8 +47,8 @@ export class CadastrarGrupoComponent implements OnInit {
   public label: any;
   public tipo: any;
   public subGrupo: boolean = false;
-  public grupoValue:any;
-  public isLouvor:boolean = false;
+  public grupoValue: any;
+  public isLouvor: boolean = false;
 
 
   constructor(private _tipoGrupoService: TipoGrupoService,
@@ -127,14 +128,17 @@ export class CadastrarGrupoComponent implements OnInit {
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
         this.carregarMembro(this.igrejaSelecionada.id);
-        this.carregarGrupos({igreja:{id:this.igrejaSelecionada.id}});
+        this.carregarGrupos({ igreja: { id: this.igrejaSelecionada.id } });
       }
       if (item.type == 'dialog-pessoa-modalidade') {
-          this.membros.forEach(element => {
-            if(element.id == item.data.id){
-                element.modalidades = item.data.modalidades;
-            }
-          });
+        this.membros.forEach(element => {
+          if (element.id == item.data.id) {
+            element.modalidades = item.data.modalidades;
+          }
+        });
+      }
+      if (item.type == 'confirm-dialog-pessoa-grupo') {
+        this.membros.splice(item.data, 1);
       }
     });
   }
@@ -198,15 +202,26 @@ export class CadastrarGrupoComponent implements OnInit {
 
 
   setObj() {
-    return {
-      nome: this.form.controls['nome'].value,
-      descricao: this.form.controls['descricao'].value,
-      igreja: { id: this.igrejaSelecionada.id, visaoCelular: this.igrejaSelecionada.visaoCelular },
-      pessoas: this.membros,
-      tipo: this.getTipoSelecionado(),
-      grupo: this.getGrupoSelecionado(),
-      dataAbertura: this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy')
+    let obj = {} as any;
+    obj.nome = this.form.controls['nome'].value;
+    obj.descricao = this.form.controls['descricao'].value;
+    obj.tipo = this.getTipoSelecionado();
+    obj.grupo = this.getGrupoSelecionado();
+    obj.dataAbertura = this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy');
+
+    if (this.membros.length > 0) {
+      obj.pessoas = this.membros;
     }
+
+    if (this.igrejaSelecionada) {
+      obj.igreja = { id: this.igrejaSelecionada.id, visaoCelular: this.igrejaSelecionada.visaoCelular };
+    }
+
+    if (this.id) {
+      obj.id = this.id;
+    }
+    return obj;
+
   }
 
   getTipoSelecionado() {
@@ -289,16 +304,19 @@ export class CadastrarGrupoComponent implements OnInit {
       this.form.controls['dataAbertura'].patchValue(new Date(item.dataAberturaToDate));
       if (item.tipo) {
         this.form.controls['tipo'].patchValue(item.tipo.id);
+        if(item.tipo.nome === 'Louvor'){
+           this.isLouvor = true;
+        }
       }
       if (item.pessoas) {
         this.membros = item.pessoas;
       }
-      if(item.isSubGrupo){
+      if (item.isSubGrupo) {
         this.form.controls['radio'].patchValue('2');
         this.subGrupo = true;
         this.grupoSelecionado = item.grupo;
         this.grupoValue = item.grupo.nome
-      }else{
+      } else {
         this.form.controls['radio'].patchValue('1');
         this.subGrupo = false;
       }
@@ -326,21 +344,37 @@ export class CadastrarGrupoComponent implements OnInit {
   }
 
 
-  dialogPessoaGrupoModalidadeMusico(id) {
+  dialogPessoaGrupoModalidadeMusico(item) {
+    console.log(item)
     const dialogRef = this._dialog.open(DialogPessoaGrupoModalidadeMusicoComponent, {
       width: '600px',
       data: {
-        id: id,
-        modalidades:this._serviceGruop.getModalidade()
+        id: item.id,
+        grupoId: Number.parseInt(this.id),
+        modalidades: this._serviceGruop.getModalidade(),
+        modalidadesPessoa: item.modalidades
+
       }
     });
   }
 
-  onSelectionChanged(nome){
-    if(nome=='Louvor'){
+  onSelectionChanged(nome) {
+    if (nome == 'Louvor') {
       this.isLouvor = true;
-    }else{
+    } else {
       this.isLouvor = false;
     }
+  }
+
+  dialogRemover(i, item) {
+    const dialogRef = this._dialog.open(DialogConfirmPessoaComponent, {
+      width: '600px',
+      data: {
+        id: Number.parseInt(this.id),
+        idPessoa: item.id,
+        controller: "grupoTrabalho",
+        item: i
+      }
+    });
   }
 }

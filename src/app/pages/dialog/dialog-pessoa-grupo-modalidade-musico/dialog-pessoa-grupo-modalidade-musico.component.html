@@ -33,7 +33,7 @@
           <tr *ngFor="let item of modalidadesPessoa;let i = index">
             <td>{{ i+1 }}</td>
             <td>{{ item.nome}}</td>
-            <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(i)"><i
+            <td><span style="color: #1d68a5;cursor: pointer" (click)="remover(item,i)"><i
                   class="material-icons">delete</i></span></td>
           </tr>
         </tbody>

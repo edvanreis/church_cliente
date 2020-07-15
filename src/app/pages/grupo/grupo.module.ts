@@ -11,6 +11,7 @@ import { MembroComponenteModule } from '../componentes/membro/membro-componente.
 import { PipeModule } from '../../pipes/pipe.module';
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 import { DialogPessoaGrupoModalidadeMusicoModule } from '../dialog/dialog-pessoa-grupo-modalidade-musico/dialog-pessoa-grupo-modalidade-musico.module';
+import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarGrupoComponent , data: { animation: 'buttons' }},
@@ -41,6 +42,7 @@ const routes: Routes = [
     MatDatepickerModule,
     MatTooltipModule,
     DialogPessoaGrupoModalidadeMusicoModule,
+    DialogConfirmPessoaModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

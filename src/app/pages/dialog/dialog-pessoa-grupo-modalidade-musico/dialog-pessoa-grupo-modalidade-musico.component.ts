@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { GrupoService } from '../../../service/grupo.service';
 
 @Component({
   selector: 'app-dialog-pessoa-grupo-modalidade-musico',
@@ -21,11 +22,13 @@ export class DialogPessoaGrupoModalidadeMusicoComponent implements OnInit {
   constructor(public dialogRef: MatDialogRef<DialogPessoaGrupoModalidadeMusicoComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
     private _notifierService: NotifierService,
-    private _emitirEventoService: EmitirEventoService) { }
+    private _emitirEventoService: EmitirEventoService,
+    private _service:GrupoService) { }
 
   ngOnInit() {
     console.log(this.data)
     this.getModalidades();
+    this.setModalidadePessoa();
   }
 
   getModalidades(): void {
@@ -33,6 +36,12 @@ export class DialogPessoaGrupoModalidadeMusicoComponent implements OnInit {
       console.log(map)
       this.modalidades = map;
     });
+  }
+
+  setModalidadePessoa(){
+    if(this.data.modalidadesPessoa && this.data.modalidadesPessoa.length > 0){
+        this.modalidadesPessoa = this.data.modalidadesPessoa;
+    }
   }
 
   adicionar() {
@@ -43,8 +52,20 @@ export class DialogPessoaGrupoModalidadeMusicoComponent implements OnInit {
     this.modalidadesPessoa.push(this.modalidade);
   }
 
-  remover(i){
-    this.modalidadesPessoa.splice(i, 1);
+  remover(item,i){
+
+    let obj = {
+      id:this.data.grupoId,
+      pessoaId:this.data.id,
+      modalidadeId:item.id
+    }
+
+    this._service.removerPessoaModalidade(obj).pipe(take(1)).subscribe(item => {
+      this.modalidadesPessoa.splice(i, 1);
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Item removido com sucesso");
+    });
   }
 
   setEmiter(): void {
@@ -65,6 +86,8 @@ export class DialogPessoaGrupoModalidadeMusicoComponent implements OnInit {
     this.setEmiter();
     this.close();
   }
+
+
 
 
 }
