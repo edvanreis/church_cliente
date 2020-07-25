@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { EnderecoComponent } from './endereco.component';
-import { MatCheckboxModule, MatSelectModule, MatOptionModule, MatButtonModule, MatIconModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatCardModule, MatToolbarModule } from '@angular/material';
+import { MatCheckboxModule, MatSelectModule, MatOptionModule, MatButtonModule, MatIconModule, MatDividerModule, MatFormFieldModule, MatInputModule, MatCardModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 import { TextMaskModule } from 'angular2-text-mask';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -29,7 +29,8 @@ import { PipeModule } from '../../../pipes/pipe.module';
     MatCheckboxModule,
     DialogConfirmModule,
     DialogAtualizarEnderecoModule,
-    PipeModule
+    PipeModule,
+    MatTooltipModule
   ],
   exports :[
     EnderecoComponent

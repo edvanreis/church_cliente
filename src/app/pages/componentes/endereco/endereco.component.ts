@@ -8,7 +8,7 @@ import { EnderecoService } from '../../../service/endereco.service';
 import { DialogAtualizarEnderecoComponent } from '../../dialog/dialog-atualizar-endereco/dialog-atualizar-endereco.component';
 import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confirm.component';
 import { HelperChurch } from '../../../helper/helper.church';
-import { PessoaService } from '../../../service/pessoa.service';
+
 
 
 
@@ -27,7 +27,7 @@ export class EnderecoComponent implements OnInit {
   @Input('sizeLimitOne') sizeLimitOne = false;
   @Input('pessoa') pessoa = false;
   @Input('idPessoa') idPessoa;
-  @Input('idAssociado') idAssociado;
+  @Input('associadoId') associadoId;
   public tipoEndereco = [];
   public observacao: boolean = false;
 
@@ -232,6 +232,7 @@ export class EnderecoComponent implements OnInit {
       this.endereco.codigo = 1;
     }
     this.enderecos.push(this.endereco);
+    this.form.reset();
   }
 
 
@@ -255,7 +256,7 @@ export class EnderecoComponent implements OnInit {
       data: {
         controller: 'endereco',
         item: item,
-        idAssociado: this.idAssociado,
+        associadoId: this.associadoId,
         index: i
       }
     });

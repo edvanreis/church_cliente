@@ -32,7 +32,7 @@ export class DialogConfirmComponent implements OnInit {
   }
 
   confirmar() {
-    if (!this.data.idAssociado) {
+    if (!this.data.associadoId || !this.data.item.id) {
       this.setEmiter();
       this.close();
     } else {

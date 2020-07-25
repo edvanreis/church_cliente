@@ -32,8 +32,11 @@ export class ContatosComponent implements OnInit {
   public contatos = [];
   public comboTipoContatos = [];
   public tipoSelected: any;
-  @Input('idPessoa') idPessoa;
-  @Input('idAssociado') idAssociado;
+  @Input('membroId') membroId;
+  @Input('visitanteId') visitanteId;
+  @Input('associadoId') associadoId;
+  @Input('principal') principal;
+  public contatoValue:any;
 
 
   constructor(private _contatoService: ContatoService,
@@ -117,16 +120,22 @@ export class ContatosComponent implements OnInit {
 
     let obj = {} as any;
 
-    obj.tipo = this.tipoSelected;
+    obj.tipo = {id:this.tipoSelected.id,nome:this.tipoSelected.nome};
     obj.descricao = descricao;
     obj.whatsapp = HelperChurch.isBoolean(this.form.controls['whatsapp'].value);
-    obj.login = HelperChurch.isBoolean(this.form.controls['emailPrincipal'].value);
-    if (this.contatos.length!=0) {
-      obj.codigo = this.contatos[this.contatos.length - 1].codigo + 1;
+    // obj.login = true;
+    if(HelperChurch.isBoolean(this.form.controls['emailPrincipal'].value)){
+      obj.isLoginStr = 'true';
     }else{
-      obj.codigo = 1;
+      obj.isLoginStr = 'false';
     }
-    // console.log(obj)
+
+    if(this.contatos.length == 0){
+      obj.codigo = 1;
+    }else{
+      obj.codigo = this.contatos[this.contatos.length-1].codigo + 1
+    }
+
     this.contatos.push(obj);
     this.clearInputContato();
     this.setEmiter();
@@ -143,6 +152,7 @@ export class ContatosComponent implements OnInit {
     } else if (this.form.controls['email'].value) {
       contato = this.form.controls['email'].value;
     }
+    // console.log(contato)
     return contato;
   }
 
@@ -171,7 +181,7 @@ export class ContatosComponent implements OnInit {
     let possuiEmailPrincipal: boolean = false;
     this.contatos.forEach(element => {
       // console.log(element);
-      console.log(this.form.controls['emailPrincipal'].value);
+      // console.log(this.form.controls['emailPrincipal'].value);
       if (element.login) {
         if (element.login == this.form.controls['emailPrincipal'].value) {
           possuiEmailPrincipal = true;
@@ -192,6 +202,7 @@ export class ContatosComponent implements OnInit {
     this.form.controls['contatoCelular'].patchValue('');
     this.form.controls['whatsapp'].patchValue('');
     this.form.controls['emailPrincipal'].patchValue(false);
+    this.contatoValue = '';
   }
 
   getEmiter(): void {
@@ -204,13 +215,19 @@ export class ContatosComponent implements OnInit {
         // this.contatos = item.data;
         for (let i = 0; i < item.data.length; i++) {
           let contato = {} as any;
-          contato.codigo = i + 1;
+		      contato.codigo = i + 1;
           contato.id = item.data[i].id;
           contato.tipo = item.data[i].tipo;
           contato.descricao = item.data[i].descricao
           contato.whatsapp = item.data[i].whatsapp
-          contato.login = item.data[i].login
-          contato.idPessoa = this.idPessoa;
+          // contato.login = item.data[i].login
+          contato.isLoginStr = item.data[i].isLoginStr
+          if(this.visitanteId){
+            contato.visitanteId = this.visitanteId;
+          }else{
+            contato.membroId = this.membroId;
+          }
+
           this.contatos.push(contato)
         }
         // console.log(this.contatos)
@@ -245,7 +262,8 @@ export class ContatosComponent implements OnInit {
       width: '600px',
       data: {
         item: item,
-        comboTipos: this.comboTipoContatos
+        comboTipos: this.comboTipoContatos,
+        associadoId:this.associadoId
       }
     });
   }
@@ -257,7 +275,7 @@ export class ContatosComponent implements OnInit {
       data: {
         controller:'contato',
         item:item,
-        idAssociado: this.idAssociado,
+        associadoId: this.associadoId,
         index:i
       }
     });

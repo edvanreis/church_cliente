@@ -10,7 +10,7 @@ import { AlertType } from '../../../../model/alert-type';
 import { EmitirEventoService } from '../../../../service/emitir-evento.service';
 import { EtapaVisaoService } from '../../../../service/etapa-visao.service';
 import { ExcelService } from '../../../../service/excel.service';
-import { PessoaService } from '../../../../service/pessoa.service';
+import { MembroService } from '../../../../service/membro.service';
 import { DialogEnviarCartaComponent } from '../../../dialog/dialog-enviar-carta/dialog-enviar-carta.component';
 import { DialogHistoricoPessoaComponent } from '../../../dialog/dialog-historico-pessoa/dialog-historico-pessoa.component';
 import { DialogAtivarInativarComponent } from '../../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
@@ -29,7 +29,7 @@ export class PesquisarMembroComponent implements OnInit {
 
 
   constructor(private _emitirEventoService: EmitirEventoService,
-    private _service: PessoaService,
+    private _service: MembroService,
     private _notifierService: NotifierService,
     private _excelService: ExcelService,
     private _datePipe: DatePipe,
@@ -120,7 +120,8 @@ export class PesquisarMembroComponent implements OnInit {
       this.loading = false;
     }, error => {
       // console.log(error);
-      this.loading = false;
+      this.pessoas = [];
+      this.dados = new MatTableDataSource<Element>(this.pessoas);
       this._notifierService.notify(AlertType.Error, error.error.message);
 
     });
@@ -148,6 +149,7 @@ export class PesquisarMembroComponent implements OnInit {
       this.pessoa.visitante = false;
       this.pessoa.cartaRecomendacao = this.dadosPessoais.cartaRecomendacao;
       this.pessoa.status = this.dadosPessoais.status;
+      this.pessoa.igreja = this.dadosPessoais.igreja;
 
     }
     if (this.enderecos) {
@@ -281,5 +283,8 @@ export class PesquisarMembroComponent implements OnInit {
     });
   }
 
+  cadastrar() {
+    this._router.navigate(['/auth/membro/cadastrar']);
+  }
 
 }

@@ -7,9 +7,9 @@ import { tap } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
-export class PessoaService  implements AbstractService{
+export class MembroService  implements AbstractService{
 
-  private _url = environment.url + "pessoa/";
+  private _url = environment.url + "membro/";
 
   constructor(public http: HttpClient) { }
 
@@ -31,23 +31,23 @@ export class PessoaService  implements AbstractService{
       .pipe(tap((response: any) => response));
   }
 
-  save(pessoa) {
-    return this.http.post(this._url, pessoa)
+  save(membro) {
+    return this.http.post(this._url, membro)
       .pipe(map((response: any) => response))
   }
 
-  pesquisar(pessoa) {
-    return this.http.post(this._url + "pesquisar", pessoa)
+  pesquisar(membro) {
+    return this.http.post(this._url + "pesquisar", membro)
       .pipe(map((response: any) => response))
   }
 
-  obterPessoa(id) {
-    return this.http.get(this._url + id + "/obterPessoa")
+  obterMembro(id) {
+    return this.http.get(this._url + id + "/obterMembro")
       .pipe(tap((response: any) => response));
   }
 
-  update(pessoa) {
-    return this.http.put(this._url, pessoa)
+  update(membro) {
+    return this.http.put(this._url, membro)
       .pipe(map((response: any) => response))
   }
 
@@ -61,19 +61,19 @@ export class PessoaService  implements AbstractService{
       .pipe(tap((response: any) => response));
   }
 
-  inativarPessoa(pessoa) {
-    return this.http.put(this._url + "inativar", pessoa)
+  inativarPessoa(membro) {
+    return this.http.put(this._url + "inativar", membro)
       .pipe(map((response: any) => response))
   }
 
-  reativarPessoa(pessoa) {
-    return this.http.put(this._url + "reativar", pessoa)
+  reativarPessoa(membro) {
+    return this.http.put(this._url + "reativar", membro)
       .pipe(map((response: any) => response))
   }
 
 
-  pessoaRede(id) {
-    return this.http.get(this._url + id + "/pessoaRede")
+  membroRede(id) {
+    return this.http.get(this._url + id + "/membroRede")
       .pipe(tap((response: any) => response));
   }
 
@@ -119,13 +119,13 @@ export class PessoaService  implements AbstractService{
       .pipe(map((response: any) => response))
   }
 
-  reprovar(pessoa) {
-    return this.http.post(this._url+"reprovar",pessoa)
+  reprovar(membro) {
+    return this.http.post(this._url+"reprovar",membro)
       .pipe(map((response: any) => response))
   }
 
-  avisoVisitanteJaCadastrado(pessoa) {
-    return this.http.post(this._url+"avisoVisitanteJaCadastrado",pessoa)
+  avisoVisitanteJaCadastrado(membro) {
+    return this.http.post(this._url+"avisoVisitanteJaCadastrado",membro)
       .pipe(map((response: any) => response))
   }
 

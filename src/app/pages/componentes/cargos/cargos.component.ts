@@ -24,7 +24,7 @@ export class CargosComponent implements OnInit {
   public cargoSelecionado;
   public cargos$: Observable<any[]>;
   public cargos = [];
-  @Input('idAssociado') idAssociado;
+  @Input('associadoId') associadoId;
 
   constructor(private _service: CargoService,
     private _notifierService: NotifierService,
@@ -72,6 +72,7 @@ export class CargosComponent implements OnInit {
     }
     this.cargos.push(this.cargoSelecionado);
     this.setEmiter();
+    this.cargoSelecionado = '';
   }
 
   dialogRemover(i, item) {
@@ -81,7 +82,7 @@ export class CargosComponent implements OnInit {
       data: {
         controller: 'cargo',
         item: item,
-        idAssociado: this.idAssociado,
+        associadoId: this.associadoId,
         index: i
       }
     });

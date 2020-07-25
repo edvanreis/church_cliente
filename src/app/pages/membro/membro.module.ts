@@ -1,9 +1,11 @@
+import { MultSelectEtapaVisaoModule } from './../componentes/mult-select-etapa-visao/mult-select-etapa-visao.module';
+import { PipeModule } from './../../pipes/pipe.module';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatAutocompleteModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { EmitirEventoService } from '../../service/emitir-evento.service';
 import { EtapaVisaoService } from '../../service/etapa-visao.service';
@@ -12,7 +14,6 @@ import { InterceptorService } from '../../service/interceptor.service';
 import { CargosModule } from '../componentes/cargos/cargos.module';
 import { ContatosModule } from '../componentes/contatos/contatos.module';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
-import { EtapaVisaoModule } from '../componentes/etapa-visao/etapa-visao.module';
 import { PessoaModule } from '../componentes/pessoa/pessoa.module';
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
@@ -23,6 +24,8 @@ import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro
 import { DialogAprovarReprovarAgendamentoModule } from '../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
 import { DialogAprovarReprovarMembroModule } from '../dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.module';
 import { DialogConfirmExcluirPessoaModule } from '../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.module';
+import { TextMaskModule } from 'angular2-text-mask';
+import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
 
 
 
@@ -58,7 +61,7 @@ const routes: Routes = [
     EnderecoModule,
     MatSlideToggleModule,
     ContatosModule,
-    EtapaVisaoModule,
+    MultSelectEtapaVisaoModule,
     DialogEnviarCartaModule,
     DialogHistoricoPessoaModule,
     MatTooltipModule,
@@ -68,6 +71,12 @@ const routes: Routes = [
     DialogAprovarReprovarAgendamentoModule,
     DialogAprovarReprovarMembroModule,
     DialogConfirmExcluirPessoaModule,
+    TextMaskModule,
+    PipeModule,
+    MatOptionModule,
+    MatSelectModule,
+    IgrejasCompenenteModule,
+    MatAutocompleteModule,
     RouterModule.forChild(routes)
   ],
   exports: [

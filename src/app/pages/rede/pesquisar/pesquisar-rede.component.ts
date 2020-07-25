@@ -78,6 +78,7 @@ export class PesquisarRedeComponent implements OnInit {
         skipLocationChange: true
       });
     }
+
     editar(id) {
       localStorage.setItem("pesquisar", JSON.stringify(this.statusSelecionado));
       this._router.navigate(['/auth/rede/cadastrar'], {

@@ -1,15 +1,21 @@
+import { MembroService } from './../../../service/membro.service';
+import { HelperChurch } from './../../../helper/helper.church';
+import { RedeService } from './../../../service/rede.service';
+import { CelulaService } from './../../../service/celula.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
-import { take } from 'rxjs/operators';
+import { map, startWith, take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
 import { ContatoService } from '../../../service/contato.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { EnderecoService } from '../../../service/endereco.service';
-import { PessoaService } from '../../../service/pessoa.service';
 import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { CargoService } from '../../../service/cargo.service';
 import { EscolaridadeService } from '../../../service/escolaridade.service';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 
 @Component({
@@ -19,23 +25,47 @@ import { EscolaridadeService } from '../../../service/escolaridade.service';
 })
 export class CadastrarMembroComponent implements OnInit {
 
-  public dadosPessoais: any;
+  public form: FormGroup;
+  public membro = {} as any;
+  public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
+  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/]
+  public id: any;
+  public comboSexo = [];
+  public comboEstadoCivil = [];
+
+
+  public filteredRede: Observable<string[]>;
+  public myControlRede = new FormControl();
+  public comboRede = [];
+  public redeSelecionada: any;
+  public redeValue: any;
+
+  public filteredCelula: Observable<string[]>;
+  public myControlCelula = new FormControl();
+  public comboCelulas = [];
+  public celulaSelecionada: any;
+  public visaoCelular: boolean;
+  public celulaValue: any;
+
+
+
   public enderecos: any;
   public escolaridades: any = [];
   public contatos: any = [];
   public etapas: any = [];
   public cargos: any = [];
   public celula: any;
-  public igreja: any;
-  public pessoa = {} as any;
-  public id: any;
+  public igrejaSelecionada: any;
+
+
   public pesquisa: boolean = false;
   public importacao: boolean = false;
   public isCelula = true;
 
 
   constructor(private _emitirEventoService: EmitirEventoService,
-    private _service: PessoaService,
+    private _service: MembroService,
     private _enderecoService: EnderecoService,
     private _notifierService: NotifierService,
     private _router: Router,
@@ -43,17 +73,55 @@ export class CadastrarMembroComponent implements OnInit {
     private _contatoService: ContatoService,
     private _etapaVisaoService: EtapaVisaoService,
     private _cargosService: CargoService,
-    private _escolaridadeService: EscolaridadeService) { }
+    private _escolaridadeService: EscolaridadeService,
+    private _redeService: RedeService,
+    private _celulaService: CelulaService) { }
 
   ngOnInit() {
     this.getParams();
     this.getEmiter();
+    this._buildForm();
+    this.getComboSexo();
+    this.getComboEstadoCivil();
+  }
+
+  private _buildForm(): void {
+    this.form = new FormGroup({
+      'nome': new FormControl('', Validators.required),
+      'sobrenome': new FormControl('', Validators.required),
+      'dataNascimento': new FormControl('', Validators.required),
+      'rg': new FormControl('', Validators.required),
+      'cpf': new FormControl('', Validators.required),
+      'sexo': new FormControl('', Validators.required),
+      'estadoCivil': new FormControl('', Validators.required),
+      'nacionalidade': new FormControl('', Validators.required),
+      'profissao': new FormControl(''),
+      'batizado': new FormControl(false),
+      'dizimista': new FormControl(false),
+      'observacao': new FormControl(''),
+      'cartaRecomendacao': new FormControl(false),
+      'status': new FormControl(''),
+    });
+  }
+
+  getComboSexo() {
+    this._service.carregarSexo().subscribe(item => {
+      this.comboSexo = item;
+      // console.log(item);
+    });
+  }
+
+  getComboEstadoCivil() {
+    this._service.carregarEstadoCivil().subscribe(item => {
+      this.comboEstadoCivil = item;
+      // console.log(item);
+    });
   }
 
   getParams() {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
-      this.getPessoa(this.id);
+      this.getMembro(this.id);
       this.pesquisa = true;
     }
     if (this._avRoute.snapshot.queryParamMap.get("importacao")) {
@@ -61,79 +129,63 @@ export class CadastrarMembroComponent implements OnInit {
     }
   }
 
-  getPessoa(id) {
-    this._service.obterPessoa(id).pipe(take(1)).subscribe(item => {
+  getMembro(id) {
+    this._service.obterMembro(id).pipe(take(1)).subscribe(item => {
       // console.log(item)
-      this.emitirPessoa(item);
-      this.getEndereco(item.id)
-      this.getContatos(item.id);
-      this.getEscolaridades(item.id);
-      this.getEtapas(item.id);
-      this.getCargos(item.id);
-      this.emitirIgreja(item.igreja);
-      this.emitirCelula(item.celula);
+      this.form.controls['nome'].patchValue(item.nome);
+      this.form.controls['sobrenome'].patchValue(item.sobreNome);
+      this.form.controls['rg'].patchValue(item.rg);
+      this.form.controls['cpf'].patchValue(item.cpf);
+      this.form.controls['sexo'].patchValue(item.sexoEnum);
+      this.form.controls['estadoCivil'].patchValue(item.estadoCivilEnum);
+      this.form.controls['nacionalidade'].patchValue(item.nacionalidade);
+      this.form.controls['profissao'].patchValue(item.profissao);
+      this.form.controls['observacao'].patchValue(item.observacao);
+      this.form.controls['batizado'].patchValue(item.batizado);
+      this.form.controls['dizimista'].patchValue(item.dizimista);
+      this.form.controls['dataNascimento'].patchValue(item.dataNascimento);
+      this.form.controls['cartaRecomendacao'].patchValue(item.cartaRecomendacao);
+
+      if (item.celula) {
+        this.celulaValue = item.celula.nome;
+        this.celulaSelecionada = item.celula;
+      }
+      if (item.rede) {
+        this.redeValue = item.rede.nome;
+        this.redeSelecionada = item.rede;
+      }
+      if(item.escolaridades){
+        this.emitirEscolaridades(item.escolaridades);
+      }
+      if(item.etapas){
+        this.emitirEtapaVisao(item.etapas);
+      }
+      if(item.cargos){
+        this.emitirCargo(item.cargos);
+      }
+      if(item.igreja){
+        this.emitirIgreja(item.igreja);
+      }
+      if(item.enderecos){
+        this.emitirEnderecos(item.enderecos);
+      }
+
+      if(item.contatos){
+        this.emitirContatos(item.contatos);
+      }
+      // this.emitirCelula(item.celula);
     }, error => {
       // console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
     });
   }
 
-  getEndereco(id) {
-    // console.log(id)
-    this._enderecoService.obterEndereco(id).pipe(take(1)).subscribe(item => {
-      this.emitirEnderecos(item);
-    }, error => {
-      console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
-    });
-  }
 
-  getContatos(id) {
-    // console.log(id)
-    this._contatoService.obterContatoPessoa(id).pipe(take(1)).subscribe(item => {
-      this.emitirContatos(item);
-    }, error => {
-      console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
-    });
-  }
-
-  getEscolaridades(id) {
-    // console.log(id)
-    this._escolaridadeService.obterEscolaridadePessoa(id).pipe(take(1)).subscribe(item => {
-      this.emitirEscolaridades(item);
-    }, error => {
-      console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
-    });
-  }
-
-  getEtapas(id) {
-    // console.log(id)
-    this._etapaVisaoService.obterEtapaPessoa(id).pipe(take(1)).subscribe(item => {
-      this.emitirEtapaVisao(item);
-    }, error => {
-      console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
-    });
-  }
-  getCargos(id) {
-    // console.log(id)
-    this._cargosService.obterPessoaCargo(id).pipe(take(1)).subscribe(item => {
-      this.emitirPessoaCargo(item);
-    }, error => {
-      console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
-    });
-  }
 
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       // console.log(item.type);
-      if (item.type == 'dadosPessoais') {
-        this.dadosPessoais = item.data;
-      }
       if (item.type == 'endereco') {
         this.enderecos = item.data;
       }
@@ -143,30 +195,28 @@ export class CadastrarMembroComponent implements OnInit {
       if (item.type == 'contatos') {
         this.contatos = item.data;
       }
-      if (item.type == 'celula-comp') {
-        this.celula = item.data;
-      }
       if (item.type == 'igreja-comp') {
-        this.igreja = item.data;
+        this.igrejaSelecionada = item.data;
+        this.visaoCelular = this.igrejaSelecionada.visaoCelular;
+        this.carregarRede(this.igrejaSelecionada.id);
       }
-      if (item.type == 'etapas-comp') {
+      if (item.type == 'mult-select-etapas-visao') {
         this.etapas = item.data;
       }
       if (item.type == 'cargos-comp') {
         this.cargos = item.data;
       }
-
     });
   }
 
   salvar() {
     this.setObj();
-    let mensagem = this.validFields();
-    if (mensagem) {
-      this._notifierService.notify(AlertType.Error, mensagem);
-      return false;
-    }
-    if (!this.pessoa.id) {
+    // let mensagem = this.validFields();
+    // if (mensagem) {
+    //   this._notifierService.notify(AlertType.Error, mensagem);
+    //   return false;
+    // }
+    if (!this.membro.id) {
       this.save();
     } else {
       this.updade();
@@ -174,8 +224,8 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   save() {
-    this._service.save(this.pessoa).pipe(take(1)).subscribe(item => {
-      this.emitiClear();
+    this._service.save(this.membro).pipe(take(1)).subscribe(item => {
+      this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -183,7 +233,7 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   updade() {
-    this._service.update(this.pessoa).pipe(take(1)).subscribe(item => {
+    this._service.update(this.membro).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
@@ -192,34 +242,52 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   setObj() {
-    this.getEmiter();
-    if (this.dadosPessoais) {
-      // console.log(this.dadosPessoais)
-      if (this.dadosPessoais) {
-        this.pessoa = this.dadosPessoais;
-        this.pessoa.id = this.id;
-        this.pessoa.membro = true;
-        this.pessoa.visitante = false;
-      }
+    if (this.id) {
+      this.membro.id = this.id;
+    }
+
+    this.membro.nome = this.form.controls['nome'].value;
+    this.membro.sobreNome = this.form.controls['sobrenome'].value;
+    this.membro.sexo = this.form.controls['sexo'].value;
+    this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
+    this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
+    this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
+    this.membro.profissao = this.form.controls['profissao'].value;
+    this.membro.rg = HelperChurch.retirarFormatacao(this.form.controls['rg'].value);
+    this.membro.cpf = HelperChurch.retirarFormatacao(this.form.controls['cpf'].value);
+    this.membro.batizado = HelperChurch.isBoolean(this.form.controls['batizado'].value);
+    this.membro.dizimista = HelperChurch.isBoolean(this.form.controls['dizimista'].value);
+    this.membro.cartaRecomendacao = HelperChurch.isBoolean(this.form.controls['cartaRecomendacao'].value);
+
+
+    if (this.igrejaSelecionada) {
+      this.membro.igreja = { id: this.igrejaSelecionada.id };
+    }
+    if (this.redeSelecionada) {
+      this.membro.rede = { id: this.redeSelecionada.id };
+    }
+    if (this.celulaSelecionada) {
+      this.membro.celula = { id: this.celulaSelecionada.id };
+      this.membro.membroDaCelula = true;
     }
     if (this.enderecos) {
-      this.pessoa.enderecos = this.enderecos;
+      this.membro.enderecos = this.enderecos;
     }
     if (this.contatos) {
-      this.pessoa.contatos = this.contatos;
+      this.membro.contatos = this.contatos;
     }
     if (this.escolaridades) {
-      this.pessoa.escolaridades = this.escolaridades;
+      this.membro.escolaridades = this.escolaridades;
     }
 
     if (this.etapas) {
-      this.pessoa.etapas = this.etapas;
+      this.membro.etapas = this.etapas;
     }
 
     if (this.cargos) {
-      this.pessoa.cargos = this.cargos;
+      this.membro.cargos = this.cargos;
     }
-
+    console.log(this.membro)
 
   }
 
@@ -244,21 +312,25 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   emitirEtapaVisao(item): void {
-    this._emitirEventoService.emitir('edit-etapa-visao', item);
+    this._emitirEventoService.emitir('edit-mult-select-etapas', item);
   }
 
-  emitirPessoaCargo(item): void {
+  emitirCargo(item): void {
     this._emitirEventoService.emitir('edit-cargos', item);
   }
 
   emitirIgreja(item): void {
     this._emitirEventoService.emitir('edit-igreja', item);
+    this.igrejaSelecionada = item;
+    if(this.igrejaSelecionada){
+      this.carregarRede(this.igrejaSelecionada.id);
+    }
   }
 
-  emitirCelula(item): void {
-    this.isCelula = true;
-    this._emitirEventoService.emitir('edit-celula', item);
-  }
+  // emitirCelula(item): void {
+  //   this.isCelula = true;
+  //   this._emitirEventoService.emitir('edit-celula', item);
+  // }
 
 
   voltar() {
@@ -268,40 +340,45 @@ export class CadastrarMembroComponent implements OnInit {
     } else {
       caminho = "/auth/membro/pesquisar";
     }
+    if(this.pesquisa || this.importacao){
+      this._router.navigate([caminho], {
+        queryParams: {
+          pesquisa: this.pesquisa
+        },
+        skipLocationChange: true
+      });
+    }else{
+      this._router.navigate([caminho]);
+    }
 
-    this._router.navigate([caminho], {
-      queryParams: {
-        pesquisa: this.pesquisa
-      },
-      skipLocationChange: true
-    });
+
   }
 
   validFields(): string {
     let concat = 'Por favor preencha o campo';
     let concatArray = 'Por favor adicione pelo menos um';
-    if (!this.pessoa.nome) {
+    if (!this.membro.nome) {
       return concat + ' nome!';
     }
-    if (!this.pessoa.sobreNome) {
+    if (!this.membro.sobreNome) {
       return concat + ' Sobre Nome!';
     }
-    if (!this.pessoa.rg) {
+    if (!this.membro.rg) {
       return concat + ' RG!';
     }
-    if (!this.pessoa.cpf) {
+    if (!this.membro.cpf) {
       return concat + ' CPF!';
     }
-    if (!this.pessoa.dataNascimento) {
+    if (!this.membro.dataNascimento) {
       return concat + ' Data Nascimento!';
     }
-    if (!this.pessoa.sexo) {
+    if (!this.membro.sexo) {
       return concat + ' Sexo!';
     }
-    if (!this.pessoa.estadoCivil) {
+    if (!this.membro.estadoCivil) {
       return concat + ' Estado Civil!';
     }
-    if (!this.pessoa.nacionalidade) {
+    if (!this.membro.nacionalidade) {
       return concat + ' Nacionalidade!';
     }
     if (this.enderecos.length == 0) {
@@ -316,11 +393,64 @@ export class CadastrarMembroComponent implements OnInit {
     if (this.etapas.length == 0) {
       return concatArray + 'a  Etapa da visão!';
     }
-    if (!this.pessoa.igreja) {
+    if (!this.membro.igreja) {
       return concat + ' Igreja!';
     }
 
     return null;
   }
+
+  carregarRede(id) {
+
+    this._redeService.getRedeIgreja(id).pipe(take(1)).subscribe(item => {
+      this.comboRede = item;
+      // console.log(item);
+      this.filteredRede = this.myControlRede.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterRede(value, this.comboRede))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
+    });
+  }
+
+
+  private _filterRede(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionRedeChange($event: MatAutocompleteSelectedEvent, option) {
+    this.redeSelecionada = option;
+    if (this.visaoCelular) {
+      this.carregarCelula(this.redeSelecionada.id);
+    }
+  }
+
+  carregarCelula(id) {
+
+    this._celulaService.getCelulaRede(id).pipe(take(1)).subscribe(item => {
+      this.comboCelulas = item;
+      // console.log(item);
+      this.filteredCelula = this.myControlCelula.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterCelula(value, this.comboCelulas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as células!");
+    });
+  }
+
+  private _filterCelula(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionCelulaChange($event: MatAutocompleteSelectedEvent, option) {
+    this.celulaSelecionada = option;
+  }
+
 
 }

@@ -1,3 +1,4 @@
+import { MembroService } from '../../../service/membro.service';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatDialog, DateAdapter } from '@angular/material';
@@ -7,7 +8,6 @@ import { map, startWith, take } from 'rxjs/operators';
 import { HelperChurch } from '../../../helper/helper.church';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { PessoaService } from '../../../service/pessoa.service';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 import { DatePipe } from '@angular/common';
 
@@ -35,7 +35,7 @@ export class IgrejaDadosComponent implements OnInit {
   @Input() id;
   @Input() tipoIgreja;
 
-  constructor(private _pessoaService: PessoaService,
+  constructor(private _membroService: MembroService,
     private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
     private _dialog: MatDialog,
@@ -59,7 +59,7 @@ export class IgrejaDadosComponent implements OnInit {
     });
   }
   carregarComboMembro() {
-    this._pessoaService.getListMembros().pipe(take(1)).subscribe(item => {
+    this._membroService.getListMembros().pipe(take(1)).subscribe(item => {
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges
         .pipe(
@@ -131,7 +131,7 @@ export class IgrejaDadosComponent implements OnInit {
     let igreja = {} as any;
     igreja.nome = this.form.controls['nome'].value;
     igreja.cnpj = HelperChurch.retirarFormatacaoCNPJ(this.form.controls['cnpj'].value);
-    igreja.pessoas = this.membros;
+    igreja.membros = this.membros;
     igreja.visaoCelular = this.form.controls['visaoCelular'].value;
     igreja.dataAbertura = this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy');
     return igreja;

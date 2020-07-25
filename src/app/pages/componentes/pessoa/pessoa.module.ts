@@ -1,3 +1,4 @@
+import { MembroService } from './../../../service/membro.service';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -10,7 +11,6 @@ import { EscolaridadeComponent } from '../escolaridade/escolaridade.component';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { IgrejasCompenenteModule } from '../../componentes/igrejas/igreja-compenente.module';
 import { CelulaComponentModule } from '../../componentes/celula/celula-component.module';
-import { PessoaService } from '../../../service/pessoa.service';
 import { PipeModule } from '../../../pipes/pipe.module';
 
 
@@ -52,7 +52,7 @@ import { PipeModule } from '../../../pipes/pipe.module';
     EscolaridadeComponent
   ],
   providers: [
-    PessoaService,
+    MembroService,
     EmitirEventoService,
     NgxViacepService
   ]

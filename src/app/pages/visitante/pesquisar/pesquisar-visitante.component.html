@@ -4,6 +4,12 @@
       <i class="material-icons">search</i>
       <h1 class="mat-headline center-align">Pesquisar</h1>
     </mat-toolbar>
+    <br />
+    <div fxLayout="row" fxLayoutGap="100px" style="padding: 0 20px;">
+      <button mat-raised-button color="primary" type="submit" (click)="cadastrar()">
+        <i class="material-icons">add</i>Novo</button>
+    </div>
+    <br />
     <div class="cdk-container">
       <div fxFlex.xs="100" fxFlex.lg="100" fxFlex.md="100" fxFlex.sm="100">
         <form>
@@ -13,7 +19,72 @@
                 Dados pessoais
               </span>
             </mat-expansion-panel-header>
-            <app-dados-pessoais [pesquisa]="true"></app-dados-pessoais>
+            <form form [formGroup]="form">
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="full-width-field">
+                  <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="full-width-field">
+                  <input matInput class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome"
+                    id="sobrenome">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="full-width-field">
+                  <input matInput [textMask]="{mask: maskDate}" placeholder="Data nascimento"
+                    formControlName="dataNascimento">
+                </mat-form-field>
+                <mat-form-field class="full-width-field">
+                  <mat-label>Sexo</mat-label>
+                  <mat-select formControlName="sexo" id="sexo">
+                    <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
+                      {{item.value}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="full-width-field">
+                  <mat-label>Estado Civil</mat-label>
+                  <mat-select formControlName="estadoCivil" id="estadoCivil">
+                    <mat-option *ngFor="let item of comboEstadoCivil | keyValue" [value]="item.key">
+                      {{item.value}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="full-width-field">
+                  <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade"
+                    id="nacionalidade">
+                </mat-form-field>
+              </div>
+            </form>
+            <app-igrejas></app-igrejas>
+            <div>
+              <mat-form-field class="full-width-field">
+                <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
+                  [matAutocomplete]="auto" [(ngModel)]="redeValue">
+                <mat-autocomplete #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredRede | async" [value]="option.nome"
+                    (onSelectionChange)="onSelectionRedeChange($event,option)">
+                    {{option.nome}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+            <div *ngIf="visaoCelular">
+              <mat-form-field class="full-width-field">
+                <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
+                  [matAutocomplete]="aut" [(ngModel)]="celulaValue">
+                <mat-autocomplete #aut="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
+                    (onSelectionChange)="onSelectionCelulaChange($event,option)">
+                    {{option.nome}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
           </mat-expansion-panel>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -42,9 +113,9 @@
           <br />
           <br />
           <div>
-              <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
-                <i class="material-icons">search</i>Buscar</button>
-            </div>
+            <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
+              <i class="material-icons">search</i>Buscar</button>
+          </div>
         </form>
         <div [hidden]="!loading" align="center" style="width: 100%">
           <h4>Buscando...</h4>
@@ -60,17 +131,20 @@
             <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
               <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
               <mat-cell *matCellDef="let element">
-                <span  *ngIf="column.id!='id'">{{element[column.id]?element[column.id]:'Não informado'}}</span>
-                <span  *ngIf="column.id=='id'">
-                      <span style="cursor: pointer;" (click)="editar(element.id)" matTooltip="Editar">
-                        <i class="material-icons">create</i>
-                      </span>
-                      <span style="cursor: pointer;color: darkblue;" (click)="importar(element.id)" matTooltip="Importar Para Membro">
-                        <i class="material-icons">vertical_align_top</i>
-                      </span>
-                      <span class="default-botoes" (click)="dialogExcluirVisitante(element.id)" matTooltip="Excluir">
-                        <i class="material-icons">delete</i>
-                      </span>
+                <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
+                  {{((element[column.id]?element[column.id]:'Não informado').length > 10) ? ((element[column.id]?element[column.id]:'Não informado').slice(0, 10) + '...') : (element[column.id]?element[column.id]:'Não informado')}}
+                </span>
+                <span *ngIf="column.id=='id'">
+                  <span style="cursor: pointer;" (click)="editar(element.id)" matTooltip="Editar">
+                    <i class="material-icons">create</i>
+                  </span>
+                  <span style="cursor: pointer;color: darkblue;" (click)="importar(element.id)"
+                    matTooltip="Importar Para Membro">
+                    <i class="material-icons">vertical_align_top</i>
+                  </span>
+                  <span class="default-botoes" (click)="dialogExcluirVisitante(element.id)" matTooltip="Excluir">
+                    <i class="material-icons">delete</i>
+                  </span>
                 </span>
               </mat-cell>
             </ng-container>
@@ -78,14 +152,8 @@
             <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
 
           </mat-table>
-          <mat-paginator
-                #paginator
-                [length]="dados.length"
-                [pageSize]="5"
-                [pageSizeOptions]="[5, 10, 20]"
-                showFirstLastButtons
-                (page) = "paginatorEvent($event)"
-                [pageIndex]="pageIndex" >
+          <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
+            showFirstLastButtons (page)="paginatorEvent($event)" [pageIndex]="pageIndex">
           </mat-paginator>
         </div>
         <button mat-raised-button color="success" (click)="exportAsXLSX()" *ngIf="pessoas.length > 0  && !loading"><i

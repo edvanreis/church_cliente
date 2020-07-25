@@ -1,7 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatAutocompleteSelectedEvent, DateAdapter } from '@angular/material';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
@@ -9,6 +10,7 @@ import { IgrejaService } from '../../../service/igreja.service';
 import { take, startWith, map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HelperChurch } from '../../../helper/helper.church';
+import { MembroService } from '../../../service/membro.service';
 
 @Component({
   selector: 'app-cadastrar-igreja',
@@ -17,10 +19,13 @@ import { HelperChurch } from '../../../helper/helper.church';
 })
 export class CadastrarIgrejaComponent implements OnInit {
 
+
+  public form: FormGroup;
+  public maskCNPJ = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/];
+
   public filteredIgreja: Observable<string[]>;
   public igrejaSelecionada: any;
-  public igreja: any;
-  public nomeValue: any;
+  public igrejaValue: any;
   public dadosIgreja: any;
   public enderecos = [];
   public contatos: any;
@@ -30,31 +35,55 @@ export class CadastrarIgrejaComponent implements OnInit {
   public myControlIgrejaSede = new FormControl();
   public nomePastorValue: string;
   public id: any;
-  public dados = {} as any;
+  public igreja = {} as any;
   public tipoIgreja: any;
   public sizeLimitOne: boolean = true;
   public filial: boolean = false;
   public pesquisa: boolean = false;
 
+
+  public myControlMembro = new FormControl();
+  public comboMembro = [];
+  public filteredMembro: Observable<string[]>;
+  public membroValue;
+  public membroSelecionado:any;
+  public membros = new Array();
+
   constructor(private _emitirEventoService: EmitirEventoService,
     private _service: IgrejaService,
     private _notifierService: NotifierService,
     private _router: Router,
-    private _avRoute: ActivatedRoute) { }
+    private _avRoute: ActivatedRoute,
+    private _membroService: MembroService,
+    private _datePipe: DatePipe,
+    private _dateAdapter: DateAdapter<Date>,) { }
 
   ngOnInit() {
+    this._dateAdapter.setLocale("br");
     this.getEmiter();
     this.carregarComboIgrejaSede();
     this.getParams();
     this.getEmiter();
+    this._buildForm();
+    this.carregarComboMembro();
+  }
+
+  private _buildForm(): void {
+    this.form = new FormGroup({
+      'nome': new FormControl('', Validators.required),
+      'cnpj': new FormControl('', Validators.required),
+      'visaoCelular': new FormControl(false),
+      'radio': new FormControl('1'),
+      'dataAbertura': new FormControl('',Validators.required),
+    });
   }
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       // console.log(item.data);
-      if (item.type == 'dadosIgreja') {
-        this.dados = item.data;
-      }
+      // if (item.type == 'dadosIgreja') {
+      //   this.dados = item.data;
+      // }
       if (item.type == 'endereco') {
         this.enderecos = item.data;
       }
@@ -71,10 +100,6 @@ export class CadastrarIgrejaComponent implements OnInit {
     if (save) {
       this._emitirEventoService.emitir("clear", "");
     }
-    if (this.dados && !save) {
-      console.log(this.dados)
-      this._emitirEventoService.emitir("edit-dadosIgreja", this.dados);
-    }
     if (this.enderecos && !save) {
       this._emitirEventoService.emitir("edit-endereco", this.enderecos);
     }
@@ -86,14 +111,13 @@ export class CadastrarIgrejaComponent implements OnInit {
   getDadosIgreja() {
 
     this.igreja = {} as any;
-    this.igreja.nome = this.dados.nome;
-    this.igreja.cnpj = HelperChurch.retirarFormatacaoCNPJ(this.dados.cnpj);
-    this.igreja.telefone = this.dados.telefone;
-    this.igreja.pessoas = this.dados.pessoas;
-    this.igreja.visaoCelular = this.dados.visaoCelular;
+    this.igreja.nome = this.form.controls['nome'].value;
+    this.igreja.cnpj = HelperChurch.retirarFormatacaoCNPJ(this.form.controls['cnpj'].value);
+    this.igreja.membros = this.membros;
+    this.igreja.visaoCelular = this.form.controls['visaoCelular'].value;
+    this.igreja.dataAbertura = this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy');
     this.igreja.enderecos = this.enderecos;
     this.igreja.contatos = this.contatos;
-    this.igreja.dataInauguracao = this.dados.dataInauguracao;
 
     if (this.id) {
       this.igreja.id = this.id;
@@ -102,7 +126,7 @@ export class CadastrarIgrejaComponent implements OnInit {
       this.igreja.sede = this.igrejaSelecionada;
     }
 
-    // console.log(this.igreja);x'
+    console.log(this.igreja);
   }
 
   getParams() {
@@ -184,20 +208,29 @@ export class CadastrarIgrejaComponent implements OnInit {
 
 
   carregarDados(item) {
-    this.dados.id = item.id
-    this.dados.nome = item.nome
-    this.dados.cnpj = item.cnpj;
-    this.dados.pessoas = item.pessoas;
-    this.dados.visaoCelular = item.visaoCelular;
-    this.dados.dataAbertura = item.dataAbertura;
-    this.dados.dataAberturaToDate = item.dataAberturaToDate;
+    this.form.controls['nome'].patchValue(item.nome);
+    this.form.controls['cnpj'].patchValue(item.cnpj);
+    this.form.controls['visaoCelular'].patchValue(item.visaoCelular);
+    this.form.controls['dataAbertura'].patchValue(new Date(item.dataAberturaToDate));
+
+    if(item.membros){
+      this.membros = item.membros;
+    }
+
+    if(item.sede){
+      this.form.controls['radio'].patchValue('2');
+      this.filial = true;
+    }else{
+      this.form.controls['radio'].patchValue('1');
+      this.filial = false;
+    }
     this.enderecos = item.enderecos;
     this.contatos = item.contatos;
 
     if (item.sede) {
-      this.nomeValue = item.sede.nome;
+      this.igrejaValue = item.sede.nome;
       this.igrejaSelecionada = item.sede;
-      this.dados.sede = {id:item.sede.id};
+      this.igrejaSelecionada = {id:item.sede.id};
       this.filial = true;
     }
   }
@@ -220,7 +253,7 @@ export class CadastrarIgrejaComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Digite o CNPJ Igreja!");
       return false;
     }
-    if (this.igreja.pessoas.length == 0) {
+    if (this.igreja.membros.length == 0) {
       this._notifierService.notify(AlertType.Error, "Por favor Adicione os Líderes");
       return false;
     }
@@ -232,8 +265,8 @@ export class CadastrarIgrejaComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor Adicione os Contatos");
       return false;
     }
-    if (!this.igreja.dataInauguracao) {
-      this._notifierService.notify(AlertType.Error, "Por favor Adicione a Data de Inauguração");
+    if (!this.igreja.dataAbertura) {
+      this._notifierService.notify(AlertType.Error, "Por favor Adicione a Data de abertura");
       return false;
     }
     if (!this.igrejaSelecionada && this.filial) {
@@ -242,6 +275,53 @@ export class CadastrarIgrejaComponent implements OnInit {
     }
 
     return true;
+  }
+
+  changeRadio(){
+    console.log(this.form.controls['radio'].value);
+    if(this.form.controls['radio'].value=='2'){
+      this.filial = true;
+    }else{
+      this.filial = false;
+    }
+  }
+
+  onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
+    console.log(option)
+    this.membroSelecionado = option;
+  }
+
+  carregarComboMembro() {
+    this._membroService.getListMembros().pipe(take(1)).subscribe(item => {
+      this.comboMembro = item;
+      this.filteredMembro = this.myControlMembro.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterMembro(value, this.comboMembro))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+    });
+  }
+
+  private _filterMembro(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  adicionar() {
+    if (!this.membroSelecionado) {
+      console.log(this.membroSelecionado);
+      this._notifierService.notify(AlertType.Error, "Por favor escolha uma membro.!");
+      return false;
+    }
+    let membroAdicionado = this.membros.find(i => i.nome == this.membroSelecionado.nome);
+    if (membroAdicionado && membroAdicionado.nome == this.membroSelecionado.nome) {
+      this._notifierService.notify(AlertType.Error, "Membro já adiocionado.!");
+      return false;
+    }
+    this.membros.push(this.membroSelecionado);
+    this.membroValue = '';
   }
 
 

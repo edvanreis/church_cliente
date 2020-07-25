@@ -1,3 +1,4 @@
+import { MembroService } from './../../../service/membro.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable } from 'rxjs';
@@ -6,7 +7,7 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
-import { PessoaService } from '../../../service/pessoa.service';
+
 
 @Component({
   selector: 'app-membro',
@@ -22,7 +23,7 @@ export class MembroComponent implements OnInit {
   @Input() label;
   public membro: any;
 
-  constructor(private _service: PessoaService,
+  constructor(private _service: MembroService,
               private _notifierService: NotifierService,
               private _emitirEventoService: EmitirEventoService) { }
 

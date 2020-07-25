@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
 import { PerfilService } from '../../../service/perfil.service';
-import { PessoaService } from '../../../service/pessoa.service';
 import { UserService } from '../../../service/user.service';
+import { MembroService } from '../../../service/membro.service';
 
 const ELEMENT_DATA = [
   { codigo: 'A', value: 'Ativo' },
@@ -51,7 +51,7 @@ export class CadastrarUsuarioComponent implements OnInit {
     private _userService: UserService,
     private _avRoute: ActivatedRoute,
     private _perfilService: PerfilService,
-    private _pessoaSErvice: PessoaService) { }
+    private _membroService: MembroService) { }
 
   ngOnInit() {
     this._buildForm();
@@ -213,7 +213,7 @@ export class CadastrarUsuarioComponent implements OnInit {
 
 
   carregarComboPessoa() {
-    this._pessoaSErvice.getListMembros().pipe(take(1)).subscribe(item => {
+    this._membroService.getListMembros().pipe(take(1)).subscribe(item => {
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges
         .pipe(

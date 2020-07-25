@@ -1,3 +1,4 @@
+import { MembroService } from '../../../service/membro.service';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -12,7 +13,7 @@ import { RedeService } from '../../../service/rede.service';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 import { TipoLiderancaService } from '../../../service/tipo-lideranca.service';
 import { Observable } from 'rxjs';
-import { PessoaService } from '../../../service/pessoa.service';
+
 
 @Component({
   selector: 'app-cadastrar-celula',
@@ -54,7 +55,7 @@ export class CadastrarCelulaComponent implements OnInit {
     private _dateAdapter: DateAdapter<Date>,
     private _dialog: MatDialog,
     private _tipoLiderancaService:TipoLiderancaService,
-    private _pessoaService:PessoaService) { }
+    private _membroService:MembroService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -278,7 +279,7 @@ export class CadastrarCelulaComponent implements OnInit {
   }
 
   carregarMembro(id) {
-    this._pessoaService.getMembroIgrejaByRede(id).pipe(take(1)).subscribe(item => {
+    this._membroService.getMembroIgrejaByRede(id).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges

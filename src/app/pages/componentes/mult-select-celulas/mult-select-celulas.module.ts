@@ -13,7 +13,6 @@ import { MatInputModule, MatSelectModule, MatOptionModule, MatCheckboxModule } f
     FlexLayoutModule,
     MatInputModule,
     MatSelectModule,
-    MatInputModule,
     MatOptionModule,
     MatCheckboxModule
   ],

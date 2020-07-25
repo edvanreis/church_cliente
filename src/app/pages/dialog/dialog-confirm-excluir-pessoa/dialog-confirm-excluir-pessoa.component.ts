@@ -1,8 +1,8 @@
+import { MembroService } from './../../../service/membro.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { NotifierService } from 'angular-notifier';
-import { PessoaService } from '../../../service/pessoa.service';
 import { take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
 
@@ -17,7 +17,7 @@ export class DialogConfirmExcluirPesssoaComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private _emitirEventoService: EmitirEventoService,
     private _notifierService: NotifierService,
-    private _service: PessoaService) { }
+    private _service: MembroService) { }
 
   ngOnInit() {
     console.log(this.data)

@@ -38,7 +38,7 @@
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" *ngIf="pessoa">
-    <mat-form-field>
+    <mat-form-field  class="full-width-field">
       <mat-label>Tipo Endereços</mat-label>
       <mat-select formControlName="tipo" id="tipo" (selectionChange)="change()">
         <mat-option *ngFor="let item of tipoEndereco" [value]="item.tipo">
@@ -62,15 +62,15 @@
     <table>
       <thead class="text-primary">
         <th></th>
-        <th>Cep</th>
-        <th>Número</th>
-        <th>Complemento</th>
-        <th>Bairro</th>
-        <th>Logradouro</th>
-        <th>Cidade</th>
-        <th>Estado</th>
-        <th *ngIf="pessoa" >Tipo</th>
-        <th>Ação</th>
+        <th matTooltip="Cep">Cep</th>
+        <th matTooltip="Número">Nº</th>
+        <th matTooltip="Complemento">Comp.</th>
+        <th matTooltip="Bairro">Bairro</th>
+        <th matTooltip="Logradouro">Logra.</th>
+        <th matTooltip="Cidade">Cida.</th>
+        <th matTooltip="UF">UF</th>
+        <th *ngIf="pessoa" matTooltip="Tipo">Tipo</th>
+        <th  matTooltip="Ação">Ação</th>
       </thead>
       <tbody>
         <tr *ngFor="let e of enderecos;let i= index">
@@ -78,9 +78,9 @@
           <td>{{ e.cep}}</td>
           <td>{{ e.numero}}</td>
           <td>{{ e.complemento}}</td>
-          <td>{{ e.bairro}}</td>
-          <td>{{ e.logradouro}}</td>
-          <td>{{ e.localidade}}</td>
+          <td  matTooltip="{{e.bairro}}">{{(e.bairro.length > 10) ? ((e.bairro).slice(0, 10) + '...') : e.bairro}}</td>
+          <td  matTooltip="{{e.logradouro}}">{{(e.logradouro.length > 10) ? ((e.logradouro).slice(0, 10) + '...') : e.logradouro}}</td>
+          <td  matTooltip="{{e.localidade}}">{{(e.localidade.length > 10) ? ((e.localidade).slice(0, 10) + '...') : e.localidade}}</td>
           <td>{{ e.uf}}</td>
           <td *ngIf="pessoa" >{{ e.descTipoEndereco}}</td>
           <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogAtualizar(e)"><i class="material-icons">create</i></span>

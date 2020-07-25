@@ -6,7 +6,7 @@
     </mat-toolbar>
   </h4>
   <div class="cdk-container">
-    <form form [formGroup]="form">  
+    <form form [formGroup]="form">
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <mat-form-field class="full-width-field">
           <mat-label>Selecione...</mat-label>
@@ -16,7 +16,7 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-      </div> 
+      </div>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <mat-form-field class="full-width-field">
           <input matInput placeholder="Contato" formControlName="contato" id="contato" *ngIf="isContato">
@@ -28,8 +28,8 @@
         </mat-form-field>
         <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
         <mat-checkbox formControlName="emailPrincipal" *ngIf="isEmail">Email principal</mat-checkbox>
-      </div> 
-  </form> 
+      </div>
+  </form>
   </div>
   <div mat-dialog-actions align="end">
     <button mat-raised-button color="primary" type="submit" (click)="salvar()">
@@ -37,5 +37,5 @@
     <div fxFlex></div>
     <button mat-raised-button color="warn" type="submit" (click)="close()">
       <i class="material-icons">close</i>Fechar</button>
-  </div>  
+  </div>
 </div>

@@ -2,13 +2,13 @@
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
     <mat-form-field class="full-width-field" >
       <mat-label>Selecione...</mat-label>
-      <mat-select formControlName="escolaridade" id="escolaridade">
-        <mat-option *ngFor="let item of comboEscolaridade" [value]="item">
+      <mat-select formControlName="escolaridade" id="escolaridade"  [(ngModel)]="escolaridade">
+        <mat-option *ngFor="let item of comboEscolaridades" [value]="item"  (click)="inputValid()">
           {{item.descricao}}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <mat-form-field class="full-width-field">
+    <mat-form-field class="full-width-field" *ngIf="isCuso">
       <input class="input-upper" matInput placeholder="Curso" formControlName="curso" id="curso">
     </mat-form-field>
   </div>
@@ -29,7 +29,7 @@
       <tbody>
         <tr *ngFor="let e of escolaridades;let i = index">
           <td>{{ i+1}}</td>
-          <td>{{ e.descricao}}</td>
+          <td >{{ e.descricao}}</td>
           <td>{{ e.curso }}</td>
           <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,e)"><i
                 class="material-icons">delete</i></span></td>

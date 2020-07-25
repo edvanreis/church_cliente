@@ -1,3 +1,4 @@
+import { MembroService } from '../../../service/membro.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { NotifierService } from 'angular-notifier';
@@ -9,7 +10,6 @@ import { DateAdapter, MatAutocompleteSelectedEvent, MatSort, MatTableDataSource,
 import { Observable } from 'rxjs';
 import { GrupoService } from '../../../service/grupo.service';
 import { take, startWith, map } from 'rxjs/operators';
-import { PessoaService } from '../../../service/pessoa.service';
 import { AgendamentoService } from '../../../service/agendamento.service';
 import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confirm.component';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
@@ -64,7 +64,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
     private _router: Router,
     private _dateAdapter: DateAdapter<Date>,
     private _serviceGruop: GrupoService,
-    private _pessoaService: PessoaService,
+    private _membroService: MembroService,
     private _service: AgendamentoService,
     private _dialog: MatDialog,
     private _igrejaService: IgrejaService) { }
@@ -175,7 +175,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
   }
 
   carregarMembro() {
-    this._pessoaService.getMembroIgreja(this.getIgrejaId()).pipe(take(1)).subscribe(item => {
+    this._membroService.getMembroIgreja(this.getIgrejaId()).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges

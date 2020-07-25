@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { EtapaVisaoComponent } from './etapa-visao.component';
+import { MultSelectEtapaVisaoComponent } from './mult-select-etapa-visao.component';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { MatSelectModule, MatOptionModule, MatButtonModule } from '@angular/material';
+import { MatSelectModule, MatOptionModule, MatButtonModule, MatAutocompleteModule, MatInputModule, MatCheckboxModule } from '@angular/material';
 import { DialogConfirmModule } from '../../dialog/dialog-confirm/dialog-confirm.module';
 
 @NgModule({
@@ -12,15 +12,18 @@ import { DialogConfirmModule } from '../../dialog/dialog-confirm/dialog-confirm.
     FlexLayoutModule,
     ReactiveFormsModule,
     FormsModule,
+    MatInputModule,
     MatSelectModule,
     MatOptionModule,
+    MatCheckboxModule,
     MatButtonModule,
-    DialogConfirmModule
+    DialogConfirmModule,
+    MatAutocompleteModule,
   ],
   declarations: [
-    EtapaVisaoComponent
+    MultSelectEtapaVisaoComponent
   ],exports:[
-    EtapaVisaoComponent
+    MultSelectEtapaVisaoComponent
   ]
 })
-export class EtapaVisaoModule { }
+export class MultSelectEtapaVisaoModule { }

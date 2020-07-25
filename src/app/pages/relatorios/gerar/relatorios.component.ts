@@ -6,12 +6,12 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, DateAdapter } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
-import { PessoaService } from '../../../service/pessoa.service';
 import { RelatoriosService } from '../../../service/relatorios.service';
 import { HelperChurch } from '../../../helper/helper.church';
 import { DatePipe } from '@angular/common';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { ExcelService } from '../../../service/excel.service';
+import { MembroService } from '../../../service/membro.service';
 
 @Component({
   selector: 'app-relatorios',
@@ -40,7 +40,7 @@ export class RelatorioComponent implements OnInit {
 
   constructor(private _celulaService: CelulaService,
     private _notifierService: NotifierService,
-    private _pessoaService: PessoaService,
+    private _membroService: MembroService,
     private _service: RelatoriosService,
     private _dateAdapter: DateAdapter<Date>,
     private _datePipe: DatePipe,
@@ -98,7 +98,7 @@ export class RelatorioComponent implements OnInit {
 
 
   carregarMembro(id) {
-    this._pessoaService.getMembroCelula(id).pipe(take(1)).subscribe(item => {
+    this._membroService.getMembroCelula(id).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges
@@ -238,7 +238,7 @@ export class RelatorioComponent implements OnInit {
   }
 
   carregarMembroCelulas(checkedList) {
-    this._pessoaService.getMembroCelulas(checkedList).pipe(take(1)).subscribe(item => {
+    this._membroService.getMembroCelulas(checkedList).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges

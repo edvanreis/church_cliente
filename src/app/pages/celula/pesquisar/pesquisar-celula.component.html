@@ -33,12 +33,14 @@
         <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
-            <span title="Editar" *ngIf="column.id=='id'" class="default-botoes" (click)="editar(element.id)"><i
+            <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
+              {{(element[column.id]?.length > 10) ? ((element[column.id])?.slice(0, 10) + '...') : element[column.id]}}
+            </span>
+            <span matTooltip="Editar" *ngIf="column.id=='id'" class="default-botoes" (click)="editar(element.id)"><i
                 class="material-icons">create</i></span>
-            <span title="Mudar Status da Célula" *ngIf="column.id=='id'" class="default-botoes" (click)="status(element.id)"><i
+            <span matTooltip="Mudar Status da Célula" *ngIf="column.id=='id'" class="default-botoes" (click)="status(element.id)"><i
                 class="material-icons">settings</i></span>
-                <span title="Lista de membros" *ngIf="column.id=='id'" class="default-botoes" (click)="membros(element.id)"><i
+                <span matTooltip="Lista de membros" *ngIf="column.id=='id'" class="default-botoes" (click)="membros(element.id)"><i
                   class="material-icons">group</i></span>
           </mat-cell>
         </ng-container>

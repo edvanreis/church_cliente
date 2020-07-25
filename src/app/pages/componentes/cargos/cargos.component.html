@@ -1,5 +1,5 @@
 <div>
-  <mat-form-field>
+  <mat-form-field class="full-width-field">
     <mat-label>Selecione...</mat-label>
     <mat-select [(ngModel)]="cargoSelecionado" id="cargo">
       <mat-option *ngFor="let item of cargos$ | async" [value]="item">

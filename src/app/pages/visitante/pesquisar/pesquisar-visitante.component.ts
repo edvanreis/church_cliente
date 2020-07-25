@@ -1,7 +1,10 @@
+import { VisitanteService } from './../../../service/visitante.service';
+import { MembroService } from './../../../service/membro.service';
+import { CelulaService } from './../../../service/celula.service';
+import { RedeService } from './../../../service/rede.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { take } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
-import { MatSort, MatPaginator, MatTableDataSource, DateAdapter, MatDialog } from '@angular/material';
+import { MatSort, MatPaginator, MatTableDataSource, DateAdapter, MatDialog, MatAutocompleteSelectedEvent } from '@angular/material';
 import { FormGroup, FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { Observable } from 'rxjs';
@@ -9,9 +12,9 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { ExcelService } from '../../../service/excel.service';
 import { EtapaVisaoService } from '../../../service/etapa-visao.service';
 import { AlertType } from '../../../model/alert-type';
-import { PessoaService } from '../../../service/pessoa.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DialogConfirmExcluirPesssoaComponent } from '../../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.component';
+import { map, startWith, take } from 'rxjs/operators';
 
 
 
@@ -26,7 +29,8 @@ export class PesquisarVisitanteComponent implements OnInit {
 
 
   constructor(private _emitirEventoService: EmitirEventoService,
-    private _service: PessoaService,
+    private _service: VisitanteService,
+    private _serviceMembro: MembroService,
     private _notifierService: NotifierService,
     private _excelService: ExcelService,
     private _datePipe: DatePipe,
@@ -34,10 +38,12 @@ export class PesquisarVisitanteComponent implements OnInit {
     private _router: Router,
     private _avRoute: ActivatedRoute,
     private dateAdapter: DateAdapter<Date>,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _redeService: RedeService,
+    private _celulaService: CelulaService) { }
 
   public etapa$: Observable<any[]>;
-  public pessoa:any= {} as any;
+  public visitante: any = {} as any;
   public enderecos: any;
   public comboTipoContatos = [];
   public comboEscolaridade = []
@@ -48,11 +54,29 @@ export class PesquisarVisitanteComponent implements OnInit {
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
   public loading: boolean = false;
-  public pessoas:any = [];
+  public pessoas: any = [];
   public form: FormGroup;
   public formDate: FormGroup;
   public dadosPessoais: any;
-  public celula:any;
+  public celula: any;
+
+  public comboSexo = [];
+  public comboEstadoCivil = [];
+  public igrejaSelecionada: any;
+
+
+  public filteredRede: Observable<string[]>;
+  public myControlRede = new FormControl();
+  public comboRede = [];
+  public redeSelecionada: any;
+  public redeValue: any;
+
+  public filteredCelula: Observable<string[]>;
+  public myControlCelula = new FormControl();
+  public comboCelulas = [];
+  public celulaSelecionada: any;
+  public visaoCelular: boolean;
+  public celulaValue: any;
 
 
 
@@ -63,17 +87,46 @@ export class PesquisarVisitanteComponent implements OnInit {
     this._buildFormDate();
     this.getComboEtapaVisao();
     this.getParams();
+    this._buildForm();
+    this.getComboSexo();
+    this.getComboEstadoCivil();
     // console.log(JSON.parse(this.user.currentUser()));
     // console.log(JSON.parse(this.user.currentUser()).name);
   }
 
+  private _buildForm(): void {
+    this.form = new FormGroup({
+      'nome': new FormControl(''),
+      'sobrenome': new FormControl(''),
+      'dataNascimento': new FormControl(''),
+      'sexo': new FormControl(''),
+      'estadoCivil': new FormControl(''),
+      'nacionalidade': new FormControl(''),
+      'visitanteDaCelula': new FormControl(false)
+    });
+  }
 
-  getParams(){
+  getComboSexo() {
+    this._serviceMembro.carregarSexo().subscribe(item => {
+      this.comboSexo = item;
+      // console.log(item);
+    });
+  }
+
+  getComboEstadoCivil() {
+    this._serviceMembro.carregarEstadoCivil().subscribe(item => {
+      this.comboEstadoCivil = item;
+      // console.log(item);
+    });
+  }
+
+
+  getParams() {
     // console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
-        this.pessoa = JSON.parse(localStorage.getItem("pesquisa"));
-        localStorage.removeItem("pesquisa");
-        this.pesquisar();
+      this.visitante = JSON.parse(localStorage.getItem("pesquisa"));
+      localStorage.removeItem("pesquisa");
+      this.pesquisar();
     }
   }
 
@@ -87,24 +140,22 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      if (item.type == 'dadosPessoais') {
-        this.dadosPessoais = item.data;
-      }
-      if (item.type == 'endereco') {
-        this.enderecos = item.data;
-      }
       if (item.type == 'confirm-dialog-excluir-pessoa') {
         this.pesquisar();
       }
-
+      if (item.type == 'igreja-comp') {
+        this.igrejaSelecionada = item.data;
+        this.visaoCelular = this.igrejaSelecionada.visaoCelular;
+        this.carregarRede(this.igrejaSelecionada.id);
+      }
     });
   }
 
   pesquisar() {
-    this.setObj();
+    // this.setObj();
     //  console.log(this.pessoa)
     this.loading = true;
-    this._service.pesquisar(this.pessoa).pipe(take(1)).subscribe(item => {
+    this._service.pesquisar(this.visitante).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.pessoas = item;
       this.dados = new MatTableDataSource(this.pessoas);
@@ -114,6 +165,8 @@ export class PesquisarVisitanteComponent implements OnInit {
     }, error => {
       // console.log(error);
       this.loading = false;
+      this.pessoas = [];
+      this.dados = new MatTableDataSource<Element>(this.pessoas);
       this._notifierService.notify(AlertType.Error, error.error.message);
 
     });
@@ -123,30 +176,27 @@ export class PesquisarVisitanteComponent implements OnInit {
 
 
 
-  setObj(){
-    this.getEmiter();
-    if(this.dadosPessoais){
-      this.pessoa.nome = this.dadosPessoais.nome;
-      this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
-      this.pessoa.rg = this.dadosPessoais.rg;
-      this.pessoa.cpf = this.dadosPessoais.cpf;
-      this.pessoa.sexo = this.dadosPessoais.sexo;
-      this.pessoa.estadoCivil = this.dadosPessoais.estadoCivil;
-      this.pessoa.dataNascimento = this.dadosPessoais.dataNascimento;
-      this.pessoa.nacionalidade = this.dadosPessoais.nacionalidade;
-      this.pessoa.profissao = this.dadosPessoais.profissao;
-      this.pessoa.observacao = this.dadosPessoais.observacao;
-      this.pessoa.membro = false;
-      this.pessoa.visitante = true;
+  setObj() {
+    this.visitante.nome = this.form.controls['nome'].value;
+    this.visitante.sobreNome = this.form.controls['sobrenome'].value;
+    this.visitante.sexo = this.form.controls['sexo'].value;
+    this.visitante.estadoCivil = this.form.controls['estadoCivil'].value;
+    this.visitante.dataNascimento = this.form.controls['dataNascimento'].value;
+    this.visitante.nacionalidade = this.form.controls['nacionalidade'].value;
 
+    if (this.igrejaSelecionada) {
+      this.visitante.igreja = { id: this.igrejaSelecionada.id };
     }
-    if(this.enderecos){
-      this.pessoa.enderecos = this.enderecos;
+    if (this.redeSelecionada) {
+      this.visitante.rede = { id: this.redeSelecionada.id };
+    }
+    if (this.celulaSelecionada) {
+      this.visitante.celula = { id: this.celulaSelecionada.id };
+      this.visitante.visitanteDaCelula = true;
     }
 
-    if(this.celula){
-      this.pessoa.celula = this.celula;
-    }
+    console.log(this.visitante)
+
     this.preencherPeriodos();
   }
 
@@ -154,8 +204,8 @@ export class PesquisarVisitanteComponent implements OnInit {
 
   preencherPeriodos() {
     if (this.formDate.controls['dataInicioAt'].value && this.formDate.controls['dataFimAt'].value) {
-      this.pessoa.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
-      this.pessoa.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
+      this.visitante.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
+      this.visitante.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
     }
 
   }
@@ -164,11 +214,8 @@ export class PesquisarVisitanteComponent implements OnInit {
     this.columnNames = [
       { id: 'nomeCompleto', value: 'Nome' },
       { id: 'dataNascimento', value: 'Data Nascimento' },
-      { id: 'rg', value: 'RG' },
-      { id: 'cpf', value: 'CPF' },
       { id: 'estadoCivil', value: 'Estado Civil' },
       { id: 'sexo', value: 'Sexo' },
-      { id: 'profissao', value: 'profissao' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
@@ -193,7 +240,6 @@ export class PesquisarVisitanteComponent implements OnInit {
         "cpf": i.cpf,
         "Estado Civil": i.estadoCivil,
         "Sexo Civil": i.sexo,
-        "Profissao": i.profissao,
       });
     });
     this._excelService.exportAsExcelFile(dados, "pesquisa");
@@ -208,9 +254,9 @@ export class PesquisarVisitanteComponent implements OnInit {
     this.form.controls[field].patchValue(value)
   }
 
-  editar(id){
+  editar(id) {
     this.setObj();
-    localStorage.setItem("pesquisa",JSON.stringify(this.pessoa));
+    localStorage.setItem("pesquisa", JSON.stringify(this.visitante));
     this._router.navigate(['/auth/visitante/cadastrar'], {
       queryParams: {
         janela: 'Editar',
@@ -220,14 +266,14 @@ export class PesquisarVisitanteComponent implements OnInit {
     });
   }
 
-  importar(id){
+  importar(id) {
     this.setObj();
-    localStorage.setItem("pesquisa",JSON.stringify(this.pessoa));
+    localStorage.setItem("pesquisa", JSON.stringify(this.visitante));
     this._router.navigate(['/auth/membro/cadastrar'], {
       queryParams: {
         janela: 'Importar',
         id: id,
-        importacao:true
+        importacao: true
       },
       skipLocationChange: true
     });
@@ -241,5 +287,63 @@ export class PesquisarVisitanteComponent implements OnInit {
       }
     });
   }
+
+  carregarRede(id) {
+
+    this._redeService.getRedeIgreja(id).pipe(take(1)).subscribe(item => {
+      this.comboRede = item;
+      // console.log(item);
+      this.filteredRede = this.myControlRede.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterRede(value, this.comboRede))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
+    });
+  }
+
+
+  private _filterRede(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionRedeChange($event: MatAutocompleteSelectedEvent, option) {
+    this.redeSelecionada = option;
+    if (this.visaoCelular) {
+      this.carregarCelula(this.redeSelecionada.id);
+    }
+  }
+
+  carregarCelula(id) {
+
+    this._celulaService.getCelulaRede(id).pipe(take(1)).subscribe(item => {
+      this.comboCelulas = item;
+      // console.log(item);
+      this.filteredCelula = this.myControlCelula.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterCelula(value, this.comboCelulas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as células!");
+    });
+  }
+
+  private _filterCelula(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionCelulaChange($event: MatAutocompleteSelectedEvent, option) {
+    this.celulaSelecionada = option;
+  }
+
+  cadastrar() {
+    this._router.navigate(['/auth/visitante/cadastrar']);
+  }
+
+
 
 }

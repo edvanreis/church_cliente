@@ -3,13 +3,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { map, startWith, take } from 'rxjs/operators';
 import { HelperChurch } from '../../../../helper/helper.church';
 import { EmitirEventoService } from '../../../../service/emitir-evento.service';
-import { PessoaService } from '../../../../service/pessoa.service';
 import { Observable } from 'rxjs';
 import { CelulaService } from '../../../../service/celula.service';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../../model/alert-type';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { RedeService } from '../../../../service/rede.service';
+import { MembroService } from '../../../../service/membro.service';
 
 
 const ELEMENT_DATA = [
@@ -53,7 +53,7 @@ export class DadosPessoaisComponent implements OnInit {
   public redeSelecionada: any;
   public redeValue: any;
 
-  constructor(private _pessoaService: PessoaService,
+  constructor(private _membroService: MembroService,
     private _emitirEventoService: EmitirEventoService,
     private _celulaService: CelulaService,
     private _notifierService: NotifierService,
@@ -69,14 +69,14 @@ export class DadosPessoaisComponent implements OnInit {
   }
 
   getComboSexo() {
-    this._pessoaService.carregarSexo().subscribe(item => {
+    this._membroService.carregarSexo().subscribe(item => {
       this.comboSexo = item;
       // console.log(item);
     });
   }
 
   getComboEstadoCivil() {
-    this._pessoaService.carregarEstadoCivil().subscribe(item => {
+    this._membroService.carregarEstadoCivil().subscribe(item => {
       this.comboEstadoCivil = item;
       // console.log(item);
     });

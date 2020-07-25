@@ -129,20 +129,20 @@ export class DialogAtualizarContatoComponent implements OnInit {
     obj.descricao = descricao;
     obj.whatsapp = HelperChurch.isBoolean(this.form.controls['whatsapp'].value);
     obj.login = HelperChurch.isBoolean(this.form.controls['emailPrincipal'].value);
-    
+
     if (this.data.item.id) {
       obj.id = this.data.item.id;
       obj.isTipoAlterado = this.isTipoAlterado;
     }
-    if (this.data.item.idPessoa) {
-      obj.idPessoa = this.data.item.idPessoa;
+    if (this.data.associadoId) {
+      obj.membroId = this.data.item.associadoId;
     }
     console.log(obj)
     if (obj.id) {
       this.save(obj);
     }
-    obj.codigo = this.data.item.codigo;
     this.contato = obj;
+    this.contato.codigo = this.data.item.codigo;
     this.setEmiter();
     this.close();
   }

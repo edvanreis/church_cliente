@@ -1,10 +1,11 @@
+import { MembroService } from './../../../service/membro.service';
 import { Component, OnInit, Inject } from '@angular/core';
 import { AlertType } from '../../../model/alert-type';
 import { take } from 'rxjs/operators';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { NotifierService } from 'angular-notifier';
-import { PessoaService } from '../../../service/pessoa.service';
+
 
 @Component({
   selector: 'app-dialog-aprovar-reprovar-membro',
@@ -22,7 +23,7 @@ export class DialogAprovarReprovarMembroComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private _emitirEventoService: EmitirEventoService,
     private _notifierService: NotifierService,
-    private _service: PessoaService) { }
+    private _service: MembroService) { }
 
   ngOnInit() {
     console.log(this.data);

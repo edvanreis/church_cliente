@@ -10,8 +10,8 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { IgrejaService } from '../../../service/igreja.service';
 import { RedeService } from '../../../service/rede.service';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
-import { PessoaService } from '../../../service/pessoa.service';
 import { take, startWith, map } from 'rxjs/operators';
+import { MembroService } from '../../../service/membro.service';
 
 @Component({
   selector: 'app-cadastrar-rede',
@@ -45,7 +45,7 @@ export class CadastrarRedeComponent implements OnInit {
     private _igejaService: IgrejaService,
     private _dateAdapter: DateAdapter<Date>,
     private _dialog: MatDialog,
-    private _pessoaService: PessoaService) { }
+    private _membroService: MembroService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -229,7 +229,7 @@ export class CadastrarRedeComponent implements OnInit {
 
 
   carregarMembro(id) {
-    this._pessoaService.getMembroIgreja(id).pipe(take(1)).subscribe(item => {
+    this._membroService.getMembroIgreja(id).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges

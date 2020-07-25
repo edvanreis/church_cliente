@@ -17,11 +17,13 @@ import { MatDialog } from '@angular/material';
 })
 export class EscolaridadeComponent implements OnInit {
 
-  public comboEscolaridade: any = []
+  public comboEscolaridades: any = []
   public escolaridades: any = []
   public escolaridadesGrid: any = []
   public form: FormGroup;
-  @Input('idAssociado') idAssociado;
+  @Input('associadoId') associadoId;
+  public isCuso:boolean = false;
+  public escolaridade:any;
 
   constructor(private _service: EscolaridadeService,
     private _emitirEventoService: EmitirEventoService,
@@ -44,7 +46,7 @@ export class EscolaridadeComponent implements OnInit {
 
   getComboEscolaridade() {
     this._service.getList().subscribe(item => {
-      this.comboEscolaridade = item;
+      this.comboEscolaridades = item;
       // console.log(item);
     });
   }
@@ -59,25 +61,24 @@ export class EscolaridadeComponent implements OnInit {
       return false;
     }
     let escolaridade = this.form.controls['escolaridade'].value;
-    let isExist = this.escolaridades.find(i => i.curso == this.form.controls['curso'].value);
-    if (isExist) {
-      this._notifierService.notify(AlertType.Error, "Curso já adicionado!");
-      return false;
-    }
-    if (this.escolaridades.length != 0) {
-      escolaridade.codigo = this.escolaridades[this.escolaridades.length - 1].codigo + 1;
-    } else {
-      escolaridade.codigo = 1;
+    if(this.form.controls['curso'].value){
+      let isExist = this.escolaridades.find(i => i.curso == this.form.controls['curso'].value.toUpperCase());
+      if (isExist) {
+        this._notifierService.notify(AlertType.Error, "O Curso já foi adicionado!");
+        return false;
+      }
     }
 
     let curso: string = this.form.controls['curso'].value;
+    curso = curso?curso.toUpperCase():null
     this.escolaridades.push({
       codigo: escolaridade.codigo,
       id: escolaridade.id,
       descricao: escolaridade.descricao,
-      curso: curso.toUpperCase()
+      curso: curso
     });
     this.setEmiter();
+    this.form.reset();
   }
 
   getEmiter(): void {
@@ -123,9 +124,28 @@ export class EscolaridadeComponent implements OnInit {
       data: {
         controller: 'escolaridade',
         item: item,
-        idAssociado: this.idAssociado,
+        associadoId: this.associadoId,
         index:i
       }
     });
+  }
+
+  inputValid(){
+    let lista = [];
+    lista.push("SUPERIOR INCOMPLETO")
+    lista.push("SUPERIOR INCOMPLETO")
+    lista.push("SUPERIOR COMPLETO")
+    lista.push("MESTRADO")
+    lista.push("DOUTORADO")
+    lista.push("PH. D")
+    lista.push("PÓS-GRADUAÇÃO")
+
+    let escolaridade = lista.find(item=>item===this.escolaridade.descricao);
+    if(escolaridade){
+      this.isCuso = true;
+    }else{
+      this.isCuso = false;
+    }
+
   }
 }

@@ -1,8 +1,10 @@
+import { Router } from '@angular/router';
+import { VisitanteService } from './../../../service/visitante.service';
+import { MembroService } from './../../../service/membro.service';
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA, MatTableDataSource, MatPaginator, MatSort } from '@angular/material';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { NotifierService } from 'angular-notifier';
-import { PessoaService } from '../../../service/pessoa.service';
 import { take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
 
@@ -23,7 +25,8 @@ export class DialogConfirmCriarVisitanteComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private _emitirEventoService: EmitirEventoService,
     private _notifierService: NotifierService,
-    private _service: PessoaService) { }
+    private _service: VisitanteService,
+    private _router: Router) { }
 
   ngOnInit() {
     console.log(this.data.pessoa)
@@ -35,9 +38,8 @@ export class DialogConfirmCriarVisitanteComponent implements OnInit {
     this.columnNames = [
       { id: 'nome', value: 'Nome' },
       { id: 'sobreNome', value: 'Sobre Nome' },
-      { id: 'rg', value: 'RG' },
-      { id: 'cpf', value: 'CPF' },
       { id: 'igrejaNome', value: 'Igreja' },
+      { id: 'celulaNome', value: 'Célula' },
       { id: 'observacao', value: 'Observação' },
     ]
     this.displayedColumns = this.columnNames.map(x => x.id);
@@ -61,13 +63,21 @@ export class DialogConfirmCriarVisitanteComponent implements OnInit {
   }
 
   confirmar() {
-      this._service.save(this.data.pessoa).pipe(take(1)).subscribe(item => {
+      this._service.save(this.data.visitante).pipe(take(1)).subscribe(item => {
         this.setEmiter();
         this.close();
         this._notifierService.notify(AlertType.Success, item.value);
       }, error => {
         this._notifierService.notify(AlertType.Error, error.message);
       });
+  }
+
+  applyFilter(value) {
+    this.dados.filter = value.trim().toLowerCase();
+  }
+
+  cadastrar() {
+    this._router.navigate(['/auth/visitante/pesquisar']);
   }
 
 

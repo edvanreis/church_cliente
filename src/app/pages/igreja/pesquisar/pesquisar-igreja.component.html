@@ -107,9 +107,9 @@
           </thead>
           <tbody *ngFor="let i of filteredIgrejas | async">
             <tr>
-              <td *ngIf="true">{{i.isSede?'Sim':'Não'}}</td>
+              <td *ngIf="true">{{i.sede?'Não':'Sim'}}</td>
               <td>{{i.nome}}</td>
-              <td>{{i?.cnpj | cpfCnpj }}</td>
+              <td>{{i.cnpj | cpfCnpj }}</td>
               <td>{{i.dataAbertura}}</td>
               <td>{{i.idade}}</td>
               <td>{{i.endereco.cep}}</td>

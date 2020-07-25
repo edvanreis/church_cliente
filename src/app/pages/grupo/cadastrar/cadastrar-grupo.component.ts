@@ -1,8 +1,8 @@
+import { MembroService } from './../../../service/membro.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { TipoGrupoService } from '../../../service/tipo-grupo.service';
 import { Observable } from 'rxjs';
-import { PessoaService } from '../../../service/pessoa.service';
 import { take, startWith, map } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
@@ -52,7 +52,7 @@ export class CadastrarGrupoComponent implements OnInit {
 
 
   constructor(private _tipoGrupoService: TipoGrupoService,
-    private _pessoaService: PessoaService,
+    private _membroService: MembroService,
     private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
     private _serviceGruop: GrupoService,
@@ -86,7 +86,7 @@ export class CadastrarGrupoComponent implements OnInit {
   }
 
   carregarMembro(id) {
-    this._pessoaService.getMembroIgreja(id).pipe(take(1)).subscribe(item => {
+    this._membroService.getMembroIgreja(id).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges

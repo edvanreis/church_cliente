@@ -8,12 +8,12 @@ import { DateAdapter, MatAutocompleteSelectedEvent, MatDialog } from '@angular/m
 import { HelperChurch } from '../../../helper/helper.church';
 import { Observable } from 'rxjs';
 import { take, startWith, map } from 'rxjs/operators';
-import { PessoaService } from '../../../service/pessoa.service';
 import { ReuniaoService } from '../../../service/reuniao.service';
 import { DatePipe } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 import { DialogConfirmPessoaReuniaoComponent } from '../../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.component';
+import { MembroService } from '../../../service/membro.service';
 
 @Component({
   selector: 'app-cadastrar-reuniao-celula',
@@ -65,7 +65,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     private _celulaService: CelulaService,
     private _notifierService: NotifierService,
     private _dateAdapter: DateAdapter<Date>,
-    private _pessoaService: PessoaService,
+    private _membroService: MembroService,
     private _datePipe: DatePipe,
     private _service: ReuniaoService,
     private _router: Router,
@@ -181,7 +181,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   }
 
   carregarMembro(id) {
-    this._pessoaService.getMembroCelula(id).pipe(take(1)).subscribe(item => {
+    this._membroService.getMembroCelula(id).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges
@@ -220,7 +220,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   }
 
   carregarVisitante(id) {
-    this._pessoaService.getVisitanteCelula(id).pipe(take(1)).subscribe(item => {
+    this._membroService.getVisitanteCelula(id).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboVisitante = item;
       this.filteredVisitante = this.myControlVisitante.valueChanges
@@ -341,7 +341,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   }
 
   getPalestrantes() {
-    this._pessoaService.getListMembros().pipe(take(1)).subscribe(item => {
+    this._membroService.getListMembros().pipe(take(1)).subscribe(item => {
       this.comboPalestrantes = item;
       this.filteredPalestrante = this.myControlPalestrante.valueChanges
         .pipe(

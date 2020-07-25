@@ -22,15 +22,13 @@ export class SidemenuComponent implements OnInit {
   menus: MenuElement[] = [
     { 'name': 'Dashboard', 'icon': 'dashboard', 'link': '/auth/dashboard', 'open': false, 'chip': { 'value': 1, 'color': 'accent' }, 'visible': this.userService.hasPermission("acesso_dashboard") },
     {
-      'name': 'Visitantes', 'icon': 'person', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_visitantes"), 'sub': [
-        { 'name': 'Cadastrar', 'link': 'visitante/cadastrar', 'icon': 'person_add', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_visitantes") },
-        { 'name': 'Pesquisar', 'link': 'visitante/pesquisar', 'icon': 'search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_visitantes") },
+      'name': 'Visitantes', 'icon': 'emoji_emotions', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_visitantes"), 'sub': [
+        { 'name': 'Pesquisar', 'link': 'visitante/pesquisar', 'icon': 'person_search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_visitantes") },
       ]
     },
     {
       'name': 'Membros', 'icon': 'person', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_membros"), 'sub': [
-        { 'name': 'Cadastrar', 'link': 'membro/cadastrar', 'icon': 'person_add', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_membros") },
-        { 'name': 'Pesquisar', 'link': 'membro/pesquisar', 'icon': 'search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_membros"), },
+        { 'name': 'Pesquisar', 'link': 'membro/pesquisar', 'icon': 'person_search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_membros"), },
       ]
     },
     {

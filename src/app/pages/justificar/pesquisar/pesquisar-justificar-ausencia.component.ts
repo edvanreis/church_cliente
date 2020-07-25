@@ -6,11 +6,11 @@ import { take, startWith, map } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
-import { PessoaService } from '../../../service/pessoa.service';
 import { FaltasService } from '../../../service/faltas.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { DialogConfirmJustificativasComponent } from '../../dialog/dialog-confirm-justificativas/dialog-confirm-justificativas.component';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { MembroService } from '../../../service/membro.service';
 
 @Component({
   selector: 'app-pesquisar-justificar-ausencia',
@@ -36,7 +36,7 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
 
   constructor(private _celulaService: CelulaService,
     private _notifierService: NotifierService,
-    private _pessoaService: PessoaService,
+    private _membroService: MembroService,
     private _faltasService: FaltasService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
@@ -77,7 +77,7 @@ export class PesquisarJustificarAusenciaComponent implements OnInit {
   }
 
   carregarMembro(id) {
-    this._pessoaService.getMembroCelula(id).pipe(take(1)).subscribe(item => {
+    this._membroService.getMembroCelula(id).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboMembro = item;
       this.filteredMembro = this.myControlMembro.valueChanges
