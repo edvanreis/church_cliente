@@ -1,21 +1,17 @@
-import { MembroService } from './../../../service/membro.service';
-import { HelperChurch } from './../../../helper/helper.church';
-import { RedeService } from './../../../service/rede.service';
-import { CelulaService } from './../../../service/celula.service';
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
+import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
-import { ContatoService } from '../../../service/contato.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { EnderecoService } from '../../../service/endereco.service';
-import { EtapaVisaoService } from '../../../service/etapa-visao.service';
-import { CargoService } from '../../../service/cargo.service';
-import { EscolaridadeService } from '../../../service/escolaridade.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { HelperChurch } from './../../../helper/helper.church';
+import { CelulaService } from './../../../service/celula.service';
+import { MembroService } from './../../../service/membro.service';
+import { RedeService } from './../../../service/rede.service';
+import { VisitanteService } from './../../../service/visitante.service';
 
 
 @Component({
@@ -63,19 +59,17 @@ export class CadastrarMembroComponent implements OnInit {
   public importacao: boolean = false;
   public isCelula = true;
 
+  public visitanteId: any;
+
 
   constructor(private _emitirEventoService: EmitirEventoService,
     private _service: MembroService,
-    private _enderecoService: EnderecoService,
     private _notifierService: NotifierService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
-    private _contatoService: ContatoService,
-    private _etapaVisaoService: EtapaVisaoService,
-    private _cargosService: CargoService,
-    private _escolaridadeService: EscolaridadeService,
     private _redeService: RedeService,
-    private _celulaService: CelulaService) { }
+    private _celulaService: CelulaService,
+    private _visitanteService: VisitanteService) { }
 
   ngOnInit() {
     this.getParams();
@@ -124,6 +118,12 @@ export class CadastrarMembroComponent implements OnInit {
       this.getMembro(this.id);
       this.pesquisa = true;
     }
+
+    if (this._avRoute.snapshot.queryParamMap.get("visitanteId")) {
+      this.visitanteId = this._avRoute.snapshot.queryParamMap.get("visitanteId");
+      this.getVisitante(this.visitanteId);
+      this.pesquisa = true;
+    }
     if (this._avRoute.snapshot.queryParamMap.get("importacao")) {
       this.importacao = true;;
     }
@@ -154,23 +154,55 @@ export class CadastrarMembroComponent implements OnInit {
         this.redeValue = item.rede.nome;
         this.redeSelecionada = item.rede;
       }
-      if(item.escolaridades){
+      if (item.escolaridades) {
         this.emitirEscolaridades(item.escolaridades);
       }
-      if(item.etapas){
+      if (item.etapas) {
         this.emitirEtapaVisao(item.etapas);
       }
-      if(item.cargos){
+      if (item.cargos) {
         this.emitirCargo(item.cargos);
       }
-      if(item.igreja){
+      if (item.igreja) {
         this.emitirIgreja(item.igreja);
       }
-      if(item.enderecos){
+      if (item.enderecos) {
         this.emitirEnderecos(item.enderecos);
       }
 
-      if(item.contatos){
+      if (item.contatos) {
+        this.emitirContatos(item.contatos);
+      }
+      // this.emitirCelula(item.celula);
+    }, error => {
+      // console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  getVisitante(id) {
+    this._visitanteService.migrar(id).pipe(take(1)).subscribe(item => {
+      // console.log(item)
+      this.form.controls['nome'].patchValue(item.nome);
+      this.form.controls['sobrenome'].patchValue(item.sobreNome);
+      this.form.controls['sexo'].patchValue(item.sexoEnum);
+      this.form.controls['estadoCivil'].patchValue(item.estadoCivilEnum);
+      this.form.controls['nacionalidade'].patchValue(item.nacionalidade);
+      this.form.controls['dataNascimento'].patchValue(item.dataNascimento);
+
+      if (item.celula) {
+        this.celulaValue = item.celula.nome;
+        this.celulaSelecionada = item.celula;
+      }
+      if (item.rede) {
+        this.redeValue = item.rede.nome;
+        this.redeSelecionada = item.rede;
+      }
+
+      if (item.igreja) {
+        this.emitirIgreja(item.igreja);
+      }
+      if (item.contatos) {
         this.emitirContatos(item.contatos);
       }
       // this.emitirCelula(item.celula);
@@ -216,10 +248,12 @@ export class CadastrarMembroComponent implements OnInit {
     //   this._notifierService.notify(AlertType.Error, mensagem);
     //   return false;
     // }
-    if (!this.membro.id) {
-      this.save();
-    } else {
+    if (this.membro.id) {
       this.updade();
+    } else if (this.visitanteId) {
+      this.importar();
+    } else {
+      this.save();
     }
   }
 
@@ -228,7 +262,7 @@ export class CadastrarMembroComponent implements OnInit {
       this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
-      this._notifierService.notify(AlertType.Error, error.message);
+      this._notifierService.notify(AlertType.Error, error.error.errors);
     });
   }
 
@@ -236,14 +270,23 @@ export class CadastrarMembroComponent implements OnInit {
     this._service.update(this.membro).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
-      this._notifierService.notify(AlertType.Error, error.message);
+      this._notifierService.notify(AlertType.Error, error.error.errors);
+    });
+  }
 
+  importar() {
+    this._visitanteService.importar(this.membro).pipe(take(1)).subscribe(item => {
+      this.voltar();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.error.errors);
     });
   }
 
   setObj() {
     if (this.id) {
-      this.membro.id = this.id;
+      this.membro.id = Number.parseInt(this.id);
     }
 
     this.membro.nome = this.form.controls['nome'].value;
@@ -258,7 +301,7 @@ export class CadastrarMembroComponent implements OnInit {
     this.membro.batizado = HelperChurch.isBoolean(this.form.controls['batizado'].value);
     this.membro.dizimista = HelperChurch.isBoolean(this.form.controls['dizimista'].value);
     this.membro.cartaRecomendacao = HelperChurch.isBoolean(this.form.controls['cartaRecomendacao'].value);
-
+    this.membro.membroDaCelula = false;
 
     if (this.igrejaSelecionada) {
       this.membro.igreja = { id: this.igrejaSelecionada.id };
@@ -287,6 +330,11 @@ export class CadastrarMembroComponent implements OnInit {
     if (this.cargos) {
       this.membro.cargos = this.cargos;
     }
+
+    if (this.visitanteId) {
+      this.membro.visitanteId = Number.parseInt(this.visitanteId);
+    }
+
     console.log(this.membro)
 
   }
@@ -322,7 +370,7 @@ export class CadastrarMembroComponent implements OnInit {
   emitirIgreja(item): void {
     this._emitirEventoService.emitir('edit-igreja', item);
     this.igrejaSelecionada = item;
-    if(this.igrejaSelecionada){
+    if (this.igrejaSelecionada) {
       this.carregarRede(this.igrejaSelecionada.id);
     }
   }
@@ -340,14 +388,14 @@ export class CadastrarMembroComponent implements OnInit {
     } else {
       caminho = "/auth/membro/pesquisar";
     }
-    if(this.pesquisa || this.importacao){
+    if (this.pesquisa || this.importacao) {
       this._router.navigate([caminho], {
         queryParams: {
           pesquisa: this.pesquisa
         },
         skipLocationChange: true
       });
-    }else{
+    } else {
       this._router.navigate([caminho]);
     }
 
@@ -390,9 +438,6 @@ export class CadastrarMembroComponent implements OnInit {
     if (this.escolaridades.length == 0) {
       return concatArray + 'a  Esconlaridade!';
     }
-    if (this.etapas.length == 0) {
-      return concatArray + 'a  Etapa da visão!';
-    }
     if (!this.membro.igreja) {
       return concat + ' Igreja!';
     }
@@ -411,7 +456,7 @@ export class CadastrarMembroComponent implements OnInit {
           map(value => this._filterRede(value, this.comboRede))
         );
     }, error => {
-      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as redes!");
     });
   }
 
@@ -451,6 +496,8 @@ export class CadastrarMembroComponent implements OnInit {
   onSelectionCelulaChange($event: MatAutocompleteSelectedEvent, option) {
     this.celulaSelecionada = option;
   }
+
+
 
 
 }

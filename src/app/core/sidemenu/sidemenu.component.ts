@@ -34,16 +34,19 @@ export class SidemenuComponent implements OnInit {
     {
       'name': 'Igrejas', 'icon': 'location_city', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_igrejas"), 'sub': [
         { 'name': 'Ver todas', 'link': 'igreja/pesquisar', 'icon': 'reorder', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_igrejas") },
+        { 'name': 'Pessoas', 'link': 'igreja/pessoas', 'icon': 'person_search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_igrejas") },
       ]
     },
     {
       'name': 'Redes', 'icon': 'device_hub', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_redes"), 'sub': [
         { 'name': 'Pesquisar', 'link': 'rede/pesquisar', 'icon': 'search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_redes"), },
+        { 'name': 'Pessoas', 'link': 'rede/pessoas', 'icon': 'person_search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_igrejas") },
       ]
     },
     {
       'name': 'Células', 'icon': 'group', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_celulas"), 'sub': [
         { 'name': 'Pesquisar', 'link': 'celula/pesquisar', 'icon': 'search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_celulas"), },
+        { 'name': 'Pessoas', 'link': 'celula/pessoas', 'icon': 'person_search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_igrejas") },
       ]
     },
     {

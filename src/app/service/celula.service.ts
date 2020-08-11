@@ -38,7 +38,7 @@ export class CelulaService implements AbstractService{
     return this.http.get(this._url+"list")
       .pipe(map((response: any) => response))
   }
-  
+
   getCelula(id) {
     return this.http.get(this._url+id+'/obterCelula')
       .pipe(map((response: any) => response))
@@ -81,6 +81,16 @@ export class CelulaService implements AbstractService{
 
   remove(id) {
     return this.http.delete(this._url+id)
+      .pipe(map((response: any) => response))
+  }
+
+  getMembros(id) {
+    return this.http.get(`${this._url}${id}/membros`)
+      .pipe(map((response: any) => response))
+  }
+
+  getVisitantes(id) {
+    return this.http.get(`${this._url}${id}/visitantes`)
       .pipe(map((response: any) => response))
   }
 

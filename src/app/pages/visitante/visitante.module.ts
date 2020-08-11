@@ -17,11 +17,14 @@ import { EscolaridadeService } from '../../service/escolaridade.service';
 import {  DialogConfirmExcluirPessoaModule } from '../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.module';
 import { DialogConfirmCriarVisitanteModule } from '../dialog/dialog-confirm-criar-visitante/dialog-confirm-criar-visitante.module';
 import { TextMaskModule } from 'angular2-text-mask';
-import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { TransferirVisitanteComponent } from './transferir/transferir-visitante.component';
+
 
 const routes: Routes = [
-  { path: 'pesquisar', component:  PesquisarVisitanteComponent , data: { animation: 'buttons' }},
-  { path: 'cadastrar', component:  CadastrarVisitanteComponent , data: { animation: 'buttons' }},
+  { path: 'pesquisar',  component:  PesquisarVisitanteComponent , data: { animation: 'buttons' }},
+  { path: 'cadastrar',  component:  CadastrarVisitanteComponent , data: { animation: 'buttons' }},
+  { path: 'transferir', component:  TransferirVisitanteComponent , data: { animation: 'buttons' }},
 ];
 @NgModule({
   imports: [
@@ -50,13 +53,14 @@ const routes: Routes = [
     MatOptionModule,
     MatSelectModule,
     PipeModule,
-    IgrejasCompenenteModule,
+    IgrejasComponenteModule,
     MatAutocompleteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
     CadastrarVisitanteComponent,
-    PesquisarVisitanteComponent
+    PesquisarVisitanteComponent,
+    TransferirVisitanteComponent
   ],
   providers: [
     VisitanteService,

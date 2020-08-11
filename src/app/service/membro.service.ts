@@ -129,6 +129,11 @@ export class MembroService  implements AbstractService{
       .pipe(map((response: any) => response))
   }
 
+  transferirMembro(controller,id,membroId,metodo) {
+    return this.http.get(`${environment.url}${controller}/${id}/${membroId}/${metodo}`)
+      .pipe(tap((response: any) => response));
+  }
+
 
 
 }

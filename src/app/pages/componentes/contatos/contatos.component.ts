@@ -223,9 +223,9 @@ export class ContatosComponent implements OnInit {
           // contato.login = item.data[i].login
           contato.isLoginStr = item.data[i].isLoginStr
           if(this.visitanteId){
-            contato.visitanteId = this.visitanteId;
+            contato.visitanteId = Number.parseInt(this.visitanteId);
           }else{
-            contato.membroId = this.membroId;
+            contato.membroId = Number.parseInt(this.membroId);
           }
 
           this.contatos.push(contato)
@@ -252,7 +252,22 @@ export class ContatosComponent implements OnInit {
   }
 
   setEmiter(): void {
-    this._emitirEventoService.emitir("contatos", this.contatos);
+
+    let contatos = [];
+
+    this.contatos.forEach(item=>{
+      let contato = {} as any;
+      contato.id = item.id;
+      contato.tipo = item.tipo;
+      contato.descricao = item.descricao
+      contato.whatsapp = item.whatsapp
+      contato.isLoginStr = item.isLoginStr
+      contato.visitanteId = contato.visitanteId;
+      contato.membroId = contato.membroId;
+      contatos.push(contato)
+    });
+
+    this._emitirEventoService.emitir("contatos",contatos);
   }
 
 

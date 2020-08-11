@@ -62,4 +62,19 @@ export class IgrejaService {
     return this.http.get(this._url+"listSede")
       .pipe(map((response: any) => response))
   }
+
+  getMembros(id) {
+    return this.http.get(`${this._url}${id}/membros`)
+      .pipe(map((response: any) => response))
+  }
+
+  getVisitantes(id) {
+    return this.http.get(`${this._url}${id}/visitantes`)
+      .pipe(map((response: any) => response))
+  }
+
+  getListDashBoard() {
+    return this.http.get(this._url+"listIgrejasDashBoard")
+      .pipe(map((response: any) => response))
+  }
 }

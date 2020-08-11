@@ -93,14 +93,19 @@ export class MultSelectEtapaVisaoComponent implements OnInit {
   limparTodos() {
     this.checked = false;
     this.checkedList = [];
-  };
+    for (var i = 0; i < this.etapas.length; i++) {
+      this.etapas[i].checked = false;
+    }
+    this.emiter();
+  }
 
   marcarTodos() {
     this.checked = true;
     this.checkedList = [];
     for (var i = 0; i < this.etapas.length; i++) {
-      this.checkedList.push(this.etapas[i]);
+      this.etapas[i].checked = true;
     }
+    this.checkedList = this.etapas;
     this.emiter();
   }
 
@@ -118,7 +123,5 @@ export class MultSelectEtapaVisaoComponent implements OnInit {
       }
     });
   }
-
-
 
 }

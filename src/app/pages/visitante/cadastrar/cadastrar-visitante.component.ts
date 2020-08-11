@@ -41,6 +41,7 @@ export class CadastrarVisitanteComponent implements OnInit {
   public igrejaSelecionada: any;
 
 
+
   public filteredRede: Observable<string[]>;
   public myControlRede = new FormControl();
   public comboRede = [];
@@ -59,12 +60,9 @@ export class CadastrarVisitanteComponent implements OnInit {
   constructor(private _emitirEventoService: EmitirEventoService,
     private _serviceMembro: MembroService,
     private _service: VisitanteService,
-    private _enderecoService: EnderecoService,
     private _notifierService: NotifierService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
-    private _contatoService: ContatoService,
-    private _escolaridadeService: EscolaridadeService,
     private _dialog: MatDialog,
     private _redeService: RedeService,
     private _celulaService: CelulaService) { }
@@ -99,20 +97,21 @@ export class CadastrarVisitanteComponent implements OnInit {
       'sexo': new FormControl(''),
       'estadoCivil': new FormControl(''),
       'nacionalidade': new FormControl(''),
-      'observacao': new FormControl(''),
-      'visitanteDaCelula': new FormControl(false)
+      'dataCultoIgreja': new FormControl(''),
+      'dataCultoRede': new FormControl(''),
+      'dataReuniaoCelula': new FormControl(''),
     });
   }
 
   getParams() {
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
-      this.getPessoa(this.id);
+      this.getVisitante(this.id);
       this.pesquisa = true;
     }
   }
 
-  getPessoa(id) {
+  getVisitante(id) {
     this._service.obterVisitante(id).pipe(take(1)).subscribe(item => {
 
       this.form.controls['nome'].patchValue(item.nome);
@@ -121,9 +120,16 @@ export class CadastrarVisitanteComponent implements OnInit {
       this.form.controls['estadoCivil'].patchValue(item.estadoCivilEnum);
       this.form.controls['nacionalidade'].patchValue(item.nacionalidade);
       this.form.controls['dataNascimento'].patchValue(item.dataNascimento);
+      this.form.controls['dataCultoIgreja'].patchValue(item.dataCultoIgreja);
+      this.form.controls['dataCultoRede'].patchValue(item.dataCultoRede);
+      this.form.controls['dataReuniaoCelula'].patchValue(item.dataReuniaoCelula);
 
       if(item.contatos){
-        this.emitirContatos(item.id);
+        this.emitirContatos(item.contatos);
+      }
+
+      if(item.igreja){
+        this.emitirIgreja(item.igreja);
       }
 
       if(item.rede){
@@ -187,7 +193,7 @@ export class CadastrarVisitanteComponent implements OnInit {
     this._service.update(this.visitante).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
-      this._notifierService.notify(AlertType.Error, error.message);
+      this._notifierService.notify(AlertType.Error, error.error.errors);
 
     });
   }
@@ -203,6 +209,9 @@ export class CadastrarVisitanteComponent implements OnInit {
     this.visitante.estadoCivil = this.form.controls['estadoCivil'].value;
     this.visitante.dataNascimento = this.form.controls['dataNascimento'].value;
     this.visitante.nacionalidade = this.form.controls['nacionalidade'].value;
+    this.visitante.dataCultoIgreja = this.form.controls['dataCultoIgreja'].value;
+    this.visitante.dataCultoRede = this.form.controls['dataCultoRede'].value;
+    this.visitante.dataReuniaoCelula = this.form.controls['dataReuniaoCelula'].value;
 
     if(this.igrejaSelecionada){
       this.visitante.igreja = {id:this.igrejaSelecionada.id};
@@ -218,7 +227,7 @@ export class CadastrarVisitanteComponent implements OnInit {
     if (this.contatos) {
       this.visitante.contatos = this.contatos;
     }
-    // console.log(this.pessoa)
+    console.log(this.visitante)
 
   }
 
@@ -248,7 +257,6 @@ export class CadastrarVisitanteComponent implements OnInit {
     if(this.igrejaSelecionada){
       this.carregarRede(this.igrejaSelecionada.id);
     }
-
   }
 
 
@@ -256,7 +264,8 @@ export class CadastrarVisitanteComponent implements OnInit {
   voltar() {
     this._router.navigate(['/auth/visitante/pesquisar'], {
       queryParams: {
-        pesquisa: this.pesquisa
+        pesquisa: this.pesquisa,
+        editar:this._avRoute.snapshot.queryParamMap.get("editar")
       },
       skipLocationChange: true
     });
@@ -273,6 +282,7 @@ export class CadastrarVisitanteComponent implements OnInit {
     if (!this.visitante.igreja) {
       return concat + ' Igreja!';
     }
+
     return null;
   }
 

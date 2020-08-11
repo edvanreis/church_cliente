@@ -1,3 +1,4 @@
+import { DialogTransferirPessoaModule } from './../dialog/dialog-transferir-pessoa/dialog-transferir-pessoa.module';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -14,12 +15,16 @@ import { IgrejaDadosModule } from '../componentes/igreja-dados/igreja-dados.modu
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 import { CadastrarIgrejaComponent } from './cadastrar/cadastrar-igreja.component';
 import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component';
+import { IgrejaPessoasComponent } from './pessoas/igreja-pessoas.component';
+import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
+
 
 
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarIgrejaComponent , data: { animation: 'buttons' }},
-  { path: 'pesquisar', component:  PesquisarIgrejaComponent , data: { animation: 'buttons' }}
+  { path: 'pesquisar', component:  PesquisarIgrejaComponent , data: { animation: 'buttons' }},
+  { path: 'pessoas',   component:  IgrejaPessoasComponent   , data: { animation: 'buttons' }},
 ];
 @NgModule({
   imports: [
@@ -50,11 +55,14 @@ const routes: Routes = [
     MatTooltipModule,
     MatDatepickerModule,
     MatRadioModule,
+    IgrejasComponenteModule,
+    DialogTransferirPessoaModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
     CadastrarIgrejaComponent,
-    PesquisarIgrejaComponent
+    PesquisarIgrejaComponent,
+    IgrejaPessoasComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }

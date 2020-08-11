@@ -102,7 +102,9 @@ export class PesquisarVisitanteComponent implements OnInit {
       'sexo': new FormControl(''),
       'estadoCivil': new FormControl(''),
       'nacionalidade': new FormControl(''),
-      'visitanteDaCelula': new FormControl(false)
+      'dataCultoIgreja': new FormControl(''),
+      'dataCultoRede': new FormControl(''),
+      'dataReuniaoCelula': new FormControl(''),
     });
   }
 
@@ -124,9 +126,13 @@ export class PesquisarVisitanteComponent implements OnInit {
   getParams() {
     // console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
-      this.visitante = JSON.parse(localStorage.getItem("pesquisa"));
-      localStorage.removeItem("pesquisa");
-      this.pesquisar();
+
+      if(this._avRoute.snapshot.queryParamMap.get("editar")){
+          this.visitante = JSON.parse(localStorage.getItem("pesquisa"));
+          localStorage.removeItem("pesquisa");
+          this.pesquisar(true);
+      }
+
     }
   }
 
@@ -141,7 +147,7 @@ export class PesquisarVisitanteComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       if (item.type == 'confirm-dialog-excluir-pessoa') {
-        this.pesquisar();
+        this.pesquisar(false);
       }
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
@@ -151,8 +157,10 @@ export class PesquisarVisitanteComponent implements OnInit {
     });
   }
 
-  pesquisar() {
-    // this.setObj();
+  pesquisar(editar) {
+    if(!editar){
+      this.setObj();
+    }
     //  console.log(this.pessoa)
     this.loading = true;
     this._service.pesquisar(this.visitante).pipe(take(1)).subscribe(item => {
@@ -183,6 +191,10 @@ export class PesquisarVisitanteComponent implements OnInit {
     this.visitante.estadoCivil = this.form.controls['estadoCivil'].value;
     this.visitante.dataNascimento = this.form.controls['dataNascimento'].value;
     this.visitante.nacionalidade = this.form.controls['nacionalidade'].value;
+    this.visitante.dataCultoIgreja = this.form.controls['dataCultoIgreja'].value;
+    this.visitante.dataCultoRede = this.form.controls['dataCultoRede'].value;
+    this.visitante.dataReuniaoCelula = this.form.controls['dataReuniaoCelula'].value;
+
 
     if (this.igrejaSelecionada) {
       this.visitante.igreja = { id: this.igrejaSelecionada.id };
@@ -259,7 +271,7 @@ export class PesquisarVisitanteComponent implements OnInit {
     localStorage.setItem("pesquisa", JSON.stringify(this.visitante));
     this._router.navigate(['/auth/visitante/cadastrar'], {
       queryParams: {
-        janela: 'Editar',
+        editar: 'Editar',
         id: id
       },
       skipLocationChange: true
@@ -272,7 +284,7 @@ export class PesquisarVisitanteComponent implements OnInit {
     this._router.navigate(['/auth/membro/cadastrar'], {
       queryParams: {
         janela: 'Importar',
-        id: id,
+        visitanteId: id,
         importacao: true
       },
       skipLocationChange: true

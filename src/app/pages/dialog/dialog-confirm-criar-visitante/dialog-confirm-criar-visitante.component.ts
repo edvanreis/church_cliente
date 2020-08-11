@@ -36,11 +36,12 @@ export class DialogConfirmCriarVisitanteComponent implements OnInit {
 
   columns() {
     this.columnNames = [
-      { id: 'nome', value: 'Nome' },
-      { id: 'sobreNome', value: 'Sobre Nome' },
+      { id: 'nomeCompleto', value: 'Nome' },
       { id: 'igrejaNome', value: 'Igreja' },
+      { id: 'redeNome',   value: 'Rede' },
       { id: 'celulaNome', value: 'Célula' },
       { id: 'observacao', value: 'Observação' },
+      { id: 'id', value: 'Ação' },
     ]
     this.displayedColumns = this.columnNames.map(x => x.id);
   }
@@ -66,9 +67,10 @@ export class DialogConfirmCriarVisitanteComponent implements OnInit {
       this._service.save(this.data.visitante).pipe(take(1)).subscribe(item => {
         this.setEmiter();
         this.close();
+        this.voltar();
         this._notifierService.notify(AlertType.Success, item.value);
       }, error => {
-        this._notifierService.notify(AlertType.Error, error.message);
+        this._notifierService.notify(AlertType.Error, error.error.errors);
       });
   }
 
@@ -76,8 +78,18 @@ export class DialogConfirmCriarVisitanteComponent implements OnInit {
     this.dados.filter = value.trim().toLowerCase();
   }
 
-  cadastrar() {
+  voltar() {
     this._router.navigate(['/auth/visitante/pesquisar']);
+  }
+
+  transferir(id){
+    this._router.navigate(['/auth/visitante/transferir'], {
+      queryParams: {
+        id: id
+      },
+      skipLocationChange: true
+    });
+    this.close();
   }
 
 

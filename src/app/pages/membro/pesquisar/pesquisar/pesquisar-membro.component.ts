@@ -1,23 +1,27 @@
 import { DatePipe } from '@angular/common';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { MatPaginator, MatSort, MatTableDataSource, MatDialog } from '@angular/material';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource, DateAdapter } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
-import { Observable } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { AlertType } from '../../../../model/alert-type';
 import { EmitirEventoService } from '../../../../service/emitir-evento.service';
 import { EtapaVisaoService } from '../../../../service/etapa-visao.service';
 import { ExcelService } from '../../../../service/excel.service';
 import { MembroService } from '../../../../service/membro.service';
-import { DialogEnviarCartaComponent } from '../../../dialog/dialog-enviar-carta/dialog-enviar-carta.component';
-import { DialogHistoricoPessoaComponent } from '../../../dialog/dialog-historico-pessoa/dialog-historico-pessoa.component';
 import { DialogAtivarInativarComponent } from '../../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
 import { DialogConfirmExcluirPesssoaComponent } from '../../../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.component';
+import { DialogEnviarCartaComponent } from '../../../dialog/dialog-enviar-carta/dialog-enviar-carta.component';
+import { DialogHistoricoPessoaComponent } from '../../../dialog/dialog-historico-pessoa/dialog-historico-pessoa.component';
+import { HelperChurch } from './../../../../helper/helper.church';
 
 
-
+const ELEMENT_DATA = [
+  { codigo: 'A', value: 'Ativo' },
+  { codigo: 'I', value: 'Inativo' },
+  { codigo: null, value: 'Todos' },
+];
 
 @Component({
   selector: 'app-pesquisar-membro',
@@ -28,21 +32,20 @@ export class PesquisarMembroComponent implements OnInit {
 
 
 
-  constructor(private _emitirEventoService: EmitirEventoService,
-    private _service: MembroService,
-    private _notifierService: NotifierService,
-    private _excelService: ExcelService,
-    private _datePipe: DatePipe,
-    private _etapaVisao: EtapaVisaoService,
-    private _router: Router,
-    private _avRoute: ActivatedRoute,
-    private _dialog: MatDialog) { }
+  public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
+  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
 
-  public etapa$: Observable<any[]>;
-  public pessoa: any = {} as any;
-  public enderecos: any;
-  public comboTipoContatos = [];
-  public comboEscolaridade = []
+  public comboSexo = [];
+  public comboEstadoCivil = [];
+  public comboStatus = ELEMENT_DATA;
+
+  public form: FormGroup;
+  public formDate: FormGroup;
+
+  public membro = {} as any;
+
+
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = [];
   public columnNames;
@@ -51,29 +54,73 @@ export class PesquisarMembroComponent implements OnInit {
   public pageIndex: number = 0;
   public loading: boolean = false;
   public pessoas: any = [];
-  public form: FormGroup;
-  public formDate: FormGroup;
-  public dadosPessoais: any;
-  public celula: any;
+
+  constructor(private _emitirEventoService: EmitirEventoService,
+    private _service: MembroService,
+    private _notifierService: NotifierService,
+    private _excelService: ExcelService,
+    private _datePipe: DatePipe,
+    private _router: Router,
+    private _avRoute: ActivatedRoute,
+    private _dialog: MatDialog,
+    private _dateAdapter: DateAdapter<Date>
+    ) { }
 
 
 
 
   ngOnInit() {
+    this._dateAdapter.setLocale("br");
     this.getEmiter();
     this.columns();
+    this._buildForm();
     this._buildFormDate();
-    this.getComboEtapaVisao();
     this.getParams();
+    this.getComboSexo();
+    this.getComboEstadoCivil();
     // console.log(JSON.parse(this.user.currentUser()));
     // console.log(JSON.parse(this.user.currentUser()).name);
   }
 
 
+  private _buildForm(): void {
+    this.form = new FormGroup({
+      'nome': new FormControl(''),
+      'sobrenome': new FormControl(''),
+      'dataNascimento': new FormControl(''),
+      'rg': new FormControl(''),
+      'cpf': new FormControl(''),
+      'sexo': new FormControl(''),
+      'estadoCivil': new FormControl(''),
+      'nacionalidade': new FormControl(''),
+      'profissao': new FormControl(''),
+      'batizado': new FormControl(true),
+      'dizimista': new FormControl(true),
+      'membroDaCelula': new FormControl(false),
+      'observacao': new FormControl(''),
+      'cartaRecomendacao': new FormControl(false),
+      'status': new FormControl('A'),
+    });
+  }
+
+  getComboSexo() {
+    this._service.carregarSexo().subscribe(item => {
+      this.comboSexo = item;
+      // console.log(item);
+    });
+  }
+
+  getComboEstadoCivil() {
+    this._service.carregarEstadoCivil().subscribe(item => {
+      this.comboEstadoCivil = item;
+      // console.log(item);
+    });
+  }
+
   getParams() {
     // console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
-      this.pessoa = JSON.parse(localStorage.getItem("pesquisa"));
+      this.membro = JSON.parse(localStorage.getItem("pesquisa"));
       localStorage.removeItem("pesquisa");
       this.pesquisar();
     }
@@ -91,13 +138,7 @@ export class PesquisarMembroComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      // console.log(item.type)
-      if (item.type == 'dadosPessoais') {
-        this.dadosPessoais = item.data;
-      }
-      if (item.type == 'endereco') {
-        this.enderecos = item.data;
-      }
+
       if (item.type == 'status') {
         this.pesquisar();
       }
@@ -111,7 +152,7 @@ export class PesquisarMembroComponent implements OnInit {
     this.setObj();
     //  console.log(this.pessoa)
     this.loading = true;
-    this._service.pesquisar(this.pessoa).pipe(take(1)).subscribe(item => {
+    this._service.pesquisar(this.membro).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.pessoas = item;
       this.dados = new MatTableDataSource(this.pessoas);
@@ -120,6 +161,7 @@ export class PesquisarMembroComponent implements OnInit {
       this.loading = false;
     }, error => {
       // console.log(error);
+      this.loading = false;
       this.pessoas = [];
       this.dados = new MatTableDataSource<Element>(this.pessoas);
       this._notifierService.notify(AlertType.Error, error.error.message);
@@ -132,33 +174,22 @@ export class PesquisarMembroComponent implements OnInit {
 
 
   setObj() {
-    this.getEmiter();
 
-    if (this.dadosPessoais) {
-      this.pessoa.nome = this.dadosPessoais.nome;
-      this.pessoa.sobreNome = this.dadosPessoais.sobreNome;
-      this.pessoa.rg = this.dadosPessoais.rg;
-      this.pessoa.cpf = this.dadosPessoais.cpf;
-      this.pessoa.sexo = this.dadosPessoais.sexo;
-      this.pessoa.estadoCivil = this.dadosPessoais.estadoCivil;
-      this.pessoa.dataNascimento = this.dadosPessoais.dataNascimento;
-      this.pessoa.nacionalidade = this.dadosPessoais.nacionalidade;
-      this.pessoa.profissao = this.dadosPessoais.profissao;
-      this.pessoa.observacao = this.dadosPessoais.observacao;
-      this.pessoa.membro = true;
-      this.pessoa.visitante = false;
-      this.pessoa.cartaRecomendacao = this.dadosPessoais.cartaRecomendacao;
-      this.pessoa.status = this.dadosPessoais.status;
-      this.pessoa.igreja = this.dadosPessoais.igreja;
+    this.membro.nome = this.form.controls['nome'].value;
+    this.membro.sobreNome = this.form.controls['sobrenome'].value;
+    this.membro.sexo = this.form.controls['sexo'].value;
+    this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
+    this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
+    this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
+    this.membro.profissao = this.form.controls['profissao'].value;
+    this.membro.rg = HelperChurch.retirarFormatacao(this.form.controls['rg'].value);
+    this.membro.cpf = HelperChurch.retirarFormatacao(this.form.controls['cpf'].value);
+    this.membro.batizado = HelperChurch.isBoolean(this.form.controls['batizado'].value);
+    this.membro.dizimista = HelperChurch.isBoolean(this.form.controls['dizimista'].value);
+    this.membro.cartaRecomendacao = HelperChurch.isBoolean(this.form.controls['cartaRecomendacao'].value);
+    this.membro.membroDaCelula = HelperChurch.isBoolean(this.form.controls['membroDaCelula'].value);
+    this.membro.status = this.form.controls['status'].value;
 
-    }
-    if (this.enderecos) {
-      this.pessoa.enderecos = this.enderecos;
-    }
-
-    if (this.celula) {
-      this.pessoa.celula = this.celula;
-    }
     this.preencherPeriodosAtivacao();
     this.preencherPeriodosInativacao();
   }
@@ -167,15 +198,15 @@ export class PesquisarMembroComponent implements OnInit {
 
   preencherPeriodosAtivacao() {
     if (this.formDate.controls['dataInicioAt'].value && this.formDate.controls['dataFimAt'].value) {
-      this.pessoa.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
-      this.pessoa.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
+      this.membro.dataCriacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioAt'].value, 'yyyy-MM-dd') + " 00:00:00";
+      this.membro.dataCriacaoFim = this._datePipe.transform(this.formDate.controls['dataFimAt'].value, 'yyyy-MM-dd') + " 23:59:59";
     }
   }
 
   preencherPeriodosInativacao() {
     if (this.formDate.controls['dataInicioIn'].value && this.formDate.controls['dataFimIn'].value) {
-      this.pessoa.dataInativacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioIn'].value, 'yyyy-MM-dd') + " 00:00:00";
-      this.pessoa.dataInativacaoFim = this._datePipe.transform(this.formDate.controls['dataFimIn'].value, 'yyyy-MM-dd') + " 23:59:59";
+      this.membro.dataInativacaoInicio = this._datePipe.transform(this.formDate.controls['dataInicioIn'].value, 'yyyy-MM-dd') + " 00:00:00";
+      this.membro.dataInativacaoFim = this._datePipe.transform(this.formDate.controls['dataFimIn'].value, 'yyyy-MM-dd') + " 23:59:59";
     }
   }
 
@@ -222,17 +253,13 @@ export class PesquisarMembroComponent implements OnInit {
   }
 
 
-  getComboEtapaVisao() {
-    this.etapa$ = this._etapaVisao.getList();
-  }
-
   setFieldFormControl(field, value) {
     this.form.controls[field].patchValue(value)
   }
 
   editar(id) {
     this.setObj();
-    localStorage.setItem("pesquisa", JSON.stringify(this.pessoa));
+    localStorage.setItem("pesquisa", JSON.stringify(this.membro));
     this._router.navigate(['/auth/membro/cadastrar'], {
       queryParams: {
         janela: 'Editar',
@@ -248,8 +275,7 @@ export class PesquisarMembroComponent implements OnInit {
     const dialogRef = this._dialog.open(DialogEnviarCartaComponent, {
       width: '600px',
       data: {
-        id: id,
-        panelClass: 'components-container-gt-xs'
+        id: id
       }
     });
   }

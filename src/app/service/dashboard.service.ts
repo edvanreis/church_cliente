@@ -14,8 +14,8 @@ export class DashboardService {
 
   constructor(public http: HttpClient) { }
 
-  getDashCard() {
-    return this.http.get(this._url)
+  getDashCard(id) {
+    return this.http.post(this._url,id)
       .pipe(map((response: any) => response))
   }
 }

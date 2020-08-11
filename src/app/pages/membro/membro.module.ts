@@ -1,3 +1,4 @@
+import { VisitanteService } from './../../service/visitante.service';
 import { MultSelectEtapaVisaoModule } from './../componentes/mult-select-etapa-visao/mult-select-etapa-visao.module';
 import { PipeModule } from './../../pipes/pipe.module';
 import { CommonModule } from '@angular/common';
@@ -25,7 +26,7 @@ import { DialogAprovarReprovarAgendamentoModule } from '../dialog/dialog-aprovar
 import { DialogAprovarReprovarMembroModule } from '../dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.module';
 import { DialogConfirmExcluirPessoaModule } from '../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.module';
 import { TextMaskModule } from 'angular2-text-mask';
-import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
 
 
 
@@ -75,7 +76,7 @@ const routes: Routes = [
     PipeModule,
     MatOptionModule,
     MatSelectModule,
-    IgrejasCompenenteModule,
+    IgrejasComponenteModule,
     MatAutocompleteModule,
     RouterModule.forChild(routes)
   ],
@@ -90,6 +91,7 @@ const routes: Routes = [
     EmitirEventoService,
     ExcelService,
     EtapaVisaoService,
+    VisitanteService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ]
 })

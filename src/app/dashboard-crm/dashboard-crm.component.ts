@@ -1,14 +1,15 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { FormControl } from '@angular/forms';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource, MatAutocompleteSelectedEvent } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, startWith, take } from 'rxjs/operators';
 import { AlertType } from '../model/alert-type';
 import { DialogAprovarReprovarAgendamentoComponent } from '../pages/dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.component';
-import { AgendamentoService } from '../service/agendamento.service';
-import { DashboardService } from '../service/dashboard.service';
-import { DialogConfirmComponent } from '../pages/dialog/dialog-confirm/dialog-confirm.component';
-import { EmitirEventoService } from '../service/emitir-evento.service';
 import { DialogAprovarReprovarMembroComponent } from '../pages/dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.component';
+import { DashboardService } from '../service/dashboard.service';
+import { EmitirEventoService } from '../service/emitir-evento.service';
+import { IgrejaService } from '../service/igreja.service';
 
 @Component({
   selector: 'app-dashboard-crm',
@@ -24,6 +25,12 @@ export class DashboardCrmComponent implements OnInit {
   //   { colorDark: '#26A69A', colorLight: '#4DB6AC', number: 1221, title: 'ASSETS', icon: 'assignments' },
   //   { colorDark: '#66BB6A', colorLight: '#81C784', number: 1221, title: 'BANKING', icon: 'account_balance' }
   // ];
+
+  public comboIgrejas = [];
+  public filteredIgreja: Observable<string[]>;
+  public myControlIgreja = new FormControl();
+  public igrejaSelecionada: any;
+  public igrejaValue: any;
 
   public dashCard = [];
 
@@ -77,10 +84,12 @@ export class DashboardCrmComponent implements OnInit {
   constructor(private _service: DashboardService,
     private _notifierService: NotifierService,
     private _dialog: MatDialog,
-    private _emitirEventoService: EmitirEventoService) { }
+    private _emitirEventoService: EmitirEventoService,
+    private _igrejaService: IgrejaService) { }
 
   ngOnInit() {
-    this.carregarCardsTop();
+    this.carregarIgrejas();
+    this.carregarCardsTop(0);
     this.columnsMembros();
     this.columnsMembrosRep();
     this.columnsAgendamentos();
@@ -89,8 +98,8 @@ export class DashboardCrmComponent implements OnInit {
     this.getEmiter();
   }
 
-  carregarCardsTop() {
-    this._service.getDashCard().pipe(take(1)).subscribe(item => {
+  carregarCardsTop(id) {
+    this._service.getDashCard(id).pipe(take(1)).subscribe(item => {
       console.log(item)
       this.cardsTop(item);
       this.tableMembrosPendentes(item.membrosPendentes);
@@ -235,7 +244,7 @@ export class DashboardCrmComponent implements OnInit {
         id: id,
         aprovar: true,
         reprovar: false,
-        cancelar:false
+        cancelar: false
       }
     });
   }
@@ -247,7 +256,7 @@ export class DashboardCrmComponent implements OnInit {
         id: id,
         aprovar: false,
         reprovar: true,
-        cancelar:false
+        cancelar: false
       }
     });
   }
@@ -259,7 +268,7 @@ export class DashboardCrmComponent implements OnInit {
         id: id,
         aprovar: false,
         reprovar: false,
-        cancelar:true
+        cancelar: true
       }
     });
   }
@@ -271,7 +280,7 @@ export class DashboardCrmComponent implements OnInit {
         id: id,
         aprovar: true,
         reprovar: false,
-        aprovarReprovado:false
+        aprovarReprovado: false
       }
     });
   }
@@ -283,7 +292,7 @@ export class DashboardCrmComponent implements OnInit {
         id: id,
         aprovar: false,
         reprovar: true,
-        aprovarReprovado:false
+        aprovarReprovado: false
       }
     });
   }
@@ -295,7 +304,7 @@ export class DashboardCrmComponent implements OnInit {
         id: id,
         aprovar: false,
         reprovar: false,
-        aprovarReprovado:true
+        aprovarReprovado: true
       }
     });
   }
@@ -311,10 +320,42 @@ export class DashboardCrmComponent implements OnInit {
         carregarTop = true;
       }
       if (carregarTop) {
-        this.carregarCardsTop();
+        if(this.igrejaSelecionada){
+          this.carregarCardsTop(this.igrejaSelecionada.id);
+        }else{
+          this.carregarCardsTop(0);
+        }
+
       }
 
     });
+  }
+
+  carregarIgrejas() {
+    this._igrejaService.getListDashBoard().pipe(take(1)).subscribe(item => {
+      this.comboIgrejas = item;
+      // console.log(item);
+      this.filteredIgreja = this.myControlIgreja.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filter(value, this.comboIgrejas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
+    });
+  }
+
+  private _filter(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
+    this.igrejaSelecionada = option;
+    if (this.igrejaSelecionada) {
+      this.carregarCardsTop(this.igrejaSelecionada.id);
+    }
+
   }
 
 

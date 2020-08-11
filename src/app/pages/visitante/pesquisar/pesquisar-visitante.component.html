@@ -59,32 +59,7 @@
                     id="nacionalidade">
                 </mat-form-field>
               </div>
-            </form>
-            <app-igrejas></app-igrejas>
-            <div>
-              <mat-form-field class="full-width-field">
-                <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
-                  [matAutocomplete]="auto" [(ngModel)]="redeValue">
-                <mat-autocomplete #auto="matAutocomplete">
-                  <mat-option *ngFor="let option of filteredRede | async" [value]="option.nome"
-                    (onSelectionChange)="onSelectionRedeChange($event,option)">
-                    {{option.nome}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-            </div>
-            <div *ngIf="visaoCelular">
-              <mat-form-field class="full-width-field">
-                <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
-                  [matAutocomplete]="aut" [(ngModel)]="celulaValue">
-                <mat-autocomplete #aut="matAutocomplete">
-                  <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
-                    (onSelectionChange)="onSelectionCelulaChange($event,option)">
-                    {{option.nome}}
-                  </mat-option>
-                </mat-autocomplete>
-              </mat-form-field>
-            </div>
+          </form>
           </mat-expansion-panel>
           <mat-expansion-panel>
             <mat-expansion-panel-header>
@@ -113,7 +88,7 @@
           <br />
           <br />
           <div>
-            <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
+            <button mat-raised-button color="primary" type="submit" (click)="pesquisar(false)">
               <i class="material-icons">search</i>Buscar</button>
           </div>
         </form>
@@ -138,7 +113,7 @@
                   <span style="cursor: pointer;" (click)="editar(element.id)" matTooltip="Editar">
                     <i class="material-icons">create</i>
                   </span>
-                  <span style="cursor: pointer;color: darkblue;" (click)="importar(element.id)"
+                  <span  *ngIf="!element.importado" style="cursor: pointer;color: darkblue;" (click)="importar(element.id)"
                     matTooltip="Importar Para Membro">
                     <i class="material-icons">vertical_align_top</i>
                   </span>

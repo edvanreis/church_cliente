@@ -10,12 +10,13 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule, MatAutocompleteSelectedEvent, MatTooltipModule } from '@angular/material';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
-import { IgrejasCompenenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
 import { TextMaskModule } from 'angular2-text-mask';
 import { RedesComponenteModule } from '../componentes/redes/redes-componente.module';
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
 import { PipeModule } from '../../pipes/pipe.module';
+import { CelulaPessoasComponent } from './pessoas/celula-pessoas.component';
 
 
 
@@ -25,7 +26,8 @@ import { PipeModule } from '../../pipes/pipe.module';
 
 const routes: Routes = [
   { path: 'cadastrar', component:  CadastrarCelulaComponent , data: { animation: 'buttons' }},
-  { path: 'pesquisar', component:  PesquisarCelulaComponent , data: { animation: 'buttons' }}
+  { path: 'pesquisar', component:  PesquisarCelulaComponent , data: { animation: 'buttons' }},
+  { path: 'pessoas'   , component:  CelulaPessoasComponent   , data: { animation: 'buttons' }},
 ];
 
 @NgModule({
@@ -40,7 +42,7 @@ const routes: Routes = [
     MatDatepickerModule,
     EnderecoModule,
     MembroComponenteModule,
-    IgrejasCompenenteModule,
+    IgrejasComponenteModule,
     TextMaskModule,
     MatSelectModule,
     MatOptionModule,
@@ -58,7 +60,8 @@ const routes: Routes = [
   ],
   declarations: [
     CadastrarCelulaComponent,
-    PesquisarCelulaComponent
+    PesquisarCelulaComponent,
+    CelulaPessoasComponent
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }

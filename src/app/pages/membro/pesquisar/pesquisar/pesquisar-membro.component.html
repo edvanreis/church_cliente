@@ -19,7 +19,89 @@
                 Dados pessoais
               </span>
             </mat-expansion-panel-header>
-            <app-dados-pessoais [pesquisa]="true"></app-dados-pessoais>
+            <form form [formGroup]="form">
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="full-width-field">
+                  <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="full-width-field">
+                  <input matInput  class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" >
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="full-width-field">
+                  <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg" >
+                </mat-form-field>
+                <mat-form-field class="full-width-field">
+                  <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" >
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="full-width-field">
+                  <input matInput [textMask]="{mask: maskDate}" placeholder="Data nascimento" formControlName="dataNascimento">
+                </mat-form-field>
+                <mat-form-field class="full-width-field">
+                  <mat-label>Sexo</mat-label>
+                  <mat-select formControlName="sexo" id="sexo" (selectionChange)="change()">
+                    <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
+                      {{item.value}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <mat-form-field class="full-width-field">
+                  <mat-label>Estado Civil</mat-label>
+                  <mat-select formControlName="estadoCivil" id="estadoCivil" >
+                    <mat-option *ngFor="let item of comboEstadoCivil | keyValue" [value]="item.key">
+                      {{item.value}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="full-width-field">
+                  <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" >
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" >
+                <mat-form-field class="full-width-field">
+                  <mat-label>Status</mat-label>
+                  <mat-select formControlName="status" id="status">
+                    <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
+                      {{item.value}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="full-width-field">
+                  <input matInput placeholder="Profissão" class="input-upper" formControlName="profissao" id="profissao">
+                </mat-form-field>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <label style="color:#1d68a5">Batizado?</label>
+                <mat-slide-toggle formControlName="batizado" id="batizado" #batizado>
+                  {{batizado.checked | boolean : ['Sim', 'Não']}}
+                </mat-slide-toggle>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <label style="color:#1d68a5">Dizimista?</label>
+                <mat-slide-toggle formControlName="dizimista" id="dizimista" #dizimista>
+                  {{dizimista.checked | boolean : ['Sim', 'Não']}}
+                </mat-slide-toggle>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <label style="color:#1d68a5">Membro da Célula?</label>
+                <mat-slide-toggle formControlName="membroDaCelula" id="membroDaCelula" #membroDaCelula>
+                  {{membroDaCelula.checked | boolean : ['Sim', 'Não']}}
+                </mat-slide-toggle>
+              </div>
+              <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+                <label style="color:#1d68a5">Possui Carta de Recomendação?</label>
+                <mat-slide-toggle formControlName="cartaRecomendacao" id="cartaRecomendacao" #cartaRecomendacao>
+                  {{cartaRecomendacao.checked | boolean : ['Sim', 'Não']}}
+                </mat-slide-toggle>
+              </div>
+            </form>
           </mat-expansion-panel>
           <mat-expansion-panel>
             <mat-expansion-panel-header>

@@ -9,7 +9,7 @@ import { TextMaskModule } from 'angular2-text-mask';
 import { DadosPessoaisComponent } from './dados-pessoais/dados-pessoais.component';
 import { EscolaridadeComponent } from '../escolaridade/escolaridade.component';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { IgrejasCompenenteModule } from '../../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponenteModule } from '../../componentes/igrejas/igreja-compenente.module';
 import { CelulaComponentModule } from '../../componentes/celula/celula-component.module';
 import { PipeModule } from '../../../pipes/pipe.module';
 
@@ -38,7 +38,7 @@ import { PipeModule } from '../../../pipes/pipe.module';
     MatNativeDateModule,
     TextMaskModule,
     MatSlideToggleModule,
-    IgrejasCompenenteModule,
+    IgrejasComponenteModule,
     CelulaComponentModule,
     MatAutocompleteModule,
     PipeModule
