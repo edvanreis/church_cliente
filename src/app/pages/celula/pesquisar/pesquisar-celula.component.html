@@ -29,7 +29,7 @@
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
         </mat-form-field>
       </div>
-      <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;" *ngIf="celulas.length > 0">
+      <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;" >
         <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">

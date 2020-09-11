@@ -30,6 +30,19 @@
           </mat-form-field>
         </div>
       </form>
+      <app-igrejas></app-igrejas>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
+            [matAutocomplete]="a" [(ngModel)]="redeValue">
+          <mat-autocomplete #a="matAutocomplete">
+            <mat-option *ngFor="let option of filteredRede | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionRedeChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
       <div>
         <mat-form-field class="full-width-field"  *ngIf="!showMultSelectCelula">
           <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
@@ -42,7 +55,10 @@
           </mat-autocomplete>
         </mat-form-field>
       </div>
-      <app-mult-select-celulas *ngIf="showMultSelectCelula"></app-mult-select-celulas>
+       <div [hidden]="!showMultSelect">
+        <app-mult-select-celulas></app-mult-select-celulas>
+       </div>
+
       <div *ngIf="!showDateReuniao">
         <mat-form-field class="full-width-field">
           <input type="text" aria-label="Number" placeholder="Membros"  matInput [formControl]="myControlMembro" [matAutocomplete]="auto"

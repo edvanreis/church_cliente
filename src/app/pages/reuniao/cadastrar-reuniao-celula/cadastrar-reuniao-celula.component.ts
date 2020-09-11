@@ -1,3 +1,4 @@
+import { VisitanteService } from './../../../service/visitante.service';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
@@ -14,6 +15,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 import { DialogConfirmPessoaReuniaoComponent } from '../../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.component';
 import { MembroService } from '../../../service/membro.service';
+import { RedeService } from '../../../service/rede.service';
 
 @Component({
   selector: 'app-cadastrar-reuniao-celula',
@@ -25,40 +27,54 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/]
   public form: FormGroup;
   public formTwo: FormGroup;
-  public celulaSelecionada: any;
+
   public membrosLideres = [];
-  public membros = [];
-  public visitantes = [];
+  public igrejaSelecionada: any;
+
   public comboSemana = [];
-  public myControlMembro = new FormControl();
+
   public myControlPalestrante = new FormControl();
-  public myControlVisitante = new FormControl();
-  public comboMembro = [];
-  public comboVisitante = [];
-  public filteredMembro: Observable<string[]>;
   public filteredPalestrante: Observable<string[]>;
-  public filteredVisitante: Observable<string[]>;
+
+  public id: any;
+  public reuniao = {} as any;
+  public licaoSelecionada: any;
+  public pesquisa: boolean = false;
+  public enderecos = [];
+  public sizeLimitOne: boolean = true;
+
+  public palestrante: any;
+  public comboPalestrantes = [];
+  public palestrantes = [];
+
   public membroValue: string;
-  public visitanteValue: string;
   public membroSelecionado;
+  public myControlMembro = new FormControl();
+  public membros = [];
+  public filteredMembro: Observable<string[]>;
+  public comboMembro = [];
+
+  public comboVisitante = [];
+  public visitanteValue: string;
   public visitante;
   public membroVisitante;
   public membrosVisitantes = [];
+  public filteredVisitante: Observable<string[]>;
+  public myControlVisitante = new FormControl();
+  public visitantes = [];
+
   public filteredCelula: Observable<string[]>;
   public myControlCelula = new FormControl();
   public celulaValue: string;
   public comboCelulas = [];
-  public rede: any;
-  public id: any;
-  public reuniao = {} as any;
-  public licaoSelecionada: any;
-  public palestrante: any;
-  public comboPalestrantes = [];
-  public palestrantes = [];
-  public pesquisa: boolean = false;
+  public celulaSelecionada: any;
 
-  public enderecos = [];
-  public sizeLimitOne: boolean = true;
+  public filteredRede: Observable<string[]>;
+  public myControlRede = new FormControl();
+  public comboRede = [];
+  public redeSelecionada: any;
+  public redeValue: any;
+  
 
 
   constructor(private _emitirEventoService: EmitirEventoService,
@@ -66,17 +82,18 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     private _notifierService: NotifierService,
     private _dateAdapter: DateAdapter<Date>,
     private _membroService: MembroService,
+    private _visitanteService: VisitanteService,
     private _datePipe: DatePipe,
     private _service: ReuniaoService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _serviceRede: RedeService) { }
 
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
     this._buildForm();
-    this.carregarCelula();
     this.getEmiter();
     this.getComboSemana();
     this.getPalestrantes();
@@ -91,7 +108,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
       'dataDaReuniao': new FormControl('', Validators.required),
       'diaDaSemana': new FormControl('', Validators.required),
       'louvor': new FormControl(''),
-      'observacao': new FormControl('',Validators.required),
+      'observacao': new FormControl('', Validators.required),
       'oferta': new FormControl(''),
       'cadeiraBencao': new FormControl(false),
       'presencial': new FormControl(false),
@@ -100,16 +117,17 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
   private _buildFormTow(): void {
     this.formTwo = new FormGroup({
-      'realizado': new FormControl(true),
+      'realizado': new FormControl(false),
     });
   }
 
 
 
-  carregarCelula() {
+  carregarCelula(id) {
 
-    this._celulaService.getList().pipe(take(1)).subscribe(item => {
+    this._celulaService.getCelulaRede(id).pipe(take(1)).subscribe(item => {
       this.comboCelulas = item;
+      // console.log(item);
       this.filteredCelula = this.myControlCelula.valueChanges
         .pipe(
           startWith(''),
@@ -127,10 +145,8 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
   onSelectionCelulaChange($event: MatAutocompleteSelectedEvent, option) {
     this.celulaSelecionada = option;
-    this.rede = this.celulaSelecionada.rede.nome;
     this.getCelulaPessoa(this.celulaSelecionada.id);
     this.carregarMembro(this.celulaSelecionada.id);
-    this.carregarVisitante(this.celulaSelecionada.id);
   }
 
   getEmiter(): void {
@@ -155,6 +171,11 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
       if (item.type == 'endereco') {
         this.enderecos = item.data;
+      }
+
+      if (item.type == 'igreja-comp') {
+        this.igrejaSelecionada = item.data;
+        this.carregarRede(this.igrejaSelecionada.id);
       }
 
     });
@@ -219,8 +240,13 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     this.membros.push(this.membroSelecionado);
   }
 
-  carregarVisitante(id) {
-    this._membroService.getVisitanteCelula(id).pipe(take(1)).subscribe(item => {
+  carregarVisitante(dataDaReuniao) {
+    let obj = {
+      celula:{id:this.celulaSelecionada.id},
+      dataReuniaoCelula:dataDaReuniao
+    }
+    // console.log(obj)
+    this._visitanteService.getVisitanteCelula(obj).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboVisitante = item;
       this.filteredVisitante = this.myControlVisitante.valueChanges
@@ -229,7 +255,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
           map(value => this._filterVisitante(value, this.comboVisitante))
         );
     }, error => {
-      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os visitantes!");
     });
   }
 
@@ -249,7 +275,6 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Membro já adiocionado.!");
       return false;
     }
-    this.visitante.tipo = 'VISITANTE';
     this.visitantes.push(this.visitante);
   }
 
@@ -290,7 +315,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   }
 
   getObj() {
-    let pessoas = [];
+    let membros = [];
     this.reuniao.horarioInicio = this.form.controls['horarioInicio'].value;
     this.reuniao.horarioFim = this.form.controls['horarioFim'].value;
     this.reuniao.louvor = this.form.controls['louvor'].value;
@@ -300,6 +325,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     this.reuniao.dataDaReuniao = this._datePipe.transform(this.form.controls['dataDaReuniao'].value, 'dd/MM/yyyy');
     this.reuniao.diaDaSemana = this.form.controls['diaDaSemana'].value;
     this.reuniao.presencial = HelperChurch.isBoolean(this.form.controls['presencial'].value);
+    this.reuniao.visitantes = this.visitantes;
 
     if (this.licaoSelecionada) {
       this.reuniao.licao = { id: this.licaoSelecionada.id };
@@ -310,26 +336,22 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     }
     if (this.membros.length > 0) {
       this.membros.forEach(item => {
-        pessoas.push(item);
+        membros.push(item);
       });
     }
-    if (this.visitantes.length > 0) {
-      this.visitantes.forEach(item => {
-        pessoas.push(item);
-      });
-    }
+
     if (this.membrosVisitantes.length > 0) {
       this.membrosVisitantes.forEach(item => {
-        pessoas.push(item);
+        membros.push(item);
       });
     }
     if (this.palestrantes.length > 0) {
       this.palestrantes.forEach(item => {
-        pessoas.push(item);
+        membros.push(item);
       });
     }
-    if (pessoas.length > 0) {
-      this.reuniao.pessoas = pessoas;
+    if (membros.length > 0) {
+      this.reuniao.membros = membros;
     }
     if (this.id) {
       this.reuniao.id = this.id;
@@ -456,20 +478,23 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
       this.form.controls['oferta'].patchValue(item.oferta);
       this.form.controls['cadeiraBencao'].patchValue(item.cadeiraBencao);
       this.form.controls['presencial'].patchValue(item.presencial);
+      if(item.visitantes){
+        this.visitantes = item.visitantes;
+      }
+
       this.emitirLicao(item.licao);
       this.getCelula(item.celula.id);
-      if(item.enderecos){
+      if (item.enderecos && item.enderecos.length > 0 ) {
         this.formTwo.controls['realizado'].patchValue(true);
         this.emitirEndereco(item.enderecos);
       }
 
-      item.pessoas.forEach(i => {
+      item.membros.forEach(i => {
+
         if (i.tipo == 'MEMBRO') {
           this.membros.push(i);
         }
-        if (i.tipo == 'VISITANTE') {
-          this.visitantes.push(i);
-        }
+
         if (i.tipo == 'PALESTRANTE') {
           this.palestrantes.push(i);
         }
@@ -487,10 +512,8 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     this._celulaService.getCelula(id).pipe(take(1)).subscribe(item => {
       this.celulaSelecionada = item;
       this.celulaValue = item.nome;
-      this.rede = this.celulaSelecionada.rede.nome;
       this.getCelulaPessoa(this.celulaSelecionada.id);
       this.carregarMembro(this.celulaSelecionada.id);
-      this.carregarVisitante(this.celulaSelecionada.id);
     }, error => {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar as células!");
     });
@@ -554,6 +577,39 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
         item: i
       }
     });
+  }
+
+  carregarRede(id) {
+
+    this._serviceRede.getRedeIgreja(id).pipe(take(1)).subscribe(item => {
+      this.comboRede = item;
+      // console.log(item);
+      this.filteredRede = this.myControlRede.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterRede(value, this.comboRede))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as redes!");
+    });
+  }
+
+
+  private _filterRede(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionRedeChange($event: MatAutocompleteSelectedEvent, option) {
+    this.redeSelecionada = option;
+    this.carregarCelula(this.redeSelecionada.id);
+  }
+
+  onDateChange(element){
+    let dataDaReuniao =  this._datePipe.transform(element.value, 'dd/MM/yyyy');
+    if(this.celulaSelecionada){
+      this.carregarVisitante(dataDaReuniao);
+    }
   }
 
 }

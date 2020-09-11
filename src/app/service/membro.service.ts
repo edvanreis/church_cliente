@@ -83,12 +83,6 @@ export class MembroService  implements AbstractService{
   }
 
 
-
-  getVisitanteCelula(id) {
-    return this.http.get(this._url + id + "/visitanteCelula")
-      .pipe(tap((response: any) => response));
-  }
-
   remove(id) {
     return this.http.delete(this._url+id)
       .pipe(map((response: any) => response))

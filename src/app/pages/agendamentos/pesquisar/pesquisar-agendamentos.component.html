@@ -8,16 +8,6 @@
       <br />
       <div>
         <mat-form-field class="full-width-field">
-          <mat-label>Mês e Ano</mat-label>
-          <input matInput [matDatepicker]="dp" [formControl]="date"  readonly required>
-          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-          <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
-            (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
-          </mat-datepicker>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field class="full-width-field">
           <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
             [matAutocomplete]="auto" [(ngModel)]="igrejaValue" style="width: 100%;">
           <mat-autocomplete #auto="matAutocomplete">
@@ -26,6 +16,15 @@
               {{option.nome}}
             </mat-option>
           </mat-autocomplete>
+        </mat-form-field>
+      <div>
+        <mat-form-field class="full-width-field">
+          <mat-label>Mês e Ano</mat-label>
+          <input matInput [matDatepicker]="dp" [formControl]="date"  readonly required>
+          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
+          <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
+            (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
+          </mat-datepicker>
         </mat-form-field>
       </div>
       <div>

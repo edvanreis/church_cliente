@@ -9,6 +9,19 @@
         <i class="material-icons">store</i>
         <h1 class="mat-subheading-2 center-align">Relatório semanal da célula</h1>
       </div>
+      <app-igrejas></app-igrejas>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
+            [matAutocomplete]="a" [(ngModel)]="redeValue">
+          <mat-autocomplete #a="matAutocomplete">
+            <mat-option *ngFor="let option of filteredRede | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionRedeChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
       <div>
         <mat-form-field class="full-width-field">
           <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
@@ -19,11 +32,6 @@
               {{option.nome}}
             </mat-option>
           </mat-autocomplete>
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field class="full-width-field">
-          <input matInput placeholder="Rede" [(ngModel)]="rede" style="color:#1d68a5;" id="rede" disabled="true">
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color"
@@ -56,7 +64,7 @@
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="full-width-field">
             <input matInput [matDatepicker]="picker" placeholder="Data da reunião" formControlName="dataDaReuniao"
-              required readonly>
+              (dateChange)="onDateChange($event)"  required readonly>
             <mat-error *ngIf="!form.controls.dataDaReuniao.valid">Campo Obrigatório</mat-error>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
@@ -107,7 +115,7 @@
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="full-width-field">
-            <textarea matInput placeholder="Nota/Observação" formControlName="observacao"></textarea>
+            <textarea matInput placeholder="Nota/Observação" formControlName="observacao" required></textarea>
             <mat-error *ngIf="!form.controls.observacao.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
@@ -271,10 +279,10 @@
       <br />
       <br />
       <div>
-        <form form [formGroup]="formTow">
-        <label class="default-font-color" style="font-size:15px;">A reunião foi realizada em outro endereço ?</label>
-        <mat-slide-toggle id="realizado" formControlName="realizado"  #realizado>{{realizado.checked | boolean : ['Sim', 'Não']}}
-        </mat-slide-toggle>
+         <form form [formGroup]="formTwo">
+          <label class="default-font-color" style="font-size:15px;">A reunião foi realizada em outro endereço ?</label>
+          <mat-slide-toggle id="realizado" formControlName="realizado"  #realizado>{{realizado.checked | boolean : ['Sim', 'Não']}}
+          </mat-slide-toggle>
         </form>
       </div>
       <br />

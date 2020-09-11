@@ -30,7 +30,7 @@
           </div>
         </form>
       </div>
-      <div *ngIf="igrejas.lenght > 0">
+      <div>
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input placeholder="Filtrar" aria-label="Number" matInput [formControl]="myControl">
         </mat-form-field>
@@ -107,7 +107,7 @@
           </thead>
           <tbody *ngFor="let i of filteredIgrejas | async">
             <tr>
-              <td *ngIf="true">{{i.sede?'Não':'Sim'}}</td>
+              <td *ngIf="true">{{i.isSede?'Sim':'Não'}}</td>
               <td>{{i.nome}}</td>
               <td>{{i.cnpj | cpfCnpj }}</td>
               <td>{{i.dataAbertura}}</td>

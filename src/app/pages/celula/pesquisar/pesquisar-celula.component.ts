@@ -68,12 +68,7 @@ export class PesquisarCelulaComponent implements OnInit {
       { id: 'idade', value: 'Idade' },
       { id: 'nomeRede', value: 'Rede' },
       { id: 'tipoCelula', value: 'Tipo Pessoas' },
-      { id: 'cep', value: 'CEP' },
-      { id: 'logradouro', value: 'Logradouro' },
-      { id: 'numero', value: 'Número' },
-      { id: 'bairro', value: 'Bairro' },
-      { id: 'localidade', value: 'Localidade' },
-      { id: 'uf', value: 'Estado' },
+      { id: 'digitalStr', value: 'Digital' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);

@@ -7,6 +7,8 @@
   </h4>
   <div class="cdk-container">
     <app-igrejas *ngIf="data.controller==='igreja'"></app-igrejas>
+    <app-redes *ngIf="data.controller==='rede'"></app-redes>
+    <app-celula *ngIf="data.controller==='celula'"></app-celula>
   </div>
   <div mat-dialog-actions align="end">
     <button mat-raised-button color="primary" type="submit" (click)="confirmar()">

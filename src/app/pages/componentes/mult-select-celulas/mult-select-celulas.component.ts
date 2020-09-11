@@ -23,13 +23,29 @@ export class MultSelectCelulasComponent implements OnInit {
   constructor(private service: CelulaService, private _emitirEventoService: EmitirEventoService) { }
 
   @Input() isChecked = false;
+  public redeId:any;
 
   ngOnInit() {
-    this.carregarCelulas();
+   this.getEmiter();
+  }
+
+
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'mult-clear') {
+        this.checkedList = [];
+        this.celulas = [];
+        this.filteredCelulas = new  Observable<string[]>();
+       }
+       if (item.type == 'rede-selected') {
+        this.redeId = item.data;
+        this.carregarCelulas();
+       }
+    });
   }
 
   carregarCelulas() {
-    this.service.getList().subscribe(element => {
+    this.service.getCelulaRede(this.redeId).subscribe(element => {
       this.celulas = element;
       this.filteredCelulas = this.myControl.valueChanges
         .pipe(

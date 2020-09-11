@@ -1,3 +1,4 @@
+import { IgrejasComponenteModule } from './../componentes/igrejas/igreja-compenente.module';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -52,6 +53,7 @@ const routes: Routes = [
     DialogConfirmPessoaReuniaoModule,
     EnderecoModule,
     MatTooltipModule,
+    IgrejasComponenteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

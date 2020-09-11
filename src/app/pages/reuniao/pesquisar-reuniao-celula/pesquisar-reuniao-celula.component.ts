@@ -100,34 +100,35 @@ export class PesquisarReuniaoCelulaComponent implements OnInit {
       { id: 'competencia', value: 'Competência' },
       { id: 'diaDaSemanaDesc', value: 'Dia da semana' },
       { id: 'dataDaReuniao', value: 'Data da reunião' },
-      { id: 'cep', value: 'CEP' },
-      { id: 'logradouro', value: 'Logradouro' },
-      { id: 'numero', value: 'Número' },
-      { id: 'bairro', value: 'Bairro' },
-      { id: 'localidade', value: 'Localidade' },
-      { id: 'uf', value: 'Estado' },
+      { id: 'presencialStr', value: 'Presencial' },
+      { id: 'qtdMembros', value: 'Qtd Membros' },
+      { id: 'qtdMembrosFalta', value: 'Qtd Faltas' },
+      { id: 'qtdMembrosPresentes', value: 'Qtd Memb. Presentes' },
+      { id: 'qtdVisitantes', value: 'Visitantes' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
   }
 
   pesquisar() {
-    this.setObj();
-
     if (!this.validFields()) {
       return;
     }
+
+    this.setObj();
     this.loading = true;
     this._service.search(this.reuniao).pipe(take(1)).subscribe(item => {
-      // console.log(item);
+      console.log(item);
       this.reunioes = item;
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;
       this.loading = false;
     }, error => {
-      this._notifierService.notify(AlertType.Error, error.errors.message);
       this.loading = false;
+      this.reunioes = [];
+      this.dados = new MatTableDataSource<Element>(this.reunioes);
+      this._notifierService.notify(AlertType.Error, error.error.message);
     });
   }
 
@@ -145,15 +146,18 @@ export class PesquisarReuniaoCelulaComponent implements OnInit {
   }
 
   validFields(): boolean {
-    if (!this.reuniao.competencia
-      && !this.reuniao.diaDaSemana
-      && !this.reuniao.celula
-      && !this.reuniao.licao) {
-      this._notifierService.notify(AlertType.Error, "Por favor utilize alguns dos filtros");
+    if(!this.form.controls['competencia'].value){
+      this._notifierService.notify(AlertType.Error, "O campo Competência é obrigatório");
       return false;
-    } else {
-      return true;
     }
+    // if (!this.form.controls['diaDaSemana'].value
+    //   && !this.celulaSelecionada
+    //   && !this.licaoSelecionada) {
+    //   this._notifierService.notify(AlertType.Error, "Por favor utilize alguns dos filtros");
+    //   return false;
+    // } else {
+      return true;
+    // }
   }
 
   applyFilter(value) {
@@ -168,15 +172,13 @@ export class PesquisarReuniaoCelulaComponent implements OnInit {
         "Competência": i.competencia,
         "Dia da semana": i.diaDaSemanaDesc,
         "Data da reunião'": i.dataDaReuniao,
-        "CEP": i.cep,
-        "Logradouro": i.logradouro,
-        "Número": i.numero,
-        "Bairro": i.bairro,
-        "Localidade": i.localidade,
-        "Estado": i.uf,
+        "Presencial": i.presencialStr,
+        "Qtd Membros": i.qtdMembros,
+        "Qtd Faltas": i.qtdMembrosFalta,
+        "Qtd Memb. Presentes": i.qtdMembrosPresentes,
+        "Visitantes": i.qtdVisitantes,
       });
     });
-
     this._excelService.exportAsExcelFile(dados, "pesquisa");
   }
 
@@ -195,17 +197,20 @@ export class PesquisarReuniaoCelulaComponent implements OnInit {
     // console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisa")) {
       this.reuniao = JSON.parse(localStorage.getItem("pesquisa"));
-      localStorage.removeItem("pesquisa");
-      this.form.controls['competencia'].patchValue(this.reuniao.competencia);
-      this.form.controls['diaDaSemana'].patchValue(this.reuniao.diaDaSemana);
-      if(this.reuniao.celula){
-        this.getCelula(this.reuniao.celula.id);
+      if (this.reuniao) {
+        localStorage.removeItem("pesquisa");
+        this.form.controls['competencia'].patchValue(this.reuniao.competencia);
+        this.form.controls['diaDaSemana'].patchValue(this.reuniao.diaDaSemana);
+        if (this.reuniao.celula) {
+          this.getCelula(this.reuniao.celula.id);
+        }
+        if (this.reuniao.licao) {
+          this.getLicao(this.reuniao.licao.id);
+        }
+        this.pesquisar();
       }
-      if(this.reuniao.licao){
-        this.getLicao(this.reuniao.licao.id);
-      }
-      this.pesquisar();
     }
+
   }
 
   editar(id) {

@@ -21,6 +21,7 @@ const routes: Routes = [
     { path: 'justificar', loadChildren: '../pages/justificar/justificar.module#JustificarModule', canActivate: [AuthGuardService] },
     { path: 'relatorios', loadChildren: '../pages/relatorios/relatorios.module#RelatoriosModule', canActivate: [AuthGuardService] },
     { path: 'grupo', loadChildren: '../pages/grupo/grupo.module#GrupoModule', canActivate: [AuthGuardService] },
+    { path: 'pedido', loadChildren: '../pages/pedido/pedido.module#PedidoModule', canActivate: [AuthGuardService] },
     { path: '**', redirectTo: 'auth/dashboard', canActivate: [AuthGuardService] },
 ]
 

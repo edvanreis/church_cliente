@@ -1,3 +1,5 @@
+import { IgrejasComponenteModule } from './../componentes/igrejas/igreja-compenente.module';
+import { DialogTransferirPessoaModule } from './../dialog/dialog-transferir-pessoa/dialog-transferir-pessoa.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CadastrarCelulaComponent } from './cadastrar/cadastrar-celula.component';
@@ -7,10 +9,9 @@ import { InterceptorService } from '../../service/interceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule, MatAutocompleteSelectedEvent, MatTooltipModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule, MatAutocompleteSelectedEvent, MatTooltipModule, MatSlideToggleModule } from '@angular/material';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
-import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
 import { TextMaskModule } from 'angular2-text-mask';
 import { RedesComponenteModule } from '../componentes/redes/redes-componente.module';
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
@@ -56,6 +57,9 @@ const routes: Routes = [
     PipeModule,
     MatAutocompleteModule,
     MatTooltipModule,
+    MatSlideToggleModule,
+    DialogTransferirPessoaModule,
+    IgrejasComponenteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

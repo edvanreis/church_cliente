@@ -13,6 +13,7 @@ import { RedeService } from '../../../service/rede.service';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 import { TipoLiderancaService } from '../../../service/tipo-lideranca.service';
 import { Observable } from 'rxjs';
+import { HelperChurch } from '../../../helper/helper.church';
 
 
 @Component({
@@ -23,7 +24,6 @@ import { Observable } from 'rxjs';
 export class CadastrarCelulaComponent implements OnInit {
 
   public form: FormGroup;
-  public redeSelecionada: any;
   public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/]
   public comboSemana = [];
   public comboTurno = [];
@@ -36,11 +36,20 @@ export class CadastrarCelulaComponent implements OnInit {
   public tipoPessoa: any;
   public sizeLimitOne: boolean = true;
   public id: any;
+  public igrejaSelecionada:any;
+
   public myControlMembro = new FormControl();
   public comboMembro = [];
   public filteredMembro: Observable<string[]>;
   public membroSelecionado: any;
   public membroValue:any;
+
+  public filteredRede: Observable<string[]>;
+  public myControlRede = new FormControl();
+  public comboRede = [];
+  public redeSelecionada: any;
+  public redeValue: any;
+
 
 
 
@@ -55,7 +64,8 @@ export class CadastrarCelulaComponent implements OnInit {
     private _dateAdapter: DateAdapter<Date>,
     private _dialog: MatDialog,
     private _tipoLiderancaService:TipoLiderancaService,
-    private _membroService:MembroService) { }
+    private _membroService:MembroService,
+    private _serviceRede: RedeService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -71,10 +81,12 @@ export class CadastrarCelulaComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
       // console.log(item.data);
-      if (item.type == 'rede-comp') {
-        this.redeSelecionada = item.data;
-        this.carregarMembro( this.redeSelecionada.id)
+
+      if (item.type == 'igreja-comp') {
+        this.igrejaSelecionada = item.data;
+        this.carregarRede(this.igrejaSelecionada.id);
       }
+
       if (item.type == 'endereco') {
         this.enderecos = item.data;
       }
@@ -96,6 +108,7 @@ export class CadastrarCelulaComponent implements OnInit {
       'tipo': new FormControl(''),
       'perfil': new FormControl(''),
       'horario': new FormControl(''),
+      'digital': new FormControl(''),
     });
   }
 
@@ -150,7 +163,8 @@ export class CadastrarCelulaComponent implements OnInit {
       rede: {id:this.redeSelecionada.id},
       enderecos: this.enderecos,
       observacao: this.observacao,
-      pessoas: this.membros
+      membros: this.membros,
+      digital: HelperChurch.isBoolean(this.form.controls['digital'].value)
     }
   }
 
@@ -203,10 +217,11 @@ export class CadastrarCelulaComponent implements OnInit {
       this.form.controls['turno'].patchValue(item.turnoEnum);
       this.form.controls['tipo'].patchValue(item.tipoCelulaEnum);
       this.form.controls['dataAbertura'].patchValue(new Date(item.dataAbertutaToDate));
+      this.form.controls['digital'].patchValue(item.digital);
       this.observacao = item.observacao;
       this.getRede(item.rede.id)
       this.emitirEnderecos(item.enderecos);
-      this.carregarPessoas(item.pessoas);
+      this.carregarPessoas(item.membros);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });
@@ -327,7 +342,7 @@ export class CadastrarCelulaComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor selecione uma Rede!");
       return false;
     }
-    if(this.enderecos.length == 0 ){
+    if(this.enderecos && this.enderecos.length == 0 && !this.form.controls['digital'].value){
       this._notifierService.notify(AlertType.Error, "Por favor Adicione um endereço!");
       return false;
     }
@@ -337,5 +352,32 @@ export class CadastrarCelulaComponent implements OnInit {
     }
     return true;
   }
+
+  carregarRede(id) {
+
+    this._serviceRede.getRedeIgreja(id).pipe(take(1)).subscribe(item => {
+      this.comboRede = item;
+      // console.log(item);
+      this.filteredRede = this.myControlRede.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterRede(value, this.comboRede))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as redes!");
+    });
+  }
+
+
+  private _filterRede(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionRedeChange($event: MatAutocompleteSelectedEvent, option) {
+    this.redeSelecionada = option;
+    this.carregarMembro(this.redeSelecionada.id);
+  }
+
 
 }

@@ -33,8 +33,8 @@ export class VisitanteService {
       .pipe(tap((response: any) => response));
   }
 
-  getVisitanteCelula(id) {
-    return this.http.get(this._url + id + "/vistanteCelula")
+  getVisitanteCelula(obj) {
+    return this.http.post(this._url+"vistanteCelula",obj)
       .pipe(tap((response: any) => response));
   }
 

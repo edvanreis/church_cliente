@@ -9,6 +9,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatInputModule, MatButtonModule, MatToolbarModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatDatepickerModule, MatProgressSpinnerModule } from '@angular/material';
 import { TextMaskModule } from 'angular2-text-mask';
 import { MultSelectCelulasModule } from '../componentes/mult-select-celulas/mult-select-celulas.module';
+import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
 
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
     TextMaskModule,
     MatProgressSpinnerModule,
     MultSelectCelulasModule,
+    IgrejasComponenteModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

@@ -12,6 +12,7 @@ import { DatePipe } from '@angular/common';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { ExcelService } from '../../../service/excel.service';
 import { MembroService } from '../../../service/membro.service';
+import { RedeService } from '../../../service/rede.service';
 
 @Component({
   selector: 'app-relatorios',
@@ -37,6 +38,17 @@ export class RelatorioComponent implements OnInit {
   public showMultSelectCelula: boolean = false;
   public checkedList = [];
   public celulasId = [];
+  public igrejaSelecionada: any;
+
+  public showMultSelect: boolean = false;
+
+
+  public filteredRede: Observable<string[]>;
+  public myControlRede = new FormControl();
+  public comboRede = [];
+  public redeSelecionada: any;
+  public redeValue: any;
+  public isRede:boolean = false;
 
   constructor(private _celulaService: CelulaService,
     private _notifierService: NotifierService,
@@ -45,13 +57,13 @@ export class RelatorioComponent implements OnInit {
     private _dateAdapter: DateAdapter<Date>,
     private _datePipe: DatePipe,
     private _emitirEventoService: EmitirEventoService,
-    private _excelService: ExcelService) { }
+    private _excelService: ExcelService,
+    private _serviceRede: RedeService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
     this._buildForm();
     this.getComboRelatorios();
-    this.carregarCelula();
     this.getEmiter();
   }
 
@@ -68,10 +80,11 @@ export class RelatorioComponent implements OnInit {
   }
 
 
-  carregarCelula() {
+  carregarCelula(id) {
 
-    this._celulaService.getList().pipe(take(1)).subscribe(item => {
+    this._celulaService.getCelulaRede(id).pipe(take(1)).subscribe(item => {
       this.comboCelulas = item;
+      // console.log(item);
       this.filteredCelula = this.myControlCelula.valueChanges
         .pipe(
           startWith(''),
@@ -120,6 +133,7 @@ export class RelatorioComponent implements OnInit {
     // console.log(element);
     this.relatorioSelecionado = element.nome;
     if (this.relatorioSelecionado === 'Relatório reunião semanal') {
+      this.showMultSelect = false;
       this.showDateReuniao = true;
     } else {
       this.showDateReuniao = false;
@@ -234,6 +248,18 @@ export class RelatorioComponent implements OnInit {
         console.log(this.checkedList);
         this.carregarMembroCelulas(this.checkedList);
       }
+      if (obj.type == 'igreja-comp') {
+        if(!this.igrejaSelecionada){
+          this.igrejaSelecionada = obj.data;
+        }else if(this.igrejaSelecionada.id != obj.data.id){
+           this.igrejaSelecionada = obj.data;
+           this.redeValue = '';
+           this.showMultSelect = false;
+           this.setEmiterMultSelectClear();
+        }
+        console.log(this.igrejaSelecionada.id)
+        this.carregarRede(this.igrejaSelecionada.id);
+      }
     });
   }
 
@@ -250,5 +276,44 @@ export class RelatorioComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
     });
   }
+
+  carregarRede(id) {
+
+    this._serviceRede.getRedeIgreja(id).pipe(take(1)).subscribe(item => {
+      this.comboRede = item;
+      // console.log(item);
+      this.filteredRede = this.myControlRede.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterRede(value, this.comboRede))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as redes!");
+    });
+  }
+
+
+  private _filterRede(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionRedeChange($event: MatAutocompleteSelectedEvent, option) {
+    this.redeSelecionada = option;
+    this.isRede = true;
+    this.redeValue = this.redeSelecionada.nome;
+    this.showMultSelect = this.isRede && this.showMultSelectCelula;
+    this.carregarCelula(this.redeSelecionada.id);
+    this.setEmiterMultSelect();
+  }
+
+  setEmiterMultSelect(): void {
+    this._emitirEventoService.emitir("rede-selected", this.redeSelecionada.id);
+  }
+
+  setEmiterMultSelectClear(): void {
+    this._emitirEventoService.emitir("mult-clear",'');
+  }
+
 
 }

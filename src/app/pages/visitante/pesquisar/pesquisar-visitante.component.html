@@ -109,8 +109,8 @@
                 <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
                   {{((element[column.id]?element[column.id]:'Não informado').length > 10) ? ((element[column.id]?element[column.id]:'Não informado').slice(0, 10) + '...') : (element[column.id]?element[column.id]:'Não informado')}}
                 </span>
-                <span *ngIf="column.id=='id'">
-                  <span style="cursor: pointer;" (click)="editar(element.id)" matTooltip="Editar">
+                <span *ngIf="column.id=='id'">  
+                  <span class="default-botoes" (click)="editar(element.id)" matTooltip="Editar">
                     <i class="material-icons">create</i>
                   </span>
                   <span  *ngIf="!element.importado" style="cursor: pointer;color: darkblue;" (click)="importar(element.id)"

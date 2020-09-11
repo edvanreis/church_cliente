@@ -15,6 +15,8 @@ import { take } from 'rxjs/operators';
 export class DialogTransferirPessoaComponent implements OnInit {
 
   public igrejaSelecionada: any;
+  public redeSelecionada: any;
+  public celulaSelecionada: any;
 
   constructor(public dialogRef: MatDialogRef<DialogTransferirPessoaComponent>,
     @Inject(MAT_DIALOG_DATA) public data,
@@ -41,7 +43,7 @@ export class DialogTransferirPessoaComponent implements OnInit {
   }
 
   confirmar() {
-    let erro:boolean = false;
+    let erro: boolean = false;
     if (this.data.controller === 'igreja') {
       if (this.igrejaSelecionada) {
         switch (this.data.tipoPessoa) {
@@ -52,12 +54,34 @@ export class DialogTransferirPessoaComponent implements OnInit {
             this.transferirVisitante(this.igrejaSelecionada.id);
             break;
         }
-      } else {
-       erro = true;
+      }
+    } else if (this.data.controller === 'rede') {
+      if (this.redeSelecionada) {
+        switch (this.data.tipoPessoa) {
+          case 'M':
+            this.transferirMembro(this.redeSelecionada.id);
+            break;
+          case 'V':
+            this.transferirVisitante(this.redeSelecionada.id);
+            break;
+        }
+      }
+    } else if (this.data.controller === 'celula') {
+      if (this.celulaSelecionada) {
+        switch (this.data.tipoPessoa) {
+          case 'M':
+            this.transferirMembro(this.celulaSelecionada.id);
+            break;
+          case 'V':
+            this.transferirVisitante(this.celulaSelecionada.id);
+            break;
+        }
       }
     }
-    if(erro){
-      this._notifierService.notify(AlertType.Error, 'Por favor selecione '+this.data.controller);
+
+
+    if (erro) {
+      this._notifierService.notify(AlertType.Error, 'Por favor selecione ' + this.data.controller);
     }
 
   }

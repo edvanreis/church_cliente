@@ -63,6 +63,12 @@ export class SidemenuComponent implements OnInit {
         { 'name': 'Pesquisar', 'link': 'licao/pesquisar', 'icon': 'search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_licao")  }]
     },
     {
+      'name': 'Pedido Oração', 'icon': 'headset_mic', 'link': false, 'open': false, 'visible': true , 'sub': [
+        { 'name': 'Cadastrar', 'link': 'pedido/cadastrar', 'icon': 'maps_ugc', 'chip': false, 'open': false, 'visible': true  },
+        { 'name': 'Pesquisa',  'link': 'pedido/pesquisar', 'icon': 'search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_licao")  }]
+
+    },
+    {
       'name': 'Reunião', 'icon': 'account_tree', 'link': false, 'open': false, 'visible':  this.userService.hasPermission("acesso_reuniao") , 'sub': [
         { 'name': 'Reunião Célula', 'link': 'reuniao/pesquisar-reuniao-celula', 'icon': 'group', 'chip': false, 'open': false, 'visible':  this.userService.hasPermission("acesso_reuniao")  }]
     },

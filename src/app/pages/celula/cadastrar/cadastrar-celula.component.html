@@ -51,10 +51,26 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+          <label style="color:#1d68a5">Digital?</label>
+          <mat-slide-toggle formControlName="digital" id="digital" #digital>
+            {{digital.checked | boolean : ['Sim', 'Não']}}
+          </mat-slide-toggle>
         </div>
       </form>
+      <app-igrejas></app-igrejas>
       <div>
-        <app-redes></app-redes>
+        <div>
+          <mat-form-field class="full-width-field">
+            <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
+              [matAutocomplete]="a" [(ngModel)]="redeValue">
+            <mat-autocomplete #a="matAutocomplete">
+              <mat-option *ngFor="let option of filteredRede | async" [value]="option.nome"
+                (onSelectionChange)="onSelectionRedeChange($event,option)">
+                {{option.nome}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
       </div>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <mat-form-field class="full-width-field">

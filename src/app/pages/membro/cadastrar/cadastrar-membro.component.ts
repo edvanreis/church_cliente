@@ -95,6 +95,7 @@ export class CadastrarMembroComponent implements OnInit {
       'observacao': new FormControl(''),
       'cartaRecomendacao': new FormControl(false),
       'status': new FormControl(''),
+      'membroDaCelula': new FormControl(false),
     });
   }
 
@@ -145,6 +146,7 @@ export class CadastrarMembroComponent implements OnInit {
       this.form.controls['dizimista'].patchValue(item.dizimista);
       this.form.controls['dataNascimento'].patchValue(item.dataNascimento);
       this.form.controls['cartaRecomendacao'].patchValue(item.cartaRecomendacao);
+      this.form.controls['membroDaCelula'].patchValue(item.membroDaCelula);
 
       if (item.celula) {
         this.celulaValue = item.celula.nome;
@@ -243,11 +245,11 @@ export class CadastrarMembroComponent implements OnInit {
 
   salvar() {
     this.setObj();
-    // let mensagem = this.validFields();
-    // if (mensagem) {
-    //   this._notifierService.notify(AlertType.Error, mensagem);
-    //   return false;
-    // }
+    let mensagem = this.validFields();
+    if (mensagem) {
+      this._notifierService.notify(AlertType.Error, mensagem);
+      return false;
+    }
     if (this.membro.id) {
       this.updade();
     } else if (this.visitanteId) {
@@ -301,7 +303,7 @@ export class CadastrarMembroComponent implements OnInit {
     this.membro.batizado = HelperChurch.isBoolean(this.form.controls['batizado'].value);
     this.membro.dizimista = HelperChurch.isBoolean(this.form.controls['dizimista'].value);
     this.membro.cartaRecomendacao = HelperChurch.isBoolean(this.form.controls['cartaRecomendacao'].value);
-    this.membro.membroDaCelula = false;
+    this.membro.membroDaCelula = HelperChurch.isBoolean(this.form.controls['membroDaCelula'].value);
 
     if (this.igrejaSelecionada) {
       this.membro.igreja = { id: this.igrejaSelecionada.id };

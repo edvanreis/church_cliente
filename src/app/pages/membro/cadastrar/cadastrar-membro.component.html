@@ -108,6 +108,12 @@
           </mat-slide-toggle>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <label style="color:#1d68a5">Membro da Célula?</label>
+          <mat-slide-toggle formControlName="membroDaCelula" id="membroDaCelula" #membroDaCelula>
+            {{membroDaCelula.checked | boolean : ['Sim', 'Não']}}
+          </mat-slide-toggle>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <label style="color:#1d68a5">Possui Carta de Recomendação?</label>
           <mat-slide-toggle formControlName="cartaRecomendacao" id="cartaRecomendacao" #cartaRecomendacao>
             {{cartaRecomendacao.checked | boolean : ['Sim', 'Não']}}
