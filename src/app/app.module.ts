@@ -20,6 +20,8 @@ import { AlterarSenhaModule } from './pages/senha/alterar-senha.module';
 import { InterceptorService } from './service/interceptor.service';
 import { RelatoriosModule } from './pages/relatorios/relatorios.module';
 import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
+import { PedidoModule } from './pages/pedido/pedido.module';
+import { PedidosModule } from './pages/pedidos/pedidos.module';
 
 
 
@@ -62,7 +64,9 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     ReuniaoModule,
     JustificarModule,
     RelatoriosModule,
-    CurrencyMaskModule
+    CurrencyMaskModule,
+    PedidoModule,
+    PedidosModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },

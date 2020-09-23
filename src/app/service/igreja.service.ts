@@ -77,4 +77,10 @@ export class IgrejaService {
     return this.http.get(this._url+"listIgrejasDashBoard")
       .pipe(map((response: any) => response))
   }
+
+  getListIdAndName() {
+    return this.http.get(this._url+"listIdAndName")
+      .pipe(map((response: any) => response))
+  }
+
 }

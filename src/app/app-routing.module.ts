@@ -4,6 +4,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { AlterarSenhaComponent } from './pages/senha/alterar-senha.component';
+import { CadastrarPedidoComponent } from './pages/pedido/cadastrar/cadastrar-pedido.component';
+
 
 
 
@@ -11,6 +13,7 @@ import { AlterarSenhaComponent } from './pages/senha/alterar-senha.component';
 const routes: Routes = [
   { path: 'cdk-login', component: LoginComponent},
   { path: 'senha', component: AlterarSenhaComponent},
+  { path: 'pedido', component: CadastrarPedidoComponent},
   { path: '**', redirectTo: '' }
 ];
 

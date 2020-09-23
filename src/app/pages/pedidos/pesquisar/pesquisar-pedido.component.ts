@@ -12,6 +12,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 import { Observable } from 'rxjs';
 import { IgrejaService } from '../../../service/igreja.service';
 import { AlertType } from '../../../model/alert-type';
+import { identifierName } from '@angular/compiler';
 
 
 
@@ -52,6 +53,10 @@ export class PesquisarPedidoComponent implements OnInit {
   public filteredIgreja: Observable<string[]>;
   public myControlIgreja = new FormControl();
   public igrejaSelecionada: any;
+  public pedidosAtendidos:any;
+  public pedidosPendentes:any;
+  public totPedidos:any;
+  public dashCard = [];
 
   constructor(private _service: PedidoService,
     private _notifierService: NotifierService,
@@ -61,6 +66,7 @@ export class PesquisarPedidoComponent implements OnInit {
     ngOnInit() {
       this.carregarIgrejas();
       this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
+      this.getList();
     }
 
 
@@ -81,20 +87,41 @@ export class PesquisarPedidoComponent implements OnInit {
     }
 
   getList() {
-    this._service.getList().pipe(take(1)).subscribe(item => {
+    let pedidos = {} as any;
+    if(!this.competenciaSelecionada){
+      this._notifierService.notify(AlertType.Error, "Por favor selecone uma competência");
+      return false;
+    }
+
+    pedidos.competencia = this.competenciaSelecionada;
+
+    if(!this.igrejaSelecionada){
+      pedidos.igreja = null;
+    }else{
+      pedidos.igreja = {id:this.igrejaSelecionada.id};
+
+    }
+
+    this._service.obterPedidos(pedidos).pipe(take(1)).subscribe(item => {
       this.pedidos = item;
       console.log(this.pedidos);
     }, error => {
-      console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+    this.totalPedidos(pedidos);
+  }
 
+  totalPedidos(pedidos){
+    this._service.totalPedidos(pedidos).pipe(take(1)).subscribe(item => {
+      this.cardsTop(item)
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
     });
   }
 
-
   carregarIgrejas() {
 
-    this._igrejaService.getList().pipe(take(1)).subscribe(item => {
+    this._igrejaService.getListDashBoard().pipe(take(1)).subscribe(item => {
       this.comboIgrejas = item;
       // console.log(item);
       this.filteredIgreja = this.myControlIgreja.valueChanges
@@ -114,5 +141,33 @@ export class PesquisarPedidoComponent implements OnInit {
 
   onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
+    this.getList();
   }
+
+ atendido(id){
+  this._service.atendido(id).pipe(take(1)).subscribe(item => {
+    this.getList();
+    this._notifierService.notify(AlertType.Success, item.value);
+  }, error => {
+    this._notifierService.notify(AlertType.Error, error.message);
+  });
+}
+
+remover(id){
+  this._service.remove(id).pipe(take(1)).subscribe(item => {
+    this.getList();
+    this._notifierService.notify(AlertType.Success, item.value);
+  }, error => {
+    this._notifierService.notify(AlertType.Error, error.message);
+  });
+}
+
+cardsTop(item) {
+  this.dashCard = [
+    { colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalPedidosPendentes, title: 'Pedidos Pendentes', icon: 'warning' },
+    { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalPedidosAtendidos, title: 'Pedidos Atendidos', icon: 'check_circle_outline' },
+    { colorDark: '#42A5F5', colorLight: '#64B5F6', number: item.totalPedidosPendentes+item.totalPedidosAtendidos, title: 'Total de Pedidos', icon: 'person' },
+  ];
+}
+
 }

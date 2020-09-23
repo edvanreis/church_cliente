@@ -32,7 +32,7 @@ export class IgrejasComponent implements OnInit {
 
   carregarIgrejas() {
 
-    this._igrejaService.getList().pipe(take(1)).subscribe(item => {
+    this._igrejaService.getListIdAndName().pipe(take(1)).subscribe(item => {
       this.comboIgrejas = item;
       // console.log(item);
       this.filteredIgreja = this.myControlIgreja.valueChanges

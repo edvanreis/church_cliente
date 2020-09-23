@@ -65,7 +65,7 @@ export class SidemenuComponent implements OnInit {
     {
       'name': 'Pedido Oração', 'icon': 'headset_mic', 'link': false, 'open': false, 'visible': true , 'sub': [
         { 'name': 'Cadastrar', 'link': 'pedido/cadastrar', 'icon': 'maps_ugc', 'chip': false, 'open': false, 'visible': true  },
-        { 'name': 'Pesquisa',  'link': 'pedido/pesquisar', 'icon': 'search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_licao")  }]
+        { 'name': 'Pesquisa',  'link': 'pedidos/pesquisar', 'icon': 'search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_licao")  }]
 
     },
     {
@@ -73,7 +73,7 @@ export class SidemenuComponent implements OnInit {
         { 'name': 'Reunião Célula', 'link': 'reuniao/pesquisar-reuniao-celula', 'icon': 'group', 'chip': false, 'open': false, 'visible':  this.userService.hasPermission("acesso_reuniao")  }]
     },
     {
-      'name': 'Justificar Ausência', 'icon': 'calendar_today', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_justificar_ausencia") , 'sub': [
+      'name': 'Justificar Ausência', 'icon': 'perm_contact_calendar', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_justificar_ausencia") , 'sub': [
         { 'name': 'Pesquisar', 'link': 'justificar/pesquisar', 'icon': 'search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_justificar_ausencia")  }]
     },
     {

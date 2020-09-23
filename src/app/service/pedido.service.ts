@@ -38,4 +38,19 @@ export class PedidoService  implements AbstractService{
     return this.http.get(`${this._url}areaPedidoOracao`)
       .pipe(tap((response: any) => response));
   }
+
+  obterPedidos(pedido) {
+    return this.http.post(`${this._url}obterPedidos`, pedido)
+      .pipe(map((response: any) => response))
+  }
+
+  atendido(id) {
+    return this.http.post(`${this._url}atendido`, id)
+      .pipe(map((response: any) => response))
+  }
+
+  totalPedidos(pedido) {
+    return this.http.post(`${this._url}totalPedidos`, pedido)
+      .pipe(map((response: any) => response))
+  }
 }
