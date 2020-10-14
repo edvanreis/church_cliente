@@ -79,7 +79,7 @@ export class IgrejaService {
   }
 
   getListIdAndName() {
-    return this.http.get(this._url+"listIdAndName")
+    return this.http.get(this._url+"listIgrejasByIdAnNome")
       .pipe(map((response: any) => response))
   }
 

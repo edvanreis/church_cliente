@@ -38,6 +38,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
   public membroSelecionado: any;
   public membros = [];
   public processado: boolean = false;
+
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = [];
   public columnNames;
@@ -46,10 +47,12 @@ export class CadastrarAgendamentosComponent implements OnInit {
   public pageIndex: number = 0;
   public agendamentos = new Array();
   public loading: boolean = false;
+
   public isEditar: boolean = false;
   public grupoValue: any;
   public sizeLimitOne: boolean = true;
   public enderecos = [];
+  
   public comboIgrejas = [];
   public filteredIgreja: Observable<string[]>;
   public myControlIgreja = new FormControl();
@@ -88,6 +91,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
       'dataFim': new FormControl(''),
       'qtdDias': new FormControl(''),
       'dataAgendamento': new FormControl('', Validators.required),
+      'qtdPessoas': new FormControl('', Validators.required),
     });
   }
 
@@ -98,6 +102,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
       { id: 'dataAgendamento', value: 'Data do Agendamento' },
       { id: 'horaInicio', value: 'Hora Inicio' },
       { id: 'horaFim', value: 'Hora Fim' },
+      { id: 'qtdPessoas', value: 'Quantidade de Pessoas' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
@@ -217,7 +222,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
       return;
     }
     this.loading = true;
-    this._service.processar(this.setObjToProcessar()).pipe(take(1)).subscribe(item => {
+    this._service.processar(this.obj()).pipe(take(1)).subscribe(item => {
       // console.log(item)
       this.agendamentos = item;
       this.dados = new MatTableDataSource(item);
@@ -233,7 +238,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
     });
   }
 
-  setObjToProcessar() {
+  obj() {
     let agendamento = {} as any;
     agendamento.dataInicio = this._datePipe.transform(this.form.controls['dataInicio'].value, 'dd/MM/yyyy');
     agendamento.qtdDias = this.form.controls['qtdDias'].value;
@@ -241,6 +246,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
     agendamento.horaFim = this.form.controls['horaFim'].value;
     agendamento.descricao = this.form.controls['descricao'].value;
     agendamento.nome = this.form.controls['nome'].value;
+    agendamento.qtdPessoas = this.form.controls['qtdPessoas'].value;
     agendamento.igreja = { id: this.getIgrejaId() };
 
     if (this.membros.length > 0) {
@@ -262,6 +268,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
     agendamento.horaFim = this.form.controls['horaFim'].value;
     agendamento.descricao = this.form.controls['descricao'].value;
     agendamento.nome = this.form.controls['nome'].value;
+    agendamento.qtdPessoas = this.form.controls['qtdPessoas'].value;
     agendamento.igreja = { id: this.igrejaId };
     agendamento.id = this.id;
 
@@ -335,6 +342,10 @@ export class CadastrarAgendamentosComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor selecione a Data do agendamento!");
       return false;
     }
+    if (!this.form.controls['qtdPessoas'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor Digite a quantidade de Pessoas!");
+      return false;
+    }
     if (!this.igrejaId && !this.igrejaSelecionada) {
       this._notifierService.notify(AlertType.Error, "Por favor selecone uma igreja!");
       return false;
@@ -376,6 +387,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
       this.form.controls['horaFim'].patchValue(item.horaFim);
       this.form.controls['descricao'].patchValue(item.descricao);
       this.form.controls['dataAgendamento'].patchValue(new Date(item.dataAgendamentoToDate));
+      this.form.controls['qtdPessoas'].patchValue(item.qtdPessoas);
       if (item.pessoas) {
         this.membros = item.pessoas;
       }
@@ -426,7 +438,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
           map(value => this._filterIgreja(value, this.comboIgrejas))
         );
     }, error => {
-      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas sede!");
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas!");
     });
   }
 

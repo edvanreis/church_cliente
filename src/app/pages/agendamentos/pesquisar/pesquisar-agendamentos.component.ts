@@ -167,15 +167,33 @@ cadastrar() {
   });
 }
 
-editar(id) {
+cadastrarCulto() {
   localStorage.setItem("pesquisar", JSON.stringify(this.setObj()));
-  this._router.navigate(['/auth/agendamentos/cadastrar'], {
+  this._router.navigate(['/auth/agendamentos/cadastrar-culto'], {
+    queryParams: {
+      igrejaId: this.igrejaSelecionada?this.igrejaSelecionada.id:null,
+    },
+    skipLocationChange: true
+  });
+}
+
+editar(id,tipo) {
+  localStorage.setItem("pesquisar", JSON.stringify(this.setObj()));
+  let rota = '';
+  if(tipo=='C'){
+    rota = '/auth/agendamentos/cadastrar-culto';
+  }else{
+    rota = '/auth/agendamentos/cadastrar';
+  }
+
+  this._router.navigate([rota], {
     queryParams: {
       igrejaId: this.igrejaSelecionada.id,
       id:id
     },
     skipLocationChange: true
   });
+
 }
 
 setObj(){

@@ -52,6 +52,9 @@
             <div><span><b>Logradouro: </b></span>{{item.logradouro}}</div>
             <div><span><b>Igreja: </b></span>{{item.igrejaNome}}</div>
             <div><span><b>Área do Pedido: </b></span>{{item.area}}</div>
+            <div><span><b>Status: </b></span>{{item.status=='I'?'ATENDIDO':'PENDENTE'}}
+            <span *ngIf="item.status =='A'" style="color:#ffbf00;"><i class="col-md material-icons ">warning</i></span>
+            <span *ngIf="item.status =='I'" style="color:green;"><i class="col-md material-icons ">check_circle_outline</i></span></div>
             <div><p><span><b>Descrição: </b></span>{{item.descricao}}</p></div>
             <div *ngIf="item.status =='A'">
               <button mat-raised-button color="primary" (click)="atendido(item.id)">

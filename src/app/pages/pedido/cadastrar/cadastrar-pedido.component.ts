@@ -113,7 +113,7 @@ export class CadastrarPedidoComponent implements OnInit {
 }
 
 setEmiter(): void {
-  this._emitirEventoService.emitir("edit-igreja", '');
+  this._emitirEventoService.emitir("clear", '');
 }
 
 }

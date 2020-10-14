@@ -27,9 +27,11 @@
           </mat-datepicker>
         </mat-form-field>
       </div>
-      <div>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <button mat-raised-button color="primary" type="submit" (click)="cadastrar()">
           <i class="material-icons">add_circle</i>Criar Agendamento</button>
+        <button mat-raised-button color="primary" type="submit" (click)="cadastrarCulto()">
+            <i class="material-icons">add_circle</i>Criar Agendamento Culto</button>
       </div>
       <br />
       <mat-card *ngIf="agendamentos.length > 0" >
@@ -42,9 +44,6 @@
           <mat-expansion-panel>
             <mat-expansion-panel-header  [ngStyle]="{'background-color':!existeAgendamento(group)?'#F2F2F2':''}">
               <span style="font-size: 12px;"><b>{{group?.key}}</b></span>
-              <!-- <span class="default-botoes" style="text-align: right; float: right;" (click)="cadastrar(group.key)">
-                <i class="col-md material-icons ">add_circle</i>
-              </span> -->
             </mat-expansion-panel-header>
             <br />
             <div *ngFor="let item of group.value">
@@ -55,6 +54,7 @@
               <span>{{ element.nome }}</span>
               <span>{{ element.horaInicio }}</span>
               <span>{{ element.horaFim }}</span>
+              <span>{{ element.qtdPessoas }}</span>
               <span matTooltip="{{element.concatPessoas}}" *ngIf="element.concatPessoas">
                 {{(element.concatPessoas.length > 20) ? ((element.concatPessoas).slice(0, 20) + '...') : element.concatPessoas}}</span>
               <span matTooltip="{{element.grupoTrabalho.nome}}" *ngIf="element.grupoTrabalho">
@@ -66,10 +66,10 @@
               <span matTooltip="Reprovar"  style="color:red; cursor: pointer; text-align: right; float: right;" (click)="dialogReprovar(element.id)" *ngIf="element.id && element.statusAgendamento!='A'">
                 <i class="col-md material-icons ">not_interested</i>
               </span>
-              <span matTooltip="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id && element.statusAgendamento!='A'" (click)="editar(element.id)">
+              <span matTooltip="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id && element.statusAgendamento!='A' || element.tipoAgendamento=='C'" (click)="editar(element.id,element.tipoAgendamento)">
                 <i class="col-md material-icons ">create</i>
               </span>
-              <span matTooltip="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id && element.statusAgendamento!='A'">
+              <span matTooltip="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id && element.statusAgendamento!='A' || element.tipoAgendamento=='C'">
                 <i class="col-md material-icons ">delete</i>
               </span>
               <span style="color:red; cursor: pointer; text-align: right; float: right;"  *ngIf="element.statusAgendamento=='A'" class="default-botoes"

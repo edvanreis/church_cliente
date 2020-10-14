@@ -41,10 +41,14 @@
             <mat-error *ngIf="!form.controls.dataAgendamento.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
-        <div [hidden]="isEditar">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" [hidden]="isEditar">
           <mat-form-field class="full-width-field">
             <input matInput class="input-upper" placeholder="Data Fim" formControlName="dataFim" id="dataFim" readonly>
             <mat-error *ngIf="!form.controls.dataFim.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+          <mat-form-field class="full-width-field">
+            <input matInput type="number" placeholder="Quantidade Pessoas" formControlName="qtdPessoas" id="qtdPessoas">
+            <mat-error *ngIf="!form.controls.qtdPessoas.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -67,26 +71,26 @@
         </div>
       </form>
 
-        <br />
-        <mat-divider></mat-divider>
-        <br />
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
-          <i class="material-icons">class</i>
-          <h1 class="mat-subheading-2 center-align">Responsáveis pelo agendamento</h1>
-        </div>
-          <div *ngIf="!igrejaId && !isEditar">
-            <mat-form-field class="full-width-field">
-              <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
-                [matAutocomplete]="au"  style="width: 100%;">
-              <mat-autocomplete #au="matAutocomplete">
-                <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
-                  (onSelectionChange)="onSelectionIgrejaChange($event,option)">
-                  {{option.nome}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </div>
-        <div>
+      <br />
+      <mat-divider></mat-divider>
+      <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">class</i>
+        <h1 class="mat-subheading-2 center-align">Responsáveis pelo agendamento</h1>
+      </div>
+      <div *ngIf="!igrejaId && !isEditar">
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
+            [matAutocomplete]="au" style="width: 100%;">
+          <mat-autocomplete #au="matAutocomplete">
+            <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionIgrejaChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
         <mat-form-field class="full-width-field">
           <input type="text" aria-label="Number" placeholder="Grupos Trabalho" matInput [formControl]="myControlGrupos"
             [matAutocomplete]="aut" [(ngModel)]="grupoValue" required>
@@ -138,10 +142,10 @@
       <br />
       <div>
         <form form [formGroup]="formTwo">
-        <label class="default-font-color" style="font-size:15px;">O agendamento é para outro endereço ?</label>
-        <mat-slide-toggle id="outro"  formControlName="outro" #outro>{{outro.checked | boolean : ['Sim', 'Não']}}
-        </mat-slide-toggle>
-       </form>
+          <label class="default-font-color" style="font-size:15px;">O agendamento é para outro endereço ?</label>
+          <mat-slide-toggle id="outro" formControlName="outro" #outro>{{outro.checked | boolean : ['Sim', 'Não']}}
+          </mat-slide-toggle>
+        </form>
       </div>
       <br />
       <br />
@@ -167,8 +171,10 @@
           <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
             <mat-cell *matCellDef="let element ;let i= index">
-              <span
-                *ngIf="column.id!='id' && column.id!='horaInicio' && column.id!='horaFim'">{{element[column.id]}}</span>
+              <span *ngIf="column.id!='id'
+                    && column.id!='horaInicio'
+                    && column.id!='horaFim'
+                    && column.id!='qtdPessoas'">{{element[column.id]}}</span>
               <span *ngIf="column.id=='horaInicio'">
                 <input [(ngModel)]="element.horaInicio" size="10" style="text-align: center;" id="entrada"
                   [textMask]="{mask: maskHorario}" />
@@ -176,8 +182,12 @@
               <span *ngIf="column.id=='horaFim'">
                 <input [(ngModel)]="element.horaFim" size="10" style="text-align: center;" id="saida"
                   [textMask]="{mask: maskHorario}" />
+                <span *ngIf="column.id=='qtdPessoas'">
+                  <input [(ngModel)]="element.qtdPessoas" size="10" style="text-align: center;" id="qtdPessoas"
+                    type="number"/>
+                </span>
               </span>
-              <span title="Excluir" *ngIf="column.id=='id'" class="default-botoes" (click)="dialogRemover(i,item)"><i
+              <span title="Excluir" *ngIf="column.id=='id'" class="default-botoes" (click)="dialogRemover(i,element)"><i
                   class="material-icons">delete</i></span>
             </mat-cell>
           </ng-container>

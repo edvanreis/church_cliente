@@ -23,6 +23,7 @@ const routes: Routes = [
     { path: 'grupo', loadChildren: '../pages/grupo/grupo.module#GrupoModule', canActivate: [AuthGuardService] },
     { path: 'pedido', loadChildren: '../pages/pedido/pedido.module#PedidoModule' },
     { path: 'pedidos', loadChildren: '../pages/pedidos/pedidos.module#PedidosModule', canActivate: [AuthGuardService] },
+    { path: 'agendamento', loadChildren: '../pages/agendamento/agendamento.module#AgendamentoModule' },
     { path: '**', redirectTo: 'auth/dashboard', canActivate: [AuthGuardService] },
 ]
 

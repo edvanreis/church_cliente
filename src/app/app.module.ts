@@ -22,6 +22,8 @@ import { RelatoriosModule } from './pages/relatorios/relatorios.module';
 import { CurrencyMaskConfig, CurrencyMaskModule, CURRENCY_MASK_CONFIG } from 'ng2-currency-mask';
 import { PedidoModule } from './pages/pedido/pedido.module';
 import { PedidosModule } from './pages/pedidos/pedidos.module';
+import { AgendamentoModule } from './pages/agendamento/agendamento.module';
+
 
 
 
@@ -66,7 +68,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     RelatoriosModule,
     CurrencyMaskModule,
     PedidoModule,
-    PedidosModule
+    PedidosModule,
+    AgendamentoModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },
