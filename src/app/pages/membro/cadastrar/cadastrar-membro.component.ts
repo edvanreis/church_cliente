@@ -245,11 +245,11 @@ export class CadastrarMembroComponent implements OnInit {
 
   salvar() {
     this.setObj();
-    let mensagem = this.validFields();
-    if (mensagem) {
-      this._notifierService.notify(AlertType.Error, mensagem);
-      return false;
-    }
+    // let mensagem = this.validFields();
+    // if (mensagem) {
+    //   this._notifierService.notify(AlertType.Error, mensagem);
+    //   return false;
+    // }
     if (this.membro.id) {
       this.updade();
     } else if (this.visitanteId) {

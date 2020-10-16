@@ -1,3 +1,4 @@
+import { DiretivesModule } from './../../diretives/diretives.module';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -46,6 +47,7 @@ const routes: Routes = [
     IgrejasComponenteModule,
     RedesComponenteModule,
     DialogTransferirPessoaModule,
+    DiretivesModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

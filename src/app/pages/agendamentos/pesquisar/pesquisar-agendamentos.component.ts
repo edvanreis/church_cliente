@@ -98,13 +98,16 @@ export class PesquisarAgendamentosComponent implements OnInit {
     datepicker.close();
     this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
     if(this.igrejaSelecionada){
-      this.getDayList();
+      this.pesquisar();
     }
 
   }
 
 
-  getDayList() {
+  pesquisar() {
+    if(!this.igrejaSelecionada){
+      this._notifierService.notify(AlertType.Error, "Por favor selecione uma igreja!");
+    }
     let obj = {
       dataAgendamento:"01/"+this.competenciaSelecionada,
       igreja:{id:this.igrejaSelecionada.id}
@@ -143,7 +146,6 @@ export class PesquisarAgendamentosComponent implements OnInit {
 
   onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
-    this.getDayList();
   }
 
 existeAgendamento(e):boolean{
@@ -220,7 +222,7 @@ getParams(): boolean {
     if(!this.igrejaSelecionada){
       return false;
     }
-    this.getDayList();
+    this.pesquisar();
     return true;
   } else {
     return false;
@@ -275,10 +277,10 @@ dialogRemover(id) {
 getEmiter(): void {
   this._emitirEventoService.mensagem.subscribe(item => {
     if (item.type == 'dialog-aprovar-reprovar-agendamento') {
-      this.getDayList();
+      this.pesquisar();
     }
       if (item.type == 'confirm-dialog-remover-agendamento') {
-        this.getDayList();
+        this.pesquisar();
       }
   });
 }

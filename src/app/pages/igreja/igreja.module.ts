@@ -1,3 +1,4 @@
+import { DiretivesModule } from './../../diretives/diretives.module';
 import { DialogTransferirPessoaModule } from './../dialog/dialog-transferir-pessoa/dialog-transferir-pessoa.module';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
@@ -57,6 +58,7 @@ const routes: Routes = [
     MatRadioModule,
     IgrejasComponenteModule,
     DialogTransferirPessoaModule,
+    DiretivesModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

@@ -18,6 +18,7 @@ import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dia
 import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
 import { PipeModule } from '../../pipes/pipe.module';
 import { CelulaPessoasComponent } from './pessoas/celula-pessoas.component';
+import { DiretivesModule } from '../../diretives/diretives.module';
 
 
 
@@ -60,6 +61,7 @@ const routes: Routes = [
     MatSlideToggleModule,
     DialogTransferirPessoaModule,
     IgrejasComponenteModule,
+    DiretivesModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

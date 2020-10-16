@@ -28,6 +28,11 @@
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+        <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
+          <i class="material-icons">search</i>Buscar</button>
+      </div>
+      <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <button mat-raised-button color="primary" type="submit" (click)="cadastrar()">
           <i class="material-icons">add_circle</i>Criar Agendamento</button>
         <button mat-raised-button color="primary" type="submit" (click)="cadastrarCulto()">
@@ -42,7 +47,9 @@
         </mat-card-header>
         <div *ngFor="let group of agendamentos | groupBy:'dataAgendamento'" >
           <mat-expansion-panel>
-            <mat-expansion-panel-header  [ngStyle]="{'background-color':!existeAgendamento(group)?'#F2F2F2':''}">
+            <mat-expansion-panel-header  [ngStyle]="{
+                                                    'background-color':!existeAgendamento(group)?'#1d68a5':'',
+                                                    'color':!existeAgendamento(group)?'#ffffff':''}">
               <span style="font-size: 12px;"><b>{{group?.key}}</b></span>
             </mat-expansion-panel-header>
             <br />

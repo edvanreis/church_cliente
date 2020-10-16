@@ -5,7 +5,7 @@
       <h1 class="mat-headline center-align">Pessoas</h1>
     </mat-toolbar>
     <div class="cdk-container">
-      <app-igrejas></app-igrejas>
+      <app-igrejas  *hasPermission="['combo_igreja_pessoa']" ></app-igrejas>
       <div>
         <mat-form-field class="full-width-field">
           <mat-label>Pessoa</mat-label>

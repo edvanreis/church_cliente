@@ -5,8 +5,8 @@
       <h1 class="mat-headline center-align">Pessoas</h1>
     </mat-toolbar>
     <div class="cdk-container">
-      <app-igrejas></app-igrejas>
-      <div>
+      <app-igrejas *hasPermission="['combo_igreja_pessoa']" ></app-igrejas>
+      <div *hasPermission="['combo_rede_pessoa']">
         <mat-form-field class="full-width-field">
           <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
             [matAutocomplete]="a" [(ngModel)]="redeValue">
