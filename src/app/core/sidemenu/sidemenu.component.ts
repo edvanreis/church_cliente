@@ -44,7 +44,7 @@ export class SidemenuComponent implements OnInit {
       ]
     },
     {
-      'name': 'Células', 'icon': 'group', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_celulas"), 'sub': [
+      'name': 'Células', 'icon': 'groups', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_celulas"), 'sub': [
         { 'name': 'Pesquisar', 'link': 'celula/pesquisar', 'icon': 'search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_celulas"), },
         { 'name': 'Pessoas', 'link': 'celula/pessoas', 'icon': 'person_search', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_igrejas") },
       ]
@@ -56,7 +56,8 @@ export class SidemenuComponent implements OnInit {
     },
     {
       'name': 'Agendamentos', 'icon': 'calendar_today', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_agendamentos"), 'sub': [
-        { 'name': 'Pesquisar', 'link': 'agendamentos/pesquisar', 'icon': 'date_range', 'chip': false, 'open': false, 'visible':  this.userService.hasPermission("acesso_agendamentos") }]
+        { 'name': 'Pesquisar', 'link': 'agendamentos/pesquisar', 'icon': 'date_range', 'chip': false, 'open': false, 'visible':  this.userService.hasPermission("acesso_agendamentos") },
+        { 'name': 'Pessoas Agendadas', 'link': 'agendamentos/pessoas-agendadas', 'icon': 'group', 'chip': false, 'open': false, 'visible':  this.userService.hasPermission("acesso_agendamentos") }]
     },
     {
       'name': 'Lição', 'icon': 'school', 'link': false, 'open': false, 'visible': this.userService.hasPermission("acesso_licao") , 'sub': [

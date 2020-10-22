@@ -18,4 +18,25 @@ export class AgendamentoPessoaService {
     return this.http.post(this._url,obj)
       .pipe(map((response: any) => response))
   }
+
+  pessoasAgendadas(id) {
+    return this.http.get(`${this._url}${id}/pessoasAgendadas`)
+      .pipe(map((response: any) => response))
+  }
+
+  marcarPresentePessoa(obj) {
+    return this.http.post(this._url+"marcarPresentePessoa",obj)
+      .pipe(map((response: any) => response))
+  }
+
+
+  justificarFaltaAgendamento(obj) {
+    return this.http.post(this._url+"justificarFaltaAgendamento",obj)
+      .pipe(map((response: any) => response))
+  }
+
+  totalPessoasAgendadas(id) {
+    return this.http.get(`${this._url}${id}/totalPessoasAgendadas`)
+      .pipe(map((response: any) => response))
+  }
 }
