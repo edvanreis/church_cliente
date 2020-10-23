@@ -50,7 +50,7 @@
               {{(element[column.id]?.length > 50) ? ((element[column.id])?.slice(0, 50) + '...') : element[column.id]}}
             </span>
             <span matTooltip="Confirmar" *ngIf="column.id=='id'">
-              <mat-slide-toggle  id="presente" (click)="confirmar(element.id,presente.checked)" #presente>
+              <mat-slide-toggle [(ngModel)]="element.presente" id="presente" (change)="confirmar(element.id,presente.checked)" #presente>
                 {{presente.checked | boolean : ['Sim', 'Não']}}
               </mat-slide-toggle>
             </span>

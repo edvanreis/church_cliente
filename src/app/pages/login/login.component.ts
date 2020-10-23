@@ -83,6 +83,10 @@ export class LoginComponent implements OnInit {
     this._router.navigate(['/senha/alterar-senha']);
   }
 
+  marcarAgendamento() {
+    this._router.navigate(['/agendamento/cadastrar']);
+  }
+
   esqueceuSenha() {
     this._router.navigate(['/senha/alterar-senha'], {
       queryParams: {

@@ -9,6 +9,7 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { MatAutocompleteSelectedEvent } from '@angular/material';
 import { AgendamentoPessoaService } from '../../../service/agendamento-pessoa.service';
 import { HelperChurch } from '../../../helper/helper.church';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-agendamento-pessoa',
@@ -35,7 +36,8 @@ export class CadastrarAgendamentoPessoaComponent implements OnInit {
   constructor(private _service:AgendamentoPessoaService,
     private _serviceAgendamento:AgendamentoService,
     private _notifierService: NotifierService,
-    private _emitirEventoService: EmitirEventoService) { }
+    private _emitirEventoService: EmitirEventoService,
+    private _router: Router) { }
 
   ngOnInit(){
     this._buildForm();
@@ -142,5 +144,10 @@ export class CadastrarAgendamentoPessoaComponent implements OnInit {
   setEmiterClear(): void {
     this._emitirEventoService.emitir("clear", '');
   }
+
+  voltar() {
+    this._router.navigate(['/']);
+  }
+
 
 }

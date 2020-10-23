@@ -53,19 +53,26 @@ export class AlterarSenhaComponent implements OnInit {
     return {
       senha: this.form.controls['senhaAtual'].value,
       senhaNew: this.form.controls['senhaNova'].value,
-      email: this.form.controls['email'].value,
+      // email: this.form.controls['email'].value,
       cpf: HelperChurch.retirarFormatacao(this.form.controls['cpf'].value)
     }
   }
 
   alterar() {
     if (!this.form.controls['cpf'].value && !this.form.controls['senhaAtual'].value  && !this.form.controls['senhaNova'].value) {
-      this._notifierService.notify(AlertType.Success, "Digite todos os campos obrigatórios!");
+      this._notifierService.notify(AlertType.Error, "Digite todos os campos obrigatórios!");
       return false;
     }
+    let senhaNova:string = this.form.controls['senhaNova'].value;
+    if (senhaNova.length < 6 ) {
+      this._notifierService.notify(AlertType.Error, "A senha nova precisa ter no minimo 6 caracteres!");
+      return false;
+    }
+
     let obj = this.obj();
     console.log(obj);
     this._userService.alterarSenha(obj).pipe(take(1)).subscribe(item => {
+      this.form.reset();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);

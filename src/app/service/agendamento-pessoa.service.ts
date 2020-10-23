@@ -25,13 +25,13 @@ export class AgendamentoPessoaService {
   }
 
   marcarPresentePessoa(obj) {
-    return this.http.post(this._url+"marcarPresentePessoa",obj)
+    return this.http.put(this._url+"marcarPresentePessoa",obj)
       .pipe(map((response: any) => response))
   }
 
 
   justificarFaltaAgendamento(obj) {
-    return this.http.post(this._url+"justificarFaltaAgendamento",obj)
+    return this.http.put(this._url+"justificarFaltaAgendamento",obj)
       .pipe(map((response: any) => response))
   }
 
