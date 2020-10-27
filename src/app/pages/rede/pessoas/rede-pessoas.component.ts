@@ -8,6 +8,7 @@ import { AlertType } from '../../../model/alert-type';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { MatAutocompleteSelectedEvent, MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { DialogTransferirPessoaComponent } from '../../dialog/dialog-transferir-pessoa/dialog-transferir-pessoa.component';
+import { UserService } from '../../../service/user.service';
 
 @Component({
   selector: 'app-rede-pessoas',
@@ -42,7 +43,8 @@ export class RedePessoasComponent implements OnInit {
   constructor(private _service: RedeService,
     private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _userService: UserService) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -101,6 +103,15 @@ export class RedePessoasComponent implements OnInit {
   }
 
   onSelectionChange(event) {
+
+    if(!this._userService.hasPermission("combo_rede_pessoa")){
+      let user = this._userService.getMembroLogado();
+      // console.log(user)
+      if(user.rede){
+        this.redeSelecionada = user.rede;
+      }
+    }
+
     if (this.redeSelecionada) {
       switch (event.source.value) {
         case 'M':

@@ -1,0 +1,20 @@
+<div mat-dialog-content>
+  <h4 mat-dialog-title>
+    <mat-toolbar class="cdk-header">
+      <i class="material-icons">add</i>
+      <h1 class="mat-headline center-align">Justificar</h1>
+    </mat-toolbar>
+  </h4>
+  <div class="cdk-container">
+      <mat-form-field class="full-width-field">
+        <textarea matInput placeholder="Descrição" [(ngModel)]="observacao" style="text-transform: uppercase;"></textarea>
+      </mat-form-field>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" type="submit" (click)="confirmar()">
+      <i class="material-icons">done</i>Confirmar</button>
+    <div fxFlex></div>
+    <button mat-raised-button color="warn" type="submit" (click)="close()">
+      <i class="material-icons">close</i>Fechar</button>
+  </div>
+</div>

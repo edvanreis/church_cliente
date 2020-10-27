@@ -1,3 +1,4 @@
+import { TipoAgendamentoService } from './../../../service/tipo-agendamento.service';
 import { MembroService } from '../../../service/membro.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -52,12 +53,14 @@ export class CadastrarAgendamentosComponent implements OnInit {
   public grupoValue: any;
   public sizeLimitOne: boolean = true;
   public enderecos = [];
-  
+
   public comboIgrejas = [];
   public filteredIgreja: Observable<string[]>;
   public myControlIgreja = new FormControl();
   public igrejaValue: any;
   public igrejaSelecionada: any;
+
+  public tipoAgendamento$: Observable<any[]>;
 
 
   constructor(private _notifierService: NotifierService,
@@ -70,7 +73,8 @@ export class CadastrarAgendamentosComponent implements OnInit {
     private _membroService: MembroService,
     private _service: AgendamentoService,
     private _dialog: MatDialog,
-    private _igrejaService: IgrejaService) { }
+    private _igrejaService: IgrejaService,
+    private _tipoAgendamentoService:TipoAgendamentoService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -79,6 +83,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
     this.columns();
     this.getEmiter();
     this._buildFormTow();
+    this.carregarTipoAgendamento();
   }
 
   private _buildForm(): void {
@@ -92,7 +97,12 @@ export class CadastrarAgendamentosComponent implements OnInit {
       'qtdDias': new FormControl(''),
       'dataAgendamento': new FormControl('', Validators.required),
       'qtdPessoas': new FormControl('', Validators.required),
+      'tipoAgendamento': new FormControl('', Validators.required),
     });
+  }
+
+  carregarTipoAgendamento() {
+    this.tipoAgendamento$ = this._tipoAgendamentoService.getList();
   }
 
 
@@ -248,6 +258,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
     agendamento.nome = this.form.controls['nome'].value;
     agendamento.qtdPessoas = this.form.controls['qtdPessoas'].value;
     agendamento.igreja = { id: this.getIgrejaId() };
+    agendamento.tipoAgendamento =  this.form.controls['tipoAgendamento'].value;
 
     if (this.membros.length > 0) {
       agendamento.pessoas = this.membros
@@ -319,40 +330,45 @@ export class CadastrarAgendamentosComponent implements OnInit {
 
   validFieds(): boolean {
     if (!this.form.controls['nome'].value) {
-      this._notifierService.notify(AlertType.Error, "Por favor digite o nome do agendamento!");
+        this._notifierService.notify(AlertType.Error, "Por favor digite o nome do agendamento!");
       return false;
     }
     if (!this.form.controls['descricao'].value) {
-      this._notifierService.notify(AlertType.Error, "Por favor escreva a descrição do agendamento");
+        this._notifierService.notify(AlertType.Error, "Por favor escreva a descrição do agendamento");
       return false;
     }
     if (!this.form.controls['dataInicio'].value && !this.isEditar) {
-      this._notifierService.notify(AlertType.Error, "Por favor selecione a Data de Inicio do agendamento!");
+        this._notifierService.notify(AlertType.Error, "Por favor selecione a Data de Inicio do agendamento!");
       return false;
     }
     if (!this.form.controls['dataFim'].value && !this.isEditar) {
-      this._notifierService.notify(AlertType.Error, "Por favor Data fim não pode esta vazia!");
+        this._notifierService.notify(AlertType.Error, "Por favor Data fim não pode esta vazia!");
       return false;
     }
     if (!this.form.controls['qtdDias'].value && !this.isEditar) {
-      this._notifierService.notify(AlertType.Error, "Por favor digite a quantidade de dias!");
+        this._notifierService.notify(AlertType.Error, "Por favor digite a quantidade de dias!");
       return false;
     }
     if (!this.form.controls['dataAgendamento'].value && this.isEditar) {
-      this._notifierService.notify(AlertType.Error, "Por favor selecione a Data do agendamento!");
+        this._notifierService.notify(AlertType.Error, "Por favor selecione a Data do agendamento!");
       return false;
     }
     if (!this.form.controls['qtdPessoas'].value) {
-      this._notifierService.notify(AlertType.Error, "Por favor Digite a quantidade de Pessoas!");
+        this._notifierService.notify(AlertType.Error, "Por favor Digite a quantidade de Pessoas!");
       return false;
     }
     if (!this.igrejaId && !this.igrejaSelecionada) {
-      this._notifierService.notify(AlertType.Error, "Por favor selecone uma igreja!");
+        this._notifierService.notify(AlertType.Error, "Por favor selecone uma igreja!");
       return false;
     }
 
     if (this.membros.length == 0 && !this.grupoSelecionado) {
-      this._notifierService.notify(AlertType.Error, "Por favor selecione os responsáveis pelo agendamento!");
+        this._notifierService.notify(AlertType.Error, "Por favor selecione os responsáveis pelo agendamento!");
+      return false;
+    }
+
+    if (!this.form.controls['tipoAgendamento'].value) {
+        this._notifierService.notify(AlertType.Error, "Por favor selecione o tipo de agendamento!");
       return false;
     }
     return true;
@@ -388,6 +404,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
       this.form.controls['descricao'].patchValue(item.descricao);
       this.form.controls['dataAgendamento'].patchValue(new Date(item.dataAgendamentoToDate));
       this.form.controls['qtdPessoas'].patchValue(item.qtdPessoas);
+      this.form.controls['tipoAgendamento'].patchValue(item.tipoAgendamanto);
       if (item.pessoas) {
         this.membros = item.pessoas;
       }

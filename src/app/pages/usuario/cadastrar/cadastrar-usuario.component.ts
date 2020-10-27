@@ -40,10 +40,12 @@ export class CadastrarUsuarioComponent implements OnInit {
   public filteredPerfil: Observable<string[]>;
   public myControlMembro = new FormControl();
   public myControlPerfil = new FormControl();
-  public perfilValue;
+
   public comboStatus = ELEMENT_DATA;
   // public cpfValue;
-  public nomeValue;
+  public membroValue:any;
+  public perfilValue:any;
+
 
 
   constructor(private _router: Router,
@@ -98,9 +100,7 @@ export class CadastrarUsuarioComponent implements OnInit {
     if (this._avRoute.snapshot.queryParamMap.get("nome")) {
       this.nome = this._avRoute.snapshot.queryParamMap.get("nome");
     }
-    if (this._avRoute.snapshot.queryParamMap.get("cpf")) {
-      this.cpf = this._avRoute.snapshot.queryParamMap.get("cpf");
-    }
+
     if (this._avRoute.snapshot.queryParamMap.get("status")) {
       this.status = this._avRoute.snapshot.queryParamMap.get("status");
     }
@@ -148,6 +148,7 @@ export class CadastrarUsuarioComponent implements OnInit {
       this.form.controls['nome'].patchValue(item.nome);
       this.form.controls['cpf'].patchValue(item.cpf);
       this.form.controls['status'].patchValue(item.status);
+      this.form.controls['login'].patchValue(item.login);
       this.perfis = item.perfis;
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -171,6 +172,8 @@ export class CadastrarUsuarioComponent implements OnInit {
       //         this.perfilUsuario = element;
       //   }
       // });
+      console.log(item)
+      this.comboPerfil = item;
       this.filteredPerfil = this.myControlPerfil.valueChanges
       .pipe(
         startWith(''),
@@ -203,7 +206,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   }
 
   onSelectionChangedPerfil($event: MatAutocompleteSelectedEvent,option) {
-    this.perfilUsuario = option.source.value;
+    this.perfilUsuario = option;
   }
 
   onSelectionChangedMembro($event: MatAutocompleteSelectedEvent,option) {

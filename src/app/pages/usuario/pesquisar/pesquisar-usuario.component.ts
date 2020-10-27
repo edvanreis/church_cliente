@@ -24,7 +24,6 @@ const ELEMENT_DATA = [
 })
 export class PesquisarUsuarioComponent implements OnInit {
 
-  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
   public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/]
   public form: FormGroup;
   @ViewChild(MatSort) sort: MatSort;
@@ -37,7 +36,6 @@ export class PesquisarUsuarioComponent implements OnInit {
   public lista = [];
   public nome: string;
   public login: string;
-  public cpf: string;
   public comboStatus = ELEMENT_DATA;
 
 
@@ -59,7 +57,6 @@ export class PesquisarUsuarioComponent implements OnInit {
     this.form = new FormGroup({
       'nome': new FormControl(''),
       'login': new FormControl(''),
-      'cpf': new FormControl(''),
       'status': new FormControl(''),
       'dataInicio': new FormControl(''),
       'dataFim': new FormControl('')
@@ -78,11 +75,7 @@ export class PesquisarUsuarioComponent implements OnInit {
       this.form.controls['nome'].patchValue(nome);
       editar = true;
     }
-    if (this._avRoute.snapshot.queryParamMap.get("cpf")) {
-      let cpf = this._avRoute.snapshot.queryParamMap.get("cpf");
-      this.form.controls['cpf'].patchValue(cpf);
-      editar = true;
-    }
+
     if (this._avRoute.snapshot.queryParamMap.get("status")) {
       let status = this._avRoute.snapshot.queryParamMap.get("status");
       this.form.controls['status'].patchValue(status);
@@ -105,7 +98,6 @@ export class PesquisarUsuarioComponent implements OnInit {
     this.columnNames = [
       { id: 'login', value: 'Login' },
       { id: 'nome', value: 'Nome' },
-      { id: 'cpf', value: 'CPF' },
       { id: 'status', value: 'Status' },
       { id: 'id', value: 'Ação' }
     ];
@@ -128,7 +120,6 @@ export class PesquisarUsuarioComponent implements OnInit {
         id: id,
         login: this.form.controls['login'].value,
         nome: this.form.controls['nome'].value,
-        cpf: this.form.controls['cpf'].value,
         status: this.form.controls['status'].value
       },
       skipLocationChange: true
@@ -137,6 +128,7 @@ export class PesquisarUsuarioComponent implements OnInit {
 
   pesquisar() {
     this.loading = true;
+    console.log(this.obj())
     this._userService.pesquisar(this.obj()).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.dados = new MatTableDataSource(item);
@@ -155,7 +147,6 @@ export class PesquisarUsuarioComponent implements OnInit {
     return {
       nome: this.form.controls['nome'].value,
       login: this.form.controls['login'].value,
-      cpf:  HelperChurch.retirarFormatacao((this.form.controls['cpf'].value)),
       status: this.form.controls['status'].value
     }
   }
@@ -168,7 +159,6 @@ export class PesquisarUsuarioComponent implements OnInit {
         id: id,
         login: this.form.controls['login'].value,
         nome: this.form.controls['nome'].value,
-        cpf: this.form.controls['cpf'].value,
         status: this.form.controls['status'].value
       },
       skipLocationChange: true

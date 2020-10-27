@@ -313,4 +313,5 @@ export class PesquisarMembroComponent implements OnInit {
     this._router.navigate(['/auth/membro/cadastrar']);
   }
 
+
 }

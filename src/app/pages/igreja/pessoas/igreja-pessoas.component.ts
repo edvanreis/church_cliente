@@ -6,6 +6,7 @@ import { IgrejaService } from '../../../service/igreja.service';
 import { MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
+import { UserService } from '../../../service/user.service';
 
 @Component({
   selector: 'app-igreja-pessoas',
@@ -36,7 +37,9 @@ export class IgrejaPessoasComponent implements OnInit {
   constructor(private _emitirEventoService: EmitirEventoService,
     private _service: IgrejaService,
     private _notifierService: NotifierService,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _userService: UserService,
+    ) { }
 
   ngOnInit() {
     this.getEmiter();
@@ -55,6 +58,15 @@ export class IgrejaPessoasComponent implements OnInit {
   }
 
   onSelectionChange(event) {
+
+    if(!this._userService.hasPermission("combo_igreja_pessoa")){
+      let user = this._userService.getMembroLogado();
+      // console.log(user)
+      if(user.igreja){
+        this.igrejaSelecionada = user.igreja;
+      }
+    }
+
     if (this.igrejaSelecionada) {
       switch (event.source.value) {
         case 'M':

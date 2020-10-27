@@ -81,8 +81,8 @@ export class AgendamentoService implements AbstractService {
       .pipe(map((response: any) => response))
   }
 
-  getAgendamentosIgreja(id,tipo) {
-    return this.http.get(`${this._url}${id}/${tipo}/getAgendamentosIgreja`)
+  getAgendamentosIgreja(id) {
+    return this.http.get(`${this._url}${id}/getAgendamentosIgreja`)
       .pipe(map((response: any) => response))
   }
 

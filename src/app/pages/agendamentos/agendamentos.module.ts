@@ -3,7 +3,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatTableModule, MatToolbarModule, MatSlideToggleModule, MatTooltipModule, MatRadioModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatCheckboxModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatInputModule, MatPaginatorModule, MatProgressSpinnerModule, MatTableModule, MatToolbarModule, MatSlideToggleModule, MatTooltipModule, MatRadioModule, MatSelectModule, MatOptionModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipes/pipe.module';
@@ -19,6 +19,7 @@ import { CadastrarCultoComponent } from './cadastrar-culto/cadastrar-culto.compo
 import { PessoasAgendadasComponent } from './pessoas-agendadas/pessoas-agendadas.component';
 import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
 import { DashboardWidgetModule } from '../../dashboard-widget/dashboard-widget.module';
+import { DialogJustificarAgendamentoModule } from '../dialog/dialog-justificar-agendamento/dialog-justificar-agendamento.module';
 
 
 const routes: Routes = [
@@ -58,6 +59,9 @@ const routes: Routes = [
     MatSlideToggleModule,
     MatRadioModule,
     DashboardWidgetModule,
+    DialogJustificarAgendamentoModule,
+    MatSelectModule,
+    MatOptionModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

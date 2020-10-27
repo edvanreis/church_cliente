@@ -7,13 +7,8 @@
     <div class="cdk-container">
       <br />
       <div>
-        <mat-label style="color: rgba(0,0,0,0.54);font-size: 12px;">Tipo Agendamento</mat-label>
         <br />
         <br />
-        <mat-radio-group [(ngModel)]="tipoAgendamento">
-          <mat-radio-button   value="C" >Culto</mat-radio-button>
-          <mat-radio-button   value="O" >Outros</mat-radio-button>
-        </mat-radio-group>
       </div>
       <app-igrejas></app-igrejas>
       <div>
@@ -46,13 +41,16 @@
         <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
+            <span *ngIf="column.id!='id' && column.id!='justificar'" matTooltip="{{element[column.id]}}">
               {{(element[column.id]?.length > 50) ? ((element[column.id])?.slice(0, 50) + '...') : element[column.id]}}
             </span>
-            <span matTooltip="Confirmar" *ngIf="column.id=='id'">
+            <span matTooltip="Confirmar" *ngIf="column.id=='id' && column.id!='justificar'">
               <mat-slide-toggle [(ngModel)]="element.presente" id="presente" (change)="confirmar(element.id,presente.checked)" #presente>
                 {{presente.checked | boolean : ['Sim', 'Não']}}
               </mat-slide-toggle>
+            </span>
+            <span class="default-botoes" (click)="dialogJustificar(element.id)"  *ngIf="column.id!='id' && column.id=='justificar'" matTooltip="Justificar">
+              <i class="material-icons">record_voice_over</i>
             </span>
           </mat-cell>
         </ng-container>

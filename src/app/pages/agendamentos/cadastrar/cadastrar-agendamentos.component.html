@@ -65,6 +65,17 @@
         </div>
         <div>
           <mat-form-field class="full-width-field">
+            <mat-label>Tipo Agendamento</mat-label>
+            <mat-select id="tipo" formControlName="tipoAgendamento">
+              <mat-option *ngFor="let item of tipoAgendamento$ | async" [value]="item">
+                {{item.nome}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="!form.controls.tipoAgendamento.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="full-width-field">
             <textarea matInput placeholder="Descrição" formControlName="descricao" required></textarea>
             <mat-error *ngIf="!form.controls.descricao.valid">Campo Obrigatório</mat-error>
           </mat-form-field>

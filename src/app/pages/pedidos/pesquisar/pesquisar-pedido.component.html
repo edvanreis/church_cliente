@@ -28,6 +28,10 @@
         </mat-form-field>
       </div>
     </div>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+      <button mat-raised-button color="primary" type="submit" (click)="pesquisar()">
+        <i class="material-icons">search</i>Buscar</button>
+    </div>
     <div fxLayout="row" fxLayout="row wrap">
       <div *ngFor="let dash of dashCard" fxFlex.lt-sm="100" fxFlex.sm="50" fxFlex.md="25">
         <cdk-dashcard [dashData]="dash"></cdk-dashcard>

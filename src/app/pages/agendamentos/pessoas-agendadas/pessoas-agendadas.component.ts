@@ -7,8 +7,9 @@ import { AgendamentoService } from '../../../service/agendamento.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { take, startWith, map } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
-import { MatAutocompleteSelectedEvent, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { ExcelService } from '../../../service/excel.service';
+import { DialogJustificarAgendamentoComponent } from '../../dialog/dialog-justificar-agendamento/dialog-justificar-agendamento.component';
 
 @Component({
   selector: 'app-pessoas-agendadas',
@@ -32,14 +33,14 @@ export class PessoasAgendadasComponent implements OnInit {
   public pageIndex: number = 0;
   public pessoasAgendadas = new Array();
 
-  public tipoAgendamento:any = 'C';
   public dashCard = [];
 
   constructor(private _service:AgendamentoPessoaService,
     private _serviceAgendamento:AgendamentoService,
     private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
-    private _excelService: ExcelService) { }
+    private _excelService: ExcelService,
+    private _dialog: MatDialog) { }
 
 
 
@@ -57,7 +58,8 @@ export class PessoasAgendadasComponent implements OnInit {
       { id: 'nomeCompleto', value: 'Nome' },
       { id: 'dataNascimento', value: 'Data Nascimento' },
       { id: 'celular', value: 'Celular' },
-      { id: 'id', value: 'Presente' }
+      { id: 'id', value: 'Presente' },
+      { id: 'justificar', value: 'Justificar' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
   }
@@ -69,11 +71,14 @@ export class PessoasAgendadasComponent implements OnInit {
         this.igrejaSelecionada = item.data;
         this.obterAgendamentos(this.igrejaSelecionada.id);
       }
+      if(item.type=='confirm-dialog-justificar-agendamento'){
+          this.getList(this.agendamentoSelecionado.id);
+      }
     });
   }
 
   obterAgendamentos(id){
-    this._serviceAgendamento.getAgendamentosIgreja(id,this.tipoAgendamento).pipe(take(1)).subscribe(item => {
+    this._serviceAgendamento.getAgendamentosIgreja(id).pipe(take(1)).subscribe(item => {
       console.log(item);
       this.comboAgendamento = item;
       this.filteredAgendamento = this.myControlAgendamento.valueChanges
@@ -166,6 +171,16 @@ export class PessoasAgendadasComponent implements OnInit {
       });
     });
     this._excelService.exportAsExcelFile(dados, "agendamentos");
+  }
+
+
+  dialogJustificar(id){
+      const dialogRef = this._dialog.open(DialogJustificarAgendamentoComponent, {
+        width: '600px',
+        data: {
+          id: id,
+        }
+      });
   }
 
 }

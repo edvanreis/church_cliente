@@ -66,7 +66,6 @@ export class PesquisarPedidoComponent implements OnInit {
     ngOnInit() {
       this.carregarIgrejas();
       this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
-      this.getList();
     }
 
 
@@ -86,21 +85,21 @@ export class PesquisarPedidoComponent implements OnInit {
       this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
     }
 
-  getList() {
-    let pedidos = {} as any;
+  pesquisar() {
+
     if(!this.competenciaSelecionada){
       this._notifierService.notify(AlertType.Error, "Por favor selecone uma competência");
       return false;
     }
 
-    pedidos.competencia = this.competenciaSelecionada;
-
     if(!this.igrejaSelecionada){
-      pedidos.igreja = null;
-    }else{
-      pedidos.igreja = {id:this.igrejaSelecionada.id};
-
+      this._notifierService.notify(AlertType.Error, "Por favor selecone uma Igreja!");
+      return false;
     }
+
+    let pedidos = {} as any;
+    pedidos.competencia = this.competenciaSelecionada;
+    pedidos.igreja = {id:this.igrejaSelecionada.id};
 
     this._service.obterPedidos(pedidos).pipe(take(1)).subscribe(item => {
       this.pedidos = item;
@@ -141,12 +140,11 @@ export class PesquisarPedidoComponent implements OnInit {
 
   onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
-    this.getList();
   }
 
  atendido(id){
   this._service.atendido(id).pipe(take(1)).subscribe(item => {
-    this.getList();
+    this.pesquisar();
     this._notifierService.notify(AlertType.Success, item.value);
   }, error => {
     this._notifierService.notify(AlertType.Error, error.message);
@@ -155,7 +153,7 @@ export class PesquisarPedidoComponent implements OnInit {
 
 remover(id){
   this._service.remove(id).pipe(take(1)).subscribe(item => {
-    this.getList();
+    this.pesquisar();
     this._notifierService.notify(AlertType.Success, item.value);
   }, error => {
     this._notifierService.notify(AlertType.Error, error.message);

@@ -101,4 +101,9 @@ export class UserService {
       .pipe(map((response: any) => response))
   }
 
+  getMembroLogado(){
+    const user = this.currentUser();
+    return JSON.parse(user).principal.membro;
+  }
+
 }

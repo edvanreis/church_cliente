@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
       this._storeToken(user);
       this._storeUser();
     }, erro => {
-      // console.log(erro.error.error_description);
+      // console.log(erro);
       this._notifierService.notify(AlertType.Error, "Usuáro e senha Inválidos!");
     })
 
