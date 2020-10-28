@@ -24,6 +24,10 @@
       </div>
       <br />
       <br />
+      <div [hidden]="!loading" align="center" style="width: 100%">
+        <h4>Buscando...</h4>
+        <mat-spinner [diameter]="40"></mat-spinner>
+    </div>
       <div  style="padding: 0 20px;" *ngIf="celulas.length > 0">
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">

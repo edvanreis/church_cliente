@@ -39,4 +39,14 @@ export class AgendamentoPessoaService {
     return this.http.get(`${this._url}${id}/totalPessoasAgendadas`)
       .pipe(map((response: any) => response))
   }
+
+  getAgendamentosPessoa(cpf) {
+    return this.http.post(this._url+"getAgendamentosPessoa",cpf)
+      .pipe(map((response: any) => response))
+  }
+
+  removerAgendamentoPessoa(cpf) {
+    return this.http.post(this._url+"removerAgendamentoPessoa",cpf)
+      .pipe(map((response: any) => response))
+  }
 }

@@ -219,6 +219,9 @@ export class CelulaPessoasComponent implements OnInit {
     this.celulaSelecionada = option;
   }
 
+  applyFilter(value) {
+    this.dados.filter = value.trim().toLowerCase();
+  }
 
 
 }

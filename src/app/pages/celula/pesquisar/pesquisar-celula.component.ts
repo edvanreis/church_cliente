@@ -9,6 +9,7 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { ExcelService } from '../../../service/excel.service';
 import { DialogAtivarInativarComponent } from '../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
 import { ElementData } from '@angular/core/src/view';
+import { AlertType } from '../../../model/alert-type';
 
 
 const ELEMENT_DATA = [
@@ -33,6 +34,8 @@ export class PesquisarCelulaComponent implements OnInit {
   public celulas = new Array();
   public comboStatus = ELEMENT_DATA;
   public statusSelecionado = 'A';
+
+  public loading: boolean = false;
 
   constructor(private _router: Router,
     private _celulaService: CelulaService,
@@ -83,16 +86,19 @@ export class PesquisarCelulaComponent implements OnInit {
   }
 
   getList() {
+    this.loading = true;
     this._celulaService.getList().pipe(take(1)).subscribe(item => {
       // console.log(item)
       this.celulas = item;
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;
-      console.log(this.dados)
+      this.loading = false;
     }, error => {
-      console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
+      this.loading = false;
+      this.celulas = [];
+      this.dados = new MatTableDataSource<Element>(this.celulas);
+      this._notifierService.notify(AlertType.Error, error.error.message);
 
     });
   }

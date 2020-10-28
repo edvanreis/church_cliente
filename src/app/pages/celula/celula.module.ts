@@ -9,7 +9,7 @@ import { InterceptorService } from '../../service/interceptor.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule, MatAutocompleteSelectedEvent, MatTooltipModule, MatSlideToggleModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatDatepickerModule, MatSelectModule, MatOptionModule, MatAutocompleteModule, MatTableModule, MatPaginatorModule, MatDividerModule, MatAutocompleteSelectedEvent, MatTooltipModule, MatSlideToggleModule, MatProgressSpinnerModule } from '@angular/material';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
 import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
 import { TextMaskModule } from 'angular2-text-mask';
@@ -62,6 +62,7 @@ const routes: Routes = [
     DialogTransferirPessoaModule,
     IgrejasComponenteModule,
     DiretivesModule,
+    MatProgressSpinnerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

@@ -28,6 +28,10 @@
           </mat-select>
         </mat-form-field>
        </div>
+       <div [hidden]="!loading" align="center" style="width: 100%">
+        <h4>Buscando...</h4>
+        <mat-spinner [diameter]="40"></mat-spinner>
+      </div>
        <div>
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">

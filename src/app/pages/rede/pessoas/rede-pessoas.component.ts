@@ -183,4 +183,10 @@ export class RedePessoasComponent implements OnInit {
     });
   }
 
+
+  applyFilter(value) {
+    this.dados.filter = value.trim().toLowerCase();
+  }
+
+
 }

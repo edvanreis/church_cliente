@@ -33,6 +33,8 @@ export class PesquisarRedeComponent implements OnInit {
   public statusSelecionado = 'A';
   public comboStatus = ELEMENT_DATA;
 
+  public loading: boolean = false;
+
 
   constructor(private _router: Router,
     private _redeService: RedeService,
@@ -91,12 +93,17 @@ export class PesquisarRedeComponent implements OnInit {
     }
 
     getList() {
+      this.loading = true;
       this._redeService.getList().pipe(take(1)).subscribe(item => {
         this.redes = item;
         this.dados = new MatTableDataSource(item);
         this.dados.sort = this.sort;
         this.dados.paginator = this.paginator;
+        this.loading = false;
       }, error => {
+        this.loading = false;
+        this.redes = [];
+        this.dados = new MatTableDataSource<Element>(this.redes);
         this._notifierService.notify(AlertType.Error, error.errors.message);
 
       });
