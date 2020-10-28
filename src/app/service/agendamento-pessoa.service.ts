@@ -45,8 +45,8 @@ export class AgendamentoPessoaService {
       .pipe(map((response: any) => response))
   }
 
-  removerAgendamentoPessoa(cpf) {
-    return this.http.post(this._url+"removerAgendamentoPessoa",cpf)
+  remove(obj) {
+    return this.http.post(this._url+"removerAgendamentoPessoa",obj)
       .pipe(map((response: any) => response))
   }
 }

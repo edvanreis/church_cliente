@@ -1,11 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
 import { take } from 'rxjs/operators';
 import { HelperChurch } from '../../../helper/helper.church';
 import { AlertType } from '../../../model/alert-type';
 import { AgendamentoPessoaService } from '../../../service/agendamento-pessoa.service';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { DialogAgendamentoConfirmComponent } from '../dialog-agendamento-confirm/dialog-agendamento-confirm.component';
 
 @Component({
   selector: 'app-pesquisar-agendamento',
@@ -28,10 +30,21 @@ export class PesquisarAgendamentoComponent implements OnInit {
 
   constructor(private _service: AgendamentoPessoaService,
     private _notifierService: NotifierService,
-    private _router: Router) { }
+    private _router: Router,
+    private _dialog: MatDialog,
+    private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
     this.columns();
+    this.getEmiter();
+  }
+
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'dialog-agendamento-confirm') {
+        this.pesquisar();
+      }
+    });
   }
 
   columns() {
@@ -75,6 +88,16 @@ export class PesquisarAgendamentoComponent implements OnInit {
 
   applyFilter(value) {
     this.dados.filter = value.trim().toLowerCase();
+  }
+
+  dialogRemover(id){
+    const dialogRef = this._dialog.open(DialogAgendamentoConfirmComponent, {
+      width: '600px',
+      data: {
+        id:id,
+        cpf:this.cpf
+      }
+    });
   }
 
 }

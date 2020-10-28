@@ -33,7 +33,7 @@
               <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
                 {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}
               </span>
-              <span matTooltip="Excluir" *ngIf="column.id=='id'" class="default-botoes" (click)="dialogRemover(element.id)">
+              <span matTooltip="Remover" *ngIf="column.id=='id'" class="default-botoes" (click)="dialogRemover(element.id)">
                 <i class="material-icons">delete</i>
               </span>
             </mat-cell>

@@ -9,6 +9,8 @@ import { PipeModule } from '../../pipes/pipe.module';
 import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
 import { RouterModule, Routes } from '@angular/router';
 import { PesquisarAgendamentoComponent } from './pesquisar/pesquisar-agendamento.component';
+import { DialogAgendamentoConfirmComponent } from './dialog-agendamento-confirm/dialog-agendamento-confirm.component';
+import { DialogAgendamentoConfirmModule } from './dialog-agendamento-confirm/dialog-agendamento-confirm.module';
 
 
 
@@ -39,11 +41,12 @@ const routes: Routes = [
     MatPaginatorModule,
     MatTooltipModule,
     MatProgressSpinnerModule,
+    DialogAgendamentoConfirmModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
     CadastrarAgendamentoPessoaComponent,
-    PesquisarAgendamentoComponent,
+    PesquisarAgendamentoComponent
   ]
 })
 export class AgendamentoModule { }

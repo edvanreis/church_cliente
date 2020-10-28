@@ -139,6 +139,7 @@ export class CelulaPessoasComponent implements OnInit {
   }
 
   getMembros(id) {
+    this.loading = true;
     this._service.getMembros(id).pipe(take(1)).subscribe(item => {
       console.log(item);
       this.pessoas = item;
