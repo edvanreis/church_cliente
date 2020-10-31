@@ -2,3 +2,19 @@ mat-card {
   padding: 5px;
   margin: 5px;
 }
+
+.max-width-card {
+  max-width: 800px;
+}
+
+// ::ng-deep .mat-card-header {
+//   padding: 5px !important;
+// }
+
+// ::ng-deep .mat-card {
+//   padding: 0 !important;
+// }
+
+// ::ng-deep .mat-card-content {
+//   padding: 5px !important;
+// }

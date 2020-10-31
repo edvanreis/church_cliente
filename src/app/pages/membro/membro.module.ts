@@ -1,18 +1,34 @@
+import { VisitanteService } from './../../service/visitante.service';
+import { MultSelectEtapaVisaoModule } from './../componentes/mult-select-etapa-visao/mult-select-etapa-visao.module';
+import { PipeModule } from './../../pipes/pipe.module';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule, MatCardModule, MatCheckboxModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule } from '@angular/material';
+import { MatButtonModule, MatCardModule, MatDatepickerModule, MatDividerModule, MatExpansionModule, MatFormFieldModule, MatIconModule, MatInputModule, MatNativeDateModule, MatPaginatorModule, MatProgressSpinnerModule, MatSlideToggleModule, MatSortModule, MatTableModule, MatToolbarModule, MatTooltipModule, MatOptionModule, MatSelectModule, MatAutocompleteModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
-import { TextMaskModule } from 'angular2-text-mask';
-import { PipeModule } from '../../pipe/pipe/pipe.module';
 import { EmitirEventoService } from '../../service/emitir-evento.service';
+import { EtapaVisaoService } from '../../service/etapa-visao.service';
+import { ExcelService } from '../../service/excel.service';
 import { InterceptorService } from '../../service/interceptor.service';
-import { MembroService } from '../../service/membro.service';
-import { PessoaModule } from '../pessoa/pessoa.module';
+import { CargosModule } from '../componentes/cargos/cargos.module';
+import { ContatosModule } from '../componentes/contatos/contatos.module';
+import { EnderecoModule } from '../componentes/endereco/endereco.module';
+import { PessoaModule } from '../componentes/pessoa/pessoa.module';
+import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
+import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
+import { DialogEnviarCartaModule } from '../dialog/dialog-enviar-carta/dialog-enviar-carta.module';
+import { DialogHistoricoPessoaModule } from '../dialog/dialog-historico-pessoa/dialog-historico-pessoa.module';
 import { CadastrarMembroComponent } from './cadastrar/cadastrar-membro.component';
-import { PesquisarMembroComponent } from './pesquisar/pesquisar-membro/pesquisar-membro.component';
+import { PesquisarMembroComponent } from './pesquisar/pesquisar/pesquisar-membro.component';
+import { DialogAprovarReprovarAgendamentoModule } from '../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
+import { DialogAprovarReprovarMembroModule } from '../dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.module';
+import { DialogConfirmExcluirPessoaModule } from '../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.module';
+import { TextMaskModule } from 'angular2-text-mask';
+import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
+
+
 
 
 
@@ -34,17 +50,34 @@ const routes: Routes = [
     MatDividerModule,
     MatIconModule,
     MatButtonModule,
-    TextMaskModule,
-    MatOptionModule,
-    MatSelectModule,
-    MatCheckboxModule,
     MatSortModule,
     MatTableModule,
     MatPaginatorModule,
     MatExpansionModule,
     HttpClientModule,
     PessoaModule,
+    MatProgressSpinnerModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    EnderecoModule,
+    MatSlideToggleModule,
+    ContatosModule,
+    MultSelectEtapaVisaoModule,
+    DialogEnviarCartaModule,
+    DialogHistoricoPessoaModule,
+    MatTooltipModule,
+    CargosModule,
+    DialogAtivarInativarModule,
+    DialogConfirmPessoaModule,
+    DialogAprovarReprovarAgendamentoModule,
+    DialogAprovarReprovarMembroModule,
+    DialogConfirmExcluirPessoaModule,
+    TextMaskModule,
     PipeModule,
+    MatOptionModule,
+    MatSelectModule,
+    IgrejasComponenteModule,
+    MatAutocompleteModule,
     RouterModule.forChild(routes)
   ],
   exports: [
@@ -55,8 +88,10 @@ const routes: Routes = [
     PesquisarMembroComponent
   ],
   providers: [
-    MembroService,
     EmitirEventoService,
+    ExcelService,
+    EtapaVisaoService,
+    VisitanteService,
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
   ]
 })

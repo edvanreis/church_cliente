@@ -1,0 +1,37 @@
+<div mat-dialog-content>
+  <h4 mat-dialog-title>
+    <mat-toolbar class="cdk-header">
+      <i class="material-icons">settings</i>
+      <h1 class="mat-headline center-align">Status</h1>
+    </mat-toolbar>
+  </h4>
+  <div class="cdk-container">
+    <form form [formGroup]="form">  
+      <div>
+        <mat-form-field  class="full-width-field">
+          <mat-label>Status</mat-label>
+          <mat-select formControlName="status" id="status" (selectionChange)="changeStatus($event)">
+            <mat-option *ngFor="let item of comboStatus" [value]="item.codigo" >
+              {{item.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div>
+        <span style="color:gray" >{{mensagem}}</span>
+      </div>
+      <div>
+      <mat-form-field class="full-width-field">
+        <textarea matInput placeholder="Observação" formControlName="observacao" maxlength="100"></textarea>
+      </mat-form-field>
+    </div>
+  </form> 
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-raised-button color="primary" type="submit" (click)="confirmar()">
+      <i class="material-icons">done</i>Confirmar</button>
+    <div fxFlex></div>
+    <button mat-raised-button color="warn" type="submit" (click)="close()">
+      <i class="material-icons">close</i>Fechar</button>
+  </div>  
+</div>

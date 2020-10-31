@@ -1,229 +1,174 @@
 <div fxLayout="column" class="components-container-gt-xs" [ngClass.xs]="'components-container-xs'" fxLayoutGap="20px">
-  <div fxFlex class="input-component-holder button-component-holder mat-elevation-z4">
-    <mat-toolbar class="input-header">
+  <div fxFlex class="cdk-component-holder button-component-holder mat-elevation-z4">
+    <mat-toolbar class="cdk-header">
       <i class="material-icons">person_add</i>
       <h1 class="mat-headline center-align">Cadastrar</h1>
     </mat-toolbar>
-    <div class="input-container">
-      <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50">
-        <!-- <form form [formGroup]="form"> -->
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-          <i class="material-icons">face</i>
-          <h1 class="mat-subheading-2 center-align">Dados Pessoais</h1>
-        </div>
-        <!-- <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nome" formControlName="nome" id="nome">
-              <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome">
-              <mat-error *ngIf="!form.controls.sobrenome.valid">Campo Obrigatório</mat-error>
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg">
-              <mat-error *ngIf="!form.controls.rg.valid">Campo Obrigatório</mat-error>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf">
-              <mat-error *ngIf="!form.controls.cpf.valid">Campo Obrigatório</mat-error>
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field>
-              <mat-label>Sexo</mat-label>
-              <mat-select formControlName="sexo" id="sexo">
-                <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
-                  {{item.value}}
-                </mat-option>
-              </mat-select>
-              <mat-error *ngIf="!form.controls.sexo.valid">Campo Obrigatório</mat-error>
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Estado Civil</mat-label>
-              <mat-select formControlName="estadoCivil" id="estadoCivil">
-                <mat-option *ngFor="let item of comboEstadoCivil | keyValue" [value]="item.key">
-                  {{item.value}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Data Nascimento" [textMask]="{mask: maskDate}"
-                formControlName="dataNascimento" id="dataNascimento">
-                <mat-error *ngIf="!form.controls.dataNascimento.valid">Campo Obrigatório</mat-error>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Célula" formControlName="celula">
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade">
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Profissão" formControlName="profissao" id="profissao">
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-checkbox formControlName="batizado">Batizado</mat-checkbox>
-            <mat-checkbox formControlName="dizimista">Dizimista</mat-checkbox>
-          </div>
-          <br />
-          <br />
-          <mat-divider></mat-divider>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <i class="material-icons">store_mall_directory</i>
-            <h1 class="mat-subheading-2 center-align">Endereço</h1>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="CEP" formControlName="cep" id="cep" (blur)="consultarCEP($event)" [textMask]="{mask: maskCEP}">
-              <mat-error *ngIf="!form.controls.cep.valid">Campo Obrigatório</mat-error>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Número" formControlName="numero" id="numero">
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Complemento" formControlName="complemento" id="complemento">
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Bairro" formControlName="bairro" id="bairro">
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Logradouro" formControlName="logradouro" id="logradouro">
-            </mat-form-field>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Cidade" formControlName="cidade" id="cidade">
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Estado</mat-label>
-              <mat-select formControlName="uf" id="uf">
-                <mat-option *ngFor="let item of comboEstados | keyValue" [value]="item.key">
-                  {{item.value}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div> -->
-        <app-dados-pessoais></app-dados-pessoais>
-        <br />
-        <br />
-        <mat-divider></mat-divider>
-        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-          <i class="material-icons">store_mall_directory</i>
-          <h1 class="mat-subheading-2 center-align">Endereço</h1>
-        </div>
-        <app-endereco></app-endereco>
-        <form form [formGroup]="form"> 
-          <!-- <br /> 
-          <br />
-          <mat-divider></mat-divider>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <i class="material-icons">headset_mic</i>
-            <h1 class="mat-subheading-2 center-align">Contatos</h1>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field>
-              <mat-label>Selecione...</mat-label>
-              <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)">
-                <mat-option *ngFor="let item of comboTipoContatos " [value]="item.tipo">
-                  {{item.descTipoContato}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Contato" formControlName="contato" id="contato" *ngIf="isContato">
-              <input matInput placeholder="Contato" formControlName="contatoTelefone" [textMask]="{mask: maskTelefone}"
-                id="contatoTelefone" *ngIf="isTelefone">
-              <input matInput placeholder="Contato" formControlName="contatoCelular" [textMask]="{mask: maskCelular}"
-                id="contatoCelular" *ngIf="isCelular">
-              <input matInput placeholder="Contato" formControlName="email" id="email" *ngIf="isEmail">
-            </mat-form-field>
-            <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
-          </div>
-          <button mat-raised-button color="primary" type="submit" (click)="adicionarContato()">
-            <i class="material-icons">add</i>adicionar</button>
-          <br /><br />
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0">
-            <div class="table-responsive">
-              <table>
-                <thead class="text-primary">
-                  <th>Tipo</th>
-                  <th>Descrição</th>
-                  <th></th>
-                  <th>Remover</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of contatosGrid">
-                    <td>{{ item.tipo}}</td>
-                    <td>{{ item.contato }}</td>
-                    <td><img src="./assets/whatsapp.png" width="20px" *ngIf="item.whatsapp && item.celular">
-                      <img src="./assets/images/facebook_circle.png" width="20px" *ngIf="item.facebook">
-                      <span style="color: #1d68a5" *ngIf="item.email"><i class="material-icons">mail</i></span>
-                      <span style="color: #1d68a5" *ngIf="item.telefone"><i class="material-icons">call</i></span></td>
-                    <td><span style="color: #1d68a5;cursor: pointer" (click)="removerContato(i)"><i
-                          class="material-icons">delete</i></span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <br /><br />
-          <mat-divider></mat-divider>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
-            <i class="material-icons">school</i>
-            <h1 class="mat-subheading-2 center-align">Escolaridade</h1>
-          </div>
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-            <mat-form-field>
-              <mat-label>Selecione...</mat-label>
-              <mat-select formControlName="escolaridade" id="escolaridade" (selectionChange)="tipo($event)">
-                <mat-option *ngFor="let item of comboEscolaridade" [value]="item.tipo">
-                  {{item.descricao}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-            <mat-form-field class="example-full-width">
-              <input matInput placeholder="Curso" formControlName="curso" id="curso">
-            </mat-form-field>
-          </div>
-          <button mat-raised-button color="primary" type="submit" (click)="adicionarEscolaridade()">
-            <i class="material-icons">add</i>adicionar</button>
-          <br /><br />
-          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="escolaridades.length > 0">
-            <div class="table-responsive">
-              <table>
-                <thead class="text-primary">
-                  <th>Escolaridade</th>
-                  <th>Curso</th>
-                  <th>Remover</th>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let item of escolaridadesGrid">
-                    <td>{{ item.tipo}}</td>
-                    <td>{{ item.curso }}</td>
-                    <td><span style="color: #1d68a5;cursor: pointer" (click)="removerEscolaridade(i)"><i
-                          class="material-icons">delete</i></span></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <br /><br />
-          <mat-divider></mat-divider> -->
-          <button mat-raised-button color="primary" type="submit" (click)="salvar()">
-            <i class="material-icons">save</i>Salvar</button>
-        </form>
+    <div class="cdk-container">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">face</i>
+        <h1 class="mat-subheading-2 center-align">Dados Pessoais</h1>
       </div>
+      <form form [formGroup]="form">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome">
+            <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <input matInput class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome">
+            <mat-error *ngIf="!form.controls.sobrenome.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg">
+            <mat-error *ngIf="!form.controls.rg.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+          <mat-form-field class="full-width-field">
+            <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf">
+            <mat-error *ngIf="!form.controls.cpf.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <input matInput [textMask]="{mask: maskDate}" placeholder="Data nascimento"
+              formControlName="dataNascimento">
+            <mat-error *ngIf="!form.controls.dataNascimento.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+          <mat-form-field class="full-width-field">
+            <mat-label>Sexo</mat-label>
+            <mat-select formControlName="sexo" id="sexo">
+              <mat-option *ngFor="let item of comboSexo | keyValue" [value]="item.key">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="!form.controls.sexo.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <mat-label>Estado Civil</mat-label>
+            <mat-select formControlName="estadoCivil" id="estadoCivil">
+              <mat-option *ngFor="let item of comboEstadoCivil | keyValue" [value]="item.key">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="!form.controls.estadoCivil.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+          <mat-form-field class="full-width-field">
+            <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade"
+              id="nacionalidade">
+            <mat-error *ngIf="!form.controls.estadoCivil.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <input matInput placeholder="Profissão" class="input-upper" formControlName="profissao" id="profissao">
+            <mat-error *ngIf="!form.controls.estadoCivil.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <app-igrejas></app-igrejas>
+        <div>
+          <mat-form-field class="full-width-field">
+            <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
+              [matAutocomplete]="a" [(ngModel)]="redeValue">
+            <mat-autocomplete #a="matAutocomplete">
+              <mat-option *ngFor="let option of filteredRede | async" [value]="option.nome"
+                (onSelectionChange)="onSelectionRedeChange($event,option)">
+                {{option.nome}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div *ngIf="visaoCelular">
+          <mat-form-field class="full-width-field">
+            <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
+              [matAutocomplete]="auto" [(ngModel)]="celulaValue">
+            <mat-autocomplete #auto="matAutocomplete">
+              <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
+                (onSelectionChange)="onSelectionCelulaChange($event,option)">
+                {{option.nome}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <label style="color:#1d68a5">Batizado?</label>
+          <mat-slide-toggle formControlName="batizado" id="batizado" #batizado>
+            {{batizado.checked | boolean : ['Sim', 'Não']}}
+          </mat-slide-toggle>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <label style="color:#1d68a5">Dizimista?</label>
+          <mat-slide-toggle formControlName="dizimista" id="dizimista" #dizimista>
+            {{dizimista.checked | boolean : ['Sim', 'Não']}}
+          </mat-slide-toggle>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <label style="color:#1d68a5">Membro da Célula?</label>
+          <mat-slide-toggle formControlName="membroDaCelula" id="membroDaCelula" #membroDaCelula>
+            {{membroDaCelula.checked | boolean : ['Sim', 'Não']}}
+          </mat-slide-toggle>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <label style="color:#1d68a5">Possui Carta de Recomendação?</label>
+          <mat-slide-toggle formControlName="cartaRecomendacao" id="cartaRecomendacao" #cartaRecomendacao>
+            {{cartaRecomendacao.checked | boolean : ['Sim', 'Não']}}
+          </mat-slide-toggle>
+        </div>
+      </form>
+      <br />
+      <br />
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">store_mall_directory</i>
+        <h1 class="mat-subheading-2 center-align">Endereço</h1>
+      </div>
+      <app-endereco [pessoa]="true" [associadoId]="id"></app-endereco>
+      <br />
+      <br />
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">headset_mic</i>
+        <h1 class="mat-subheading-2 center-align">Contatos</h1>
+      </div>
+      <app-contatos [associadoId]="id" [principal]="true" [membroId]="id"></app-contatos>
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">school</i>
+        <h1 class="mat-subheading-2 center-align">Escolaridade</h1>
+      </div>
+      <app-escolaridade [associadoId]="id"></app-escolaridade>
+      <br />
+      <br />
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">trending_up</i>
+        <h1 class="mat-subheading-2 center-align">Etapa Visão</h1>
+      </div>
+      <app-mult-select-etapa-visao></app-mult-select-etapa-visao>
+      <br />
+      <br />
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">nature_people</i>
+        <h1 class="mat-subheading-2 center-align">Cargos</h1>
+      </div>
+      <app-cargos [associadoId]="id"></app-cargos>
+      <br />
+      <br />
     </div>
+    <div style="padding: 0 20px;">
+      <button mat-raised-button color="primary" type="submit" (click)="salvar()">
+        <i class="material-icons">save</i>Salvar</button>
+      <div fxFlex></div>
+      <button mat-raised-button color="warn" type="submit" (click)="voltar()">
+        <i class="material-icons">reply</i>Voltar</button>
+    </div>
+    <br />
+    <br />
   </div>
 </div>

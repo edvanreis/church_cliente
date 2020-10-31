@@ -1,0 +1,60 @@
+<form form [formGroup]="form">
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+    <mat-form-field class="full-width-field">
+      <mat-label>Selecione...</mat-label>
+      <mat-select formControlName="contatos" id="contatos" (selectionChange)="tipo($event)" [(ngModel)]="contatoValue">
+        <mat-option *ngFor="let item of comboTipoContatos" [value]="item">
+          {{item.nome}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="Contato" formControlName="contato" id="contato" *ngIf="isContato">
+      <input matInput placeholder="Contato" formControlName="contatoTelefone" [textMask]="{mask: maskTelefone}"
+        id="contatoTelefone" *ngIf="isTelefone">
+      <input matInput placeholder="Contato" formControlName="contatoCelular" [textMask]="{mask: maskCelular}"
+        id="contatoCelular" *ngIf="isCelular">
+      <input  matInput placeholder="Contato" formControlName="email" id="email" *ngIf="isEmail">
+    </mat-form-field>
+    <mat-checkbox formControlName="whatsapp" *ngIf="isCelular && !isContato">Whatsapp</mat-checkbox>
+    <mat-checkbox formControlName="emailPrincipal" *ngIf="isEmail && principal">Email principal</mat-checkbox>
+  </div>
+  <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
+    <i class="material-icons">add</i>adicionar</button>
+  <br />
+  <br />
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="contatos.length > 0" style="overflow: auto; height: 200px;">
+    <div class="table-responsive">
+      <table>
+        <thead class="text-primary">
+          <th></th>
+          <th>Tipo</th>
+          <th>Descrição</th>
+          <th></th>
+          <th *ngIf="principal">Email principal</th>
+          <th>Ação</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let c of contatos;let i = index">
+            <td>{{ i+1}}</td>
+            <td matTooltip="{{c.tipo.nome}}">{{ c.tipo.nome}}</td>
+            <td  matTooltip="{{c.descricao}}">
+              {{(c.descricao.length > 7) ? ((c.descricao).slice(0, 7) + '...') : c.descricao}}
+            </td>
+
+            <td><img src="./assets/whatsapp.png" width="20px" *ngIf="c.whatsapp">
+              <img src="./assets/images/facebook_circle.png" width="20px" *ngIf="c.tipo.nome =='FACEBOOK'">
+              <span style="color: #1d68a5" *ngIf="c.tipo.nome=='E-MAIL'"><i class="material-icons">mail</i></span>
+              <span style="color: #1d68a5" *ngIf="c.tipo.nome =='TELEFONE' || c.tipo.nome =='TELEFONE DO TRABALHO'"><i
+                  class="material-icons">call</i></span></td>
+            <td *ngIf="principal"><span style="color:green" *ngIf="c.isLoginStr==='true'"><i class="material-icons">checked</i></span></td>
+            <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogAtualizar(c)" title="Atualizar"><i
+                  class="material-icons">create</i></span>
+            <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,c)" title="Remover"><i
+                  class="material-icons">delete</i></span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</form>

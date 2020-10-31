@@ -1,10 +1,18 @@
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { DashboardCrmComponent } from './dashboard-crm.component';
+import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule, MatInputModule, MatPaginatorModule, MatSortModule, MatTableModule, MatTooltipModule, MatToolbarModule, MatAutocompleteModule } from '@angular/material';
 import { MatCardModule } from '@angular/material/card';
+import { RouterModule, Routes } from '@angular/router';
 import { DashboardWidgetModule } from '../dashboard-widget/dashboard-widget.module';
+import { AgendamentoService } from '../service/agendamento.service';
+import { DashboardCrmComponent } from './dashboard-crm.component';
+import { DialogAprovarReprovarAgendamentoModule } from '../pages/dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
+import { DialogAprovarReprovarMembroModule } from '../pages/dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.module';
+import { DiretivesModule } from '../diretives/diretives.module';
+import { IgrejasComponenteModule } from '../pages/componentes/igrejas/igreja-compenente.module';
+
 
 export const appRoutes: Routes = [
     { path: '', component: DashboardCrmComponent },
@@ -16,9 +24,28 @@ export const appRoutes: Routes = [
     RouterModule.forChild(appRoutes),
     FlexLayoutModule,
     MatCardModule,
-    DashboardWidgetModule
+    DashboardWidgetModule,
+    MatTableModule,
+    MatPaginatorModule,
+    MatSortModule,
+    MatCardModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    DialogAprovarReprovarAgendamentoModule,
+    DialogAprovarReprovarMembroModule,
+    MatTooltipModule,
+    DiretivesModule,
+    IgrejasComponenteModule,
+    MatToolbarModule,
+    MatAutocompleteModule
   ],
-  declarations: [DashboardCrmComponent],
-  exports: [ ]
+  declarations: [
+    DashboardCrmComponent,
+    // HasPermissionDirective
+  ],
+   providers:[
+     AgendamentoService
+   ]
 })
 export class DashboardCrmModule { }

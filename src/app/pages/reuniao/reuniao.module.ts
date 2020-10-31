@@ -1,0 +1,67 @@
+import { IgrejasComponenteModule } from './../componentes/igrejas/igreja-compenente.module';
+import { CommonModule } from '@angular/common';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatAutocompleteModule, MatButtonModule, MatDatepickerModule, MatDividerModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSlideToggleModule, MatTableModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+import { RouterModule, Routes } from '@angular/router';
+import { TextMaskModule } from 'angular2-text-mask';
+import { PipeModule } from '../../pipes/pipe.module';
+import { InterceptorService } from '../../service/interceptor.service';
+import { CelulaComponentModule } from '../componentes/celula/celula-component.module';
+import { LicaoComponenteModule } from '../componentes/licao/licao-componente.module';
+import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
+import { DialogConfirmPessoaReuniaoModule } from '../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.module';
+import { DialogConfirmReuniaoModule } from '../dialog/dialog-confirm-reuniao/dialog-confirm-reuniao.module';
+import { EnderecoModule } from '../componentes/endereco/endereco.module';
+import { PesquisarReuniaoCelulaComponent } from './pesquisar-reuniao-celula/pesquisar-reuniao-celula.component';
+import { CadastrarReuniaoCelulaComponent } from './cadastrar-reuniao-celula/cadastrar-reuniao-celula.component';
+
+
+
+
+
+const routes: Routes = [
+  { path: 'pesquisar-reuniao-celula', component:  PesquisarReuniaoCelulaComponent , data: { animation: 'buttons' }},
+  { path: 'cadastrar-reuniao-celula', component:  CadastrarReuniaoCelulaComponent , data: { animation: 'buttons' }},
+];
+@NgModule({
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    FlexLayoutModule,
+    MatInputModule,
+    MatButtonModule,
+    MatToolbarModule,
+    MatDatepickerModule,
+    MatSelectModule,
+    MatOptionModule,
+    MatAutocompleteModule,
+    MatTableModule,
+    MatPaginatorModule,
+    LicaoComponenteModule,
+    CelulaComponentModule,
+    TextMaskModule,
+    MembroComponenteModule,
+    MatDividerModule,
+    MatSlideToggleModule,
+    MatProgressSpinnerModule,
+    DialogConfirmReuniaoModule,
+    PipeModule,
+    DialogConfirmPessoaReuniaoModule,
+    EnderecoModule,
+    MatTooltipModule,
+    IgrejasComponenteModule,
+    RouterModule.forChild(routes)
+  ],
+  declarations: [
+    PesquisarReuniaoCelulaComponent,
+    CadastrarReuniaoCelulaComponent
+  ],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true }
+  ]
+})
+export class ReuniaoModule { }

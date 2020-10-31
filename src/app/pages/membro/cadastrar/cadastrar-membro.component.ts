@@ -1,11 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
-import { MembroService } from '../../../service/membro.service';
-import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { Membro } from '../../../model/membro';
+import { Observable } from 'rxjs';
+import { map, startWith, take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
-import { Contatos } from '../../../model/contatos';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { HelperChurch } from './../../../helper/helper.church';
+import { CelulaService } from './../../../service/celula.service';
+import { MembroService } from './../../../service/membro.service';
+import { RedeService } from './../../../service/rede.service';
+import { VisitanteService } from './../../../service/visitante.service';
 
 
 @Component({
@@ -15,326 +21,485 @@ import { Contatos } from '../../../model/contatos';
 })
 export class CadastrarMembroComponent implements OnInit {
 
-
-  public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
-  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/]
-  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/]
-  public maskTelefone = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/,]
-  public maskCelular = ['(', /\d/, /\d/, ')', /\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/]
-  public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
-
-  constructor(private _membroService: MembroService, private _notifierService: NotifierService, private _emitirEventoService: EmitirEventoService) { }
-
   public form: FormGroup;
-  public contatosGrid = [];
-  public contatos = [];
-  public escolaridades = [];
-  public escolaridadesGrid = [];
-  public isContato: boolean = true;
-  public isCelular: boolean = false;
-  public isTelefone: boolean = false;
-  public isFacebook: boolean = false;
-  public isEmail: boolean = false;
-  public comboEstados = [];
+  public membro = {} as any;
+  public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
+  public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
+  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/]
+  public id: any;
   public comboSexo = [];
   public comboEstadoCivil = [];
-  public comboTipoContatos = [];
-  public comboEscolaridade = []
-  public membro: Membro;
-  public dadosPessoais: any;
 
 
+  public filteredRede: Observable<string[]>;
+  public myControlRede = new FormControl();
+  public comboRede = [];
+  public redeSelecionada: any;
+  public redeValue: any;
+
+  public filteredCelula: Observable<string[]>;
+  public myControlCelula = new FormControl();
+  public comboCelulas = [];
+  public celulaSelecionada: any;
+  public visaoCelular: boolean;
+  public celulaValue: any;
+
+
+
+  public enderecos: any;
+  public escolaridades: any = [];
+  public contatos: any = [];
+  public etapas: any = [];
+  public cargos: any = [];
+  public celula: any;
+  public igrejaSelecionada: any;
+
+
+  public pesquisa: boolean = false;
+  public importacao: boolean = false;
+  public isCelula = true;
+
+  public visitanteId: any;
+
+
+  constructor(private _emitirEventoService: EmitirEventoService,
+    private _service: MembroService,
+    private _notifierService: NotifierService,
+    private _router: Router,
+    private _avRoute: ActivatedRoute,
+    private _redeService: RedeService,
+    private _celulaService: CelulaService,
+    private _visitanteService: VisitanteService) { }
 
   ngOnInit() {
-    // this.getComboSexo();
-    // this.getComboEstadoCivil();
-    this.getComboContatos();
-    this.getComboEscolaridade();
-    this._buildForm();
-    // this.getComboUF();
+    this.getParams();
     this.getEmiter();
+    this._buildForm();
+    this.getComboSexo();
+    this.getComboEstadoCivil();
   }
 
-
-  getEmiter(): void {
-    this._emitirEventoService.mensagem.subscribe(item => {
-      if (item.type == 'dadosPessoais') {
-        this.dadosPessoais = item.data;
-      }
-
+  private _buildForm(): void {
+    this.form = new FormGroup({
+      'nome': new FormControl('', Validators.required),
+      'sobrenome': new FormControl('', Validators.required),
+      'dataNascimento': new FormControl('', Validators.required),
+      'rg': new FormControl('', Validators.required),
+      'cpf': new FormControl('', Validators.required),
+      'sexo': new FormControl('', Validators.required),
+      'estadoCivil': new FormControl('', Validators.required),
+      'nacionalidade': new FormControl('', Validators.required),
+      'profissao': new FormControl(''),
+      'batizado': new FormControl(false),
+      'dizimista': new FormControl(false),
+      'observacao': new FormControl(''),
+      'cartaRecomendacao': new FormControl(false),
+      'status': new FormControl(''),
+      'membroDaCelula': new FormControl(false),
     });
   }
 
   getComboSexo() {
-    this._membroService.carregarSexo().subscribe(item => {
+    this._service.carregarSexo().subscribe(item => {
       this.comboSexo = item;
       // console.log(item);
     });
   }
 
   getComboEstadoCivil() {
-    this._membroService.carregarEstadoCivil().subscribe(item => {
+    this._service.carregarEstadoCivil().subscribe(item => {
       this.comboEstadoCivil = item;
       // console.log(item);
     });
   }
 
-  getComboContatos() {
-    this._membroService.carregarTiposContatos().subscribe(item => {
-      this.comboTipoContatos = item;
-      // console.log(item);
-    });
-  }
-
-  getComboEscolaridade() {
-    this._membroService.carregarEscolaridade().subscribe(item => {
-      this.comboEscolaridade = item;
-      // console.log(item);
-    });
-  }
-  getComboUF() {
-    this._membroService.carregarEstados().subscribe(item => {
-      this.comboEstados = item;
-      // console.log(item);
-    });
-  }
-
-  private _buildForm(): void {
-    this.form = new FormGroup({
-      // 'nome': new FormControl('', Validators.required),
-      // 'sobrenome': new FormControl('', Validators.required),
-      // 'dataNascimento': new FormControl('', Validators.required),
-      'contatos': new FormControl(''),
-      'contato': new FormControl(''),
-      'contatoTelefone': new FormControl(''),
-      'contatoCelular': new FormControl(''),
-      'whatsapp': new FormControl(''),
-      'escolaridade': new FormControl(''),
-      'curso': new FormControl(''),
-      // 'rg': new FormControl('', Validators.required),
-      // 'cpf': new FormControl('', Validators.required),
-      'sexo': new FormControl('', Validators.required),
-      'estadoCivil': new FormControl(''),
-      // 'nacionalidade': new FormControl('', Validators.required),
-      // 'celula': new FormControl(''),
-      // 'profissao': new FormControl(''),
-      'email': new FormControl(''),
-      'cep': new FormControl('', Validators.required),
-      'numero': new FormControl(''),
-      'bairro': new FormControl({ value: '', disabled: true }),
-      'complemento': new FormControl(''),
-      'logradouro': new FormControl({ value: '', disabled: true }),
-      'cidade': new FormControl({ value: '', disabled: true }),
-      'uf': new FormControl({ value: '', disabled: true }),
-      // 'batizado': new FormControl(''),
-      // 'dizimista': new FormControl(''),
-    });
-
-  }
-  adicionarContato() {
-    let contato: string;
-    let email: string;
-    contato = this.preecherContato();
-    email = this.form.controls['email'].value;
-    let pattern = new RegExp("[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$");
-
-    if (this.isContato && !contato) {
-      this._notifierService.notify(AlertType.Error, 'Por favor preencha o campo contato!');
-      return false;
-    }
-    if (this.isEmail && !email) {
-      this._notifierService.notify(AlertType.Error, 'Por favor preencha o campo email!');
-      return false;
-    }
-    if (this.isEmail && !pattern.test(email)) {
-      this._notifierService.notify(AlertType.Error, 'O email possui formato invalido!');
-      return false;
+  getParams() {
+    if (this._avRoute.snapshot.queryParamMap.get("id")) {
+      this.id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.getMembro(this.id);
+      this.pesquisa = true;
     }
 
-    let tipo: string;
-    let tipoSelected: string = this.form.controls['contatos'].value;
+    if (this._avRoute.snapshot.queryParamMap.get("visitanteId")) {
+      this.visitanteId = this._avRoute.snapshot.queryParamMap.get("visitanteId");
+      this.getVisitante(this.visitanteId);
+      this.pesquisa = true;
+    }
+    if (this._avRoute.snapshot.queryParamMap.get("importacao")) {
+      this.importacao = true;;
+    }
+  }
 
-    this.comboTipoContatos.forEach(item => {
-      // console.log(item);
-      if (tipoSelected == item.tipo) {
-        tipo = item.descTipoContato;
+  getMembro(id) {
+    this._service.obterMembro(id).pipe(take(1)).subscribe(item => {
+      // console.log(item)
+      this.form.controls['nome'].patchValue(item.nome);
+      this.form.controls['sobrenome'].patchValue(item.sobreNome);
+      this.form.controls['rg'].patchValue(item.rg);
+      this.form.controls['cpf'].patchValue(item.cpf);
+      this.form.controls['sexo'].patchValue(item.sexoEnum);
+      this.form.controls['estadoCivil'].patchValue(item.estadoCivilEnum);
+      this.form.controls['nacionalidade'].patchValue(item.nacionalidade);
+      this.form.controls['profissao'].patchValue(item.profissao);
+      this.form.controls['observacao'].patchValue(item.observacao);
+      this.form.controls['batizado'].patchValue(item.batizado);
+      this.form.controls['dizimista'].patchValue(item.dizimista);
+      this.form.controls['dataNascimento'].patchValue(item.dataNascimento);
+      this.form.controls['cartaRecomendacao'].patchValue(item.cartaRecomendacao);
+      this.form.controls['membroDaCelula'].patchValue(item.membroDaCelula);
+
+      if (item.celula) {
+        this.celulaValue = item.celula.nome;
+        this.celulaSelecionada = item.celula;
+      }
+      if (item.rede) {
+        this.redeValue = item.rede.nome;
+        this.redeSelecionada = item.rede;
+      }
+      if (item.escolaridades) {
+        this.emitirEscolaridades(item.escolaridades);
+      }
+      if (item.etapas) {
+        this.emitirEtapaVisao(item.etapas);
+      }
+      if (item.cargos) {
+        this.emitirCargo(item.cargos);
+      }
+      if (item.igreja) {
+        this.emitirIgreja(item.igreja);
+      }
+      if (item.enderecos) {
+        this.emitirEnderecos(item.enderecos);
+      }
+
+      if (item.contatos) {
+        this.emitirContatos(item.contatos);
+      }
+      // this.emitirCelula(item.celula);
+    }, error => {
+      // console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  getVisitante(id) {
+    this._visitanteService.migrar(id).pipe(take(1)).subscribe(item => {
+      // console.log(item)
+      this.form.controls['nome'].patchValue(item.nome);
+      this.form.controls['sobrenome'].patchValue(item.sobreNome);
+      this.form.controls['sexo'].patchValue(item.sexoEnum);
+      this.form.controls['estadoCivil'].patchValue(item.estadoCivilEnum);
+      this.form.controls['nacionalidade'].patchValue(item.nacionalidade);
+      this.form.controls['dataNascimento'].patchValue(item.dataNascimento);
+
+      if (item.celula) {
+        this.celulaValue = item.celula.nome;
+        this.celulaSelecionada = item.celula;
+      }
+      if (item.rede) {
+        this.redeValue = item.rede.nome;
+        this.redeSelecionada = item.rede;
+      }
+
+      if (item.igreja) {
+        this.emitirIgreja(item.igreja);
+      }
+      if (item.contatos) {
+        this.emitirContatos(item.contatos);
+      }
+      // this.emitirCelula(item.celula);
+    }, error => {
+      // console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+
+
+
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      // console.log(item.type);
+      if (item.type == 'endereco') {
+        this.enderecos = item.data;
+      }
+      if (item.type == 'escolaridades') {
+        this.escolaridades = item.data;
+      }
+      if (item.type == 'contatos') {
+        this.contatos = item.data;
+      }
+      if (item.type == 'igreja-comp') {
+        this.igrejaSelecionada = item.data;
+        this.visaoCelular = this.igrejaSelecionada.visaoCelular;
+        this.carregarRede(this.igrejaSelecionada.id);
+      }
+      if (item.type == 'mult-select-etapas-visao') {
+        this.etapas = item.data;
+      }
+      if (item.type == 'cargos-comp') {
+        this.cargos = item.data;
       }
     });
-
-    this.contatosGrid.push({
-      tipo: tipo,
-      contato: contato,
-      whatsapp: this.form.controls['whatsapp'].value,
-      facebook: this.isFacebook,
-      email: this.isEmail,
-      telefone: this.isTelefone,
-      celular: this.isCelular
-    });
-    // console.log(tipo);
-    let obj = new Contatos();
-    obj.tipo = tipoSelected;
-    obj.contato = contato;
-    obj.whatsapp = this.form.controls['whatsapp'].value;
-    this.contatos.push(obj);
-  }
-
-  preecherContato() {
-    let contato: string;
-    if (this.form.controls['contato'].value) {
-      contato = this.form.controls['contato'].value;
-    } else if (this.form.controls['contatoTelefone'].value) {
-      contato = this.form.controls['contatoTelefone'].value;
-    } else if (this.form.controls['contatoCelular'].value) {
-      contato = this.form.controls['contatoCelular'].value;
-    }
-    return contato;
-  }
-
-  adicionarEscolaridade() {
-    // if (!this.form.controls['curso'].value) {
-    //   HelperChurch.showNotification('Por favor preencha o campo curso!', AlertType.Success);
-    //   return false;
-    // }
-    let tipoSelected: string = this.form.controls['escolaridade'].value;
-    let tipo: string;
-    this.comboEscolaridade.forEach(item => {
-      if (tipoSelected == item.tipo) {
-        tipo = item.descricao;
-      }
-    });
-    this.escolaridades.push({
-      tipo: this.form.controls['escolaridade'].value,
-      curso: this.form.controls['curso'].value,
-    });
-    this.escolaridadesGrid.push({
-      tipo: tipo,
-      curso: this.form.controls['curso'].value,
-    });
-    // console.log(this.escolaridadesGrid);
-  }
-
-  tipo(event) {
-    // console.log(event.value);
-    if (event.value == 'CELULAR' || event.value == 'CELULAR_TRABALHO') {
-      this.isCelular = true;
-      this.isTelefone = false;
-      this.isContato = false;
-      this.isEmail = false;
-      this.isFacebook = false;
-    } else if (event.value == 'TELEFONE' || event.value == 'TELEFONE_TRABALHO') {
-      this.isTelefone = true;
-      this.isCelular = false;
-      this.isContato = false;
-      this.isEmail = false;
-      this.isFacebook = false;
-      this.form.controls['whatsapp'].patchValue(false);
-    } else if (event.value == 'FACEBOOK') {
-      this.isFacebook = true
-      this.isContato = true;
-      this.isCelular = false;
-      this.isTelefone = false;
-      this.isEmail = false
-      this.form.controls['whatsapp'].patchValue(false);
-    } else if (event.value == 'EMAIL') {
-      this.isEmail = true
-      this.isContato = false;
-      this.isFacebook = false;
-      this.isCelular = false;
-      this.isTelefone = false;
-      this.form.controls['whatsapp'].patchValue(false);
-    } else {
-      this.isCelular = false;
-      this.isTelefone = false;
-      this.isContato = true;
-    }
-  }
-
-
-  //  remove uma linha da grid
-  removerContato(index): void {
-    this.contatos.splice(index, 1);
-    this.contatosGrid.splice(index, 1)
-  }
-
-  removerEscolaridade(index) {
-    this.escolaridades.splice(index, 1);
-    this.escolaridadesGrid.splice(index, 1)
-  }
-
-  // consultarCEP(event) {
-  // console.log(event.target.value);
-  // let cep: string = event.target.value;
-  // if (cep) {
-  //   cep = cep.replace("-", "").trim();
-  //   let validarCep = /^[0-9]{8}$/;
-  //   if (validarCep.test(cep)) {
-  //     this._membroService.carregarEndereco(cep).subscribe(item => {
-  //       if (item) {
-  //         this.form.controls['logradouro'].patchValue(item.logradouro);
-  //         this.form.controls['cidade'].patchValue(item.localidade);
-  //         this.form.controls['uf'].patchValue(item.uf);
-  //         this.form.controls['bairro'].patchValue(item.bairro);
-  //       }
-  //     }, error => {
-  //       this._notifierService.notify(AlertType.Error, 'Erro ao conectar ao site dos correios');
-  //     });
-  //   }
-  // }
-  // }
-
-  fillMembros(): Membro {
-    console.log(this.dadosPessoais);
-    this.membro = new Membro();
-    this.membro.nome = this.dadosPessoais.nome;
-    this.membro.sobreNome = this.dadosPessoais.sobreNome;
-    this.membro.rg = this.dadosPessoais.rg;
-    this.membro.cpf = this.dadosPessoais.cpf;
-    this.membro.sexo = this.dadosPessoais.sexo;
-    this.membro.estadoCivil = this.dadosPessoais.estadoCivil;
-    this.membro.dataNascimento = this.dadosPessoais.dataNascimento;
-    this.membro.idCelula = this.dadosPessoais.idCelula;
-    this.membro.nacionalidade = this.dadosPessoais.nacionalidade;
-    this.membro.profissao = this.dadosPessoais.profissao;
-    this.membro.batizado = this.dadosPessoais.batizado;
-    this.membro.dizimista = this.dadosPessoais.dizimista;
-    // endereço
-    // this.membro.endereco.cep = this.form.controls['cep'].value;
-    // this.membro.endereco.numero = this.form.controls['numero'].value;
-    // this.membro.endereco.complemento = this.form.controls['complemento'].value;
-    // this.membro.endereco.bairro = this.form.controls['bairro'].value;
-    // this.membro.endereco.logradouro = this.form.controls['logradouro'].value;
-    // this.membro.endereco.uf = this.form.controls['uf'].value; 
-    // this.membro.endereco.cidade = this.form.controls['cidade'].value;
-    //contatos
-    this.membro.contatos = this.contatos;
-    this.membro.escolaridades = this.escolaridades;
-
-
-    return this.membro;
   }
 
   salvar() {
-    // if (!this.form.valid) {
-    //   this._notifierService.notify(AlertType.Success, "Preencha todos os campos obrigatórios!");
+    this.setObj();
+    // let mensagem = this.validFields();
+    // if (mensagem) {
+    //   this._notifierService.notify(AlertType.Error, mensagem);
     //   return false;
     // }
-    this.membro = this.fillMembros();
-    console.log(this.membro);
-    this._membroService.save(this.membro).subscribe(item => {
-      this.clear();
-      this._notifierService.notify(AlertType.Success, "Salvo com sucesso!");
-    }, error => {
-      // console.log(error);
-      this._notifierService.notify(AlertType.Error, error.message);
+    if (this.membro.id) {
+      this.updade();
+    } else if (this.visitanteId) {
+      this.importar();
+    } else {
+      this.save();
+    }
+  }
 
+  save() {
+    this._service.save(this.membro).pipe(take(1)).subscribe(item => {
+      this.voltar();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.error.errors);
     });
   }
 
-  clear() {
-    this.form.reset();
-    this.contatos = [];
-    this.contatosGrid = [];
-    this.escolaridades = [];
-    this.escolaridadesGrid = [];
+  updade() {
+    this._service.update(this.membro).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.error.errors);
+    });
   }
+
+  importar() {
+    this._visitanteService.importar(this.membro).pipe(take(1)).subscribe(item => {
+      this.voltar();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      console.log(error)
+      // this._notifierService.notify(AlertType.Error, error.error.errors);
+    });
+  }
+
+  setObj() {
+    if (this.id) {
+      this.membro.id = Number.parseInt(this.id);
+    }
+
+    this.membro.nome = this.form.controls['nome'].value;
+    this.membro.sobreNome = this.form.controls['sobrenome'].value;
+    this.membro.sexo = this.form.controls['sexo'].value;
+    this.membro.estadoCivil = this.form.controls['estadoCivil'].value;
+    this.membro.dataNascimento = this.form.controls['dataNascimento'].value;
+    this.membro.nacionalidade = this.form.controls['nacionalidade'].value;
+    this.membro.profissao = this.form.controls['profissao'].value;
+    this.membro.rg = HelperChurch.retirarFormatacao(this.form.controls['rg'].value);
+    this.membro.cpf = HelperChurch.retirarFormatacao(this.form.controls['cpf'].value);
+    this.membro.batizado = HelperChurch.isBoolean(this.form.controls['batizado'].value);
+    this.membro.dizimista = HelperChurch.isBoolean(this.form.controls['dizimista'].value);
+    this.membro.cartaRecomendacao = HelperChurch.isBoolean(this.form.controls['cartaRecomendacao'].value);
+    this.membro.membroDaCelula = HelperChurch.isBoolean(this.form.controls['membroDaCelula'].value);
+
+    if (this.igrejaSelecionada) {
+      this.membro.igreja = { id: this.igrejaSelecionada.id };
+    }
+    if (this.redeSelecionada) {
+      this.membro.rede = { id: this.redeSelecionada.id };
+    }
+    if (this.celulaSelecionada) {
+      this.membro.celula = { id: this.celulaSelecionada.id };
+      this.membro.membroDaCelula = true;
+    }
+    if (this.enderecos) {
+      this.membro.enderecos = this.enderecos;
+    }
+    if (this.contatos) {
+      this.membro.contatos = this.contatos;
+    }
+    if (this.escolaridades) {
+      this.membro.escolaridades = this.escolaridades;
+    }
+
+    if (this.etapas) {
+      this.membro.etapas = this.etapas;
+    }
+
+    if (this.cargos) {
+      this.membro.cargos = this.cargos;
+    }
+
+    if (this.visitanteId) {
+      this.membro.visitanteId = Number.parseInt(this.visitanteId);
+    }
+
+    console.log(this.membro)
+
+  }
+
+  emitiClear(): void {
+    this._emitirEventoService.emitir('clear', '');
+  }
+
+  emitirPessoa(item): void {
+    this._emitirEventoService.emitir('edit-dadosPessoais', item);
+  }
+
+  emitirEnderecos(item): void {
+    this._emitirEventoService.emitir('edit-endereco', item);
+  }
+
+  emitirContatos(item): void {
+    this._emitirEventoService.emitir('edit-contatos', item);
+  }
+
+  emitirEscolaridades(item): void {
+    this._emitirEventoService.emitir('edit-escolaridades', item);
+  }
+
+  emitirEtapaVisao(item): void {
+    this._emitirEventoService.emitir('edit-mult-select-etapas', item);
+  }
+
+  emitirCargo(item): void {
+    this._emitirEventoService.emitir('edit-cargos', item);
+  }
+
+  emitirIgreja(item): void {
+    this._emitirEventoService.emitir('edit-igreja', item);
+    this.igrejaSelecionada = item;
+    if (this.igrejaSelecionada) {
+      this.carregarRede(this.igrejaSelecionada.id);
+    }
+  }
+
+  // emitirCelula(item): void {
+  //   this.isCelula = true;
+  //   this._emitirEventoService.emitir('edit-celula', item);
+  // }
+
+
+  voltar() {
+    let caminho: string = "";
+    if (this.importacao) {
+      caminho = "/auth/visitante/pesquisar";
+    } else {
+      caminho = "/auth/membro/pesquisar";
+    }
+    if (this.pesquisa || this.importacao) {
+      this._router.navigate([caminho], {
+        queryParams: {
+          pesquisa: this.pesquisa
+        },
+        skipLocationChange: true
+      });
+    } else {
+      this._router.navigate([caminho]);
+    }
+
+
+  }
+
+  validFields(): string {
+    let concat = 'Por favor preencha o campo';
+    let concatArray = 'Por favor adicione pelo menos um';
+    if (!this.membro.nome) {
+      return concat + ' nome!';
+    }
+    if (!this.membro.sobreNome) {
+      return concat + ' Sobre Nome!';
+    }
+    if (!this.membro.rg) {
+      return concat + ' RG!';
+    }
+    if (!this.membro.cpf) {
+      return concat + ' CPF!';
+    }
+    if (!this.membro.dataNascimento) {
+      return concat + ' Data Nascimento!';
+    }
+    if (!this.membro.sexo) {
+      return concat + ' Sexo!';
+    }
+    if (!this.membro.estadoCivil) {
+      return concat + ' Estado Civil!';
+    }
+    if (!this.membro.nacionalidade) {
+      return concat + ' Nacionalidade!';
+    }
+    if (this.enderecos.length == 0) {
+      return concatArray + ' Endereço!';
+    }
+    if (this.enderecos.length == 0) {
+      return concatArray + ' Contato!';
+    }
+    if (this.escolaridades.length == 0) {
+      return concatArray + 'a  Esconlaridade!';
+    }
+    if (!this.membro.igreja) {
+      return concat + ' Igreja!';
+    }
+
+    return null;
+  }
+
+  carregarRede(id) {
+
+    this._redeService.getRedeIgreja(id).pipe(take(1)).subscribe(item => {
+      this.comboRede = item;
+      // console.log(item);
+      this.filteredRede = this.myControlRede.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterRede(value, this.comboRede))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as redes!");
+    });
+  }
+
+
+  private _filterRede(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionRedeChange($event: MatAutocompleteSelectedEvent, option) {
+    this.redeSelecionada = option;
+    if (this.visaoCelular) {
+      this.carregarCelula(this.redeSelecionada.id);
+    }
+  }
+
+  carregarCelula(id) {
+
+    this._celulaService.getCelulaRede(id).pipe(take(1)).subscribe(item => {
+      this.comboCelulas = item;
+      // console.log(item);
+      this.filteredCelula = this.myControlCelula.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterCelula(value, this.comboCelulas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as células!");
+    });
+  }
+
+  private _filterCelula(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionCelulaChange($event: MatAutocompleteSelectedEvent, option) {
+    this.celulaSelecionada = option;
+  }
+
+
+
+
 }

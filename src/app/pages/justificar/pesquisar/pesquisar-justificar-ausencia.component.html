@@ -1,0 +1,84 @@
+<div fxLayout="column" class="components-container-gt-xs" [ngClass.xs]="'components-container-xs'" fxLayoutGap="20px">
+  <div fxFlex class="cdk-component-holder button-component-holder mat-elevation-z4">
+    <mat-toolbar class="cdk-header">
+      <span><i class="material-icons">search</i></span>
+      <h1 class="mat-headline center-align">Justificativa Ausência</h1>
+    </mat-toolbar>
+    <div class="cdk-container">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">group</i>
+        <h1 class="mat-subheading-2 center-align">Célula</h1>
+      </div>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
+            [matAutocomplete]="au" [(ngModel)]="celulaValue">
+          <mat-autocomplete #au="matAutocomplete">
+            <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionCelulaChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input matInput placeholder="Rede" [(ngModel)]="rede" style="color:#1d68a5;" id="rede" disabled="true">
+        </mat-form-field>
+      </div>
+      <br />
+      <mat-divider></mat-divider>
+      <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">person</i>
+        <h1 class="mat-subheading-2 center-align">Membros da célula</h1>
+      </div>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto"
+            [(ngModel)]="membroValue" required>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedMembro($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <br />
+      <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color"
+        *ngIf="faltas.length > 0">
+        <i class="material-icons">alarm_off</i>
+        <h1 class="mat-subheading-2 center-align">Faltas</h1>
+      </div>
+      <div *ngFor="let group of faltas | groupBy:'competencia'" style="overflow: auto;">
+        <mat-expansion-panel>
+          <mat-expansion-panel-header style="background-color:#1d68a5;color:#ffffff">
+            <b>{{group?.key}}</b>
+          </mat-expansion-panel-header>
+          <br />
+          <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngFor="let item of group.value" [ngStyle]="{'color':item.justificativaAusenciaId?'green':'red'}">
+            <mat-checkbox (change)="onCheckboxChange(item,$event)"></mat-checkbox>
+            <span *ngIf="item.justificativaAusenciaId"><i class="material-icons">check_circle_outline</i></span>
+            <span  *ngIf="!item.justificativaAusenciaId"><i class="material-icons">highlight_off</i></span>
+            <span><b>{{ item.dataDaReuniao }}</b></span>
+            <span><b>{{ item.justificativa }}</b></span>
+            <span><b>{{ item.observacao}}</b></span>
+            <span *ngIf="!item.justificativaAusenciaId" ><b>Não informado o motivo da ausência</b></span>
+            <span class="default-botoes" *ngIf="item.justificativaAusenciaId" style="text-align: right; float: right;" (click)="editar(item)"><i class="material-icons">create</i></span>
+          </div>
+          <br />
+          <br />
+          <div>
+            <button mat-raised-button color="primary" type="submit" (click)="cadastrar()">
+              <i class="material-icons">more_time</i>Justificar</button>
+            <div fxFlex></div>
+            <button mat-raised-button color="primary" type="submit" (click)="dialogRemover()">
+              <i class="material-icons">delete</i>Remover Justificativa</button>
+          </div>
+        </mat-expansion-panel>
+      </div>
+    </div>
+  </div>
+</div>

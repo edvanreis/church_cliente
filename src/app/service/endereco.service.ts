@@ -18,4 +18,26 @@ export class EnderecoService {
     return this.http.get(this._url+cep+"/obterEndereco")
     .pipe(tap((response: any) => response));
   }
+
+  carregarEstados() {
+    return this.http.get(this._url + "estados")
+      .pipe(tap((response: any) => response));
+  }
+
+  obterEndereco(id) {
+    return this.http.get(this._url + id + "/enderecosPessoa")
+      .pipe(tap((response: any) => response));
+  }
+
+  carregarTiposEndereco() {
+    return this.http.get(this._url + "tiposEndereco")
+      .pipe(tap((response: any) => response));
+  }
+
+ 
+  update(obj) {
+    return this.http.put(this._url, obj)
+      .pipe(tap((response: any) => response));
+  }
+
 }

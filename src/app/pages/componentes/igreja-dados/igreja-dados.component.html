@@ -1,0 +1,76 @@
+<form form [formGroup]="form">
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+      <mat-form-field class="full-width-field" >
+        <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome"  (change)="change()"  required>
+        <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
+      </mat-form-field>
+      <mat-form-field class="full-width-field">
+        <input matInput placeholder="CNPJ" [textMask]="{mask: maskCNPJ}" formControlName="cnpj" id="cnpj" (change)="change()" required>
+        <mat-error *ngIf="!form.controls.cnpj.valid">Campo Obrigatório</mat-error>
+      </mat-form-field>
+    </div>
+    <div class="full-width-field" fxLayoutGap="20px" fxLayout.lt-sm="column"  >
+      <mat-radio-group  formControlName="radio" (change)="changeRadio()" >
+        <mat-radio-button   value="1" >Sede</mat-radio-button>
+        <mat-radio-button   value="2" >Filial</mat-radio-button>
+      </mat-radio-group>
+      <label style="color:#1d68a5"  *ngIf="!filial">Visão Célular?</label>
+      <mat-slide-toggle *ngIf="!filial" formControlName="visaoCelular" id="visaoCelular"  (change)="change()" #visaoCelular>{{visaoCelular.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+    </div>
+    <br />
+    <div class="full-width-field" >
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Data de Abertura" formControlName="dataAbertura"
+        (dateChange)="change()"  required readonly>
+        <mat-error *ngIf="!form.controls.dataAbertura.valid">Campo Obrigatório</mat-error>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <br/>
+    <br/>
+    <mat-divider></mat-divider>
+    <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+      <i class="material-icons">face</i>
+      <h1 class="mat-subheading-2 center-align">Lideres</h1>
+    </div>
+    <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Membros" aria-label="Number" matInput [formControl]="myControlMembro"
+            [matAutocomplete]="auto" [(ngModel)]="nomeValue" required>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedMembro($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" type="submit" (click)="adicionar()">
+          <i class="material-icons">add</i>adicionar</button>
+      </div>
+      <br />
+      <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="membros.length > 0">
+        <div class="table-responsive">
+          <table>
+            <thead class="text-primary">
+              <th></th>
+              <th>Nome</th>
+              <th>Cpf</th>
+              <th>Remover</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let m of membros;let i= index">
+                <td>{{ i+1}}</td>
+                <td>{{ m.nomeCompleto}}</td>
+                <td>{{ m.cpf}}</td>
+                <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,m)"><i
+                      class="material-icons">delete</i></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  </form>

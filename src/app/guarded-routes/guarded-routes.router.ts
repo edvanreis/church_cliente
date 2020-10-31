@@ -6,7 +6,6 @@ import { RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs';
 import { CanActivate } from '@angular/router';
 import { ActivatedRouteSnapshot } from '@angular/router';
-import { CanDeactivate } from '@angular/router';
 import { RouterDeactivateComponent } from './router-deactivate/router-deactivate.component';
 export class UserToken { }
 export class Permission {

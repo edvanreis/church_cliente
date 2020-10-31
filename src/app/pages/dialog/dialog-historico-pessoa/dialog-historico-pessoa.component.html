@@ -1,0 +1,34 @@
+<div mat-dialog-content>
+  <h4 mat-dialog-title>
+    <mat-toolbar class="cdk-header">
+      <i class="material-icons">event_note</i>
+      <h1 class="mat-headline center-align">Historico</h1>
+    </mat-toolbar>
+  </h4>
+  <div class="cdk-container">
+      <div mat-dialog-content>
+        <mat-form-field class="full-width-field">
+          <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
+        </mat-form-field>
+          <mat-table #table [dataSource]="dados" #sort="matSort" matSort>
+            <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
+              <mat-header-cell *matHeaderCellDef> {{column.value}} </mat-header-cell>
+              <mat-cell *matCellDef="let element">
+                <span matTooltip="{{element[column.id]}}" >
+                  {{(element[column.id]?.length > 15) ? ((element[column.id])?.slice(0, 15) + '...') : element[column.id]}}
+                  <!-- {{element[column.id]}} -->
+                </span>
+              </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+          </mat-table>
+          <mat-paginator [length]="dados.data.length" #paginator [pageSize]="5"
+          [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  </div>
+  <div mat-dialog-actions align="end">
+    <div fxFlex></div>
+    <button mat-raised-button color="warn" type="submit" (click)="close()">
+      <i class="material-icons">close</i>Fechar</button>
+  </div>
+</div>

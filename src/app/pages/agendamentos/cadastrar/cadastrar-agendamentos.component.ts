@@ -1,0 +1,480 @@
+import { TipoAgendamentoService } from './../../../service/tipo-agendamento.service';
+import { MembroService } from '../../../service/membro.service';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { NotifierService } from 'angular-notifier';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { DatePipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AlertType } from '../../../model/alert-type';
+import { DateAdapter, MatAutocompleteSelectedEvent, MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
+import { Observable } from 'rxjs';
+import { GrupoService } from '../../../service/grupo.service';
+import { take, startWith, map } from 'rxjs/operators';
+import { AgendamentoService } from '../../../service/agendamento.service';
+import { DialogConfirmComponent } from '../../dialog/dialog-confirm/dialog-confirm.component';
+import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
+import { IgrejaService } from '../../../service/igreja.service';
+
+@Component({
+  selector: 'app-cadastrar-agendamentos',
+  templateUrl: './cadastrar-agendamentos.component.html',
+  styleUrls: ['./cadastrar-agendamentos.component.scss']
+})
+export class CadastrarAgendamentosComponent implements OnInit {
+
+  public form: FormGroup;
+  public formTwo: FormGroup;
+  public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/];
+  public id: any;
+  public igrejaId: any;
+  public data: any;
+  public myControlGrupos = new FormControl();
+  public grupoSelecionado: any;
+  public filteredGrupos: Observable<string[]>;
+  public comboGrupos = [];
+  public comboMembro = [];
+  public filteredMembro: Observable<string[]>;
+  public myControlMembro = new FormControl();
+  public membroSelecionado: any;
+  public membros = [];
+  public processado: boolean = false;
+
+  @ViewChild(MatSort) sort: MatSort;
+  public displayedColumns: string[] = [];
+  public columnNames;
+  public dados = new MatTableDataSource();
+  @ViewChild('paginator') paginator: MatPaginator;
+  public pageIndex: number = 0;
+  public agendamentos = new Array();
+  public loading: boolean = false;
+
+  public isEditar: boolean = false;
+  public grupoValue: any;
+  public sizeLimitOne: boolean = true;
+  public enderecos = [];
+
+  public comboIgrejas = [];
+  public filteredIgreja: Observable<string[]>;
+  public myControlIgreja = new FormControl();
+  public igrejaValue: any;
+  public igrejaSelecionada: any;
+
+  public tipoAgendamento$: Observable<any[]>;
+
+
+  constructor(private _notifierService: NotifierService,
+    private _emitirEventoService: EmitirEventoService,
+    private _datePipe: DatePipe,
+    private _avRoute: ActivatedRoute,
+    private _router: Router,
+    private _dateAdapter: DateAdapter<Date>,
+    private _serviceGruop: GrupoService,
+    private _membroService: MembroService,
+    private _service: AgendamentoService,
+    private _dialog: MatDialog,
+    private _igrejaService: IgrejaService,
+    private _tipoAgendamentoService:TipoAgendamentoService) { }
+
+  ngOnInit() {
+    this._dateAdapter.setLocale("br");
+    this._buildForm();
+    this.getParams();
+    this.columns();
+    this.getEmiter();
+    this._buildFormTow();
+    this.carregarTipoAgendamento();
+  }
+
+  private _buildForm(): void {
+    this.form = new FormGroup({
+      'nome': new FormControl('', Validators.required),
+      'horaInicio': new FormControl('', Validators.required),
+      'horaFim': new FormControl('', Validators.required),
+      'descricao': new FormControl('', Validators.required),
+      'dataInicio': new FormControl('', Validators.required),
+      'dataFim': new FormControl(''),
+      'qtdDias': new FormControl(''),
+      'dataAgendamento': new FormControl('', Validators.required),
+      'qtdPessoas': new FormControl('', Validators.required),
+      'tipoAgendamento': new FormControl('', Validators.required),
+    });
+  }
+
+  carregarTipoAgendamento() {
+    this.tipoAgendamento$ = this._tipoAgendamentoService.getList();
+  }
+
+
+  columns() {
+    this.columnNames = [
+      // { id: 'nome', value: 'Nome' },
+      { id: 'dataAgendamento', value: 'Data do Agendamento' },
+      { id: 'horaInicio', value: 'Hora Inicio' },
+      { id: 'horaFim', value: 'Hora Fim' },
+      { id: 'qtdPessoas', value: 'Quantidade de Pessoas' },
+      { id: 'id', value: 'Ação' }
+    ];
+    this.displayedColumns = this.columnNames.map(x => x.id);
+  }
+
+  getParams() {
+    console.log(this._avRoute.snapshot.queryParamMap)
+    if (this._avRoute.snapshot.queryParamMap.get("id")) {
+      this.id = this._avRoute.snapshot.queryParamMap.get("id");
+      this.isEditar = true;
+      this.getAgendamanto(this.id);
+
+    }
+    if (this._avRoute.snapshot.queryParamMap.get("igrejaId")) {
+      this.igrejaId = this._avRoute.snapshot.queryParamMap.get("igrejaId");
+      this.carregarGrupos();
+      this.carregarMembro();
+    }
+    if (this._avRoute.snapshot.queryParamMap.get("data")) {
+      this.data = this._avRoute.snapshot.queryParamMap.get("data");
+    }
+    if (!this.igrejaId) {
+      this.carregarIgrejas();
+    }
+  }
+
+  voltar() {
+    this._router.navigate(['/auth/agendamentos/pesquisar'], {
+      queryParams: {
+        pesquisar: 'pesquisar',
+      },
+      skipLocationChange: true
+    });
+  }
+
+  calcularDias() {
+    if (!this.form.controls['dataInicio'].value) {
+      this._notifierService.notify(AlertType.Error, "Por favor selecione a Data de Inicio do agendamento!");
+    }
+    let data = this.adicionarDiasData(this.form.controls['qtdDias'].value, this.form.controls['dataInicio'].value);
+    this.form.controls['dataFim'].patchValue(this.transformDate(data));
+  }
+
+  adicionarDiasData(dias, dataInicio) {
+    let dataVenc = new Date(dataInicio.getTime() + (dias * 24 * 60 * 60 * 1000) - 1);
+    return dataVenc;
+  }
+
+  transformDate(data) {
+    return this._datePipe.transform(data, 'dd/MM/yyyy ');
+  }
+
+  carregarGrupos() {
+    this._serviceGruop.getGruposByIgrejas({ igreja: { id: this.igrejaId } }).pipe(take(1)).subscribe(item => {
+      // console.log(item);
+      this.comboGrupos = item;
+      this.filteredGrupos = this.myControlGrupos.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterGrupos(value, this.comboGrupos))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os grupos!");
+    });
+  }
+
+  private _filterGrupos(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+
+  onSelectionChangedGrupos($event: MatAutocompleteSelectedEvent, option) {
+    this.grupoSelecionado = option;
+  }
+
+  carregarMembro() {
+    this._membroService.getMembroIgreja(this.getIgrejaId()).pipe(take(1)).subscribe(item => {
+      // console.log(item);
+      this.comboMembro = item;
+      this.filteredMembro = this.myControlMembro.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterMembros(value, this.comboMembro))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar os membros!");
+    });
+  }
+
+  private _filterMembros(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionChangedMembro($event: MatAutocompleteSelectedEvent, option) {
+    this.membroSelecionado = option;
+  }
+
+  adicionarMembro() {
+    if (!this.membroSelecionado) {
+      console.log(this.membroSelecionado);
+      this._notifierService.notify(AlertType.Error, "Por favor escolha uma membro.!");
+      return false;
+    }
+
+    let membroAdicionado = this.membros.find(i => i.nome == this.membroSelecionado.nome);
+    if (membroAdicionado && membroAdicionado.nome == this.membroSelecionado.nome) {
+      this._notifierService.notify(AlertType.Error, "Membro já adiocionado.!");
+      return false;
+    }
+    this.membros.push(this.membroSelecionado);
+  }
+
+  processar() {
+    if (!this.validFieds()) {
+      return;
+    }
+    this.loading = true;
+    this._service.processar(this.obj()).pipe(take(1)).subscribe(item => {
+      // console.log(item)
+      this.agendamentos = item;
+      this.dados = new MatTableDataSource(item);
+      this.dados.sort = this.sort;
+      this.dados.paginator = this.paginator;
+      this.loading = false;
+      this.processado = true;
+    }, error => {
+      this.loading = false;
+      console.log(error)
+      this._notifierService.notify(AlertType.Error, error.error.message);
+
+    });
+  }
+
+  obj() {
+    let agendamento = {} as any;
+    agendamento.dataInicio = this._datePipe.transform(this.form.controls['dataInicio'].value, 'dd/MM/yyyy');
+    agendamento.qtdDias = this.form.controls['qtdDias'].value;
+    agendamento.horaInicio = this.form.controls['horaInicio'].value;
+    agendamento.horaFim = this.form.controls['horaFim'].value;
+    agendamento.descricao = this.form.controls['descricao'].value;
+    agendamento.nome = this.form.controls['nome'].value;
+    agendamento.qtdPessoas = this.form.controls['qtdPessoas'].value;
+    agendamento.igreja = { id: this.getIgrejaId() };
+    agendamento.tipoAgendamento =  this.form.controls['tipoAgendamento'].value;
+
+    if (this.membros.length > 0) {
+      agendamento.pessoas = this.membros
+    }
+    if (this.grupoSelecionado) {
+      agendamento.grupoTrabalho = { id: this.grupoSelecionado.id }
+    }
+    if (this.enderecos.length > 0) {
+      agendamento.enderecos = this.enderecos
+    }
+    return agendamento;
+  }
+
+  setObjToUpdate() {
+    let agendamento = {} as any;
+    agendamento.dataAgendamento = this._datePipe.transform(this.form.controls['dataAgendamento'].value, 'dd/MM/yyyy');
+    agendamento.horaInicio = this.form.controls['horaInicio'].value;
+    agendamento.horaFim = this.form.controls['horaFim'].value;
+    agendamento.descricao = this.form.controls['descricao'].value;
+    agendamento.nome = this.form.controls['nome'].value;
+    agendamento.qtdPessoas = this.form.controls['qtdPessoas'].value;
+    agendamento.igreja = { id: this.igrejaId };
+    agendamento.id = this.id;
+
+    if (this.membros.length > 0) {
+      agendamento.pessoas = this.membros
+    }
+    if (this.grupoSelecionado) {
+      agendamento.grupoTrabalho = { id: this.grupoSelecionado.id }
+    }
+    if (this.enderecos.length > 0) {
+      agendamento.enderecos = this.enderecos
+    }
+    return agendamento;
+  }
+
+
+  applyFilter(value) {
+    this.dados.filter = value.trim().toLowerCase();
+  }
+
+  dialogRemover(i, item) {
+    const dialogRef = this._dialog.open(DialogConfirmComponent, {
+      width: '500px',
+      data: {
+        controller: 'agendamento',
+        index: i,
+        item: item
+      }
+    });
+  }
+
+  getEmiter(): void {
+    this._emitirEventoService.mensagem.subscribe(item => {
+      if (item.type == 'confirm-dialog-agendamento') {
+        this.agendamentos.splice(item.data, 1);
+        this.dados = new MatTableDataSource<Element>(this.agendamentos);
+      }
+      if (item.type == 'endereco') {
+        this.enderecos = item.data;
+      }
+      if (item.type == 'confirm-dialog-pessoa-agendamento') {
+        if (this.membros.length > 0) {
+          this.membros.splice(item.data, 1);
+        }
+      }
+    });
+  }
+
+  validFieds(): boolean {
+    if (!this.form.controls['nome'].value) {
+        this._notifierService.notify(AlertType.Error, "Por favor digite o nome do agendamento!");
+      return false;
+    }
+    if (!this.form.controls['descricao'].value) {
+        this._notifierService.notify(AlertType.Error, "Por favor escreva a descrição do agendamento");
+      return false;
+    }
+    if (!this.form.controls['dataInicio'].value && !this.isEditar) {
+        this._notifierService.notify(AlertType.Error, "Por favor selecione a Data de Inicio do agendamento!");
+      return false;
+    }
+    if (!this.form.controls['dataFim'].value && !this.isEditar) {
+        this._notifierService.notify(AlertType.Error, "Por favor Data fim não pode esta vazia!");
+      return false;
+    }
+    if (!this.form.controls['qtdDias'].value && !this.isEditar) {
+        this._notifierService.notify(AlertType.Error, "Por favor digite a quantidade de dias!");
+      return false;
+    }
+    if (!this.form.controls['dataAgendamento'].value && this.isEditar) {
+        this._notifierService.notify(AlertType.Error, "Por favor selecione a Data do agendamento!");
+      return false;
+    }
+    if (!this.form.controls['qtdPessoas'].value) {
+        this._notifierService.notify(AlertType.Error, "Por favor Digite a quantidade de Pessoas!");
+      return false;
+    }
+    if (!this.igrejaId && !this.igrejaSelecionada) {
+        this._notifierService.notify(AlertType.Error, "Por favor selecone uma igreja!");
+      return false;
+    }
+
+    if (this.membros.length == 0 && !this.grupoSelecionado) {
+        this._notifierService.notify(AlertType.Error, "Por favor selecione os responsáveis pelo agendamento!");
+      return false;
+    }
+
+    if (!this.form.controls['tipoAgendamento'].value) {
+        this._notifierService.notify(AlertType.Error, "Por favor selecione o tipo de agendamento!");
+      return false;
+    }
+    return true;
+  }
+
+
+  salvar() {
+    this._service.saveListAgendamentos(this.agendamentos).pipe(take(1)).subscribe(item => {
+      this.voltar();
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+  update() {
+    if (!this.validFieds()) {
+      return;
+    }
+    this._service.update(this.setObjToUpdate()).pipe(take(1)).subscribe(item => {
+      this._notifierService.notify(AlertType.Success, item.value);
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.message);
+    });
+  }
+
+  getAgendamanto(id) {
+    this._service.getAgendamento(id).pipe(take(1)).subscribe(item => {
+      // console.log(item)
+      this.form.controls['nome'].patchValue(item.nome);
+      this.form.controls['horaInicio'].patchValue(item.horaInicio);
+      this.form.controls['horaFim'].patchValue(item.horaFim);
+      this.form.controls['descricao'].patchValue(item.descricao);
+      this.form.controls['dataAgendamento'].patchValue(new Date(item.dataAgendamentoToDate));
+      this.form.controls['qtdPessoas'].patchValue(item.qtdPessoas);
+      this.form.controls['tipoAgendamento'].patchValue(item.tipoAgendamanto);
+      if (item.pessoas) {
+        this.membros = item.pessoas;
+      }
+      if (item.grupoTrabalho) {
+        this.grupoSelecionado = item.grupoTrabalho;
+        this.grupoValue = this.grupoSelecionado.nome;
+      }
+      if (item.enderecos && item.enderecos.length > 0) {
+        this.enderecos = item.enderecos;
+        this.formTwo.controls['outro'].patchValue(true);
+        this.emitirEndereco(item.enderecos);
+      }
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.errors.message);
+    });
+  }
+
+  emitirEndereco(item): void {
+    this._emitirEventoService.emitir("edit-endereco", item);
+  }
+
+  private _buildFormTow(): void {
+    this.formTwo = new FormGroup({
+      'outro': new FormControl(false),
+    });
+  }
+
+  dialogRemoverPessoa(i, item) {
+    const dialogRef = this._dialog.open(DialogConfirmPessoaComponent, {
+      width: '600px',
+      data: {
+        id: Number.parseInt(this.id),
+        idPessoa: item.id,
+        controller: "agendamento",
+        item: i
+      }
+    });
+  }
+
+  carregarIgrejas() {
+
+    this._igrejaService.getList().pipe(take(1)).subscribe(item => {
+      this.comboIgrejas = item;
+      // console.log(item);
+      this.filteredIgreja = this.myControlIgreja.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterIgreja(value, this.comboIgrejas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas!");
+    });
+  }
+
+  private _filterIgreja(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionIgrejaChange($event: MatAutocompleteSelectedEvent, option) {
+    this.igrejaSelecionada = option;
+    this.carregarMembro();
+  }
+
+  getIgrejaId() {
+    if (this.igrejaId) {
+      return this.igrejaId;
+    } else if (this.igrejaSelecionada) {
+      return this.igrejaSelecionada.id
+    }
+  }
+
+}

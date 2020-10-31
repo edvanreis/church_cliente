@@ -1,17 +1,27 @@
 import { Injectable, EventEmitter } from '@angular/core';
+import { environment } from '../../environments/environment';
+import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  autenticadoEmitter = new EventEmitter<any>();
-  
-  constructor() { }
+  private _url = environment.url + "user/";
+  public autenticadoEmitter = new EventEmitter<any>();
+
+
+  constructor(public http: HttpClient) { }
+
+  currentUser(){
+    return localStorage.getItem("currentuser");
+  }
 
   isLogged() {
-    const user = localStorage.getItem("currentuser");
-    if( user ){
+    const user = this.currentUser();
+    if (user) {
       this.autenticadoEmitter.emit(user);
     }
     return JSON.parse(user);
@@ -25,16 +35,18 @@ export class UserService {
 
   /**
  * verifica se usuário logado tem determinada permissão
- * @param permissao 
+ * @param permissao
  */
   hasPermission(permissao): boolean {
-    const user = this.isLogged();
+    const user = this.currentUser();
+
     let temPermissao = false;
-    if (user) {
-      const permissoes = this.permissions();
-      if (permissoes) {
-        permissoes.forEach(map => {
-          if (map == permissao) {
+    if ( user ){
+      const permissoes = this.permissions().authorities;
+      // console.log(permissoes)
+      if( permissoes ){
+        permissoes.forEach(map =>{
+          if( map.authority === permissao){
             temPermissao = true;
           }
         });
@@ -47,15 +59,51 @@ export class UserService {
   /**
  * Obtem as permissões do usuário logado
  */
-  permissions(): Array<string> {
-    const user = this.isLogged();
-    if (user) {
-      return user.authorities;
+  permissions() {
+    const user = this.currentUser();
+    if ( user ){
+      return JSON.parse(user);
     }
-    return;
+    return ;
   }
 
   clear() {
     localStorage.removeItem("currentuser")
   }
+
+  pesquisar(obj) {
+    return this.http.post(this._url + "pesquisar", obj)
+      .pipe(map((response: any) => response))
+  }
+
+  save(user) {
+    return this.http.post(this._url, user)
+      .pipe(map((response: any) => response))
+  }
+
+  getUser(id) {
+    return this.http.get(this._url+id+"/getUser")
+      .pipe(map((response: any) => response))
+  }
+
+  update(user) {
+    return this.http.put(this._url, user)
+      .pipe(map((response: any) => response))
+  }
+
+  alterarSenha(obj) {
+    return this.http.put(this._url + "alterarSenha", obj)
+      .pipe(map((response: any) => response))
+  }
+
+  esqueceuSenha(obj) {
+    return this.http.post(this._url+"esqueceuSenha",obj)
+      .pipe(map((response: any) => response))
+  }
+
+  getMembroLogado(){
+    const user = this.currentUser();
+    return JSON.parse(user).principal.membro;
+  }
+
 }

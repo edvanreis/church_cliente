@@ -1,5 +1,5 @@
 $gray-lighter: #eceeef !default;
-$image_path: "/assets/images/" !default;
+// $image_path: "/assets/images/" !default;
 
 $prefix: 'sigin';
 
@@ -34,4 +34,17 @@ $prefix: 'sigin';
   font-size: 14px;
   margin-left: 10px;
   color: #00AAAA;
+}
+
+.senha{
+  width: 100%;
+  text-align: left;
+  font-size: 12px;
+
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.senha:hover{
+  text-decoration: underline;
 }

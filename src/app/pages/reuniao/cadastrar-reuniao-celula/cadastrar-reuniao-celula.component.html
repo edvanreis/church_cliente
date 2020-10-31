@@ -1,0 +1,302 @@
+<div fxLayout="column" class="components-container-gt-xs" [ngClass.xs]="'components-container-xs'" fxLayoutGap="20px">
+  <div fxFlex class="cdk-component-holder button-component-holder mat-elevation-z4">
+    <mat-toolbar class="cdk-header">
+      <span><i class="material-icons">add</i></span>
+      <h1 class="mat-headline center-align">Reunião Célula</h1>
+    </mat-toolbar>
+    <div class="cdk-container">
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">store</i>
+        <h1 class="mat-subheading-2 center-align">Relatório semanal da célula</h1>
+      </div>
+      <app-igrejas></app-igrejas>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
+            [matAutocomplete]="a" [(ngModel)]="redeValue">
+          <mat-autocomplete #a="matAutocomplete">
+            <mat-option *ngFor="let option of filteredRede | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionRedeChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
+            [matAutocomplete]="au" [(ngModel)]="celulaValue">
+          <mat-autocomplete #au="matAutocomplete">
+            <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionCelulaChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color"
+        *ngIf="membros.length > 0">
+        <i class="material-icons">face</i>
+        <h1 class="mat-subheading-2 center-align">Liderança da célula</h1>
+      </div>
+      <div class="table-responsive" *ngIf="membrosLideres.length > 0">
+        <table>
+          <thead class="text-primary">
+            <th>Nome</th>
+            <th></th>
+          </thead>
+          <tbody>
+            <tr *ngFor="let m of membrosLideres">
+              <td>{{ m.nomeCompleto}}</td>
+              <td>{{ m.tipo}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <br />
+      <mat-divider></mat-divider>
+      <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">class</i>
+        <h1 class="mat-subheading-2 center-align">Dados da Reunião</h1>
+      </div>
+      <form form [formGroup]="form">
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <input matInput [matDatepicker]="picker" placeholder="Data da reunião" formControlName="dataDaReuniao"
+              (dateChange)="onDateChange($event)"  required readonly>
+            <mat-error *ngIf="!form.controls.dataDaReuniao.valid">Campo Obrigatório</mat-error>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+
+          </mat-form-field>
+          <mat-form-field class="full-width-field">
+            <mat-label>Dia da semana</mat-label>
+            <mat-select formControlName="diaDaSemana" id="diaDaSemana" required>
+              <mat-option *ngFor="let item of comboSemana | keyValue" [value]="item.key">
+                {{item.value}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="!form.controls.diaDaSemana.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <input matInput placeholder="Horário de inicio" [textMask]="{mask: maskHorario}"
+              formControlName="horarioInicio" id="horario" required>
+            <mat-error *ngIf="!form.controls.horarioInicio.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+          <mat-form-field class="full-width-field">
+            <input matInput placeholder="Horário de fim" [textMask]="{mask: maskHorario}" formControlName="horarioFim"
+              id="horario" required>
+            <mat-error *ngIf="!form.controls.horarioFim.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <input matInput placeholder="Louvor" formControlName="louvor" id="louvor"
+              style="text-transform: uppercase;">
+            <mat-error *ngIf="!form.controls.louvor.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <input id="oferta" matInput placeholder="Oferta" formControlName="oferta"
+            currencyMask />
+          </mat-form-field>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <label style="color:#1d68a5">Oração da cadeira da Benção?</label>
+          <mat-slide-toggle formControlName="cadeiraBencao" id="cadeiraBencao" #cadeiraBencao>
+            {{cadeiraBencao.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+            <label style="color:#1d68a5">A reunião foi presencial?</label>
+          <mat-slide-toggle formControlName="presencial" id="presencial" #presencial>
+            {{presencial.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>
+        </div>
+        <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
+          <mat-form-field class="full-width-field">
+            <textarea matInput placeholder="Nota/Observação" formControlName="observacao" required></textarea>
+            <mat-error *ngIf="!form.controls.observacao.valid">Campo Obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+      </form>
+      <app-licao></app-licao>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Palestrantes" aria-label="Number" matInput
+            [formControl]="myControlPalestrante" [matAutocomplete]="uto" [(ngModel)]="palestranteValue" required>
+          <mat-autocomplete #uto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredPalestrante | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedPalestrantes($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" type="submit" (click)="adicionarPalestrante()">
+          <i class="material-icons">add</i>adicionar</button>
+      </div>
+      <br />
+      <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="palestrantes.length > 0">
+        <div class="table-responsive">
+          <table>
+            <thead class="text-primary">
+              <th></th>
+              <th>Nome</th>
+              <th>Remover</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of palestrantes;let i= index">
+                <td>{{ i+1}}</td>
+                <td>{{ item.nomeCompleto}}</td>
+                <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemoverPalestrante(i,item)"><i
+                      class="material-icons">delete</i></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br />
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">person</i>
+        <h1 class="mat-subheading-2 center-align">Membros da célula</h1>
+      </div>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto"
+            [(ngModel)]="membroValue" required>
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedMembro($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" type="submit" (click)="adicionarMembro()">
+          <i class="material-icons">add</i>adicionar</button>
+      </div>
+      <br />
+      <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="membros.length > 0">
+        <div class="table-responsive">
+          <table>
+            <thead class="text-primary">
+              <th></th>
+              <th>Nome</th>
+              <th>Remover</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of membros;let i= index">
+                <td>{{ i+1}}</td>
+                <td>{{ item.nomeCompleto}}</td>
+                <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemoverMembro(i,item)"><i
+                      class="material-icons">delete</i></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br />
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">person_outline</i>
+        <h1 class="mat-subheading-2 center-align">Visitantes da célula</h1>
+      </div>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" aria-label="Number" matInput [formControl]="myControlVisitante" [matAutocomplete]="aut"
+            [(ngModel)]="visitanteValue" required>
+          <mat-autocomplete #aut="matAutocomplete">
+            <mat-option *ngFor="let option of filteredVisitante | async" [value]="option.nomeCompleto"
+              (onSelectionChange)="onSelectionChangedVisitante($event,option)">
+              {{option.nomeCompleto}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
+        <button mat-raised-button color="primary" type="submit" (click)="adicionarVistantes()">
+          <i class="material-icons">add</i>adicionar</button>
+      </div>
+      <br />
+      <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="visitantes.length > 0">
+        <div class="table-responsive">
+          <table>
+            <thead class="text-primary">
+              <th></th>
+              <th>Nome</th>
+              <th>Remover</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of visitantes;let i= index">
+                <td>{{ i+1}}</td>
+                <td>{{ item.nomeCompleto}}</td>
+                <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemoverVisitante(i,item)"><i
+                      class="material-icons">delete</i></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br />
+      <mat-divider></mat-divider>
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
+        <i class="material-icons">person_outline</i>
+        <h1 class="mat-subheading-2 center-align">Membros visitantes de outras células</h1>
+      </div>
+      <app-membro></app-membro>
+      <div>
+        <button mat-raised-button color="primary" type="submit" (click)="adicionarMembrosVisitantes()">
+          <i class="material-icons">add</i>adicionar</button>
+      </div>
+      <br />
+      <br />
+      <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="membrosVisitantes.length > 0">
+        <div class="table-responsive">
+          <table>
+            <thead class="text-primary">
+              <th></th>
+              <th>Nome</th>
+              <th>Remover</th>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of membrosVisitantes ;let i= index">
+                <td>{{ i+1}}</td>
+                <td>{{ item.nomeCompleto}}</td>
+                <td><span style=" color: #1d68a5;cursor: pointer" (click)="dialogRemoverMembroVisitante(i,item)"><i
+                      class="material-icons">delete</i></span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <br />
+      <br />
+      <div>
+         <form form [formGroup]="formTwo">
+          <label class="default-font-color" style="font-size:15px;">A reunião foi realizada em outro endereço ?</label>
+          <mat-slide-toggle id="realizado" formControlName="realizado"  #realizado>{{realizado.checked | boolean : ['Sim', 'Não']}}
+          </mat-slide-toggle>
+        </form>
+      </div>
+      <br />
+      <br />
+        <app-endereco [sizeLimitOne]="sizeLimitOne" [hidden]="!realizado.checked"></app-endereco>
+      <br />
+      <br />
+      <div>
+        <button mat-raised-button color="primary" type="submit" (click)="salvar()">
+          <i class="material-icons">save</i>Salvar</button>
+        <div fxFlex></div>
+        <button mat-raised-button color="warn" type="submit" (click)="voltar()">
+          <i class="material-icons">reply</i>Voltar</button>
+      </div>
+    </div>
+  </div>
+</div>

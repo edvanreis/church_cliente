@@ -182,16 +182,16 @@ body{
   }
 }
 
-.input-header {
+.cdk-header {
   background-color: #5C6BC0;
   color: white;
   padding: 0 5px;
-}    
-.input-container {
-  padding: 5px 15px 15px 15px;
-  
 }
-.input-component-holder {
+.cdk-container {
+  padding: 5px 15px 15px 15px;
+
+}
+.cdk-component-holder {
 border: 1px solid #5C6BC0;
 background-color: white;
 
@@ -312,5 +312,29 @@ margin: 0 auto;
 .widgetHolder-content {
   padding: 20px;
 }
+}
+
+.default-font-color{
+  color:#1d68a5
+}
+
+.input-upper{
+  text-transform: uppercase;
+}
+
+.full-width-field {
+  width: 100%;
+}
+
+.default-botoes{
+  color:#1d68a5;
+  cursor: pointer;
+}
+
+mat-row:hover{
+  background-color: #f5f5f5;
+}
+tbody:hover{
+  background-color: #f5f5f5;
 }
 

@@ -11,9 +11,7 @@ import { Router } from '@angular/router';
 export class UserMenuComponent implements OnInit {
 	isOpen: boolean = false;
 
-	//currentUser = null;
 	Hari;
-
 
 	@Input() currentUser = null;
 	@HostListener('document:click', ['$event', '$event.target'])
@@ -33,7 +31,18 @@ export class UserMenuComponent implements OnInit {
 
 
 	ngOnInit() {
+		const user = this._userService.currentUser();
+		if( user ){
+      console.log('teste');
+      let usuario =  JSON.parse(user);
+      let membro = usuario.principal.membro;
+      if(membro.nome){
+        this.currentUser = membro.nome;
+      }else{
+        this.currentUser = usuario.name;
+      }
 
+		}
 	}
 
 	logout() {

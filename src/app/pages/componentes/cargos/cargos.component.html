@@ -1,0 +1,33 @@
+<div>
+  <mat-form-field class="full-width-field">
+    <mat-label>Selecione...</mat-label>
+    <mat-select [(ngModel)]="cargoSelecionado" id="cargo">
+      <mat-option *ngFor="let item of cargos$ | async" [value]="item">
+        {{item.nome}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+<button mat-raised-button color="primary" type="submit" (click)="adicionar()">
+  <i class="material-icons">add</i>adicionar</button>
+<br />
+<br />
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="cargos.length > 0" style="overflow: auto; height: 200px;">
+<div class="table-responsive">
+  <table>
+    <thead class="text-primary">
+      <th></th>
+      <th>Cargo</th>
+      <th>Remover</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of cargos;let i = index">
+        <td>{{ i+1 }}</td>
+        <td>{{ c.nome}}</td>
+        <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,c)"><i
+              class="material-icons">delete</i></span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</div>

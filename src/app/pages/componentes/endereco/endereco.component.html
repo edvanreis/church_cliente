@@ -1,0 +1,93 @@
+<form form [formGroup]="form">
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="CEP" formControlName="cep" id="cep" (blur)="consultarCEP($event)" (change)="change()"
+        [textMask]="{mask: maskCEP}">
+      <mat-error *ngIf="!form.controls.cep.valid">Campo Obrigatório</mat-error>
+    </mat-form-field>
+    <mat-form-field cclass="full-width-field">
+      <input matInput placeholder="Número" formControlName="numero" id="numero" (change)="change()">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="Complemento" formControlName="complemento" id="complemento" (change)="change()">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="Bairro" formControlName="bairro" id="bairro" (change)="change()">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="Logradouro" formControlName="logradouro" id="logradouro" (change)="change()">
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
+    <mat-form-field class="full-width-field">
+      <input matInput placeholder="Cidade" formControlName="localidade" id="localidade" (change)="change()">
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Estado</mat-label>
+      <mat-select formControlName="uf" id="uf" (selectionChange)="change()">
+        <mat-option *ngFor="let item of comboEstados | keyValue" [value]="item.key">
+          {{item.value}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" *ngIf="pessoa">
+    <mat-form-field  class="full-width-field">
+      <mat-label>Tipo Endereços</mat-label>
+      <mat-select formControlName="tipo" id="tipo" (selectionChange)="change()">
+        <mat-option *ngFor="let item of tipoEndereco" [value]="item.tipo">
+          {{item.descTipoEndereco}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="full-width-field" *ngIf="observacao">
+      <textarea matInput placeholder="Observação" formControlName="observacao" (change)="change()"></textarea>
+    </mat-form-field>
+  </div>
+</form>
+<br />
+<button mat-raised-button color="primary" type="submit" (click)="adicionar()">
+  <i class="material-icons">add</i>adicionar
+</button>
+<br />
+<br />
+<div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="enderecos.length > 0" style="overflow: auto; height: 200px;">
+  <div class="table-responsive">
+    <table>
+      <thead class="text-primary">
+        <th></th>
+        <th matTooltip="Cep">Cep</th>
+        <th matTooltip="Número">Nº</th>
+        <th matTooltip="Complemento">Comp.</th>
+        <th matTooltip="Bairro">Bairro</th>
+        <th matTooltip="Logradouro">Logra.</th>
+        <th matTooltip="Cidade">Cida.</th>
+        <th matTooltip="UF">UF</th>
+        <th *ngIf="pessoa" matTooltip="Tipo">Tipo</th>
+        <th  matTooltip="Ação">Ação</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let e of enderecos;let i= index">
+          <td>{{ i+1}}</td>
+          <td>{{ e.cep}}</td>
+          <td>{{ e.numero}}</td>
+          <td>{{ e.complemento}}</td>
+          <td  matTooltip="{{e.bairro}}">{{(e.bairro.length > 10) ? ((e.bairro).slice(0, 10) + '...') : e.bairro}}</td>
+          <td  matTooltip="{{e.logradouro}}">{{(e.logradouro.length > 10) ? ((e.logradouro).slice(0, 10) + '...') : e.logradouro}}</td>
+          <td  matTooltip="{{e.localidade}}">{{(e.localidade.length > 10) ? ((e.localidade).slice(0, 10) + '...') : e.localidade}}</td>
+          <td>{{ e.uf}}</td>
+          <td *ngIf="pessoa" >{{ e.descTipoEndereco}}</td>
+          <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogAtualizar(e)"><i class="material-icons">create</i></span>
+            <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,e)"><i class="material-icons">delete</i></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
