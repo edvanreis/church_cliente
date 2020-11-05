@@ -1,3 +1,4 @@
+import { ParametrosModule } from './pages/parametros/parametros.module';
 import { DatePipe } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -69,7 +70,8 @@ export const CustomCurrencyMaskConfig: CurrencyMaskConfig = {
     CurrencyMaskModule,
     PedidoModule,
     PedidosModule,
-    AgendamentoModule
+    AgendamentoModule,
+    ParametrosModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: InterceptorService, multi: true },

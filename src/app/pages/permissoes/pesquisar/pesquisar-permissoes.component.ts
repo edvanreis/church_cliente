@@ -60,17 +60,11 @@ export class PesquisarPermissoesComponent implements OnInit {
 
 
   cadastrar() {
-    this._router.navigate(['/auth/permissoes/cadastrar'], {
-      queryParams: {
-        janela: 'Nova',
-      },
-      skipLocationChange: true
-    });
+    this._router.navigate(['/auth/permissoes/cadastrar']);
   }
   editar(id) {
     this._router.navigate(['/auth/permissoes/cadastrar'], {
       queryParams: {
-        janela: 'Editar',
         id: id
       },
       skipLocationChange: true
@@ -85,7 +79,7 @@ export class PesquisarPermissoesComponent implements OnInit {
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;
     }, error => {
-      console.log(error)
+      this.dados = new MatTableDataSource<Element>(this.permissoes);
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });
   }
@@ -96,7 +90,6 @@ export class PesquisarPermissoesComponent implements OnInit {
       data: {
         id: id,
         tela: 'permissoes',
-        panelClass: 'components-container-gt-xs'
       }
     });
   }

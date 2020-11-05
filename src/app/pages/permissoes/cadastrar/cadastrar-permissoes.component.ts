@@ -21,8 +21,7 @@ export class CadastrarPermissoesComponent implements OnInit {
 
   public form: FormGroup;
   public id: any;
-  public titulo: any;
-  public obj = {} as any;
+
 
   constructor(private _router: Router,
     private _notifierService: NotifierService,
@@ -50,9 +49,6 @@ export class CadastrarPermissoesComponent implements OnInit {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
       this.getPermissao(this.id);
     }
-    if (this._avRoute.snapshot.queryParamMap.get("janela")) {
-      this.titulo = this._avRoute.snapshot.queryParamMap.get("janela");
-    }
   }
 
 
@@ -61,10 +57,8 @@ export class CadastrarPermissoesComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Preencha todos os campos obrigatórios!");
       return false;
     }
-    this.setObj();
-    this._permissoesService.update(this.obj).pipe(take(1)).subscribe(item => {
+    this._permissoesService.update(this.obj()).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
-      this.voltar();
     }, error => {
       this._notifierService.notify(AlertType.Error, error.message);
     });
@@ -79,8 +73,7 @@ export class CadastrarPermissoesComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "O nome não deve possuir espaços!");
       return false;
     }
-    this.setObj();
-    this._permissoesService.save(this.obj).pipe(take(1)).subscribe(item => {
+    this._permissoesService.save(this.obj()).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
       this.voltar();
     }, error => {
@@ -88,12 +81,14 @@ export class CadastrarPermissoesComponent implements OnInit {
     });
   }
 
-  setObj() {
-    this.obj.nome = this.form.controls['nome'].value;
-    this.obj.descricao = this.form.controls['descricao'].value;
+  obj() {
+    let obj = {} as any;
+    obj.nome = this.form.controls['nome'].value;
+    obj.descricao = this.form.controls['descricao'].value;
     if (this.id) {
-      this.obj.id = this.id;
+      obj.id = this.id;
     }
+    return obj;
   }
 
   getPermissao(id) {

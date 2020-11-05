@@ -24,6 +24,7 @@ const routes: Routes = [
     { path: 'pedido', loadChildren: '../pages/pedido/pedido.module#PedidoModule' },
     { path: 'pedidos', loadChildren: '../pages/pedidos/pedidos.module#PedidosModule', canActivate: [AuthGuardService] },
     { path: 'agendamento', loadChildren: '../pages/agendamento/agendamento.module#AgendamentoModule' },
+    { path: 'parametros', loadChildren: '../pages/parametros/parametros.module#ParametrosModule', canActivate: [AuthGuardService] },
     { path: '**', redirectTo: 'auth/dashboard', canActivate: [AuthGuardService] },
 ]
 

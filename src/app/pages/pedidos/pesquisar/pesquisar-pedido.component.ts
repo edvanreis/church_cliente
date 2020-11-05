@@ -103,7 +103,7 @@ export class PesquisarPedidoComponent implements OnInit {
 
     this._service.obterPedidos(pedidos).pipe(take(1)).subscribe(item => {
       this.pedidos = item;
-      console.log(this.pedidos);
+      // console.log(this.pedidos);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });

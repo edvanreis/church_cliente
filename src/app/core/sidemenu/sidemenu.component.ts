@@ -86,6 +86,7 @@ export class SidemenuComponent implements OnInit {
         { 'name': 'Usuario', 'link': 'usuario/pesquisar', 'icon': 'person', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_configuracoes") , },
         { 'name': 'Perfil', 'link': 'perfil/pesquisar', 'icon': 'people', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_configuracoes") , },
         { 'name': 'Permissões', 'link': 'permissoes/pesquisar', 'icon': 'vpn_key', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_configuracoes") , },
+        { 'name': 'Parametros', 'link': 'parametros/pesquisar', 'icon': 'phonelink_setup', 'chip': false, 'open': false, 'visible': this.userService.hasPermission("acesso_parametros") , },
       ]
     },
 

@@ -12,7 +12,7 @@
               <input matInput placeholder="CPF" formControlName="cpf" [textMask]="{mask: maskCPF}">
               <mat-error *ngIf="!form.controls.cpf.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
-          </div> 
+          </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="isEsqueceuSenha">
             <mat-form-field class="example-full-width">
               <input matInput placeholder="Email" formControlName="email" type="email">
@@ -20,14 +20,14 @@
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"  *ngIf="!isEsqueceuSenha">
-            <mat-form-field class="example-full-width">
+            <mat-form-field>
                 <input type="password"  class="input" placeholder="Senha Atual"
                 formControlName="senhaAtual" required matInput>
               <mat-error *ngIf="!form.controls.senhaAtual.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="!isEsqueceuSenha">
-            <mat-form-field class="example-full-width"><input type="password"  class="input" placeholder="Nova Senha"
+            <mat-form-field><input type="password"  class="input" placeholder="Nova Senha"
               formControlName="senhaNova" required matInput>
               <mat-error *ngIf="!form.controls.senhaNova.valid">Campo Obrigatório</mat-error>
             </mat-form-field>

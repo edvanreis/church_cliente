@@ -67,19 +67,19 @@
               <span matTooltip="{{element.grupoTrabalho.nome}}" *ngIf="element.grupoTrabalho">
                 {{(element.grupoTrabalho.nome.length > 20) ? ((element.grupoTrabalho.nome).slice(0, 20) + '...') : element.grupoTrabalho.nome}}
               </span>
-              <span matTooltip="Aprovar" style="color:green; cursor: pointer; text-align: right; float: right;" (click)="dialogAprovar(element.id)" *ngIf="element.id && element.statusAgendamento=='P'">
+              <span matTooltip="Aprovar" style="color:green; cursor: pointer; text-align: right; float: right;" (click)="dialogAprovar(element.id)" *ngIf="element.id && element.statusAgendamento=='PENDENTE'">
                 <i class="col-md material-icons ">done</i>
               </span>
-              <span matTooltip="Reprovar"  style="color:red; cursor: pointer; text-align: right; float: right;" (click)="dialogReprovar(element.id)" *ngIf="element.id && element.statusAgendamento!='A'">
+              <span matTooltip="Reprovar"  style="color:red; cursor: pointer; text-align: right; float: right;" (click)="dialogReprovar(element.id)" *ngIf="element.id && element.statusAgendamento!='APROVADO'">
                 <i class="col-md material-icons ">not_interested</i>
               </span>
-              <span matTooltip="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id && element.statusAgendamento!='A' || element.tipoAgendamento=='C'" (click)="editar(element.id,element.tipoAgendamento)">
+              <span matTooltip="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id && element.statusAgendamento!='APROVADO' || element.tipoAgendamento=='CANCELADO'" (click)="editar(element.id,element.tipoAgendamento)">
                 <i class="col-md material-icons ">create</i>
               </span>
-              <span matTooltip="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id && element.statusAgendamento!='A' || element.tipoAgendamento=='C'">
+              <span matTooltip="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id && element.statusAgendamento!='APROVADO' || element.tipoAgendamento=='CANCELADO'">
                 <i class="col-md material-icons ">delete</i>
               </span>
-              <span style="color:red; cursor: pointer; text-align: right; float: right;"  *ngIf="element.statusAgendamento=='A'" class="default-botoes"
+              <span style="color:red; cursor: pointer; text-align: right; float: right;"  *ngIf="element.statusAgendamento=='APROVADO'" class="default-botoes"
               (click)="dialogCancelar(element.id)" matTooltip="Cancelar"><i class="col-md material-icons ">event_busy</i></span>
             </div>
           </div>

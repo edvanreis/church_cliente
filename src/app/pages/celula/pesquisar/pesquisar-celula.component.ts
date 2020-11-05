@@ -105,12 +105,7 @@ export class PesquisarCelulaComponent implements OnInit {
 
 
   cadastrar() {
-    this._router.navigate(['/auth/celula/cadastrar'], {
-      queryParams: {
-        janela: 'Nova',
-      },
-      skipLocationChange: true
-    });
+    this._router.navigate(['/auth/celula/cadastrar']);
   }
 
 
