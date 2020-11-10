@@ -65,7 +65,7 @@
               <td>{{i.endereco.uf}}</td>
               <td><span title="Editar" style="cursor: pointer;color:white" (click)="editar(i.id)"><i
                     class="material-icons">create</i></span>
-                <span title="Excluir" style="cursor: pointer;color:white" (click)="dialogStatus(i.id)"><i
+                <span title="Excluir" style="cursor: pointer;color:white" (click)="dialogStatus(i.id,i.status)"><i
                     class="material-icons">settings</i></span>
               </td>
             </tr>
@@ -83,7 +83,7 @@
               <td>{{f.endereco.uf}}</td>
               <td><span matTooltip="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(f.id)"><i
                     class="material-icons">create</i></span>
-                <span matTooltip="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(f.id)"><i
+                <span matTooltip="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(f.id,f.status)"><i
                     class="material-icons">settings</i></span>
               </td>
             </tr>
@@ -119,7 +119,7 @@
               <td>{{i.endereco.uf}}</td>
               <td><span matTooltip="Editar" style="cursor: pointer;color:#1d68a5" (click)="editar(i.id)"><i
                     class="material-icons">create</i></span>
-                <span matTooltip="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id)"><i
+                <span matTooltip="Excluir" style="cursor: pointer;color:#1d68a5" (click)="dialogStatus(i.id,i.status)"><i
                     class="material-icons">settings</i></span>
               </td>
             </tr>

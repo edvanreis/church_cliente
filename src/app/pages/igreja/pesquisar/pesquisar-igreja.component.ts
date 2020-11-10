@@ -13,8 +13,8 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { ExcelService } from '../../../service/excel.service';
 
 const ELEMENT_DATA = [
-  { codigo: 'A', value: 'Ativo' },
-  { codigo: 'I', value: 'Inativo' },
+  { codigo: 'ATIVO', value: 'Ativo' },
+  { codigo: 'INATIVO', value: 'Inativo' },
 ];
 
 
@@ -101,11 +101,12 @@ export class PesquisarIgrejaComponent implements OnInit {
   }
 
 
-  dialogStatus(id) {
+  dialogStatus(id,status) {
     const dialogRef = this._dialog.open(DialogAtivarInativarComponent, {
       width: '600px',
       data: {
         id: id,
+        status:status,
         controller: "igreja"
       }
     });

@@ -38,7 +38,7 @@ export class PesquisarPermissoesComponent implements OnInit {
   ngOnInit() {
     this.columns();
     this.getList();
-    this.emiter();
+    this.getEmiter();
   }
 
   applyFilter(value) {
@@ -94,7 +94,7 @@ export class PesquisarPermissoesComponent implements OnInit {
     });
   }
 
-  emiter(): void {
+  getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(obj => {
       if (obj.data == 'remove') {
         this.getList();

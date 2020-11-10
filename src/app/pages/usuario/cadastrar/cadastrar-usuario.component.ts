@@ -132,7 +132,7 @@ export class CadastrarUsuarioComponent implements OnInit {
   }
 
   setObj() {
-    this.obj.membro = this.membro
+    this.obj.membro = {id:this.membro.id}
     this.obj.login = this.form.controls['login'].value;
     this.obj.perfis = this.perfis;
     this.obj.status = this.form.controls['status'].value;
@@ -172,7 +172,7 @@ export class CadastrarUsuarioComponent implements OnInit {
       //         this.perfilUsuario = element;
       //   }
       // });
-      console.log(item)
+      // console.log(item)
       this.comboPerfil = item;
       this.filteredPerfil = this.myControlPerfil.valueChanges
       .pipe(

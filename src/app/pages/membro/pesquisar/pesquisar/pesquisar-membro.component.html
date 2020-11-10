@@ -169,13 +169,13 @@
                   {{(element[column.id]?.length > 10) ? ((element[column.id])?.slice(0, 10) + '...') : element[column.id]}}
                 </span>
                 <span *ngIf="column.id=='icon'">
-                  <span style="color: green;" *ngIf="element.status=='A' && element.situacao=='APROVADO'">
+                  <span style="color: green;" *ngIf="element.status=='ATIVO' && element.situacao=='APROVADO'">
                     <i class="material-icons">person</i>
                   </span>
-                  <span style="color:#ff8000;"  *ngIf="element.situacao!='APROVADO' && element.status!='I'">
+                  <span style="color:#ff8000;"  *ngIf="element.situacao!='APROVADO' && element.status!='INATIVO'">
                     <i class="col-md material-icons ">warning</i>
                   </span>
-                  <span style="color: grey;" *ngIf="element.status=='I' && element.situacao=='APROVADO'">
+                  <span style="color: grey;" *ngIf="element.status=='INATIVO' && element.situacao=='APROVADO'">
                     <i class="material-icons">person</i>
                   </span>
                 </span>
@@ -186,7 +186,7 @@
                   <span  *ngIf="element.cartaRecomendacao" class="default-botoes" (click)="enviarCarta(element.id)" matTooltip="Editar">
                     <i class="material-icons">vertical_align_top</i>
                   </span>
-                  <span class="default-botoes"  (click)="status(element.id)" matTooltip="status">
+                  <span class="default-botoes"  (click)="status(element.id,element.status)" matTooltip="status">
                     <i class="material-icons">settings</i>
                   </span>
                   <span style="cursor: pointer;" (click)="historico(element.id)" matTooltip="Historico">

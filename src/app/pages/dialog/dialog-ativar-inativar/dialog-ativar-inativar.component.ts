@@ -8,8 +8,8 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { StatusService } from '../../../service/status.service';
 
 const ELEMENT_DATA = [
-  { codigo: 'A', value: 'Ativo' },
-  { codigo: 'I', value: 'Inativo' }
+  { codigo: 'ATIVO', value: 'Ativo' },
+  { codigo: 'INATIVO', value: 'Inativo' }
 ];
 
 @Component({
@@ -33,6 +33,7 @@ export class DialogAtivarInativarComponent implements OnInit {
 
   ngOnInit() {
     this._buildForm();
+    this.form.controls['status'].patchValue(this.data.status);
     console.log(this.data)
   }
 
@@ -57,7 +58,7 @@ export class DialogAtivarInativarComponent implements OnInit {
       return false;
     }
     console.log(obj)
-    if (this.form.controls['status'].value == 'A') {
+    if (this.form.controls['status'].value == 'ATIVO') {
       this.ativar(obj);
     } else {
       this.inativar(obj);
@@ -73,7 +74,7 @@ export class DialogAtivarInativarComponent implements OnInit {
 
   changeStatus(e) {
     this.status = e.value;
-    if (this.status == 'A') {
+    if (this.status == 'ATIVO') {
       this.mensagem = this.memsagemAtivar(this.data.controller);
     } else {
       this.mensagem = this.memsagemInativar(this.data.controller);

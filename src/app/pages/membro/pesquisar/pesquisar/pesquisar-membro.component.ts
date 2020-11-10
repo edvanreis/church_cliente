@@ -99,7 +99,7 @@ export class PesquisarMembroComponent implements OnInit {
       'membroDaCelula': new FormControl(false),
       'observacao': new FormControl(''),
       'cartaRecomendacao': new FormControl(false),
-      'status': new FormControl('A'),
+      'status': new FormControl('ATIVO'),
     });
   }
 
@@ -290,11 +290,12 @@ export class PesquisarMembroComponent implements OnInit {
     });
   }
 
-  status(id) {
+  status(id,status) {
     const dialogRef = this._dialog.open(DialogAtivarInativarComponent, {
       width: '600px',
       data: {
         id: id,
+        status:status,
         controller: 'pessoa'
       }
     });
