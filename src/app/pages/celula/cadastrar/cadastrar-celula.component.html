@@ -22,8 +22,12 @@
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="full-width-field">
-            <input matInput placeholder="Horário" [textMask]="{mask: maskHorario}" formControlName="horario"
-              id="horario" required>
+            <input matInput placeholder="Hora Inicio" [textMask]="{mask: maskHorario}" formControlName="horaInicio"
+              id="horaInicio" required>
+          </mat-form-field>
+          <mat-form-field class="full-width-field">
+            <input matInput placeholder="Hora Fim" [textMask]="{mask: maskHorario}" formControlName="horaFim"
+              id="horaFim" required>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Turno</mat-label>
@@ -35,7 +39,7 @@
           </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
-          <mat-form-field>
+          <mat-form-field class="full-width-field">
             <mat-label>Dia da semana</mat-label>
             <mat-select formControlName="diaSemana" id="diaSemana" required>
               <mat-option *ngFor="let item of comboSemana | keyValue" [value]="item.key">
@@ -43,7 +47,7 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
-          <mat-form-field>
+          <mat-form-field class="full-width-field">
             <mat-label>Tipo de Célula</mat-label>
             <mat-select formControlName="tipo" id="tipo" required>
               <mat-option *ngFor="let item of comboTipoCelula | keyValue" [value]="item.key">
@@ -51,6 +55,8 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+        </div>
+        <div>
           <label style="color:#1d68a5">Digital?</label>
           <mat-slide-toggle formControlName="digital" id="digital" #digital>
             {{digital.checked | boolean : ['Sim', 'Não']}}
@@ -84,11 +90,12 @@
         <h1 class="mat-subheading-2 center-align">Endereço</h1>
       </div>
       <app-endereco [sizeLimitOne]="sizeLimitOne"></app-endereco>
-      <br/><br/>
+        <br/>
+        <br/>
       <mat-divider></mat-divider>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" class="default-font-color">
         <i class="material-icons">face</i>
-        <h1 class="mat-subheading-2 center-align">Membro</h1>
+        <h1 class="mat-subheading-2 center-align">Lideres</h1>
       </div>
       <div div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
         <mat-form-field class="full-width-field">

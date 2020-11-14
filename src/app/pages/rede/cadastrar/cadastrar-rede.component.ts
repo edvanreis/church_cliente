@@ -113,7 +113,7 @@ export class CadastrarRedeComponent implements OnInit {
     return {
       nome: this.form.controls['nome'].value,
       igreja: this.igrejaSelecionada,
-      pessoas: this.membros,
+      membros: this.membros,
       dataAbertura: this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy'),
       rede: this.form.controls['redes'].value,
       descricao: this.form.controls['descricao'].value
@@ -150,7 +150,7 @@ export class CadastrarRedeComponent implements OnInit {
       this.form.controls['redes'].patchValue(item.rede);
       this.form.controls['dataAbertura'].patchValue(new Date(item.dataAbertutaToDate));
       this.getIgreja(item.idIgreja)
-      this.carregarPessoas(item.pessoas);
+      this.carregarPessoas(item.membros);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });

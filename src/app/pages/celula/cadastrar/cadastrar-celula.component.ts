@@ -69,18 +69,17 @@ export class CadastrarCelulaComponent implements OnInit {
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
+    this.getEmiter();
     this._buildForm();
     this.getComboSemana();
     this.getComboTurno();
     this.carregarTipoCelula();
     this.carregarTipoLiderencaCelula();
-    this.getEmiter();
     this.getParams();
   }
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      // console.log(item.data);
 
       if (item.type == 'igreja-comp') {
         this.igrejaSelecionada = item.data;
@@ -107,7 +106,8 @@ export class CadastrarCelulaComponent implements OnInit {
       'dataAbertura': new FormControl(''),
       'tipo': new FormControl(''),
       'perfil': new FormControl(''),
-      'horario': new FormControl(''),
+      'horaInicio': new FormControl(''),
+      'horaFim': new FormControl(''),
       'digital': new FormControl(''),
     });
   }
@@ -156,7 +156,8 @@ export class CadastrarCelulaComponent implements OnInit {
     return {
       nome: this.form.controls['nome'].value,
       dataAbertura: this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy'),
-      horario: this.form.controls['horario'].value,
+      horaInicio: this.form.controls['horaInicio'].value,
+      horaFim: this.form.controls['horaFim'].value,
       dia: this.form.controls['diaSemana'].value,
       turno: this.form.controls['turno'].value,
       tipoCelula: this.form.controls['tipo'].value,
@@ -212,16 +213,27 @@ export class CadastrarCelulaComponent implements OnInit {
     this._service.getCelula(id).pipe(take(1)).subscribe(item => {
       // console.log(item)
       this.form.controls['nome'].patchValue(item.nome);
-      this.form.controls['horario'].patchValue(item.horario);
+      this.form.controls['horaInicio'].patchValue(item.horaInicio);
+      this.form.controls['horaFim'].patchValue(item.horaFim);
       this.form.controls['diaSemana'].patchValue(item.diasEnum);
       this.form.controls['turno'].patchValue(item.turnoEnum);
       this.form.controls['tipo'].patchValue(item.tipoCelulaEnum);
       this.form.controls['dataAbertura'].patchValue(new Date(item.dataAbertutaToDate));
       this.form.controls['digital'].patchValue(item.digital);
       this.observacao = item.observacao;
-      this.getRede(item.rede.id)
-      this.emitirEnderecos(item.enderecos);
-      this.carregarPessoas(item.membros);
+      if(item.rede){
+        this.redeValue = item.rede.nome;
+      }
+      if(item.enderecos){
+        this.emitirEnderecos(item.enderecos);
+      }
+      if(item.membros){
+        this.carregarPessoas(item.membros);
+      }
+      if(item.igreja){
+        this.emitirIgreja(item.igreja);
+      }
+
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });
@@ -240,23 +252,16 @@ export class CadastrarCelulaComponent implements OnInit {
     }
   }
 
-  getRede(id) {
-    this._redeService.getRede(id).pipe(take(1)).subscribe(item => {
-      this.redeSelecionada = item;
-      this.emitirRede(item);
-    }, error => {
-      this._notifierService.notify(AlertType.Error, error.errors.message);
-    });
-  }
-
-  emitirRede(item): void {
-    this._emitirEventoService.emitir('edit-rede', item);
-  }
-
   emitirEnderecos(item): void {
     this.enderecos = item;
     this._emitirEventoService.emitir('edit-endereco', item);
   }
+
+  emitirIgreja(item): void {
+    this.igrejaSelecionada = item;
+    this._emitirEventoService.emitir('edit-igreja', this.igrejaSelecionada);
+  }
+
 
 
   save() {
@@ -335,6 +340,16 @@ export class CadastrarCelulaComponent implements OnInit {
     }
     if(!this.form.controls['tipo'].value){
       this._notifierService.notify(AlertType.Error, "Por favor selecione um Tipo de Célula!");
+      return false;
+    }
+
+    if(!this.form.controls['horaInicio'].value){
+      this._notifierService.notify(AlertType.Error, "Por favor digite a hora Inicio!");
+      return false;
+    }
+
+    if(!this.form.controls['horaFim'].value){
+      this._notifierService.notify(AlertType.Error, "Por favor digite a hora Fim");
       return false;
     }
 

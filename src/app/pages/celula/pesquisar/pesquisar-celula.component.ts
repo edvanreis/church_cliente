@@ -13,8 +13,8 @@ import { AlertType } from '../../../model/alert-type';
 
 
 const ELEMENT_DATA = [
-  { codigo: 'A', value: 'Ativo' },
-  { codigo: 'I', value: 'Inativo' },
+  { codigo: 'ATIVO', value: 'Ativo' },
+  { codigo: 'INATIVO', value: 'Inativo' },
 ];
 
 @Component({
@@ -33,7 +33,7 @@ export class PesquisarCelulaComponent implements OnInit {
   public pageIndex: number = 0;
   public celulas = new Array();
   public comboStatus = ELEMENT_DATA;
-  public statusSelecionado = 'A';
+  public statusSelecionado = 'ATIVO';
 
   public loading: boolean = false;
 
@@ -66,7 +66,8 @@ export class PesquisarCelulaComponent implements OnInit {
       { id: 'nome', value: 'Nome' },
       { id: 'dia', value: 'Dia' },
       { id: 'turno', value: 'Turno' },
-      { id: 'horario', value: 'Horário' },
+      { id: 'horaInicio', value: 'Hora Inicio' },
+      { id: 'horaFim', value: 'Hora Fim' },
       { id: 'dataAbertura', value: 'Data Abertura' },
       { id: 'idade', value: 'Idade' },
       { id: 'nomeRede', value: 'Rede' },
@@ -88,7 +89,7 @@ export class PesquisarCelulaComponent implements OnInit {
   getList() {
     this.loading = true;
     this._celulaService.getList().pipe(take(1)).subscribe(item => {
-      // console.log(item)
+      console.log(item)
       this.celulas = item;
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
@@ -116,7 +117,8 @@ export class PesquisarCelulaComponent implements OnInit {
         "Nome": i.nome,
         "dia": i.dia,
         "Turno": i.turno,
-        "Horário": i.horario,
+        "Hora Inicio": i.horaInicio,
+        "Hora Fim": i.horaFim,
         "Data Abertura": i.dataAbertura,
         "Tipo Pessoas": i.tipoCelula,
         "CEP": i.cep,
@@ -142,11 +144,12 @@ export class PesquisarCelulaComponent implements OnInit {
     });
   }
 
-  status(id) {
+  dialogStatus(id,status) {
     const dialogRef = this._dialog.open(DialogAtivarInativarComponent, {
       width: '600px',
       data: {
         id: id,
+        status:status,
         controller: 'celula'
       }
     });
@@ -188,21 +191,4 @@ export class PesquisarCelulaComponent implements OnInit {
     }
   }
 
-  membros(id) {
-    let dados = [];
-    this._celulaService.getMembrosDaCelula(id).pipe(take(1)).subscribe(item => {
-      item.forEach(i => {
-        dados.push({
-          "Nome": i.nome,
-          "Batizado": i.batizado
-        });
-      });
-      this._excelService.exportAsExcelFile(dados, "membros");
-    }, error => {
-      console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
-
-    });
-
-  }
 }

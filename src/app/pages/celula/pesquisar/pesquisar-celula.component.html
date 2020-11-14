@@ -42,10 +42,8 @@
             </span>
             <span matTooltip="Editar" *ngIf="column.id=='id'" class="default-botoes" (click)="editar(element.id)"><i
                 class="material-icons">create</i></span>
-            <span matTooltip="Mudar Status da Célula" *ngIf="column.id=='id'" class="default-botoes" (click)="status(element.id)"><i
+            <span matTooltip="Mudar Status da Célula" *ngIf="column.id=='id'" class="default-botoes" (click)="dialogStatus(element.id,element.status)"><i
                 class="material-icons">settings</i></span>
-                <span matTooltip="Lista de membros" *ngIf="column.id=='id'" class="default-botoes" (click)="membros(element.id)"><i
-                  class="material-icons">group</i></span>
           </mat-cell>
         </ng-container>
         <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

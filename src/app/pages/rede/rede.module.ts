@@ -4,7 +4,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatAutocompleteModule, MatButtonModule, MatDatepickerModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSpinner, MatTableModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
+import { MatAutocompleteModule, MatButtonModule, MatDatepickerModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSpinner, MatTableModule, MatToolbarModule, MatTooltipModule, MatDividerModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { InterceptorService } from '../../service/interceptor.service';
 import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
@@ -49,6 +49,7 @@ const routes: Routes = [
     DialogTransferirPessoaModule,
     DiretivesModule,
     MatProgressSpinnerModule,
+    MatDividerModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

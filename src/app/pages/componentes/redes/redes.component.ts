@@ -26,8 +26,9 @@ export class RedesComponent implements OnInit {
     private _emitirEventoService: EmitirEventoService) { }
 
   ngOnInit() {
-    this.carregarRede();
     this.getEmiter();
+    this.carregarRede();
+
   }
 
   carregarRede() {
@@ -52,7 +53,7 @@ export class RedesComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      // console.log(item.type);
+      console.log("rede");
       if (item.type == 'add') {
         this.redeSelecionada = item.data;
         this.nomeValue = item.data;

@@ -74,11 +74,6 @@ export class CelulaService implements AbstractService{
       .pipe(map((response: any) => response))
   }
 
-  getMembrosDaCelula(id) {
-    return this.http.get(this._url+id+'/obterMembrosDaCelula')
-      .pipe(map((response: any) => response))
-  }
-
   remove(id) {
     return this.http.delete(this._url+id)
       .pipe(map((response: any) => response))
