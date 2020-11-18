@@ -207,7 +207,6 @@ export class CadastrarRedeComponent implements OnInit {
     let obj = {} as any;
     obj = this.obj();
     obj.id = Number.parseInt(this.id);
-    console.log(obj)
     this._service.update(obj).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {

@@ -17,7 +17,7 @@ import { DialogConfirmAgandamentoModule } from '../dialog/dialog-confirm-agandam
 import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
 import { CadastrarCultoComponent } from './cadastrar-culto/cadastrar-culto.component';
 import { PessoasAgendadasComponent } from './pessoas-agendadas/pessoas-agendadas.component';
-import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponentModule } from '../componentes/igrejas/igreja-compenent.module';
 import { DashboardWidgetModule } from '../../dashboard-widget/dashboard-widget.module';
 import { DialogJustificarAgendamentoModule } from '../dialog/dialog-justificar-agendamento/dialog-justificar-agendamento.module';
 
@@ -55,7 +55,7 @@ const routes: Routes = [
     DialogConfirmAgandamentoModule,
     DialogConfirmPessoaModule,
     MatTooltipModule,
-    IgrejasComponenteModule,
+    IgrejasComponentModule,
     MatSlideToggleModule,
     MatRadioModule,
     DashboardWidgetModule,

@@ -12,13 +12,13 @@
       <form form [formGroup]="form">
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="full-width-field">
-            <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome">
+            <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" maxlength="255">
             <mat-error *ngIf="!form.controls.nome.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="full-width-field">
-            <input matInput class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome">
+            <input matInput class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" maxlength="255">
             <mat-error *ngIf="!form.controls.sobrenome.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
@@ -28,7 +28,7 @@
             <mat-error *ngIf="!form.controls.rg.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
           <mat-form-field class="full-width-field">
-            <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf">
+            <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" >
             <mat-error *ngIf="!form.controls.cpf.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
@@ -59,14 +59,14 @@
             <mat-error *ngIf="!form.controls.estadoCivil.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
           <mat-form-field class="full-width-field">
-            <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade"
+            <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade" maxlength="255"
               id="nacionalidade">
             <mat-error *ngIf="!form.controls.estadoCivil.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
           <mat-form-field class="full-width-field">
-            <input matInput placeholder="Profissão" class="input-upper" formControlName="profissao" id="profissao">
+            <input matInput placeholder="Profissão" class="input-upper" formControlName="profissao" id="profissao" maxlength="255">
             <mat-error *ngIf="!form.controls.estadoCivil.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>

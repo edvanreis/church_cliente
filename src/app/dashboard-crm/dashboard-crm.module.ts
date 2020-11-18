@@ -11,7 +11,7 @@ import { DashboardCrmComponent } from './dashboard-crm.component';
 import { DialogAprovarReprovarAgendamentoModule } from '../pages/dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.module';
 import { DialogAprovarReprovarMembroModule } from '../pages/dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.module';
 import { DiretivesModule } from '../diretives/diretives.module';
-import { IgrejasComponenteModule } from '../pages/componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponentModule } from '../pages/componentes/igrejas/igreja-compenent.module';
 
 
 export const appRoutes: Routes = [
@@ -36,7 +36,7 @@ export const appRoutes: Routes = [
     DialogAprovarReprovarMembroModule,
     MatTooltipModule,
     DiretivesModule,
-    IgrejasComponenteModule,
+    IgrejasComponentModule,
     MatToolbarModule,
     MatAutocompleteModule
   ],

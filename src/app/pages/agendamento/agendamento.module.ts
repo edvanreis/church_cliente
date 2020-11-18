@@ -6,7 +6,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MatAutocompleteModule, MatButtonModule, MatDatepickerModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSortModule, MatTableModule, MatToolbarModule, MatTooltipModule } from '@angular/material';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipes/pipe.module';
-import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponentModule } from '../componentes/igrejas/igreja-compenent.module';
 import { RouterModule, Routes } from '@angular/router';
 import { PesquisarAgendamentoComponent } from './pesquisar/pesquisar-agendamento.component';
 import { DialogAgendamentoConfirmComponent } from './dialog-agendamento-confirm/dialog-agendamento-confirm.component';
@@ -33,7 +33,7 @@ const routes: Routes = [
     PipeModule,
     MatDatepickerModule,
     MatAutocompleteModule,
-    IgrejasComponenteModule,
+    IgrejasComponentModule,
     MatButtonModule,
     MatToolbarModule,
     MatTableModule,

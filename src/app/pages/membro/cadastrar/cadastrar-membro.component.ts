@@ -25,7 +25,7 @@ export class CadastrarMembroComponent implements OnInit {
   public membro = {} as any;
   public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
   public maskCPF = [/\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/, /\d/]
-  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/]
+  public maskRG = [/\d/, /\d/, '.', /\d/, /\d/, /\d/, '.', /\d/, /\d/, /\d/, '-', /\d/,/\d/]
   public id: any;
   public comboSexo = [];
   public comboEstadoCivil = [];
@@ -313,7 +313,6 @@ export class CadastrarMembroComponent implements OnInit {
     }
     if (this.celulaSelecionada) {
       this.membro.celula = { id: this.celulaSelecionada.id };
-      this.membro.membroDaCelula = true;
     }
     if (this.enderecos) {
       this.membro.enderecos = this.enderecos;
@@ -407,6 +406,7 @@ export class CadastrarMembroComponent implements OnInit {
   validFields(): string {
     let concat = 'Por favor preencha o campo';
     let concatArray = 'Por favor adicione pelo menos um';
+
     if (!this.membro.nome) {
       return concat + ' nome!';
     }
@@ -442,6 +442,10 @@ export class CadastrarMembroComponent implements OnInit {
     }
     if (!this.membro.igreja) {
       return concat + ' Igreja!';
+    }
+
+    if (!this.membro.batizado) {
+      return concat + 'O campo batizado é Obrigatório!';
     }
 
     return null;

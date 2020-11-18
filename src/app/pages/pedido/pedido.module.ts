@@ -6,7 +6,7 @@ import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatDatepickerMod
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
 import { PipeModule } from '../../pipes/pipe.module';
-import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponentModule } from '../componentes/igrejas/igreja-compenent.module';
 import { CadastrarPedidoComponent } from './cadastrar/cadastrar-pedido.component';
 
 
@@ -32,7 +32,7 @@ const routes: Routes = [
     MatDatepickerModule,
     MatAutocompleteModule,
     MatExpansionModule,
-    IgrejasComponenteModule,
+    IgrejasComponentModule,
     MatButtonModule,
     RouterModule.forChild(routes)
   ],

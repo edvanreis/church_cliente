@@ -17,7 +17,7 @@ import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dia
 import { CadastrarIgrejaComponent } from './cadastrar/cadastrar-igreja.component';
 import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component';
 import { IgrejaPessoasComponent } from './pessoas/igreja-pessoas.component';
-import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponentModule } from '../componentes/igrejas/igreja-compenent.module';
 
 
 
@@ -56,7 +56,7 @@ const routes: Routes = [
     MatTooltipModule,
     MatDatepickerModule,
     MatRadioModule,
-    IgrejasComponenteModule,
+    IgrejasComponentModule,
     DialogTransferirPessoaModule,
     DiretivesModule,
     RouterModule.forChild(routes)

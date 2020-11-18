@@ -1,15 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
-import { Router, ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatAutocompleteSelectedEvent, MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
 import { NotifierService } from 'angular-notifier';
-import { take } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, startWith, take } from 'rxjs/operators';
+import { AlertType } from '../../../model/alert-type';
 import { CelulaService } from '../../../service/celula.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { ExcelService } from '../../../service/excel.service';
+import { IgrejaService } from '../../../service/igreja.service';
+import { RedeService } from '../../../service/rede.service';
 import { DialogAtivarInativarComponent } from '../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
-import { ElementData } from '@angular/core/src/view';
-import { AlertType } from '../../../model/alert-type';
+
 
 
 const ELEMENT_DATA = [
@@ -37,17 +40,33 @@ export class PesquisarCelulaComponent implements OnInit {
 
   public loading: boolean = false;
 
+  public filteredRede: Observable<string[]>;
+  public myControlRede = new FormControl();
+  public comboRede = [];
+  public redeSelecionada: any;
+  public redeValue: any;
+
+
+  public comboIgrejas = [];
+  public filteredIgreja: Observable<string[]>;
+  public myControlIgreja = new FormControl();
+  public igrejaSelecionada: any;
+  public igrejaValue: any;
+
   constructor(private _router: Router,
     private _celulaService: CelulaService,
     private _notifierService: NotifierService,
     private _dialog: MatDialog,
     private _emitirEventoService: EmitirEventoService,
     private _excelService: ExcelService,
-    private _avRoute: ActivatedRoute) { }
+    private _avRoute: ActivatedRoute,
+    private _serviceRede: RedeService,
+    private _igrejaService: IgrejaService) { }
 
   ngOnInit() {
     this.columns();
     this.getEmiter();
+    this.carregarIgrejas();
     if (!this.getParams()) {
       this.getList();
     }
@@ -81,7 +100,7 @@ export class PesquisarCelulaComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(obj => {
       if (obj.data == 'status') {
-        this.getListForStatus(this.statusSelecionado);
+        this.getListForPorStatusAndRede();
       }
     });
   }
@@ -134,7 +153,22 @@ export class PesquisarCelulaComponent implements OnInit {
 
   editar(id) {
     // console.log(id)
-    localStorage.setItem("pesquisar", JSON.stringify(this.statusSelecionado));
+    let obj = {} as any;
+    if(this.igrejaSelecionada){
+      obj.igreja = {
+                    id:this.igrejaSelecionada.id,
+                    nome:this.igrejaSelecionada.nome
+                  };
+    }
+    if(this.redeSelecionada){
+      obj.rede = {
+                  id:this.redeSelecionada.id,
+                  nome:this.redeSelecionada.nome
+                };
+    }
+    obj.status = this.statusSelecionado;
+
+    localStorage.setItem("pesquisar", JSON.stringify(obj));
     this._router.navigate(['/auth/celula/cadastrar'], {
       queryParams: {
         janela: 'Editar',
@@ -155,13 +189,13 @@ export class PesquisarCelulaComponent implements OnInit {
     });
   }
 
-  onSelection() {
-    // console.log(this.statusSelecionado);
-    this.getListForStatus(this.statusSelecionado);
-  }
 
-  getListForStatus(status) {
-    this._celulaService.getListForStatus(status).pipe(take(1)).subscribe(item => {
+  getListForPorStatusAndRede() {
+
+    if(!this.validFields()){
+      return;
+    }
+    this._celulaService.getListForPorStatusAndRede(this.obj()).pipe(take(1)).subscribe(item => {
       // console.log(item)
       this.celulas = item;
       this.dados = new MatTableDataSource(item);
@@ -174,13 +208,45 @@ export class PesquisarCelulaComponent implements OnInit {
     });
   }
 
+  obj(){
+    return {
+      status:this.statusSelecionado,
+      rede:{id:this.redeSelecionada.id}
+    }
+  }
+
+  validFields(){
+    if(!this.igrejaSelecionada){
+      this._notifierService.notify(AlertType.Error, "Por Favor Selecione uma Igreja!");
+      return false;
+    }
+
+    if(!this.redeSelecionada){
+      this._notifierService.notify(AlertType.Error, "Por Favor Selecione uma Rede!");
+      return false;
+    }
+    if(!this.statusSelecionado){
+      this._notifierService.notify(AlertType.Error, "Por Favor Selecione um status!");
+      return false;
+    }
+    return true;
+  }
+
   getParams(): boolean {
     //  console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisar")) {
-      this.statusSelecionado = JSON.parse(localStorage.getItem("pesquisar"));
+      let obj = JSON.parse(localStorage.getItem("pesquisar"));
+      if(obj.igreja){
+        this.igrejaSelecionada = obj.igreja;
+        this.igrejaValue = obj.igreja.nome;
+      }
+      if(obj.rede){
+        this.redeSelecionada = obj.rede;
+        this.redeValue = obj.rede.nome;
+      }
       localStorage.removeItem("pesquisar");
-      if(this.statusSelecionado){
-        this.getListForStatus(this.statusSelecionado);
+      if(this.igrejaSelecionada && this.igrejaSelecionada){
+        this.getListForPorStatusAndRede();
       }else{
         this.getList();
       }
@@ -189,6 +255,64 @@ export class PesquisarCelulaComponent implements OnInit {
     } else {
       return false;
     }
+  }
+
+
+  carregarRede(id) {
+
+    this._serviceRede.getRedeIgreja(id).pipe(take(1)).subscribe(item => {
+      this.comboRede = item;
+      // console.log(item);
+      this.filteredRede = this.myControlRede.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterRede(value, this.comboRede))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar as redes!");
+    });
+  }
+
+  private _filterRede(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionRedeChange($event: MatAutocompleteSelectedEvent, option) {
+    this.redeSelecionada = option;
+    this.getListForPorStatusAndRede();
+  }
+
+  carregarIgrejas() {
+
+    this._igrejaService.getListIdAndName().pipe(take(1)).subscribe(item => {
+      this.comboIgrejas = item;
+      // console.log(item);
+      this.filteredIgreja = this.myControlIgreja.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterIgreja(value, this.comboIgrejas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas!");
+    });
+  }
+
+  private _filterIgreja(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+
+  onBlurIgreja(event){
+    if(!event.target.value){
+      this.filteredRede = null;
+    }
+  }
+
+  onSelectionIgrejaClick(value){
+    this.igrejaSelecionada = value;
+    this.carregarRede(this.igrejaSelecionada.id);
   }
 
 }

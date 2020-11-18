@@ -59,8 +59,8 @@ export class CelulaService implements AbstractService{
       .pipe(map((response: any) => response))
   }
 
-  getListForStatus(status) {
-    return this.http.get(this._url+status+"/celulasPorStatus")
+  getListForPorStatusAndRede(obj) {
+    return this.http.post(this._url+"celulasPorStatusAndRede",obj)
       .pipe(map((response: any) => response))
   }
 

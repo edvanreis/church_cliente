@@ -11,7 +11,19 @@
       </div>
       <br />
       <br />
-      <div style="padding: 0 20px;">
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
+            [matAutocomplete]="auto" [(ngModel)]="igrejaValue" style="width: 100%;" (blur)="onBlurIgreja($event)">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
+              (click)="onSelectionIgrejaClick(option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        </div >
+      <div>
         <mat-form-field class="full-width-field">
           <mat-label>Status</mat-label>
           <mat-select  [(ngModel)]="statusSelecionado" id="status">
@@ -24,7 +36,7 @@
       </div>
       <br />
       <br />
-      <div  style="padding: 0 20px;" *ngIf="redes.length > 0 ">
+      <div *ngIf="redes.length > 0 ">
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
         </mat-form-field>

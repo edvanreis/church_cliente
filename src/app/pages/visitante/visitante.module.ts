@@ -17,7 +17,7 @@ import { EscolaridadeService } from '../../service/escolaridade.service';
 import {  DialogConfirmExcluirPessoaModule } from '../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.module';
 import { DialogConfirmCriarVisitanteModule } from '../dialog/dialog-confirm-criar-visitante/dialog-confirm-criar-visitante.module';
 import { TextMaskModule } from 'angular2-text-mask';
-import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponentModule } from '../componentes/igrejas/igreja-compenent.module';
 import { TransferirVisitanteComponent } from './transferir/transferir-visitante.component';
 
 
@@ -53,7 +53,7 @@ const routes: Routes = [
     MatOptionModule,
     MatSelectModule,
     PipeModule,
-    IgrejasComponenteModule,
+    IgrejasComponentModule,
     MatAutocompleteModule,
     RouterModule.forChild(routes)
   ],

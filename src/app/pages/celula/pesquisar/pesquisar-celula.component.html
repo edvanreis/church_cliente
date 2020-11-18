@@ -11,12 +11,35 @@
       </div>
       <br />
       <br />
-      <div style="padding: 0 20px;">
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
+            [matAutocomplete]="auto" [(ngModel)]="igrejaValue" style="width: 100%;" (blur)="onBlurIgreja($event)">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
+              (click)="onSelectionIgrejaClick(option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        </div >
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
+            [matAutocomplete]="a" [(ngModel)]="redeValue">
+          <mat-autocomplete #a="matAutocomplete">
+            <mat-option *ngFor="let option of filteredRede | async" [value]="option.nome"
+              (onSelectionChange)="onSelectionRedeChange($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div>
         <mat-form-field class="full-width-field">
           <mat-label>Status</mat-label>
           <mat-select  [(ngModel)]="statusSelecionado" id="status">
-            <mat-option *ngFor="let item of comboStatus" [value]="item.codigo"
-             (click)="onSelection()">
+            <mat-option *ngFor="let item of comboStatus" [value]="item.codigo">
               {{item.value}}
             </mat-option>
           </mat-select>
@@ -28,7 +51,7 @@
         <h4>Buscando...</h4>
         <mat-spinner [diameter]="40"></mat-spinner>
     </div>
-      <div  style="padding: 0 20px;" *ngIf="celulas.length > 0">
+      <div *ngIf="celulas.length > 0">
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
         </mat-form-field>

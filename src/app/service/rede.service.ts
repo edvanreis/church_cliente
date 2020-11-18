@@ -39,8 +39,8 @@ export class RedeService {
   }
 
 
-  getListForStatus(status) {
-    return this.http.get(this._url+status+"/redePorStatus")
+  obterListaRedes(obj) {
+    return this.http.post(this._url+"obterListaRedes",obj)
       .pipe(map((response: any) => response))
   }
 

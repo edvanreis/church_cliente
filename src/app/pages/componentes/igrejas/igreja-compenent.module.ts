@@ -22,4 +22,4 @@ import { MatInputModule, MatAutocompleteModule } from '@angular/material';
     IgrejasComponent
   ]
 })
-export class IgrejasComponenteModule { }
+export class IgrejasComponentModule { }

@@ -22,20 +22,20 @@
             <form form [formGroup]="form">
               <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
                 <mat-form-field class="full-width-field">
-                  <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome">
+                  <input matInput class="input-upper" placeholder="Nome" formControlName="nome" id="nome" maxlength="255">
                 </mat-form-field>
               </div>
               <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
                 <mat-form-field class="full-width-field">
-                  <input matInput  class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" >
+                  <input matInput  class="input-upper" placeholder="Sobre Nome" formControlName="sobrenome" id="sobrenome" maxlength="255">
                 </mat-form-field>
               </div>
               <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
                 <mat-form-field class="full-width-field">
-                  <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg" >
+                  <input matInput placeholder="RG" [textMask]="{mask: maskRG}" formControlName="rg" id="rg" maxlength="12">
                 </mat-form-field>
                 <mat-form-field class="full-width-field">
-                  <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" >
+                  <input matInput placeholder="CPF" [textMask]="{mask: maskCPF}" formControlName="cpf" id="cpf" maxlength="14">
                 </mat-form-field>
               </div>
               <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -61,7 +61,7 @@
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field class="full-width-field">
-                  <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" >
+                  <input matInput class="input-upper" placeholder="Nacionalidade" formControlName="nacionalidade" id="nacionalidade" maxlength="255">
                 </mat-form-field>
               </div>
               <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" >
@@ -74,7 +74,7 @@
                   </mat-select>
                 </mat-form-field>
                 <mat-form-field class="full-width-field">
-                  <input matInput placeholder="Profissão" class="input-upper" formControlName="profissao" id="profissao">
+                  <input matInput placeholder="Profissão" class="input-upper" formControlName="profissao" id="profissao" maxlength="255">
                 </mat-form-field>
               </div>
               <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
@@ -155,7 +155,8 @@
         </div>
         <br />
         <br />
-        <div *ngIf="pessoas.length > 0 && !loading">
+        <div [hidden]="pessoas.length == 0">
+          <!-- <div> -->
           <mat-form-field class="full-width-field">
             <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
           </mat-form-field>

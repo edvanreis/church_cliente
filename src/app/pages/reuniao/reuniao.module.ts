@@ -1,4 +1,4 @@
-import { IgrejasComponenteModule } from './../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponentModule } from '../componentes/igrejas/igreja-compenent.module';
 import { CommonModule } from '@angular/common';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -11,7 +11,7 @@ import { PipeModule } from '../../pipes/pipe.module';
 import { InterceptorService } from '../../service/interceptor.service';
 import { CelulaComponentModule } from '../componentes/celula/celula-component.module';
 import { LicaoComponenteModule } from '../componentes/licao/licao-componente.module';
-import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
+import { MembroComponentModule } from '../componentes/membro/membro-component.module';
 import { DialogConfirmPessoaReuniaoModule } from '../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.module';
 import { DialogConfirmReuniaoModule } from '../dialog/dialog-confirm-reuniao/dialog-confirm-reuniao.module';
 import { EnderecoModule } from '../componentes/endereco/endereco.module';
@@ -44,7 +44,7 @@ const routes: Routes = [
     LicaoComponenteModule,
     CelulaComponentModule,
     TextMaskModule,
-    MembroComponenteModule,
+    MembroComponentModule,
     MatDividerModule,
     MatSlideToggleModule,
     MatProgressSpinnerModule,
@@ -53,7 +53,7 @@ const routes: Routes = [
     DialogConfirmPessoaReuniaoModule,
     EnderecoModule,
     MatTooltipModule,
-    IgrejasComponenteModule,
+    IgrejasComponentModule,
     RouterModule.forChild(routes)
   ],
   declarations: [

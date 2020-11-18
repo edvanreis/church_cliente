@@ -115,19 +115,25 @@ export class DashboardCrmComponent implements OnInit {
   }
 
   cardsTop(item) {
-    this.dashCard = [
-      { colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalMembrosPendentes, title: 'Membros Pendentes Aprovação', icon: 'warning' },
-      { colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalAgendamentosPendentes, title: 'Agendamentos Pendentes Aprovação', icon: 'warning' },
-      { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalMembrosAprovados, title: 'Membros', icon: 'person' },
-      { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalMembrosCelulas, title: 'Membros Células', icon: 'person' },
-      { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalBatizados, title: 'Membros Batizados', icon: 'person' },
-      { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalDizimistas, title: 'Membros Dizimistas', icon: 'person' },
-      { colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalVisitantes, title: 'Visitantes Mês Atual', icon: 'person' },
-      { colorDark: '#42A5F5', colorLight: '#64B5F6', number: item.totalIgrejas, title: 'Igrejas', icon: 'location_city' },
-      { colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalRedes, title: 'Redes', icon: 'device_hub' },
-      { colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalGruposTrabalho, title: 'Grupo de trabalho', icon: 'work' },
 
-    ];
+    this.dashCard = [];
+
+    if (item.totalMembrosPendentes > 0) {
+      this.dashCard.push( { colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalMembrosPendentes, title: 'Membros Pendentes Aprovação', icon: 'warning' });
+    }
+    if (item.totalAgendamentosPendentes > 0) {
+      this.dashCard.push({ colorDark: '#ff8000', colorLight: '#ffbf00', number: item.totalAgendamentosPendentes, title: 'Agendamentos Pendentes Aprovação', icon: 'warning' });
+    }
+
+    this.dashCard.push({ colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalMembrosAprovados, title: 'Membros', icon: 'person' });
+    this.dashCard.push({ colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalMembrosCelulas, title: 'Membros Células', icon: 'person' });
+    this.dashCard.push({ colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalBatizados, title: 'Membros Batizados', icon: 'person' });
+    this.dashCard.push({ colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalDizimistas, title: 'Membros Dizimistas', icon: 'person' });
+    this.dashCard.push({ colorDark: '#66BB6A', colorLight: '#81C784', number: item.totalVisitantes, title: 'Visitantes Mês Atual', icon: 'person' });
+    this.dashCard.push({ colorDark: '#42A5F5', colorLight: '#64B5F6', number: item.totalIgrejas, title: 'Igrejas', icon: 'location_city' });
+    this.dashCard.push({ colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalRedes, title: 'Redes', icon: 'device_hub' });
+    this.dashCard.push({ colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalGruposTrabalho, title: 'Grupo de trabalho', icon: 'work' });
+
     if (item.totalCelulas > 0) {
       this.dashCard.push({ colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalCelulas, title: 'Células', icon: 'group' },)
     }

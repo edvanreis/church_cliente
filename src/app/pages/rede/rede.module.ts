@@ -7,8 +7,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatButtonModule, MatDatepickerModule, MatInputModule, MatOptionModule, MatPaginatorModule, MatProgressSpinnerModule, MatSelectModule, MatSpinner, MatTableModule, MatToolbarModule, MatTooltipModule, MatDividerModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { InterceptorService } from '../../service/interceptor.service';
-import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
-import { MembroComponenteModule } from '../componentes/membro/membro-componente.module';
+import { IgrejasComponentModule } from '../componentes/igrejas/igreja-compenent.module';
+import { MembroComponentModule } from '../componentes/membro/membro-component.module';
 import { RedesComponenteModule } from '../componentes/redes/redes-componente.module';
 import { DialogAtivarInativarModule } from '../dialog/dialog-ativar-inativar/dialog-ativar-inativar.module';
 import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
@@ -37,14 +37,13 @@ const routes: Routes = [
     MatSelectModule,
     MatOptionModule,
     MatAutocompleteModule,
-    MembroComponenteModule,
-    IgrejasComponenteModule,
+    MembroComponentModule,
     MatTableModule,
     MatPaginatorModule,
     DialogAtivarInativarModule,
     DialogConfirmPessoaModule,
     MatTooltipModule,
-    IgrejasComponenteModule,
+    IgrejasComponentModule,
     RedesComponenteModule,
     DialogTransferirPessoaModule,
     DiretivesModule,

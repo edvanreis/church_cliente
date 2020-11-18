@@ -6,7 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule, MatButtonModule, MatCardModule, MatDatepickerModule, MatExpansionModule, MatInputModule, MatOptionModule, MatSelectModule, MatToolbarModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 import { TextMaskModule } from 'angular2-text-mask';
-import { IgrejasComponenteModule } from '../componentes/igrejas/igreja-compenente.module';
+import { IgrejasComponentModule } from '../componentes/igrejas/igreja-compenent.module';
 import { PipeModule } from './../../pipes/pipe.module';
 import { PesquisarPedidoComponent } from './pesquisar/pesquisar-pedido.component';
 
@@ -33,7 +33,7 @@ const routes: Routes = [
     MatDatepickerModule,
     MatAutocompleteModule,
     MatExpansionModule,
-    IgrejasComponenteModule,
+    IgrejasComponentModule,
     MatButtonModule,
     DashboardWidgetModule,
     RouterModule.forChild(routes)

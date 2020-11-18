@@ -61,7 +61,6 @@ export class IgrejasComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      // console.log(item.type);
       if (item.type == 'edit-igreja') {
         if(item.data){
           this.igrejaSelecionada = item.data;
