@@ -15,9 +15,9 @@ import { DialogPessoaGrupoModalidadeMusicoComponent } from '../../dialog/dialog-
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 
 const ELEMENT_DATA_TIPO_PESSOA: any = [
-  { id: 'L', nome: 'Líder' },
-  { id: 'C', nome: 'Co-Líder' },
-  { id: 'M', nome: 'Membro' }
+  { id: 'LIDER  ', nome: 'Líder' },
+  { id: 'COLIDER', nome: 'Co-Líder' },
+  { id: 'MEMBRO', nome: 'Membro' }
 ];
 
 @Component({
@@ -175,11 +175,11 @@ export class CadastrarGrupoComponent implements OnInit {
     }
   }
   save() {
-    console.log(this.setObj());
+    // console.log(this.obj());
     if (!this.validField()) {
       return;
     }
-    this._serviceGruop.save(this.setObj()).pipe(take(1)).subscribe(item => {
+    this._serviceGruop.save(this.obj()).pipe(take(1)).subscribe(item => {
       this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
@@ -188,11 +188,11 @@ export class CadastrarGrupoComponent implements OnInit {
   }
 
   update() {
-    console.log(this.setObj());
+    // console.log(this.setObj());
     if (!this.validField()) {
       return;
     }
-    this._serviceGruop.update(this.setObj()).pipe(take(1)).subscribe(item => {
+    this._serviceGruop.update(this.obj()).pipe(take(1)).subscribe(item => {
       this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
@@ -201,7 +201,7 @@ export class CadastrarGrupoComponent implements OnInit {
   }
 
 
-  setObj() {
+  obj() {
     let obj = {} as any;
     obj.nome = this.form.controls['nome'].value;
     obj.descricao = this.form.controls['descricao'].value;
@@ -210,7 +210,7 @@ export class CadastrarGrupoComponent implements OnInit {
     obj.dataAbertura = this._datePipe.transform(this.form.controls['dataAbertura'].value, 'dd/MM/yyyy');
 
     if (this.membros.length > 0) {
-      obj.pessoas = this.membros;
+      obj.membros = this.membros;
     }
 
     if (this.igrejaSelecionada) {

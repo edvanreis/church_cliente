@@ -2,7 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
-import { MatAutocompleteSelectedEvent, DateAdapter } from '@angular/material';
+import { MatAutocompleteSelectedEvent, DateAdapter, MatDialog } from '@angular/material';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
@@ -11,6 +11,7 @@ import { take, startWith, map } from 'rxjs/operators';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HelperChurch } from '../../../helper/helper.church';
 import { MembroService } from '../../../service/membro.service';
+import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 
 @Component({
   selector: 'app-cadastrar-igreja',
@@ -56,7 +57,8 @@ export class CadastrarIgrejaComponent implements OnInit {
     private _avRoute: ActivatedRoute,
     private _membroService: MembroService,
     private _datePipe: DatePipe,
-    private _dateAdapter: DateAdapter<Date>,) { }
+    private _dateAdapter: DateAdapter<Date>,
+    private _dialog: MatDialog) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -92,6 +94,12 @@ export class CadastrarIgrejaComponent implements OnInit {
       }
       if (item.type == 'dadosIgrejaRadio') {
         this.filial = item.data;
+      }
+
+      if(item.type == 'confirm-dialog-pessoa-igreja'){
+        if(this.membros.length > 0){
+          this.membros.splice(item.data, 1);
+        }
       }
     });
   }
@@ -322,6 +330,18 @@ export class CadastrarIgrejaComponent implements OnInit {
     }
     this.membros.push(this.membroSelecionado);
     this.membroValue = '';
+  }
+
+  dialogRemover(i,item) {
+    const dialogRef = this._dialog.open(DialogConfirmPessoaComponent, {
+      width: '600px',
+      data: {
+        id: Number.parseInt(this.id),
+        idPessoa: item.id,
+        controller: "igreja",
+        item:i
+      }
+    });
   }
 
 

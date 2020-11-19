@@ -74,7 +74,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   public comboRede = [];
   public redeSelecionada: any;
   public redeValue: any;
-  
+
 
 
   constructor(private _emitirEventoService: EmitirEventoService,
@@ -108,7 +108,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
       'dataDaReuniao': new FormControl('', Validators.required),
       'diaDaSemana': new FormControl('', Validators.required),
       'louvor': new FormControl(''),
-      'observacao': new FormControl('', Validators.required),
+      'observacao': new FormControl(''),
       'oferta': new FormControl(''),
       'cadeiraBencao': new FormControl(false),
       'presencial': new FormControl(false),
@@ -285,7 +285,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
   adicionarMembrosVisitantes() {
     if (!this.membroVisitante) {
-      console.log(this.membroVisitante);
+      // console.log(this.membroVisitante);
       this._notifierService.notify(AlertType.Error, "Por favor escolha uma membro.!");
       return false;
     }
@@ -299,7 +299,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   }
 
   salvar() {
-    this.getObj();
+    this.preencherObj();
     let mensagem = this.validFields();
     if (mensagem) {
       this._notifierService.notify(AlertType.Error, mensagem);
@@ -314,7 +314,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
   }
 
-  getObj() {
+  preencherObj() {
     let membros = [];
     this.reuniao.horarioInicio = this.form.controls['horarioInicio'].value;
     this.reuniao.horarioFim = this.form.controls['horarioFim'].value;
@@ -402,7 +402,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   }
 
   save() {
-    this.getObj();
+    this.preencherObj();
     this._service.save(this.reuniao).pipe(take(1)).subscribe(item => {
       this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
@@ -413,7 +413,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
 
   updade() {
-    this.getObj();
+    this.preencherObj();
     this._service.update(this.reuniao).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
@@ -445,9 +445,6 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     }
     if (!this.reuniao.horarioInicio) {
       return concat + ' Horário de fim!';
-    }
-    if (!this.reuniao.observacao) {
-      return concat + ' Nota/Observação!';
     }
     if (this.palestrantes.length == 0) {
       return concatArray + ' Palestrante!';

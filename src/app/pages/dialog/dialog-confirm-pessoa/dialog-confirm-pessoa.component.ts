@@ -35,7 +35,7 @@ export class DialogConfirmPessoaComponent implements OnInit {
     let controller = this.data.controller;
     let obj = {
       id: this.data.id,
-      idPessoa: this.data.idPessoa
+      membroId: this.data.idPessoa
     }
     this._service.removerPessoa(obj,controller)
       .pipe(take(1)).subscribe(item => {

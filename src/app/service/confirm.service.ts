@@ -29,7 +29,7 @@ export class ConfirmService {
 
   removerPessoa(obj,controller) {
     let url = this._url+controller;
-    return this.http.post(url+"/removerPessoa", obj)
+    return this.http.post(url+"/removerMembro", obj)
       .pipe(tap((response: any) => response));
   }
 }

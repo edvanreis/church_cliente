@@ -18,6 +18,7 @@ import { CadastrarIgrejaComponent } from './cadastrar/cadastrar-igreja.component
 import { PesquisarIgrejaComponent } from './pesquisar/pesquisar-igreja.component';
 import { IgrejaPessoasComponent } from './pessoas/igreja-pessoas.component';
 import { IgrejasComponentModule } from '../componentes/igrejas/igreja-compenent.module';
+import { DialogConfirmPessoaModule } from '../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.module';
 
 
 
@@ -59,6 +60,7 @@ const routes: Routes = [
     IgrejasComponentModule,
     DialogTransferirPessoaModule,
     DiretivesModule,
+    DialogConfirmPessoaModule,
     RouterModule.forChild(routes)
   ],
   declarations: [
