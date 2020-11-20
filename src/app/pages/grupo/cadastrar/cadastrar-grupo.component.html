@@ -103,7 +103,7 @@
               <tr *ngFor="let item of membros;let i= index">
                 <td>{{ i+1}}</td>
                 <td>{{ item.nomeCompleto}}</td>
-                <td>{{ item.tipo=='L'?'Líder':item.tipo=='C'?'Co-Líder':'Membro'}}</td>
+                <td>{{ item.tipo}}</td>
                 <td>
                   <span *ngIf="isLouvor" style="color: #1d68a5;cursor: pointer" (click)="dialogPessoaGrupoModalidadeMusico(item)">
                     <i class="material-icons">music_video</i>

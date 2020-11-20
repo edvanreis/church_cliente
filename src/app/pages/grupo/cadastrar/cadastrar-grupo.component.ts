@@ -196,7 +196,8 @@ export class CadastrarGrupoComponent implements OnInit {
       this.voltar();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
-      this._notifierService.notify(AlertType.Error, "Erro ao salvar o grupo de trabalho!");
+      console.log(error)
+      this._notifierService.notify(AlertType.Error, error.error.errors);
     });
   }
 
@@ -286,6 +287,11 @@ export class CadastrarGrupoComponent implements OnInit {
 
   onSelectionChangedGrupos($event: MatAutocompleteSelectedEvent, option) {
     this.grupoSelecionado = option;
+    if(this.grupoSelecionado.tipo && this.grupoSelecionado.tipo.nome == 'Louvor'){
+      this.isLouvor = true;
+    }else{
+      this.isLouvor = false;
+    }
   }
 
   getParams() {
@@ -308,8 +314,8 @@ export class CadastrarGrupoComponent implements OnInit {
            this.isLouvor = true;
         }
       }
-      if (item.pessoas) {
-        this.membros = item.pessoas;
+      if (item.membros) {
+        this.membros = item.membros;
       }
       if (item.isSubGrupo) {
         this.form.controls['radio'].patchValue('2');
