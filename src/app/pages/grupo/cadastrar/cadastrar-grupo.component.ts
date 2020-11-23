@@ -14,11 +14,6 @@ import { DatePipe } from '@angular/common';
 import { DialogPessoaGrupoModalidadeMusicoComponent } from '../../dialog/dialog-pessoa-grupo-modalidade-musico/dialog-pessoa-grupo-modalidade-musico.component';
 import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
 
-const ELEMENT_DATA_TIPO_PESSOA: any = [
-  { id: 'LIDER  ', nome: 'Líder' },
-  { id: 'COLIDER', nome: 'Co-Líder' },
-  { id: 'MEMBRO', nome: 'Membro' }
-];
 
 @Component({
   selector: 'app-cadastrar-grupo',
@@ -29,26 +24,32 @@ export class CadastrarGrupoComponent implements OnInit {
   public form: FormGroup;
   public formSub: FormGroup;
   public tipoGrupo$: Observable<any[]>;
-  public comboMembro = [];
-  public comboGrupos = [];
-  public filteredMembro: Observable<string[]>;
-  public filteredGrupos: Observable<string[]>;
-  public myControlMembro = new FormControl();
-  public myControlGrupos = new FormControl();
-  public igrejaSelecionada: any;
-  public membros = [];
-  public membroSelecionado: any;
-  public grupoSelecionado: any;
-  public comboTipoPessoa = ELEMENT_DATA_TIPO_PESSOA;
+
+  public comboTipoPessoa:any[]=[];
   public tipoPessoa: any;
   public id: any;
   public pesquisa: boolean = false;
-  public membroValue: any;
-  public label: any;
+  // public label: any;
   public tipo: any;
   public subGrupo: boolean = false;
+  public igrejaSelecionada: any;
+  public membros = [];
+
+  public membroSelecionado: any;
+  public filteredMembro: Observable<string[]>;
+  public myControlMembro = new FormControl();
+  public comboMembro = [];
+  public membroValue: any;
+
+  public myControlGrupos = new FormControl();
+  public filteredGrupos: Observable<string[]>;
+  public grupoSelecionado: any;
   public grupoValue: any;
+  public comboGrupos = [];
+
+
   public isLouvor: boolean = false;
+  public isEditar:boolean = false;
 
 
   constructor(private _tipoGrupoService: TipoGrupoService,
@@ -64,10 +65,18 @@ export class CadastrarGrupoComponent implements OnInit {
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
+
+    this.preencherComboTipoPessoa();
     this._buildForm();
     this.carregarTiposGruposTrabalho();
     this.getEmiter();
     this.getParams();
+  }
+
+  preencherComboTipoPessoa(){
+    this.comboTipoPessoa = [];
+    this.comboTipoPessoa.push({ id: 'LIDER', nome: 'Líder' });
+    this.comboTipoPessoa.push({ id: 'COLIDER', nome: 'Co-Líder' });
   }
 
   private _buildForm(): void {
@@ -137,7 +146,7 @@ export class CadastrarGrupoComponent implements OnInit {
           }
         });
       }
-      if (item.type == 'confirm-dialog-pessoa-grupo') {
+      if (item.type == 'confirm-dialog-pessoa-grupoTrabalho') {
         this.membros.splice(item.data, 1);
       }
     });
@@ -188,7 +197,7 @@ export class CadastrarGrupoComponent implements OnInit {
   }
 
   update() {
-    // console.log(this.setObj());
+    console.log(this.obj());
     if (!this.validField()) {
       return;
     }
@@ -250,10 +259,7 @@ export class CadastrarGrupoComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor adicione pelo menos um Membro");
       return false;
     }
-    if (!this.form.controls['descricao'].value) {
-      this._notifierService.notify(AlertType.Error, "Por favor preencha o campo Descrição");
-      return false;
-    }
+
     if (!this.igrejaSelecionada) {
       this._notifierService.notify(AlertType.Error, "Por favor selecione uma igreja!");
       return false;
@@ -295,10 +301,19 @@ export class CadastrarGrupoComponent implements OnInit {
   }
 
   getParams() {
+      console.log('teste');
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
       this.pesquisa = true;
+      this.isEditar = true;
       this.getGrupo(this.id);
+    }
+    if (this._avRoute.snapshot.queryParamMap.get("isSubGrupo")) {
+      let isSubGrupo = this._avRoute.snapshot.queryParamMap.get("isSubGrupo");
+      if(isSubGrupo=="true"){
+        this.subGrupo = true;
+        this.comboTipoPessoa.push({id: 'MEMBRO', nome: 'Membro'});
+      }
     }
   }
 
@@ -344,6 +359,7 @@ export class CadastrarGrupoComponent implements OnInit {
     // console.log(this.form.controls['radio'].value);
     if (this.form.controls['radio'].value == '2') {
       this.subGrupo = true;
+      this.comboTipoPessoa.push({id: 'MEMBRO', nome: 'Membro'});
     } else {
       this.subGrupo = false;
     }

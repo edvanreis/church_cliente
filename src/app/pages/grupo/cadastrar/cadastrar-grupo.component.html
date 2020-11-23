@@ -7,7 +7,7 @@
     <div class="cdk-container">
           <br />
           <form form [formGroup]="form">
-            <div class="full-width-field" fxLayoutGap="20px" fxLayout.lt-sm="column"  >
+            <div class="full-width-field" fxLayoutGap="20px" fxLayout.lt-sm="column"  *ngIf="!isEditar">
               <mat-radio-group  formControlName="radio" (change)="changeRadio()" >
                 <mat-radio-button   value="1" >Grupo</mat-radio-button>
                 <mat-radio-button   value="2" >Sub Grupo</mat-radio-button>

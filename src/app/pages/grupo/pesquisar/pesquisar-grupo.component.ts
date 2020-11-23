@@ -213,7 +213,7 @@ export class PesquisarGrupoComponent implements OnInit {
   }
 
 
-  editar(id) {
+  editar(id,isSubGrupo) {
     let obj = {
       status: this.statusSelecionado,
       igreja: this.igrejaSelecionada
@@ -221,8 +221,8 @@ export class PesquisarGrupoComponent implements OnInit {
     localStorage.setItem("pesquisar", JSON.stringify(obj));
     this._router.navigate(['/auth/grupo/cadastrar'], {
       queryParams: {
-        janela: 'Editar',
         id: id,
+        isSubGrupo:isSubGrupo
       },
       skipLocationChange: true
     });
