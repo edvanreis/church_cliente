@@ -45,7 +45,9 @@
         <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
           <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
           <mat-cell *matCellDef="let element">
-            <span *ngIf="column.id!='id'">{{element[column.id]}}</span>
+            <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
+              {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}
+            </span>
             <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" matTooltip="Editar" (click)="editar(element.id)"><i
                 class="material-icons">create</i></span>
             <span *ngIf="column.id=='id'" style="cursor: pointer;color:#1d68a5" matTooltip="Status" (click)="status(element.id)"><i

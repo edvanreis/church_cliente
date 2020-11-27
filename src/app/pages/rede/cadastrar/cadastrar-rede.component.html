@@ -32,14 +32,13 @@
         <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="100px">
           <mat-form-field class="full-width-field">
             <textarea matInput placeholder="Descrição" formControlName="descricao"></textarea>
-            <mat-error *ngIf="!form.controls.descricao.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>
       </form>
       <app-igrejas></app-igrejas>
       <div>
         <mat-form-field class="full-width-field">
-          <input type="text" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto" placeholder="Membros"
+          <input type="text" aria-label="Number" matInput [formControl]="myControlMembro" [matAutocomplete]="auto" placeholder="Lideres"
             [(ngModel)]="membroValue" required>
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of filteredMembro | async" [value]="option.nomeCompleto"

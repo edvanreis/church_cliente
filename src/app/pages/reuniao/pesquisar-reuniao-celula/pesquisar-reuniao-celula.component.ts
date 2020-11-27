@@ -5,7 +5,7 @@ import { MatDialog, MatSort, MatTableDataSource, MatPaginator } from '@angular/m
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { ExcelService } from '../../../service/excel.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { ReuniaoService } from '../../../service/reuniao.service';
+import { ReuniaoCelulaService } from '../../../service/reuniao-celula.service';
 import { CelulaService } from '../../../service/celula.service';
 import { AlertType } from '../../../model/alert-type';
 import { take } from 'rxjs/operators';
@@ -36,7 +36,7 @@ export class PesquisarReuniaoCelulaComponent implements OnInit {
   public loading: boolean = false;
 
   constructor(private _router: Router,
-    private _service: ReuniaoService,
+    private _service: ReuniaoCelulaService,
     private _notifierService: NotifierService,
     private _dialog: MatDialog,
     private _emitirEventoService: EmitirEventoService,

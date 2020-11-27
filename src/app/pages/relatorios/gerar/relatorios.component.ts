@@ -177,7 +177,7 @@ export class RelatorioComponent implements OnInit {
     }
   }
 
-  setObj() {
+  obj() {
     return {
       celulaId: this.celulaSelecionada ? this.celulaSelecionada.id : null,
       pessoaId: this.membroSelecionado ? this.membroSelecionado.id : null,
@@ -204,7 +204,7 @@ export class RelatorioComponent implements OnInit {
 
   gerarRelatorioSemanalCelula() {
     this.loading = true;
-    this._service.relatorioReniaoSemanal(this.setObj()).pipe(take(1)).subscribe(item => {
+    this._service.relatorioReniaoSemanal(this.obj()).pipe(take(1)).subscribe(item => {
         const url = window.URL.createObjectURL(item);
         const type = item.type.split("/");
         const a = document.createElement('a');
@@ -217,14 +217,14 @@ export class RelatorioComponent implements OnInit {
       }, error => {
         // console.log(error)
         this.loading = false;
-        this._notifierService.notify(AlertType.Error, "Arquivo não localizado!");
+        this._notifierService.notify(AlertType.Error, "Não existe dados para esta pesquisa!");
       });
   }
 
   gerarRelatorioFaltas() {
     this.loading = true;
     let dados = [];
-    this._service.relatorioFaltas(this.setObj()).pipe(take(1)).subscribe(item => {
+    this._service.relatorioFaltas(this.obj()).pipe(take(1)).subscribe(item => {
       this.loading = false;
       item.forEach(i => {
         dados.push({

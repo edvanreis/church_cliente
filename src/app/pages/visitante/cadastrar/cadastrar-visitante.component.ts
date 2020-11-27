@@ -227,8 +227,6 @@ export class CadastrarVisitanteComponent implements OnInit {
     if (this.contatos) {
       this.visitante.contatos = this.contatos;
     }
-    console.log(this.visitante)
-
   }
 
   emitiClear(): void {

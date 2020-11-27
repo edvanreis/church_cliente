@@ -7,9 +7,9 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class ReuniaoService  {
+export class ReuniaoCelulaService  {
 
-  private _url = environment.url + "reuniao/";
+  private _url = environment.url + "reuniaoCelula/";
 
   constructor(public http: HttpClient) { }
 

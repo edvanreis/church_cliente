@@ -59,7 +59,7 @@ export class CadastrarRedeComponent implements OnInit {
     this.form = new FormGroup({
       'nome': new FormControl('',Validators.required),
       'dataAbertura': new FormControl('',Validators.required),
-      'descricao': new FormControl('',Validators.required),
+      'descricao': new FormControl(''),
       'redes': new FormControl('',Validators.required),
     });
   }
@@ -259,10 +259,7 @@ export class CadastrarRedeComponent implements OnInit {
       this._notifierService.notify(AlertType.Error, "Por favor Informe a Data de Abertura!");
       return false;
     }
-    if (!this.form.controls['descricao'].value) {
-      this._notifierService.notify(AlertType.Error, "Por favor Informe uma descrição!");
-      return false;
-    }
+
     if (!this.form.controls['redes'].value) {
       this._notifierService.notify(AlertType.Error, "Por favor Informe uma tipo de rede!");
       return false;

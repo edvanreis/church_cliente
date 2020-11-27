@@ -67,9 +67,9 @@ export class PesquisarCelulaComponent implements OnInit {
     this.columns();
     this.getEmiter();
     this.carregarIgrejas();
-    if (!this.getParams()) {
-      this.getList();
-    }
+    this.getList();
+    this.getParams();
+
   }
 
   applyFilter(value) {
@@ -232,7 +232,7 @@ export class PesquisarCelulaComponent implements OnInit {
     return true;
   }
 
-  getParams(): boolean {
+  getParams() {
     //  console.log(this._avRoute.snapshot.queryParamMap);
     if (this._avRoute.snapshot.queryParamMap.get("pesquisar")) {
       let obj = JSON.parse(localStorage.getItem("pesquisar"));
@@ -247,13 +247,7 @@ export class PesquisarCelulaComponent implements OnInit {
       localStorage.removeItem("pesquisar");
       if(this.igrejaSelecionada && this.igrejaSelecionada){
         this.getListForPorStatusAndRede();
-      }else{
-        this.getList();
       }
-
-      return true;
-    } else {
-      return false;
     }
   }
 

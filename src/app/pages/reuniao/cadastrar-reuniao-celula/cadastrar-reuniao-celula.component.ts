@@ -1,21 +1,20 @@
-import { VisitanteService } from './../../../service/visitante.service';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { EmitirEventoService } from '../../../service/emitir-evento.service';
-import { CelulaService } from '../../../service/celula.service';
-import { NotifierService } from 'angular-notifier';
-import { AlertType } from '../../../model/alert-type';
-import { DateAdapter, MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
-import { HelperChurch } from '../../../helper/helper.church';
-import { Observable } from 'rxjs';
-import { take, startWith, map } from 'rxjs/operators';
-import { ReuniaoService } from '../../../service/reuniao.service';
 import { DatePipe } from '@angular/common';
-import { Router, ActivatedRoute } from '@angular/router';
-import { DialogConfirmPessoaComponent } from '../../dialog/dialog-confirm-pessoa/dialog-confirm-pessoa.component';
-import { DialogConfirmPessoaReuniaoComponent } from '../../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.component';
+import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DateAdapter, MatAutocompleteSelectedEvent, MatDialog } from '@angular/material';
+import { ActivatedRoute, Router } from '@angular/router';
+import { NotifierService } from 'angular-notifier';
+import { Observable } from 'rxjs';
+import { map, startWith, take } from 'rxjs/operators';
+import { HelperChurch } from '../../../helper/helper.church';
+import { AlertType } from '../../../model/alert-type';
+import { CelulaService } from '../../../service/celula.service';
+import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { MembroService } from '../../../service/membro.service';
 import { RedeService } from '../../../service/rede.service';
+import { ReuniaoCelulaService } from '../../../service/reuniao-celula.service';
+import { DialogConfirmPessoaReuniaoComponent } from '../../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.component';
+import { VisitanteService } from './../../../service/visitante.service';
 
 @Component({
   selector: 'app-cadastrar-reuniao-celula',
@@ -84,7 +83,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     private _membroService: MembroService,
     private _visitanteService: VisitanteService,
     private _datePipe: DatePipe,
-    private _service: ReuniaoService,
+    private _service: ReuniaoCelulaService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
     private _dialog: MatDialog,
@@ -117,7 +116,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
   private _buildFormTow(): void {
     this.formTwo = new FormGroup({
-      'realizado': new FormControl(false),
+      'outroEndereco': new FormControl(false),
     });
   }
 
@@ -240,9 +239,9 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     this.membros.push(this.membroSelecionado);
   }
 
-  carregarVisitante(dataDaReuniao) {
+  carregarVisitante(dataDaReuniao,celula) {
     let obj = {
-      celula:{id:this.celulaSelecionada.id},
+      celula:{id:celula.id},
       dataReuniaoCelula:dataDaReuniao
     }
     // console.log(obj)
@@ -279,13 +278,11 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   }
 
   onSelectionChangedVisitante($event: MatAutocompleteSelectedEvent, option) {
-    // console.log(option)
     this.visitante = option;
   }
 
   adicionarMembrosVisitantes() {
     if (!this.membroVisitante) {
-      // console.log(this.membroVisitante);
       this._notifierService.notify(AlertType.Error, "Por favor escolha uma membro.!");
       return false;
     }
@@ -326,6 +323,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     this.reuniao.diaDaSemana = this.form.controls['diaDaSemana'].value;
     this.reuniao.presencial = HelperChurch.isBoolean(this.form.controls['presencial'].value);
     this.reuniao.visitantes = this.visitantes;
+    this.reuniao.outroEndereco =  HelperChurch.isBoolean(this.formTwo.controls['outroEndereco'].value);
 
     if (this.licaoSelecionada) {
       this.reuniao.licao = { id: this.licaoSelecionada.id };
@@ -465,7 +463,6 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
   getReuniao(id) {
     this._service.getReuniao(id).pipe(take(1)).subscribe(item => {
-      console.log(item)
       this.form.controls['horarioInicio'].patchValue(item.horarioInicio);
       this.form.controls['horarioFim'].patchValue(item.horarioFim);
       this.form.controls['dataDaReuniao'].patchValue(new Date(item.dataDaReuniaoToDate));
@@ -475,15 +472,31 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
       this.form.controls['oferta'].patchValue(item.oferta);
       this.form.controls['cadeiraBencao'].patchValue(item.cadeiraBencao);
       this.form.controls['presencial'].patchValue(item.presencial);
+      this.formTwo.controls['outroEndereco'].patchValue(item.outroEndereco);
       if(item.visitantes){
         this.visitantes = item.visitantes;
       }
 
-      this.emitirLicao(item.licao);
-      this.getCelula(item.celula.id);
-      if (item.enderecos && item.enderecos.length > 0 ) {
-        this.formTwo.controls['realizado'].patchValue(true);
-        this.emitirEndereco(item.enderecos);
+      if(item.celula){
+        this.getCelula(item.celula.id);
+        this.carregarVisitante(item.dataDaReuniao,item.celula);
+      }
+
+      if(item.licao){
+        this.emitirLicao(item.licao);
+      }
+
+      if (item.outroEndereco) {
+         this.emitirEndereco(item.enderecos);
+      }
+
+      if (item.rede) {
+        this.redeSelecionada = item.rede;
+        this.redeValue = item.rede.nome;
+      }
+
+      if(item.igreja){
+        this.emitirIgreja(item.igreja)
       }
 
       item.membros.forEach(i => {
@@ -499,6 +512,9 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
           this.membrosVisitantes.push(i);
         }
       });
+
+
+
     }, error => {
       console.log(error)
       // this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -522,6 +538,10 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
   emitirEndereco(item): void {
     this._emitirEventoService.emitir("edit-endereco", item);
+  }
+
+  emitirIgreja(item): void {
+    this._emitirEventoService.emitir("edit-igreja", item);
   }
 
   dialogRemoverPalestrante(i, item) {
@@ -605,7 +625,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   onDateChange(element){
     let dataDaReuniao =  this._datePipe.transform(element.value, 'dd/MM/yyyy');
     if(this.celulaSelecionada){
-      this.carregarVisitante(dataDaReuniao);
+      this.carregarVisitante(dataDaReuniao,this.celulaSelecionada);
     }
   }
 

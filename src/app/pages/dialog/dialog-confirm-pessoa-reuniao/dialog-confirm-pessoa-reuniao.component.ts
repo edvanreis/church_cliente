@@ -1,6 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { ReuniaoService } from '../../../service/reuniao.service';
+import { ReuniaoCelulaService } from '../../../service/reuniao-celula.service';
 import { NotifierService } from 'angular-notifier';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { take } from 'rxjs/operators';
@@ -18,7 +18,7 @@ export class DialogConfirmPessoaReuniaoComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data,
     private _emitirEventoService: EmitirEventoService,
     private _notifierService: NotifierService,
-    private _service: ReuniaoService) { }
+    private _service: ReuniaoCelulaService) { }
 
   ngOnInit() {
     console.log(this.data)

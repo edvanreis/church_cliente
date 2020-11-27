@@ -55,9 +55,22 @@ export class MultSelectEtapaVisaoComponent implements OnInit {
   carregarDadosEditar() {
     this.checkedList = [];
     for (var i = 0; i < this.etapas.length; i++) {
-      this.etapas[i].checked = true;
+      if(this.verificarCheck(this.etapas[i])){
+        this.etapas[i].checked = true;
+      }else{
+        this.etapas[i].checked = false;
+      }
       this.checkedList.push(this.etapas[i]);
     }
+  }
+
+  verificarCheck(item):boolean{
+    for (var i = 0; i < this.etapasSelecionadas.length; i++) {
+      if(this.etapasSelecionadas[i].id == item.id){
+          return true;
+      }
+    }
+    return false;
   }
 
   private _filter(value: string): string[] {
@@ -112,12 +125,15 @@ export class MultSelectEtapaVisaoComponent implements OnInit {
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
 
+
       if (item.type == 'edit-mult-select-etapas') {
+        console.log(item);
         for (let i = 0; i < item.data.length; i++) {
           let etapa = {} as any;
           etapa.id = item.data[i].id;
+          etapa.membroId = null;
           etapa.nome = item.data[i].nome;
-          this.etapas.push(etapa);
+          this.etapasSelecionadas.push(etapa);
           this.editar = true;
         }
       }

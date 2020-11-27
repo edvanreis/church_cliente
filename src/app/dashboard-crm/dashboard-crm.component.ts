@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { MatDialog, MatPaginator, MatSort, MatTableDataSource, MatAutocompleteSelectedEvent } from '@angular/material';
+import { MatDialog, MatPaginator, MatSort, MatTableDataSource } from '@angular/material';
 import { NotifierService } from 'angular-notifier';
 import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
@@ -19,12 +19,6 @@ import { IgrejaService } from '../service/igreja.service';
 
 export class DashboardCrmComponent implements OnInit {
 
-  // public dashCard = [
-  //   { colorDark: '#5C6BC0', colorLight: '#7986CB', number: 1221, title: 'SALES', icon: 'local_grocery_store' },
-  //   { colorDark: '#42A5F5', colorLight: '#64B5F6', number: 1221, title: ' ', icon: 'new_releases' },
-  //   { colorDark: '#26A69A', colorLight: '#4DB6AC', number: 1221, title: 'ASSETS', icon: 'assignments' },
-  //   { colorDark: '#66BB6A', colorLight: '#81C784', number: 1221, title: 'BANKING', icon: 'account_balance' }
-  // ];
 
   public comboIgrejas = [];
   public filteredIgreja: Observable<string[]>;
@@ -100,7 +94,6 @@ export class DashboardCrmComponent implements OnInit {
 
   carregarCardsTop(id) {
     this._service.getDashCard(id).pipe(take(1)).subscribe(item => {
-      console.log(item)
       this.cardsTop(item);
       this.tableMembrosPendentes(item.membrosPendentes);
       this.tableMembrosReprovados(item.membrosReprovados)
@@ -108,7 +101,7 @@ export class DashboardCrmComponent implements OnInit {
       this.tableAgendamentos(item.agendamentos);
       this.tableCelulasReuniaoAgendamentos(item.groupByCelulaRelatorio);
     }, error => {
-      console.log(error)
+      // console.log(error)
       this._notifierService.notify(AlertType.Error, error.errors.message);
 
     });
@@ -135,7 +128,7 @@ export class DashboardCrmComponent implements OnInit {
     this.dashCard.push({ colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalGruposTrabalho, title: 'Grupo de trabalho', icon: 'work' });
 
     if (item.totalCelulas > 0) {
-      this.dashCard.push({ colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalCelulas, title: 'Células', icon: 'group' },)
+      this.dashCard.push({ colorDark: '#26A69A', colorLight: '#4DB6AC', number: item.totalCelulas, title: 'Células', icon: 'groups' },)
     }
   }
 
@@ -356,7 +349,13 @@ export class DashboardCrmComponent implements OnInit {
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
-  onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
+  onBlurIgreja(event){
+    if(!event.target.value){
+      this.igrejaSelecionada = null;
+    }
+  }
+
+  onSelectionClick(option) {
     this.igrejaSelecionada = option;
     if (this.igrejaSelecionada) {
       this.carregarCardsTop(this.igrejaSelecionada.id);
