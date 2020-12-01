@@ -205,6 +205,7 @@ export class CadastrarMembroComponent implements OnInit {
         this.emitirIgreja(item.igreja);
       }
       if (item.contatos) {
+        this.contatos = item.contatos;
         this.emitirContatos(item.contatos);
       }
       // this.emitirCelula(item.celula);
@@ -244,12 +245,12 @@ export class CadastrarMembroComponent implements OnInit {
   }
 
   salvar() {
-    this.setObj();
-    // let mensagem = this.validFields();
-    // if (mensagem) {
-    //   this._notifierService.notify(AlertType.Error, mensagem);
-    //   return false;
-    // }
+    this.obj();
+    let mensagem = this.validFields();
+    if (mensagem) {
+      this._notifierService.notify(AlertType.Error, mensagem);
+      return false;
+    }
     if (this.membro.id) {
       this.updade();
     } else if (this.visitanteId) {
@@ -282,11 +283,11 @@ export class CadastrarMembroComponent implements OnInit {
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
       console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.error.errors);
+      this._notifierService.notify(AlertType.Error, error.error.errors);
     });
   }
 
-  setObj() {
+  obj() {
     if (this.id) {
       this.membro.id = Number.parseInt(this.id);
     }
