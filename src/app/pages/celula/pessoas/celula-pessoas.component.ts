@@ -1,7 +1,7 @@
 import { CelulaService } from './../../../service/celula.service';
 import { RedeService } from './../../../service/rede.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
 import { NotifierService } from 'angular-notifier';
@@ -10,6 +10,8 @@ import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { MatAutocompleteSelectedEvent, MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
 import { DialogTransferirPessoaComponent } from '../../dialog/dialog-transferir-pessoa/dialog-transferir-pessoa.component';
 import { UserService } from '../../../service/user.service';
+import { IgrejaService } from '../../../service/igreja.service';
+import { ExcelService } from '../../../service/excel.service';
 
 
 @Component({
@@ -32,8 +34,6 @@ export class CelulaPessoasComponent implements OnInit {
   public visaoCelular: boolean;
   public celulaValue: any;
 
-  public igrejaSelecionada: any;
-
   public pessoas = new Array();
   @ViewChild(MatSort) sort: MatSort;
   public displayedColumns: string[] = [];
@@ -49,26 +49,34 @@ export class CelulaPessoasComponent implements OnInit {
   ]
   public tipoPessoaSelecionado: any;
 
+  public form: FormGroup;
+
+  public comboIgrejas = [];
+  public filteredIgreja: Observable<string[]>;
+  public myControlIgreja = new FormControl();
+  public igrejaSelecionada: any;
+  public igrejaValue: any;
+
   constructor(private _serviceRede: RedeService,
     private _notifierService: NotifierService,
     private _emitirEventoService: EmitirEventoService,
     private _dialog: MatDialog,
     private _service: CelulaService,
-    private _userService: UserService) { }
+    private _userService: UserService,
+    private _igrejaService: IgrejaService,
+    private _excelService: ExcelService) { }
 
   ngOnInit() {
     this.getEmiter();
     this.columns();
+    this._buildForm();
+    this.carregarIgrejas();
   }
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-      if (item.type == 'igreja-comp') {
-        this.igrejaSelecionada = item.data;
-        this.carregarRede(this.igrejaSelecionada.id);
-      }
       if (item.type == 'transferido') {
-        this.onSelectionChange(item.data)
+        this.onSelectionClick(item.data)
      }
     });
   }
@@ -108,12 +116,12 @@ export class CelulaPessoasComponent implements OnInit {
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
-  onSelectionRedeChange($event: MatAutocompleteSelectedEvent, option) {
+  onSelectionRedeClick($event: MatAutocompleteSelectedEvent, option) {
     this.redeSelecionada = option;
     this.carregarCelula(this.redeSelecionada.id);
   }
 
-  onSelectionChange(event) {
+  onSelectionClick(key) {
 
 
     if(!this._userService.hasPermission("combo_rede_pessoa")){
@@ -125,7 +133,7 @@ export class CelulaPessoasComponent implements OnInit {
     }
 
     if (this.celulaSelecionada) {
-      switch (event.source.value) {
+      switch (key) {
         case 'M':
           this.tipoPessoaSelecionado = 'M';
           this.getMembros(this.celulaSelecionada.id);
@@ -191,7 +199,8 @@ export class CelulaPessoasComponent implements OnInit {
         pessoaId:id,
         metodo:metodo,
         controller:'celula',
-        tipoPessoa:this.tipoPessoaSelecionado
+        tipoPessoa:this.tipoPessoaSelecionado,
+        redeId:this.redeSelecionada.id
       }
     });
   }
@@ -223,6 +232,83 @@ export class CelulaPessoasComponent implements OnInit {
   applyFilter(value) {
     this.dados.filter = value.trim().toLowerCase();
   }
+
+
+  private _buildForm(): void {
+    this.form = new FormGroup({
+      'tipo': new FormControl(false),
+    });
+  }
+
+  onBlurIgreja(event){
+    if(!event.target.value){
+      this.pessoas = [];
+      this.dados = new MatTableDataSource<Element>(this.pessoas);
+      this.form.reset();
+      this.redeSelecionada = null;
+      this.redeValue = '';
+
+    }
+  }
+
+  onBlurRede(event){
+    if(!event.target.value){
+      this.pessoas = [];
+      this.dados = new MatTableDataSource<Element>(this.pessoas);
+      this.form.reset();
+    }
+  }
+
+  onBlurCelula(event){
+    if(!event.target.value){
+      this.pessoas = [];
+      this.dados = new MatTableDataSource<Element>(this.pessoas);
+      this.form.reset();
+    }
+  }
+
+  carregarIgrejas() {
+
+    this._igrejaService.getListIdAndName().pipe(take(1)).subscribe(item => {
+      this.comboIgrejas = item;
+      // console.log(item);
+      this.filteredIgreja = this.myControlIgreja.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterIgreja(value, this.comboIgrejas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas!");
+    });
+  }
+
+  private _filterIgreja(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
+  onSelectionIgrejaClick(value){
+    this.igrejaSelecionada = value;
+    this.carregarRede(this.igrejaSelecionada.id);
+  }
+
+
+  exportAsXLSX() {
+    let dados = [];
+    this.pessoas.forEach(i => {
+      dados.push({
+        "Nome": i.nomeCompleto,
+        "Data Nascimento": i.dataNascimento,
+        "RG": i.rg,
+        "CPF": i.cpf,
+        "Estado Civil": i.estadoCivil,
+        "Sexo": i.sexo,
+        "Tprofissao": i.profissao,
+      });
+    });
+    this._excelService.exportAsExcelFile(dados, "pesquisa");
+  }
+
 
 
 }

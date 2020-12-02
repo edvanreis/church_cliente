@@ -5,17 +5,29 @@
       <h1 class="mat-headline center-align">Pessoas</h1>
     </mat-toolbar>
     <div class="cdk-container">
-      <app-igrejas  *hasPermission="['combo_igreja_pessoa']" ></app-igrejas>
-      <div>
+      <div *hasPermission="['combo_igreja_pessoa']">
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
+            [matAutocomplete]="auto" [(ngModel)]="igrejaValue" style="width: 100%;" (blur)="onBlurIgreja($event)">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
+              (click)="onSelectionIgrejaClick(option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        </div>
+      <form form [formGroup]="form">
         <mat-form-field class="full-width-field">
           <mat-label>Pessoa</mat-label>
-          <mat-select  id="pessoa" [(ngModel)]="pessoa" (selectionChange)="onSelectionChange($event)" >
-            <mat-option *ngFor="let item of tipoPessoas" [value]="item.key" >
+          <mat-select  id="pessoa" formControlName="tipo" >
+            <mat-option *ngFor="let item of tipoPessoas" [value]="item.key" (click)="onSelectionClick(item.key)">
               {{item.value}}
             </mat-option>
           </mat-select>
         </mat-form-field>
-       </div>
+       </form>
+       <div [hidden]="pessoas.length == 0">
        <div>
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
@@ -26,7 +38,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
             <mat-cell *matCellDef="let element">
               <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
-                {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}
+                {{(element[column.id]?.length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}
               </span>
               <span matTooltip="Transferir" *ngIf="column.id=='id'" class="default-botoes" (click)="transferir(element.id)">
                 <i class="material-icons">swap_horiz</i>
@@ -38,7 +50,11 @@
         </mat-table>
         <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
           showFirstLastButtons></mat-paginator>
-
+       </div>
+       <div>
+        <button mat-raised-button color="success" (click)="exportAsXLSX()" *ngIf="pessoas.length > 0"><i
+            class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
+      </div>
     </div>
   </div>
 </div>

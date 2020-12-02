@@ -211,7 +211,7 @@ export class CadastrarMembroComponent implements OnInit {
       // this.emitirCelula(item.celula);
     }, error => {
       // console.log(error)
-      // this._notifierService.notify(AlertType.Error, error.errors.message);
+      this._notifierService.notify(AlertType.Error, error.errors.message);
     });
   }
 

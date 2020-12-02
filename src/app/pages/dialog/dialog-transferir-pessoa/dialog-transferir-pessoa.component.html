@@ -6,9 +6,31 @@
     </mat-toolbar>
   </h4>
   <div class="cdk-container">
-    <app-igrejas *ngIf="data.controller==='igreja'"></app-igrejas>
-    <app-redes *ngIf="data.controller==='rede'"></app-redes>
-    <app-celula *ngIf="data.controller==='celula'"></app-celula>
+  <app-igrejas *ngIf="data.controller==='igreja'"></app-igrejas>
+    <div *ngIf="data.controller==='rede'">
+      <mat-form-field class="full-width-field">
+        <input type="text" placeholder="Rede" aria-label="Number" matInput [formControl]="myControlRede"
+          [matAutocomplete]="a" [(ngModel)]="redeValue">
+        <mat-autocomplete #a="matAutocomplete">
+          <mat-option *ngFor="let option of filteredRede | async" [value]="option.nome"
+            (click)="onSelectionRedeClick($event,option)">
+            {{option.nome}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
+    <div *ngIf="data.controller==='celula'">
+      <mat-form-field class="full-width-field">
+        <input type="text" placeholder="Celula" aria-label="Number" matInput [formControl]="myControlCelula"
+          [matAutocomplete]="auto" [(ngModel)]="celulaValue">
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option *ngFor="let option of filteredCelula | async" [value]="option.nome"
+            (onSelectionChange)="onSelectionCelulaClick($event,option)">
+            {{option.nome}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </div>
   </div>
   <div mat-dialog-actions align="end">
     <button mat-raised-button color="primary" type="submit" (click)="confirmar()">

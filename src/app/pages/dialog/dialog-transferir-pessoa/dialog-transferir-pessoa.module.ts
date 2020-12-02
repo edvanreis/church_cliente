@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DialogTransferirPessoaComponent } from './dialog-transferir-pessoa.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatInputModule, MatButtonModule, MatToolbarModule } from '@angular/material';
+import { MatInputModule, MatButtonModule, MatToolbarModule, MatAutocompleteModule, MatOptionModule } from '@angular/material';
 import { IgrejasComponentModule } from '../../componentes/igrejas/igreja-compenent.module';
 import { RedesComponenteModule } from '../../componentes/redes/redes-componente.module';
 import { CelulaComponentModule } from '../../componentes/celula/celula-component.module';
@@ -20,6 +20,8 @@ import { CelulaComponentModule } from '../../componentes/celula/celula-component
     IgrejasComponentModule,
     RedesComponenteModule,
     CelulaComponentModule,
+    MatAutocompleteModule,
+    MatOptionModule
   ],
   declarations: [
     DialogTransferirPessoaComponent
