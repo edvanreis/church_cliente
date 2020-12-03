@@ -21,6 +21,7 @@
         <h4>Buscando...</h4>
         <mat-spinner [diameter]="40"></mat-spinner>
       </div>
+      <div [hidden]="agendamentos.length == 0">
       <div>
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
@@ -43,6 +44,7 @@
         </mat-table>
         <mat-paginator #paginator [length]="dados.length" [pageSize]="5" [pageSizeOptions]="[5, 10, 20]"
           showFirstLastButtons></mat-paginator>
+      </div>
       <div>
         <div fxFlex></div>
           <button mat-raised-button color="warn" type="submit" (click)="voltar()">

@@ -246,5 +246,22 @@ export class RedePessoasComponent implements OnInit {
     }
   }
 
+  exportAsXLSX() {
+    let dados = [];
+    this.pessoas.forEach(i => {
+      dados.push({
+        "Nome": i.nomeCompleto,
+        "Data Nascimento": i.dataNascimento,
+        "RG": i.rg,
+        "CPF": i.cpf,
+        "Estado Civil": i.estadoCivil,
+        "Sexo": i.sexo,
+        "Tprofissao": i.profissao,
+      });
+    });
+    this._excelService.exportAsExcelFile(dados, "pesquisa");
+  }
+
+
 
 }

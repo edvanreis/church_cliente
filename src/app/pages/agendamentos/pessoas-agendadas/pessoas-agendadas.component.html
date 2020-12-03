@@ -17,7 +17,7 @@
             [matAutocomplete]="auto"  style="width: 100%;" [(ngModel)]="agendamentoValue">
           <mat-autocomplete #auto="matAutocomplete">
             <mat-option *ngFor="let option of filteredAgendamento | async" [value]="option.dataTipoDeCulto"
-              (onSelectionChange)="onSelectionChange($event,option)">
+              (click)="onSelectionClick($event,option)">
               {{option.dataTipoDeCulto}}
             </mat-option>
           </mat-autocomplete>
@@ -32,6 +32,7 @@
       </div>
       <br />
       <br />
+      <div [hidden]="pessoasAgendadas.length == 0">
       <div>
         <mat-form-field floatPlaceholder="never" style="color: black; width: 100%;">
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
@@ -63,6 +64,7 @@
         <button mat-raised-button color="success" (click)="exportAsXLSX()"><i
             class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
       </div>
+    </div>
     </div>
   </div>
 </div>

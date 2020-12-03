@@ -62,6 +62,9 @@
               <span>{{ element.horaInicio }}</span>
               <span>{{ element.horaFim }}</span>
               <span>{{ element.qtdPessoas }}</span>
+              <span style="color:blue;">{{ element.agendamentoPessoa.qtdTotalPessoasAgendamento }}</span>
+              <span style="color:green;">{{ element.agendamentoPessoa.totalPresentes }}</span>
+              <span style="color:red;">{{ element.agendamentoPessoa.totalNaoPresentes }}</span>
               <span matTooltip="{{element.concatPessoas}}" *ngIf="element.concatPessoas">
                 {{(element.concatPessoas.length > 20) ? ((element.concatPessoas).slice(0, 20) + '...') : element.concatPessoas}}</span>
               <span matTooltip="{{element.grupoTrabalho.nome}}" *ngIf="element.grupoTrabalho">

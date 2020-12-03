@@ -6,6 +6,7 @@ import { NotifierService } from 'angular-notifier';
 import { AlertType } from '../../../model/alert-type';
 import { take } from 'rxjs/operators';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cadastrar-pedido',
@@ -25,7 +26,8 @@ export class CadastrarPedidoComponent implements OnInit {
   constructor(private _service: PedidoService,
     private _enderecoService: EnderecoService,
     private _notifierService: NotifierService,
-    private _emitirEventoService: EmitirEventoService) { }
+    private _emitirEventoService: EmitirEventoService,
+    private _router: Router) { }
 
   ngOnInit() {
     this._buildForm();
@@ -114,6 +116,10 @@ export class CadastrarPedidoComponent implements OnInit {
 
 setEmiter(): void {
   this._emitirEventoService.emitir("clear", '');
+}
+
+voltar() {
+  this._router.navigate(['/']);
 }
 
 }

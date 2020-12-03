@@ -100,5 +100,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  pedidoOracao() {
+    this._router.navigate(['/pedido/cadastrar']);
+  }
 
 }

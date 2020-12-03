@@ -76,8 +76,7 @@
         </div>
         <div>
           <mat-form-field class="full-width-field">
-            <textarea matInput placeholder="Descrição" formControlName="descricao" required></textarea>
-            <mat-error *ngIf="!form.controls.descricao.valid">Campo Obrigatório</mat-error>
+            <textarea matInput placeholder="Descrição" formControlName="descricao" ></textarea>
           </mat-form-field>
         </div>
       </form>
@@ -177,7 +176,7 @@
           <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filtrar">
         </mat-form-field>
       </div>
-      <div *ngIf="agendamentos.length > 0 && !loading">
+      <div [hidden]="agendamentos.length == 0">
         <mat-table #table [dataSource]="dados" matSort style="margin-top: 20px;">
           <ng-container matColumnDef="{{ column.id }}" *ngFor="let column of columnNames">
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>

@@ -91,7 +91,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
       'nome': new FormControl('', Validators.required),
       'horaInicio': new FormControl('', Validators.required),
       'horaFim': new FormControl('', Validators.required),
-      'descricao': new FormControl('', Validators.required),
+      'descricao': new FormControl(''),
       'dataInicio': new FormControl('', Validators.required),
       'dataFim': new FormControl(''),
       'qtdDias': new FormControl(''),
@@ -331,10 +331,6 @@ export class CadastrarAgendamentosComponent implements OnInit {
   validFieds(): boolean {
     if (!this.form.controls['nome'].value) {
         this._notifierService.notify(AlertType.Error, "Por favor digite o nome do agendamento!");
-      return false;
-    }
-    if (!this.form.controls['descricao'].value) {
-        this._notifierService.notify(AlertType.Error, "Por favor escreva a descrição do agendamento");
       return false;
     }
     if (!this.form.controls['dataInicio'].value && !this.isEditar) {

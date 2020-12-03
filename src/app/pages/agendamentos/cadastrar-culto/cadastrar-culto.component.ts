@@ -76,8 +76,8 @@ export class CadastrarCultoComponent implements OnInit {
 
   columns() {
     this.columnNames = [
-      // { id: 'nome', value: 'Nome' },
       { id: 'dataAgendamento', value: 'Data do Agendamento' },
+      { id: 'nome', value: 'Nome' },
       { id: 'horaInicio', value: 'Hora Inicio' },
       { id: 'horaFim', value: 'Hora Fim' },
       { id: 'qtdPessoas', value: 'Quantidade de Pessoas' },
@@ -113,18 +113,18 @@ export class CadastrarCultoComponent implements OnInit {
     }
     this.loading = true;
     this._service.processarAgendamentoCulto(this.obj()).pipe(take(1)).subscribe(item => {
-      console.log(item)
-      if(!this.validarDataAgendamento(item)){
-          this.loading = false;
-          return;
-      }else{
+      // console.log(item)
+      // if(!this.validarDataAgendamento(item)){
+      //     this.loading = false;
+      //     return;
+      // }else{
         this.agendamentos.push(item);
         this.clear();
         this.dados = new MatTableDataSource(this.agendamentos);
         this.dados.sort = this.sort;
         this.dados.paginator = this.paginator;
         this.loading = false;
-      }
+      // }
     }, error => {
       this.loading = false;
       console.log(error)

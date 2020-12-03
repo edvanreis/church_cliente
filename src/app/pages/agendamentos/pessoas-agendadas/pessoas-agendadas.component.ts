@@ -113,7 +113,7 @@ export class PessoasAgendadasComponent implements OnInit {
   }
 
 
-  onSelectionChange($event: MatAutocompleteSelectedEvent, option) {
+  onSelectionClick($event: MatAutocompleteSelectedEvent, option) {
     this.agendamentoSelecionado = option;
     this.getList(this.agendamentoSelecionado.id);
     this.totalPessoasAgendadas(this.agendamentoSelecionado.id);
