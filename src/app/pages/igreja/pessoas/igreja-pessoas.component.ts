@@ -221,5 +221,10 @@ export class IgrejaPessoasComponent implements OnInit {
   }
 
 
+  hasPermission(param):boolean{
+    return this._userService.hasPermission(param)
+  }
+
+
 
 }

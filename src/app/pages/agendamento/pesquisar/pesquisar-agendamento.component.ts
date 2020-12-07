@@ -66,7 +66,7 @@ export class PesquisarAgendamentoComponent implements OnInit {
     this.loading = true;
     this.cpf = HelperChurch.retirarFormatacao(this.cpf);
     this._service.getAgendamentosPessoa(this.cpf).pipe(take(1)).subscribe(item => {
-      // console.log(item)
+      console.log(item)
       this.agendamentos = item;
       this.dados = new MatTableDataSource(this.agendamentos);
       this.dados.sort = this.sort;

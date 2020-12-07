@@ -14,6 +14,7 @@ import { map, startWith, take } from 'rxjs/operators';
 import { AlertType } from '../../../model/alert-type';
 import { AgendamentoService } from '../../../service/agendamento.service';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
+import { ExcelService } from '../../../service/excel.service';
 import { IgrejaService } from '../../../service/igreja.service';
 import { DialogAprovarReprovarAgendamentoComponent } from '../../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.component';
 import { DialogConfirmAgandamentoComponent } from '../../dialog/dialog-confirm-agandamento/dialog-confirm-agandamento.component';
@@ -73,7 +74,8 @@ export class PesquisarAgendamentosComponent implements OnInit {
     private _router: Router,
     private _avRoute: ActivatedRoute,
     private _emitirEventoService: EmitirEventoService,
-    private _dialog: MatDialog) { }
+    private _dialog: MatDialog,
+    private _excelService: ExcelService) { }
 
   ngOnInit() {
     this.carregarIgrejas();
@@ -108,11 +110,8 @@ export class PesquisarAgendamentosComponent implements OnInit {
     if(!this.igrejaSelecionada){
       this._notifierService.notify(AlertType.Error, "Por favor selecione uma igreja!");
     }
-    let obj = {
-      dataAgendamento:"01/"+this.competenciaSelecionada,
-      igreja:{id:this.igrejaSelecionada.id}
-    }
-    this._service.getDias(obj).pipe(take(1)).subscribe(item => {
+
+    this._service.getDias(this.obj()).pipe(take(1)).subscribe(item => {
       // console.log(item)
       this.agendamentos = item;
     }, error => {
@@ -122,6 +121,12 @@ export class PesquisarAgendamentosComponent implements OnInit {
     });
   }
 
+  obj(){
+    return {
+      dataAgendamento:"01/"+this.competenciaSelecionada,
+      igreja:{id:this.igrejaSelecionada.id}
+    }
+  }
 
 
   carregarIgrejas() {
@@ -283,6 +288,30 @@ getEmiter(): void {
         this.pesquisar();
       }
   });
+}
+
+exportAsXLSX() {
+  let agendamentos = [];
+  let dados = []
+
+  this._service.obterAgendamentosMes(this.obj()).pipe(take(1)).subscribe(item => {
+    agendamentos = item;
+    agendamentos.forEach(i => {
+    dados.push({
+      "Data do Agendamento": i.dataAgendamento,
+      "Hora Inicio": i.horaInicio,
+      "Hora Fim": i.horaFim,
+      "Nome": i.nome,
+      "Situação": i.statusAgendamento,
+      "Data Criação":i.dataCriacao
+    });
+  });
+  this._excelService.exportAsExcelFile(dados, "agendamentos");
+  }, error => {
+    this._notifierService.notify(AlertType.Error, error.errors.message);
+
+  });
+
 }
 
 

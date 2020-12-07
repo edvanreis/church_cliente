@@ -262,6 +262,8 @@ export class RedePessoasComponent implements OnInit {
     this._excelService.exportAsExcelFile(dados, "pesquisa");
   }
 
-
+  hasPermission(param):boolean{
+    return this._userService.hasPermission(param)
+  }
 
 }

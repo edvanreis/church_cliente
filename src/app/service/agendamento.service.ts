@@ -86,4 +86,9 @@ export class AgendamentoService implements AbstractService {
       .pipe(map((response: any) => response))
   }
 
+  obterAgendamentosMes(obj) {
+    return this.http.post(this._url+"obterAgendamentosMes",obj)
+      .pipe(map((response: any) => response))
+  }
+
 }

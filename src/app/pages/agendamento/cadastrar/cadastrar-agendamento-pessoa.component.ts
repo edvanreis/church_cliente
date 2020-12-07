@@ -57,7 +57,7 @@ export class CadastrarAgendamentoPessoaComponent implements OnInit {
 
   obterAgendamentos(id){
     this._serviceAgendamento.getAgendamentoAtualIgreja(id).pipe(take(1)).subscribe(item => {
-      console.log(item);
+      // console.log(item);
       this.comboAgendamento = item;
       this.filteredAgendamento = this.myControlAgendamento.valueChanges
         .pipe(

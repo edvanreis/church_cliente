@@ -79,7 +79,7 @@
               <span matTooltip="Editar" class="default-botoes" style="text-align: right; float: right;" *ngIf="element.id && element.statusAgendamento!='APROVADO' || element.tipoAgendamento=='CANCELADO'" (click)="editar(element.id,element.tipoAgendamento)">
                 <i class="col-md material-icons ">create</i>
               </span>
-              <span matTooltip="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id && element.statusAgendamento!='APROVADO' || element.tipoAgendamento=='CANCELADO'">
+              <span matTooltip="Excluir" class="default-botoes" style="text-align: right; float: right;" (click)="dialogRemover(element.id)" *ngIf="element.id && (element.statusAgendamento=='APROVADO' || element.tipoAgendamento=='CANCELADO')">
                 <i class="col-md material-icons ">delete</i>
               </span>
               <span style="color:red; cursor: pointer; text-align: right; float: right;"  *ngIf="element.statusAgendamento=='APROVADO'" class="default-botoes"
@@ -87,6 +87,11 @@
             </div>
           </div>
           </mat-expansion-panel>
+        </div>
+        <div>
+          <br />
+          <button mat-raised-button color="success" (click)="exportAsXLSX()"><i
+              class="material-icons">vertical_align_bottom</i>Exportar XLSX</button>
         </div>
     </mat-card>
     </div>

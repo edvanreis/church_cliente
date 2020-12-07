@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material';
 import { DialogAtivarInativarComponent } from '../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
 import { EmitirEventoService } from '../../../service/emitir-evento.service';
 import { ExcelService } from '../../../service/excel.service';
+import { UserService } from '../../../service/user.service';
 
 const ELEMENT_DATA = [
   { codigo: 'ATIVO', value: 'Ativo' },
@@ -197,7 +198,5 @@ export class PesquisarIgrejaComponent implements OnInit {
     });
     this._excelService.exportAsExcelFile(dados, "pesquisa");
   }
-
-
 
 }

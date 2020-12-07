@@ -60,7 +60,9 @@ export class CadastrarAgendamentosComponent implements OnInit {
   public igrejaValue: any;
   public igrejaSelecionada: any;
 
-  public tipoAgendamento$: Observable<any[]>;
+  public tipoAgendamento = new Array();
+
+  public dataAgendamento:any;
 
 
   constructor(private _notifierService: NotifierService,
@@ -78,12 +80,13 @@ export class CadastrarAgendamentosComponent implements OnInit {
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
+    this.carregarTipoAgendamento();
     this._buildForm();
     this.getParams();
     this.columns();
     this.getEmiter();
     this._buildFormTow();
-    this.carregarTipoAgendamento();
+
   }
 
   private _buildForm(): void {
@@ -102,14 +105,18 @@ export class CadastrarAgendamentosComponent implements OnInit {
   }
 
   carregarTipoAgendamento() {
-    this.tipoAgendamento$ = this._tipoAgendamentoService.getList();
+    this._tipoAgendamentoService.getList().pipe(take(1)).subscribe(item => {
+      this.tipoAgendamento = item;
+    }, error => {
+      this._notifierService.notify(AlertType.Error, error.error.message);
+    });
   }
 
 
   columns() {
     this.columnNames = [
-      // { id: 'nome', value: 'Nome' },
       { id: 'dataAgendamento', value: 'Data do Agendamento' },
+      { id: 'nome', value: 'Nome' },
       { id: 'horaInicio', value: 'Hora Inicio' },
       { id: 'horaFim', value: 'Hora Fim' },
       { id: 'qtdPessoas', value: 'Quantidade de Pessoas' },
@@ -119,7 +126,6 @@ export class CadastrarAgendamentosComponent implements OnInit {
   }
 
   getParams() {
-    console.log(this._avRoute.snapshot.queryParamMap)
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
       this.isEditar = true;
@@ -166,7 +172,11 @@ export class CadastrarAgendamentosComponent implements OnInit {
   }
 
   carregarGrupos() {
-    this._serviceGruop.getGruposByIgrejas({ igreja: { id: this.igrejaId } }).pipe(take(1)).subscribe(item => {
+    let obj = {
+      igreja:{id:this.getIgrejaId()},
+      status:'ATIVO'
+    }
+    this._serviceGruop.getGruposByIgrejas(obj).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboGrupos = item;
       this.filteredGrupos = this.myControlGrupos.valueChanges
@@ -185,7 +195,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
   }
 
 
-  onSelectionChangedGrupos($event: MatAutocompleteSelectedEvent, option) {
+  onSelectionChangedClick($event: MatAutocompleteSelectedEvent, option) {
     this.grupoSelecionado = option;
   }
 
@@ -261,7 +271,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
     agendamento.tipoAgendamento =  this.form.controls['tipoAgendamento'].value;
 
     if (this.membros.length > 0) {
-      agendamento.pessoas = this.membros
+      agendamento.membros = this.membros
     }
     if (this.grupoSelecionado) {
       agendamento.grupoTrabalho = { id: this.grupoSelecionado.id }
@@ -282,9 +292,10 @@ export class CadastrarAgendamentosComponent implements OnInit {
     agendamento.qtdPessoas = this.form.controls['qtdPessoas'].value;
     agendamento.igreja = { id: this.igrejaId };
     agendamento.id = this.id;
+    agendamento.tipoAgendamento =  this.form.controls['tipoAgendamento'].value;
 
     if (this.membros.length > 0) {
-      agendamento.pessoas = this.membros
+      agendamento.membros = this.membros
     }
     if (this.grupoSelecionado) {
       agendamento.grupoTrabalho = { id: this.grupoSelecionado.id }
@@ -393,16 +404,17 @@ export class CadastrarAgendamentosComponent implements OnInit {
 
   getAgendamanto(id) {
     this._service.getAgendamento(id).pipe(take(1)).subscribe(item => {
-      // console.log(item)
+      console.log(item)
       this.form.controls['nome'].patchValue(item.nome);
       this.form.controls['horaInicio'].patchValue(item.horaInicio);
       this.form.controls['horaFim'].patchValue(item.horaFim);
       this.form.controls['descricao'].patchValue(item.descricao);
-      this.form.controls['dataAgendamento'].patchValue(new Date(item.dataAgendamentoToDate));
+      this.form.controls['dataAgendamento'].patchValue(new Date(item.dataAgendamentoToDate+1));
       this.form.controls['qtdPessoas'].patchValue(item.qtdPessoas);
-      this.form.controls['tipoAgendamento'].patchValue(item.tipoAgendamanto);
-      if (item.pessoas) {
-        this.membros = item.pessoas;
+      this.dataAgendamento = item.dataAgendamento;
+
+      if (item.membros) {
+        this.membros = item.membros;
       }
       if (item.grupoTrabalho) {
         this.grupoSelecionado = item.grupoTrabalho;
@@ -412,6 +424,10 @@ export class CadastrarAgendamentosComponent implements OnInit {
         this.enderecos = item.enderecos;
         this.formTwo.controls['outro'].patchValue(true);
         this.emitirEndereco(item.enderecos);
+      }
+      if(item.tipoAgendamento){
+        let tipo = this.tipoAgendamento.find(i=>i.id==item.tipoAgendamento.id);
+        this.form.controls['tipoAgendamento'].patchValue(tipo);
       }
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -460,9 +476,10 @@ export class CadastrarAgendamentosComponent implements OnInit {
     return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
-  onSelectionIgrejaChange($event: MatAutocompleteSelectedEvent, option) {
+  onSelectionIgrejaClick($event: MatAutocompleteSelectedEvent, option) {
     this.igrejaSelecionada = option;
     this.carregarMembro();
+    this.carregarGrupos();
   }
 
   getIgrejaId() {
@@ -471,6 +488,10 @@ export class CadastrarAgendamentosComponent implements OnInit {
     } else if (this.igrejaSelecionada) {
       return this.igrejaSelecionada.id
     }
+  }
+
+  changeDateInicio(){
+    this.calcularDias();
   }
 
 }
