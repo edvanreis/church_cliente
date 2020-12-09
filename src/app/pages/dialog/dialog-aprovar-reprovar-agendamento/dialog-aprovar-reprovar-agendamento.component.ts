@@ -61,7 +61,7 @@ export class DialogAprovarReprovarAgendamentoComponent implements OnInit {
     if (this.data.reprovar) {
       this.reprovar();
     } else if (this.data.cancelar) {
-
+        this.cancelar();
     } else {
       this.aprovar();
     }
