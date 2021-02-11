@@ -211,6 +211,7 @@ export class PesquisarMembroComponent implements OnInit {
   }
 
   columns() {
+
     this.columnNames = [
       { id: 'nomeCompleto', value: 'Nome' },
       { id: 'dataNascimento', value: 'Data Nascimento' },
@@ -218,6 +219,7 @@ export class PesquisarMembroComponent implements OnInit {
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
+
   }
 
   paginatorEvent(event) {
