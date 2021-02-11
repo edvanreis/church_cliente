@@ -150,10 +150,8 @@ export class PesquisarMembroComponent implements OnInit {
 
   pesquisar() {
     this.setObj();
-    //  console.log(this.pessoa)
     this.loading = true;
     this._service.pesquisar(this.membro).pipe(take(1)).subscribe(item => {
-      // console.log(item);
       this.pessoas = item;
       this.dados = new MatTableDataSource(this.pessoas);
       this.dados.sort = this.sort;
@@ -211,7 +209,6 @@ export class PesquisarMembroComponent implements OnInit {
   }
 
   columns() {
-
     this.columnNames = [
       { id: 'nomeCompleto', value: 'Nome' },
       { id: 'dataNascimento', value: 'Data Nascimento' },
@@ -219,7 +216,6 @@ export class PesquisarMembroComponent implements OnInit {
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
-
   }
 
   paginatorEvent(event) {
