@@ -441,9 +441,9 @@ export class CadastrarMembroComponent implements OnInit {
     if (this.escolaridades.length == 0) {
       return concatArray + 'a  Esconlaridade!';
     }
-    if (!this.membro.igreja) {
-      return concat + ' Igreja!';
-    }
+   // if (!this.membro.igreja) {
+   //   return concat + ' Igreja!';
+   // }
 
     if (!this.membro.batizado) {
       return concat + 'O campo batizado é Obrigatório!';
