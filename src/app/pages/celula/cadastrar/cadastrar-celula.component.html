@@ -63,7 +63,18 @@
           </mat-slide-toggle>
         </div>
       </form>
-      <app-igrejas></app-igrejas>
+      <div>
+        <mat-form-field class="full-width-field">
+          <input type="text" placeholder="Igreja" aria-label="Number" matInput [formControl]="myControlIgreja"
+            [matAutocomplete]="au" style="width: 100%;"  [(ngModel)]="igrejaValue">
+          <mat-autocomplete #au="matAutocomplete">
+            <mat-option *ngFor="let option of filteredIgreja | async" [value]="option.nome"
+              (click)="onSelectionIgrejaClick($event,option)">
+              {{option.nome}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
       <div>
         <div>
           <mat-form-field class="full-width-field">

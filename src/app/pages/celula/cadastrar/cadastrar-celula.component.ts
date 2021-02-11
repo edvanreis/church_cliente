@@ -1,3 +1,4 @@
+import { IgrejaService } from './../../../service/igreja.service';
 import { MembroService } from '../../../service/membro.service';
 import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
@@ -36,7 +37,7 @@ export class CadastrarCelulaComponent implements OnInit {
   public tipoPessoa: any;
   public sizeLimitOne: boolean = true;
   public id: any;
-  public igrejaSelecionada:any;
+
 
   public myControlMembro = new FormControl();
   public comboMembro = [];
@@ -51,6 +52,14 @@ export class CadastrarCelulaComponent implements OnInit {
   public redeValue: any;
 
 
+  public comboIgrejas = [];
+  public filteredIgreja: Observable<string[]>;
+  public myControlIgreja = new FormControl();
+  public igrejaValue: any;
+  public igrejaSelecionada: any;
+
+
+
 
 
 
@@ -60,12 +69,12 @@ export class CadastrarCelulaComponent implements OnInit {
     private _datePipe: DatePipe,
     private _avRoute: ActivatedRoute,
     private _router: Router,
-    private _redeService: RedeService,
     private _dateAdapter: DateAdapter<Date>,
     private _dialog: MatDialog,
     private _tipoLiderancaService:TipoLiderancaService,
     private _membroService:MembroService,
-    private _serviceRede: RedeService) { }
+    private _serviceRede: RedeService,
+    private _igrejaService: IgrejaService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -75,16 +84,12 @@ export class CadastrarCelulaComponent implements OnInit {
     this.getComboTurno();
     this.carregarTipoCelula();
     this.carregarTipoLiderencaCelula();
+    this.carregarIgrejas();
     this.getParams();
   }
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-
-      if (item.type == 'igreja-comp') {
-        this.igrejaSelecionada = item.data;
-        this.carregarRede(this.igrejaSelecionada.id);
-      }
 
       if (item.type == 'endereco') {
         this.enderecos = item.data;
@@ -227,11 +232,11 @@ export class CadastrarCelulaComponent implements OnInit {
       if(item.enderecos){
         this.emitirEnderecos(item.enderecos);
       }
-      if(item.membros){
+      if(item.membros.length > 0){
         this.carregarPessoas(item.membros);
       }
       if(item.igreja){
-        this.emitirIgreja(item.igreja);
+        this.getIgreja(item.igreja);
       }
 
     }, error => {
@@ -257,9 +262,9 @@ export class CadastrarCelulaComponent implements OnInit {
     this._emitirEventoService.emitir('edit-endereco', item);
   }
 
-  emitirIgreja(item): void {
-    this.igrejaSelecionada = item;
-    this._emitirEventoService.emitir('edit-igreja', this.igrejaSelecionada);
+  getIgreja(igreja): void {
+    this.igrejaSelecionada = igreja;
+    this.igrejaValue = igreja.nome;
   }
 
 
@@ -393,6 +398,31 @@ export class CadastrarCelulaComponent implements OnInit {
     this.redeSelecionada = option;
     this.carregarMembro(this.redeSelecionada.id);
   }
+
+  onSelectionIgrejaClick($event: MatAutocompleteSelectedEvent, option) {
+    this.igrejaSelecionada = option;
+    this.carregarRede(this.igrejaSelecionada.id);
+  }
+
+  carregarIgrejas() {
+
+    this._igrejaService.getList().pipe(take(1)).subscribe(item => {
+      this.comboIgrejas = item;
+      // console.log(item);
+      this.filteredIgreja = this.myControlIgreja.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterIgreja(value, this.comboIgrejas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas!");
+    });
+  }
+  private _filterIgreja(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
+  }
+
 
 
 }

@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div fxLayout=\"column\" class=\"components-container-gt-xs\" [ngClass.xs]=\"'components-container-xs'\" fxLayoutGap=\"20px\">\r\n  <div fxFlex class=\"cdk-component-holder button-component-holder mat-elevation-z4\">\r\n    <mat-toolbar class=\"cdk-header\">\r\n      <span><i class=\"material-icons\">add</i></span>\r\n      <h1 class=\"mat-headline center-align\">Rede</h1>\r\n    </mat-toolbar>\r\n    <div class=\"cdk-container\">\r\n      <form form [formGroup]=\"form\">\r\n        <div fxLayout=\"row\"  fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input matInput class=\"input-upper\" placeholder=\"Nome\" formControlName=\"nome\" id=\"nome\" required>\r\n            <mat-error *ngIf=\"!form.controls.nome.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field>\r\n            <mat-label>Selecione...</mat-label>\r\n            <mat-select formControlName=\"redes\" id=\"comboRede\" >\r\n              <mat-option *ngFor=\"let item of comboRede\" [value]=\"item.rede\">\r\n                {{item.descRede}}\r\n              </mat-option>\r\n            </mat-select>\r\n            <mat-error *ngIf=\"!form.controls.redes.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n          <mat-form-field>\r\n            <input matInput [matDatepicker]=\"picker\"  placeholder=\"Data de abertura\" formControlName=\"dataAbertura\" readonly>\r\n            <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\r\n            <mat-datepicker #picker></mat-datepicker>\r\n            <mat-error *ngIf=\"!form.controls.dataAbertura.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"100px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <textarea matInput placeholder=\"Descrição\" formControlName=\"descricao\"></textarea>\r\n          </mat-form-field>\r\n        </div>\r\n      </form>\r\n      <app-igrejas></app-igrejas>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" aria-label=\"Number\" matInput [formControl]=\"myControlMembro\" [matAutocomplete]=\"auto\" placeholder=\"Lideres\"\r\n            [(ngModel)]=\"membroValue\" required>\r\n          <mat-autocomplete #auto=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredMembro | async\" [value]=\"option.nomeCompleto\"\r\n              (onSelectionChange)=\"onSelectionChangedMembro($event,option)\">\r\n              {{option.nomeCompleto}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"adicionar()\">\r\n          <i class=\"material-icons\">add</i>adicionar</button>\r\n      </div>\r\n      <br/>\r\n      <div class=\"table-responsive\" *ngIf=\"membros.length > 0\">\r\n        <br/>\r\n        <br/>\r\n      <mat-divider></mat-divider>\r\n        <br/>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n          <i class=\"material-icons\">face</i>\r\n          <h1 class=\"mat-subheading-2 center-align\">Lideres</h1>\r\n        </div>\r\n        <br/>\r\n        <table>\r\n          <thead class=\"text-primary\">\r\n            <th></th>\r\n            <th>Nome</th>\r\n            <th>Célula</th>\r\n            <th>Igreja</th>\r\n            <th>Remover</th>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let m of membros ;let i= index\">\r\n              <td>{{ i+1}}</td>\r\n              <td>{{ m.nomeCompleto}}</td>\r\n              <td>{{ m.celula?.nome}}</td>\r\n              <td>{{ m.igreja?.nome}}</td>\r\n              <td><span style=\"color: #1d68a5;cursor: pointer\" (click)=\"dialogRemover(i,m)\"><i\r\n                    class=\"material-icons\">delete</i></span></td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <br/>\r\n      <br/>\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"salvar()\">\r\n          <i class=\"material-icons\">save</i>Salvar</button>\r\n        <div fxFlex></div>\r\n        <button mat-raised-button color=\"warn\" type=\"submit\" (click)=\"voltar()\">\r\n          <i class=\"material-icons\">reply</i>Voltar</button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div fxLayout=\"column\" class=\"components-container-gt-xs\" [ngClass.xs]=\"'components-container-xs'\" fxLayoutGap=\"20px\">\r\n  <div fxFlex class=\"cdk-component-holder button-component-holder mat-elevation-z4\">\r\n    <mat-toolbar class=\"cdk-header\">\r\n      <span><i class=\"material-icons\">add</i></span>\r\n      <h1 class=\"mat-headline center-align\">Rede</h1>\r\n    </mat-toolbar>\r\n    <div class=\"cdk-container\">\r\n      <form form [formGroup]=\"form\">\r\n        <div fxLayout=\"row\"  fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input matInput class=\"input-upper\" placeholder=\"Nome\" formControlName=\"nome\" id=\"nome\" required>\r\n            <mat-error *ngIf=\"!form.controls.nome.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field>\r\n            <mat-label>Selecione...</mat-label>\r\n            <mat-select formControlName=\"redes\" id=\"comboRede\" >\r\n              <mat-option *ngFor=\"let item of comboRede\" [value]=\"item.rede\">\r\n                {{item.descRede}}\r\n              </mat-option>\r\n            </mat-select>\r\n            <mat-error *ngIf=\"!form.controls.redes.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n          <mat-form-field>\r\n            <input matInput [matDatepicker]=\"picker\"  placeholder=\"Data de abertura\" formControlName=\"dataAbertura\" readonly>\r\n            <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\r\n            <mat-datepicker #picker></mat-datepicker>\r\n            <mat-error *ngIf=\"!form.controls.dataAbertura.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"100px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <textarea matInput placeholder=\"Descrição\" formControlName=\"descricao\"></textarea>\r\n          </mat-form-field>\r\n        </div>\r\n      </form>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Igreja\" aria-label=\"Number\" matInput [formControl]=\"myControlIgreja\"\r\n            [matAutocomplete]=\"au\" style=\"width: 100%;\"  [(ngModel)]=\"igrejaValue\">\r\n          <mat-autocomplete #au=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredIgreja | async\" [value]=\"option.nome\"\r\n              (click)=\"onSelectionIgrejaClick($event,option)\">\r\n              {{option.nome}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" aria-label=\"Number\" matInput [formControl]=\"myControlMembro\" [matAutocomplete]=\"auto\" placeholder=\"Lideres\"\r\n            [(ngModel)]=\"membroValue\" required>\r\n          <mat-autocomplete #auto=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredMembro | async\" [value]=\"option.nomeCompleto\"\r\n              (onSelectionChange)=\"onSelectionChangedMembro($event,option)\">\r\n              {{option.nomeCompleto}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"adicionar()\">\r\n          <i class=\"material-icons\">add</i>adicionar</button>\r\n      </div>\r\n      <br/>\r\n      <div class=\"table-responsive\" *ngIf=\"membros.length > 0\">\r\n        <br/>\r\n        <br/>\r\n      <mat-divider></mat-divider>\r\n        <br/>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n          <i class=\"material-icons\">face</i>\r\n          <h1 class=\"mat-subheading-2 center-align\">Lideres</h1>\r\n        </div>\r\n        <br/>\r\n        <table>\r\n          <thead class=\"text-primary\">\r\n            <th></th>\r\n            <th>Nome</th>\r\n            <th>Célula</th>\r\n            <th>Igreja</th>\r\n            <th>Remover</th>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let m of membros ;let i= index\">\r\n              <td>{{ i+1}}</td>\r\n              <td>{{ m.nomeCompleto}}</td>\r\n              <td>{{ m.celula?.nome}}</td>\r\n              <td>{{ m.igreja?.nome}}</td>\r\n              <td><span style=\"color: #1d68a5;cursor: pointer\" (click)=\"dialogRemover(i,m)\"><i\r\n                    class=\"material-icons\">delete</i></span></td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <br/>\r\n      <br/>\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"salvar()\">\r\n          <i class=\"material-icons\">save</i>Salvar</button>\r\n        <div fxFlex></div>\r\n        <button mat-raised-button color=\"warn\" type=\"submit\" (click)=\"voltar()\">\r\n          <i class=\"material-icons\">reply</i>Voltar</button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -68,24 +68,25 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var CadastrarRedeComponent = /** @class */ (function () {
-    function CadastrarRedeComponent(_service, _notifierService, _emitirEventoService, _datePipe, _avRoute, _router, _igejaService, _dateAdapter, _dialog, _membroService) {
+    function CadastrarRedeComponent(_service, _notifierService, _emitirEventoService, _datePipe, _avRoute, _router, _dateAdapter, _dialog, _membroService, _igrejaService) {
         this._service = _service;
         this._notifierService = _notifierService;
         this._emitirEventoService = _emitirEventoService;
         this._datePipe = _datePipe;
         this._avRoute = _avRoute;
         this._router = _router;
-        this._igejaService = _igejaService;
         this._dateAdapter = _dateAdapter;
         this._dialog = _dialog;
         this._membroService = _membroService;
+        this._igrejaService = _igrejaService;
         this.comboRede = [];
-        this.comboIgrejas = [];
         this.myControlMembro = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]();
         this.comboMembro = [];
         this.membros = [];
         this.rede = {};
         this.label = "Lideres";
+        this.comboIgrejas = [];
+        this.myControlIgreja = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]();
     }
     CadastrarRedeComponent.prototype.ngOnInit = function () {
         this._dateAdapter.setLocale("br");
@@ -93,6 +94,7 @@ var CadastrarRedeComponent = /** @class */ (function () {
         this.getComboRedes();
         this.getEmiter();
         this.getParams();
+        this.carregarIgrejas();
     };
     CadastrarRedeComponent.prototype._buildForm = function () {
         this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
@@ -112,10 +114,6 @@ var CadastrarRedeComponent = /** @class */ (function () {
     CadastrarRedeComponent.prototype.getEmiter = function () {
         var _this = this;
         this._emitirEventoService.mensagem.subscribe(function (item) {
-            if (item.type == 'igreja-comp') {
-                _this.igrejaSelecionada = item.data;
-                _this.carregarMembro(_this.igrejaSelecionada.id);
-            }
             if (item.type == 'confirm-dialog-pessoa-rede') {
                 _this.membros.splice(item.data, 1);
             }
@@ -181,7 +179,9 @@ var CadastrarRedeComponent = /** @class */ (function () {
             _this.form.controls['descricao'].patchValue(item.descricao);
             _this.form.controls['redes'].patchValue(item.rede);
             _this.form.controls['dataAbertura'].patchValue(new Date(item.dataAbertutaToDate));
-            _this.getIgreja(item.idIgreja);
+            if (item.igreja) {
+                _this.getIgreja(item.igreja);
+            }
             _this.carregarPessoas(item.membros);
         }, function (error) {
             _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_6__["AlertType"].Error, error.errors.message);
@@ -200,14 +200,10 @@ var CadastrarRedeComponent = /** @class */ (function () {
             }
         }
     };
-    CadastrarRedeComponent.prototype.getIgreja = function (id) {
-        var _this = this;
-        this._igejaService.getIgreja(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_11__["take"])(1)).subscribe(function (item) {
-            _this.igrejaSelecionada = item;
-            _this.emitirIgreja(item);
-        }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_6__["AlertType"].Error, error.errors.message);
-        });
+    CadastrarRedeComponent.prototype.getIgreja = function (igreja) {
+        console.log(igreja);
+        this.igrejaSelecionada = igreja;
+        this.igrejaValue = igreja.nome;
     };
     CadastrarRedeComponent.prototype.voltar = function () {
         this._router.navigate(['/auth/rede/pesquisar'], {
@@ -216,9 +212,6 @@ var CadastrarRedeComponent = /** @class */ (function () {
             },
             skipLocationChange: true
         });
-    };
-    CadastrarRedeComponent.prototype.emitirIgreja = function (item) {
-        this._emitirEventoService.emitir('edit-igreja', item);
     };
     CadastrarRedeComponent.prototype.salvar = function () {
         if (!this.validFields()) {
@@ -294,6 +287,25 @@ var CadastrarRedeComponent = /** @class */ (function () {
         }
         return true;
     };
+    CadastrarRedeComponent.prototype.onSelectionIgrejaClick = function ($event, option) {
+        this.igrejaSelecionada = option;
+        this.carregarMembro(this.igrejaSelecionada.id);
+    };
+    CadastrarRedeComponent.prototype.carregarIgrejas = function () {
+        var _this = this;
+        this._igrejaService.getList().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_11__["take"])(1)).subscribe(function (item) {
+            _this.comboIgrejas = item;
+            // console.log(item);
+            _this.filteredIgreja = _this.myControlIgreja.valueChanges
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_11__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_11__["map"])(function (value) { return _this._filterIgreja(value, _this.comboIgrejas); }));
+        }, function (error) {
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_6__["AlertType"].Error, "Erro ao carregar igrejas!");
+        });
+    };
+    CadastrarRedeComponent.prototype._filterIgreja = function (value, lista) {
+        var filterValue = value.toLowerCase();
+        return lista.filter(function (option) { return option.nome.toLowerCase().includes(filterValue); });
+    };
     CadastrarRedeComponent = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-cadastrar-rede',
@@ -306,10 +318,10 @@ var CadastrarRedeComponent = /** @class */ (function () {
             _angular_common__WEBPACK_IMPORTED_MODULE_0__["DatePipe"],
             _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"],
             _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"],
-            _service_igreja_service__WEBPACK_IMPORTED_MODULE_8__["IgrejaService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_3__["DateAdapter"],
             _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"],
-            _service_membro_service__WEBPACK_IMPORTED_MODULE_12__["MembroService"]])
+            _service_membro_service__WEBPACK_IMPORTED_MODULE_12__["MembroService"],
+            _service_igreja_service__WEBPACK_IMPORTED_MODULE_8__["IgrejaService"]])
     ], CadastrarRedeComponent);
     return CadastrarRedeComponent;
 }());
@@ -325,7 +337,7 @@ var CadastrarRedeComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div fxLayout=\"column\" class=\"components-container-gt-xs\" [ngClass.xs]=\"'components-container-xs'\" fxLayoutGap=\"20px\">\r\n  <div fxFlex class=\"cdk-component-holder mat-elevation-z4\">\r\n    <mat-toolbar class=\"cdk-header\">\r\n      <i class=\"material-icons\">search</i>\r\n      <h1 class=\"mat-headline center-align\">Rede</h1>\r\n    </mat-toolbar>\r\n    <div class=\"cdk-container\">\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"100px\">\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"cadastrar()\">\r\n          <i class=\"material-icons\">add</i>Novo</button>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Igreja\" aria-label=\"Number\" matInput [formControl]=\"myControlIgreja\"\r\n            [matAutocomplete]=\"auto\" [(ngModel)]=\"igrejaValue\" style=\"width: 100%;\" (blur)=\"onBlurIgreja($event)\">\r\n          <mat-autocomplete #auto=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredIgreja | async\" [value]=\"option.nome\"\r\n              (click)=\"onSelectionIgrejaClick(option)\">\r\n              {{option.nome}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n        </div >\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <mat-label>Status</mat-label>\r\n          <mat-select  [(ngModel)]=\"statusSelecionado\" id=\"status\">\r\n            <mat-option *ngFor=\"let item of comboStatus\" [value]=\"item.codigo\"\r\n             (click)=\"onSelection()\">\r\n              {{item.value}}\r\n            </mat-option>\r\n          </mat-select>\r\n        </mat-form-field>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div *ngIf=\"redes.length > 0 \">\r\n        <mat-form-field floatPlaceholder=\"never\" style=\"color: black; width: 100%;\">\r\n          <input matInput (keyup)=\"applyFilter($event.target.value)\" placeholder=\"Filtrar\">\r\n        </mat-form-field>\r\n      </div>\r\n      <mat-table #table [dataSource]=\"dados\" matSort style=\"margin-top: 20px;\" *ngIf=\"redes.length > 0 \">\r\n        <ng-container matColumnDef=\"{{ column.id }}\" *ngFor=\"let column of columnNames\">\r\n          <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>\r\n          <mat-cell *matCellDef=\"let element\">\r\n            <span *ngIf=\"column.id!='id'\" matTooltip=\"{{element[column.id]}}\">\r\n              {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}\r\n            </span>\r\n            <span *ngIf=\"column.id=='id'\" style=\"cursor: pointer;color:#1d68a5\" matTooltip=\"Editar\" (click)=\"editar(element.id)\"><i\r\n                class=\"material-icons\">create</i></span>\r\n            <span *ngIf=\"column.id=='id'\" style=\"cursor: pointer;color:#1d68a5\" matTooltip=\"Status\" (click)=\"status(element.id)\"><i\r\n                class=\"material-icons\">settings</i></span>\r\n          </mat-cell>\r\n        </ng-container>\r\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\r\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\r\n      </mat-table>\r\n      <mat-paginator #paginator [length]=\"dados.length\" [pageSize]=\"5\" [pageSizeOptions]=\"[5, 10, 20]\"\r\n        showFirstLastButtons></mat-paginator>\r\n        <div *ngIf=\"redes.lenght > 0 \">\r\n          <button mat-raised-button color=\"success\" (click)=\"exportAsXLSX()\"><i\r\n            class=\"material-icons\">vertical_align_bottom</i>Exportar XLSX</button>\r\n        </div>\r\n      </div>\r\n  </div>\r\n"
+module.exports = "<div fxLayout=\"column\" class=\"components-container-gt-xs\" [ngClass.xs]=\"'components-container-xs'\" fxLayoutGap=\"20px\">\r\n  <div fxFlex class=\"cdk-component-holder mat-elevation-z4\">\r\n    <mat-toolbar class=\"cdk-header\">\r\n      <i class=\"material-icons\">search</i>\r\n      <h1 class=\"mat-headline center-align\">Rede</h1>\r\n    </mat-toolbar>\r\n    <div class=\"cdk-container\">\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"100px\">\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"cadastrar()\">\r\n          <i class=\"material-icons\">add</i>Novo</button>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Igreja\" aria-label=\"Number\" matInput [formControl]=\"myControlIgreja\"\r\n            [matAutocomplete]=\"auto\" [(ngModel)]=\"igrejaValue\" style=\"width: 100%;\" (blur)=\"onBlurIgreja($event)\">\r\n          <mat-autocomplete #auto=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredIgreja | async\" [value]=\"option.nome\"\r\n              (click)=\"onSelectionIgrejaClick(option)\">\r\n              {{option.nome}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n        </div >\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <mat-label>Status</mat-label>\r\n          <mat-select  [(ngModel)]=\"statusSelecionado\" id=\"status\">\r\n            <mat-option *ngFor=\"let item of comboStatus\" [value]=\"item.codigo\"\r\n             (click)=\"onSelection()\">\r\n              {{item.value}}\r\n            </mat-option>\r\n          </mat-select>\r\n        </mat-form-field>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div [hidden]=\"redes.length == 0 \">\r\n        <mat-form-field floatPlaceholder=\"never\" style=\"color: black; width: 100%;\">\r\n          <input matInput (keyup)=\"applyFilter($event.target.value)\" placeholder=\"Filtrar\">\r\n        </mat-form-field>\r\n      </div>\r\n      <mat-table #table [dataSource]=\"dados\" matSort style=\"margin-top: 20px;\" [hidden]=\"redes.length == 0\">\r\n        <ng-container matColumnDef=\"{{ column.id }}\" *ngFor=\"let column of columnNames\">\r\n          <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>\r\n          <mat-cell *matCellDef=\"let element\">\r\n            <span *ngIf=\"column.id!='id'\" matTooltip=\"{{element[column.id]}}\">\r\n              {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}\r\n            </span>\r\n            <span *ngIf=\"column.id=='id'\" style=\"cursor: pointer;color:#1d68a5\" matTooltip=\"Editar\" (click)=\"editar(element.id)\"><i\r\n                class=\"material-icons\">create</i></span>\r\n            <span *ngIf=\"column.id=='id'\" style=\"cursor: pointer;color:#1d68a5\" matTooltip=\"Status\" (click)=\"status(element.id)\"><i\r\n                class=\"material-icons\">settings</i></span>\r\n          </mat-cell>\r\n        </ng-container>\r\n        <mat-header-row *matHeaderRowDef=\"displayedColumns\"></mat-header-row>\r\n        <mat-row *matRowDef=\"let row; columns: displayedColumns;\"></mat-row>\r\n      </mat-table>\r\n      <mat-paginator #paginator [length]=\"dados.length\" [pageSize]=\"5\" [pageSizeOptions]=\"[5, 10, 20]\"\r\n        showFirstLastButtons></mat-paginator>\r\n        <div *ngIf=\"redes.lenght > 0 \">\r\n          <button mat-raised-button color=\"success\" (click)=\"exportAsXLSX()\"><i\r\n            class=\"material-icons\">vertical_align_bottom</i>Exportar XLSX</button>\r\n        </div>\r\n      </div>\r\n  </div>\r\n"
 
 /***/ }),
 

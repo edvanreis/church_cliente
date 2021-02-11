@@ -22,18 +22,21 @@ export class CadastrarRedeComponent implements OnInit {
 
   public form: FormGroup;
   public comboRede = [];
-  public comboIgrejas = []
   public myControlMembro = new FormControl();
   public comboMembro = [];
   public filteredMembro: Observable<string[]>;
   //public nomeValue;
   public membroSelecionado: any;
   public membros: any = [];
-  public igrejaSelecionada: any;
   public rede = {} as any;
   public label: string = "Lideres";
-  public nameIgreja;
   public id;
+
+  public comboIgrejas = [];
+  public filteredIgreja: Observable<string[]>;
+  public myControlIgreja = new FormControl();
+  public igrejaValue: any;
+  public igrejaSelecionada: any;
 
 
   constructor(private _service: RedeService,
@@ -42,10 +45,10 @@ export class CadastrarRedeComponent implements OnInit {
     private _datePipe: DatePipe,
     private _avRoute: ActivatedRoute,
     private _router: Router,
-    private _igejaService: IgrejaService,
     private _dateAdapter: DateAdapter<Date>,
     private _dialog: MatDialog,
-    private _membroService: MembroService) { }
+    private _membroService: MembroService,
+    private _igrejaService: IgrejaService) { }
 
   ngOnInit() {
     this._dateAdapter.setLocale("br");
@@ -53,6 +56,7 @@ export class CadastrarRedeComponent implements OnInit {
     this.getComboRedes();
     this.getEmiter();
     this.getParams();
+    this.carregarIgrejas();
   }
 
   private _buildForm(): void {
@@ -73,11 +77,6 @@ export class CadastrarRedeComponent implements OnInit {
 
   getEmiter(): void {
     this._emitirEventoService.mensagem.subscribe(item => {
-
-      if (item.type == 'igreja-comp') {
-        this.igrejaSelecionada = item.data;
-        this.carregarMembro(this.igrejaSelecionada.id);
-      }
       if (item.type == 'confirm-dialog-pessoa-rede') {
         this.membros.splice(item.data, 1);
       }
@@ -149,7 +148,11 @@ export class CadastrarRedeComponent implements OnInit {
       this.form.controls['descricao'].patchValue(item.descricao);
       this.form.controls['redes'].patchValue(item.rede);
       this.form.controls['dataAbertura'].patchValue(new Date(item.dataAbertutaToDate));
-      this.getIgreja(item.idIgreja)
+
+      if(item.igreja){
+        this.getIgreja(item.igreja)
+      }
+
       this.carregarPessoas(item.membros);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -170,14 +173,12 @@ export class CadastrarRedeComponent implements OnInit {
     }
   }
 
-  getIgreja(id) {
-    this._igejaService.getIgreja(id).pipe(take(1)).subscribe(item => {
-      this.igrejaSelecionada = item;
-      this.emitirIgreja(item);
-    }, error => {
-      this._notifierService.notify(AlertType.Error, error.errors.message);
-    });
+  getIgreja(igreja) {
+    console.log(igreja)
+   this.igrejaSelecionada = igreja;
+   this.igrejaValue = igreja.nome;
   }
+
   voltar() {
     this._router.navigate(['/auth/rede/pesquisar'], {
       queryParams: {
@@ -187,10 +188,6 @@ export class CadastrarRedeComponent implements OnInit {
     });
   }
 
-
-  emitirIgreja(item): void {
-    this._emitirEventoService.emitir('edit-igreja', item);
-  }
 
   salvar() {
     if (!this.validFields()) {
@@ -273,6 +270,30 @@ export class CadastrarRedeComponent implements OnInit {
       return false;
     }
     return true;
+  }
+
+  onSelectionIgrejaClick($event: MatAutocompleteSelectedEvent, option) {
+    this.igrejaSelecionada = option;
+    this.carregarMembro(this.igrejaSelecionada.id);
+  }
+
+  carregarIgrejas() {
+
+    this._igrejaService.getList().pipe(take(1)).subscribe(item => {
+      this.comboIgrejas = item;
+      // console.log(item);
+      this.filteredIgreja = this.myControlIgreja.valueChanges
+        .pipe(
+          startWith(''),
+          map(value => this._filterIgreja(value, this.comboIgrejas))
+        );
+    }, error => {
+      this._notifierService.notify(AlertType.Error, "Erro ao carregar igrejas!");
+    });
+  }
+  private _filterIgreja(value: string, lista): string[] {
+    const filterValue = value.toLowerCase();
+    return lista.filter(option => option.nome.toLowerCase().includes(filterValue));
   }
 
 }

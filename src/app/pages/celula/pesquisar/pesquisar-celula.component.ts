@@ -108,7 +108,6 @@ export class PesquisarCelulaComponent implements OnInit {
   getList() {
     this.loading = true;
     this._celulaService.getList().pipe(take(1)).subscribe(item => {
-      console.log(item)
       this.celulas = item;
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
