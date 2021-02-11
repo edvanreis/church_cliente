@@ -169,7 +169,7 @@
                  :element.situacao != 'APROVADO' && element.situacao == 'REPROVADO'?'red':''}" matTooltip="{{element[column.id]}}">
                   {{(element[column.id]?.length > 10) ? ((element[column.id])?.slice(0, 10) + '...') : element[column.id]}}
                 </span>
-                <span *ngIf="column.id=='icon'">
+                <!-- <span *ngIf="column.id=='icon'">
                   <span style="color: green;" *ngIf="element.status=='ATIVO' && element.situacao=='APROVADO'">
                     <i class="material-icons">person</i>
                   </span>
@@ -179,7 +179,7 @@
                   <span style="color: grey;" *ngIf="element.status=='INATIVO' && element.situacao=='APROVADO'">
                     <i class="material-icons">person</i>
                   </span>
-                </span>
+                </span> -->
                 <span *ngIf="column.id=='id'">
                   <span class="default-botoes" (click)="editar(element.id)" matTooltip="Editar">
                     <i class="material-icons">create</i>
@@ -190,9 +190,9 @@
                   <span class="default-botoes"  (click)="status(element.id,element.status)" matTooltip="status">
                     <i class="material-icons">settings</i>
                   </span>
-                  <span style="cursor: pointer;" (click)="historico(element.id)" matTooltip="Historico">
+                  <!-- <span style="cursor: pointer;" (click)="historico(element.id)" matTooltip="Historico">
                     <i class="material-icons">event_note</i>
-                  </span>
+                  </span> -->
                   <span class="default-botoes" (click)="dialogExcluirMembro(element.id)" matTooltip="Excluir">
                     <i class="material-icons">delete</i>
                   </span>

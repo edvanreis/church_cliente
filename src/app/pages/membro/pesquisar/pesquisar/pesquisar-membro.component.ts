@@ -272,15 +272,15 @@ export class PesquisarMembroComponent implements OnInit {
     });
   }
 
-  historico(id) {
-    console.log(id)
-    const dialogRef = this._dialog.open(DialogHistoricoPessoaComponent, {
-      width: '900px',
-      data: {
-        history: this._service.getHistory(id)
-      }
-    });
-  }
+  // historico(id) {
+  //   console.log(id)
+  //   const dialogRef = this._dialog.open(DialogHistoricoPessoaComponent, {
+  //     width: '900px',
+  //     data: {
+  //       history: this._service.getHistory(id)
+  //     }
+  //   });
+  // }
 
   status(id,status) {
     const dialogRef = this._dialog.open(DialogAtivarInativarComponent, {
