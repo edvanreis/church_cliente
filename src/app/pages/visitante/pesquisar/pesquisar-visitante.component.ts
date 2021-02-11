@@ -226,7 +226,6 @@ export class PesquisarVisitanteComponent implements OnInit {
     this.columnNames = [
       { id: 'nomeCompleto', value: 'Nome' },
       { id: 'dataNascimento', value: 'Data Nascimento' },
-      { id: 'estadoCivil', value: 'Estado Civil' },
       { id: 'sexo', value: 'Sexo' },
       { id: 'id', value: 'Ação' }
     ];

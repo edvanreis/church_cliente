@@ -28,7 +28,8 @@ export class EnderecoComponent implements OnInit {
   @Input('pessoa') pessoa = false;
   @Input('idPessoa') idPessoa;
   @Input('associadoId') associadoId;
-  public tipoEndereco = [];
+  @Input('tipoEndereco') tipoEndereco = false;
+  public tipoEnderecos = [];
   public observacao: boolean = false;
 
   constructor(private _notifierService: NotifierService,
@@ -151,7 +152,7 @@ export class EnderecoComponent implements OnInit {
     this.endereco.observacao = this.form.controls['observacao'].value;
     if (this.form.controls['tipo'].value) {
       this.endereco.tipo = this.form.controls['tipo'].value;
-      let tipoObj = this.tipoEndereco.find(i => i.tipo == this.endereco.tipo);
+      let tipoObj = this.tipoEnderecos.find(i => i.tipo == this.endereco.tipo);
       this.endereco.descTipoEndereco = tipoObj.descTipoEndereco;
       if (this.endereco.tipo == 'OUTROS') {
         this.observacao = true;
@@ -222,6 +223,10 @@ export class EnderecoComponent implements OnInit {
   }
 
   adicionar() {
+    if(this.tipoEndereco){
+      this._notifierService.notify(AlertType.Error, 'Por favor escolha um tipo de endereço!');
+      return false;
+    }
     if (this.enderecos.length > 0 && this.sizeLimitOne) {
       this._notifierService.notify(AlertType.Error, 'Apenas um endereço é permitido!');
       return false;

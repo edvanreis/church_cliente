@@ -795,7 +795,6 @@ var PesquisarVisitanteComponent = /** @class */ (function () {
         this.columnNames = [
             { id: 'nomeCompleto', value: 'Nome' },
             { id: 'dataNascimento', value: 'Data Nascimento' },
-            { id: 'estadoCivil', value: 'Estado Civil' },
             { id: 'sexo', value: 'Sexo' },
             { id: 'id', value: 'Ação' }
         ];

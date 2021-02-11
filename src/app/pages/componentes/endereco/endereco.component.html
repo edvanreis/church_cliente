@@ -41,7 +41,7 @@
     <mat-form-field  class="full-width-field">
       <mat-label>Tipo Endereços</mat-label>
       <mat-select formControlName="tipo" id="tipo" (selectionChange)="change()">
-        <mat-option *ngFor="let item of tipoEndereco" [value]="item.tipo">
+        <mat-option *ngFor="let item of tipoEnderecos" [value]="item.tipo">
           {{item.descTipoEndereco}}
         </mat-option>
       </mat-select>
