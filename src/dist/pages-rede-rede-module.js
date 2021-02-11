@@ -182,6 +182,8 @@ var CadastrarRedeComponent = /** @class */ (function () {
             if (item.igreja) {
                 _this.getIgreja(item.igreja);
             }
+            if (item.membros.l) {
+            }
             _this.carregarPessoas(item.membros);
         }, function (error) {
             _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_6__["AlertType"].Error, error.errors.message);
@@ -201,7 +203,6 @@ var CadastrarRedeComponent = /** @class */ (function () {
         }
     };
     CadastrarRedeComponent.prototype.getIgreja = function (igreja) {
-        console.log(igreja);
         this.igrejaSelecionada = igreja;
         this.igrejaValue = igreja.nome;
     };

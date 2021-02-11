@@ -152,7 +152,9 @@ export class CadastrarRedeComponent implements OnInit {
       if(item.igreja){
         this.getIgreja(item.igreja)
       }
+      if(item.membros.l){
 
+      }
       this.carregarPessoas(item.membros);
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
@@ -174,7 +176,6 @@ export class CadastrarRedeComponent implements OnInit {
   }
 
   getIgreja(igreja) {
-    console.log(igreja)
    this.igrejaSelecionada = igreja;
    this.igrejaValue = igreja.nome;
   }
