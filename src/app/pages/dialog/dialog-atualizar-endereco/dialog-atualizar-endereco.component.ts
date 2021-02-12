@@ -15,7 +15,7 @@ import { HelperChurch } from '../../../helper/helper.church';
 })
 export class DialogAtualizarEnderecoComponent implements OnInit {
 
-  public tipoEndereco = [];
+  public tipoEnderecos = [];
   public comboEstados = [];
   public form: FormGroup;
   public maskCEP = [/[0-9]/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
@@ -31,7 +31,7 @@ export class DialogAtualizarEnderecoComponent implements OnInit {
   ngOnInit() {
     // console.log(this.data)
     this._buildForm();
-    this.tipoEndereco = this.data.tipoEndereco;
+    this.tipoEnderecos = this.data.tipoEnderecos;
     this.comboEstados = this.data.comboEstados;
     this.carregarEndereco(this.data.item);
   }

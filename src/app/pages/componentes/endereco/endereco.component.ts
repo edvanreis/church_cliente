@@ -252,7 +252,7 @@ export class EnderecoComponent implements OnInit {
       width: '800px',
       data: {
         item: item,
-        tipoEndereco: this.tipoEndereco,
+        tipoEnderecos: this.tipoEnderecos,
         comboEstados: this.comboEstados,
         pessoa: this.pessoa
       }

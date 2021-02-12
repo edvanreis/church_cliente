@@ -6,7 +6,7 @@
     </mat-toolbar>
   </h4>
   <div class="cdk-container">
-    <form form [formGroup]="form">  
+    <form form [formGroup]="form">
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
         <mat-form-field class="full-width-field">
           <input matInput placeholder="CEP" formControlName="cep" id="cep"
@@ -46,7 +46,7 @@
         <mat-form-field  *ngIf="data.pessoa">
           <mat-label>Tipo Endereços</mat-label>
           <mat-select formControlName="tipo" id="tipo">
-            <mat-option *ngFor="let item of tipoEndereco" [value]="item.tipo">
+            <mat-option *ngFor="let item of tipoEnderecos" [value]="item.tipo">
               {{item.descTipoEndereco}}
             </mat-option>
           </mat-select>
@@ -60,5 +60,5 @@
     <div fxFlex></div>
     <button mat-raised-button color="warn" type="submit" (click)="close()">
       <i class="material-icons">close</i>Fechar</button>
-  </div>  
+  </div>
   </div>
