@@ -167,7 +167,7 @@
                 <span *ngIf="column.id!='id'" [ngStyle]="{'color':element.situacao === 'APROVADO'?'green'
                  :element.situacao != 'APROVADO' && element.situacao != 'REPROVADO'?'#ff8000'
                  :element.situacao != 'APROVADO' && element.situacao == 'REPROVADO'?'red':''}" matTooltip="{{element[column.id]}}">
-                  {{(element[column.id]?.length > 10) ? ((element[column.id])?.slice(0, 10) + '...') : element[column.id]}}
+                  {{(element[column.id]?.length > 50) ? ((element[column.id])?.slice(0, 50) + '...') : element[column.id]}}
                 </span>
                 <!-- <span *ngIf="column.id=='icon'">
                   <span style="color: green;" *ngIf="element.status=='ATIVO' && element.situacao=='APROVADO'">

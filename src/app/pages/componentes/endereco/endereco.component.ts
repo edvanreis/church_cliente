@@ -112,7 +112,7 @@ export class EnderecoComponent implements OnInit {
 
   getComboTipoEndereco() {
     this._enderecoService.carregarTiposEndereco().subscribe(item => {
-      this.tipoEndereco = item;
+      this.tipoEnderecos = item;
     });
   }
 
@@ -224,17 +224,22 @@ export class EnderecoComponent implements OnInit {
 
   adicionar() {
     if(this.tipoEndereco){
-      this._notifierService.notify(AlertType.Error, 'Por favor escolha um tipo de endereço!');
+        this._notifierService.notify(AlertType.Error, 'Por favor escolha um tipo de endereço!');
       return false;
     }
     if (this.enderecos.length > 0 && this.sizeLimitOne) {
-      this._notifierService.notify(AlertType.Error, 'Apenas um endereço é permitido!');
+        this._notifierService.notify(AlertType.Error, 'Apenas um endereço é permitido!');
       return false;
     }
     if (this.enderecos.length != 0) {
       this.endereco.codigo = this.enderecos[this.enderecos.length - 1].codigo + 1;
     } else {
       this.endereco.codigo = 1;
+    }
+
+    if(!this.endereco.numero){
+      this._notifierService.notify(AlertType.Error, 'Campo Número é Obrigatório!');
+      return false;
     }
     this.enderecos.push(this.endereco);
     this.form.reset();

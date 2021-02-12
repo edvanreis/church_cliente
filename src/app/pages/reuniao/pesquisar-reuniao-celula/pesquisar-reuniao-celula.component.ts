@@ -97,14 +97,9 @@ export class PesquisarReuniaoCelulaComponent implements OnInit {
   columns() {
     this.columnNames = [
       { id: 'celulaNome', value: 'Célula' },
-      { id: 'competencia', value: 'Competência' },
       { id: 'diaDaSemanaDesc', value: 'Dia da semana' },
       { id: 'dataDaReuniao', value: 'Data da reunião' },
       { id: 'presencialStr', value: 'Presencial' },
-      { id: 'qtdMembros', value: 'Qtd Membros' },
-      { id: 'qtdMembrosFalta', value: 'Qtd Faltas' },
-      { id: 'qtdMembrosPresentes', value: 'Qtd Memb. Presentes' },
-      { id: 'qtdVisitantes', value: 'Visitantes' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);

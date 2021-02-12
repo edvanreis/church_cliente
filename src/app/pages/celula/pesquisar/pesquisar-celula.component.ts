@@ -84,13 +84,6 @@ export class PesquisarCelulaComponent implements OnInit {
     this.columnNames = [
       { id: 'nome', value: 'Nome' },
       { id: 'dia', value: 'Dia' },
-      { id: 'turno', value: 'Turno' },
-      { id: 'horaInicio', value: 'Hora Inicio' },
-      { id: 'horaFim', value: 'Hora Fim' },
-      { id: 'dataAbertura', value: 'Data Abertura' },
-      { id: 'idade', value: 'Idade' },
-      { id: 'nomeRede', value: 'Rede' },
-      { id: 'tipoCelula', value: 'Tipo Pessoas' },
       { id: 'digitalStr', value: 'Digital' },
       { id: 'id', value: 'Ação' }
     ];

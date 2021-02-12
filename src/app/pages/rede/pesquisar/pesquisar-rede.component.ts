@@ -73,10 +73,7 @@ export class PesquisarRedeComponent implements OnInit {
     columns() {
       this.columnNames = [
         { id: 'nome', value: 'Nome' },
-        { id: 'dataAbertura', value: 'Data Abertura' },
-        { id: 'idade', value: 'Idade' },
         { id: 'nomeIgreja', value: 'Igreja' },
-        { id: 'descricao', value: 'Descrição' },
         { id: 'id', value: 'Ação' }
       ];
       this.displayedColumns = this.columnNames.map(x => x.id);

@@ -54,7 +54,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
             <mat-cell *matCellDef="let element">
               <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
-                {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}
+                {{(element[column.id].length > 50) ? ((element[column.id]).slice(0, 50) + '...') : element[column.id]}}
               </span>
               <span matTooltip="Transferir" *ngIf="column.id=='id' && hasPermission('combo_rede_pessoa')" class="default-botoes" (click)="transferir(element.id)">
                 <i class="material-icons">swap_horiz</i>

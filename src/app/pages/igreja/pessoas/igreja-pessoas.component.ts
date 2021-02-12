@@ -95,11 +95,7 @@ export class IgrejaPessoasComponent implements OnInit {
     this.columnNames = [
       { id: 'nomeCompleto', value: 'Nome' },
       { id: 'dataNascimento', value: 'Data Nascimento' },
-      { id: 'rg', value: 'RG' },
-      { id: 'cpf', value: 'CPF' },
       { id: 'estadoCivil', value: 'Estado Civil' },
-      { id: 'sexo', value: 'Sexo' },
-      { id: 'profissao', value: 'Profissao' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);

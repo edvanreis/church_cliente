@@ -6,12 +6,12 @@
       <mat-error *ngIf="!form.controls.cep.valid">Campo Obrigatório</mat-error>
     </mat-form-field>
     <mat-form-field cclass="full-width-field">
-      <input matInput placeholder="Número" formControlName="numero" id="numero" (change)="change()">
+      <input matInput  type="number" placeholder="Número" formControlName="numero" id="numero" (change)="change()">
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
     <mat-form-field class="full-width-field">
-      <input matInput placeholder="Complemento" formControlName="complemento" id="complemento" (change)="change()">
+      <input matInput placeholder="Complemento" formControlName="complemento" id="complemento" (change)="change()" maxlength="300">
     </mat-form-field>
   </div>
   <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
