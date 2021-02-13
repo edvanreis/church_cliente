@@ -13,7 +13,7 @@
             [textMask]="{mask: maskCEP}" (blur)="consultarCEP($event)" >
         </mat-form-field>
         <mat-form-field cclass="full-width-field">
-          <input matInput placeholder="Número" formControlName="numero" id="numero">
+          <input type="number" matInput placeholder="Número" formControlName="numero" id="numero">
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5">
@@ -43,11 +43,11 @@
             </mat-option>
           </mat-select>
         </mat-form-field>
-        <mat-form-field  *ngIf="data.pessoa">
+        <mat-form-field  *ngIf="data.tipoEndereco">
           <mat-label>Tipo Endereços</mat-label>
           <mat-select formControlName="tipo" id="tipo">
             <mat-option *ngFor="let item of tipoEnderecos" [value]="item.tipo">
-              {{item.descTipoEndereco}}
+              {{item.tipo}}
             </mat-option>
           </mat-select>
         </mat-form-field>

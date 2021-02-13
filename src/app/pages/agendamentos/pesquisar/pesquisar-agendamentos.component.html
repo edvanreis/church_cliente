@@ -20,11 +20,8 @@
       <div>
         <mat-form-field class="full-width-field">
           <mat-label>Mês e Ano</mat-label>
-          <input matInput [matDatepicker]="dp" [formControl]="date"  readonly required>
-          <mat-datepicker-toggle matSuffix [for]="dp"></mat-datepicker-toggle>
-          <mat-datepicker #dp startView="multi-year" (yearSelected)="chosenYearHandler($event)"
-            (monthSelected)="chosenMonthHandler($event, dp)" panelClass="example-month-picker">
-          </mat-datepicker>
+          <input matInput [textMask]="{mask: maskDate}" [(ngModel)]="mesAno">
+          <mat-error *ngIf="!mesAno">Campo Obrigatório</mat-error>
         </mat-form-field>
       </div>
       <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">

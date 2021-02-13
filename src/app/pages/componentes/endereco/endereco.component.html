@@ -37,12 +37,12 @@
       </mat-select>
     </mat-form-field>
   </div>
-  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" *ngIf="pessoa">
+  <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" style="color:#1d68a5" *ngIf="tipoEndereco">
     <mat-form-field  class="full-width-field">
       <mat-label>Tipo Endereços</mat-label>
       <mat-select formControlName="tipo" id="tipo" (selectionChange)="change()">
         <mat-option *ngFor="let item of tipoEnderecos" [value]="item.tipo">
-          {{item.descTipoEndereco}}
+          {{item.tipo}}
         </mat-option>
       </mat-select>
     </mat-form-field>
@@ -78,11 +78,11 @@
           <td>{{ e.cep}}</td>
           <td>{{ e.numero}}</td>
           <td>{{ e.complemento}}</td>
-          <td  matTooltip="{{e.bairro}}">{{(e.bairro.length > 10) ? ((e.bairro).slice(0, 10) + '...') : e.bairro}}</td>
-          <td  matTooltip="{{e.logradouro}}">{{(e.logradouro.length > 10) ? ((e.logradouro).slice(0, 10) + '...') : e.logradouro}}</td>
-          <td  matTooltip="{{e.localidade}}">{{(e.localidade.length > 10) ? ((e.localidade).slice(0, 10) + '...') : e.localidade}}</td>
+          <td  matTooltip="{{e.bairro}}">{{(e.bairro.length > 50) ? ((e.bairro).slice(0, 50) + '...') : e.bairro}}</td>
+          <td  matTooltip="{{e.logradouro}}">{{(e.logradouro.length > 50) ? ((e.logradouro).slice(0, 50) + '...') : e.logradouro}}</td>
+          <td  matTooltip="{{e.localidade}}">{{(e.localidade.length > 50) ? ((e.localidade).slice(0, 50) + '...') : e.localidade}}</td>
           <td>{{ e.uf}}</td>
-          <td *ngIf="pessoa" >{{ e.descTipoEndereco}}</td>
+          <td *ngIf="tipoEndereco" >{{ e.tipo}}</td>
           <td><span style="color: #1d68a5;cursor: pointer" (click)="dialogAtualizar(e)"><i class="material-icons">create</i></span>
             <span style="color: #1d68a5;cursor: pointer" (click)="dialogRemover(i,e)"><i class="material-icons">delete</i></span>
           </td>

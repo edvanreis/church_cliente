@@ -968,7 +968,7 @@ var CadastrarAgendamentosComponent = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div fxLayout=\"column\" class=\"components-container-gt-xs\" [ngClass.xs]=\"'components-container-xs'\" fxLayoutGap=\"20px\">\r\n  <div fxFlex class=\"cdk-component-holder button-component-holder mat-elevation-z4\">\r\n    <mat-toolbar class=\"cdk-header\">\r\n      <span><i class=\"material-icons\">calendar_today</i></span>\r\n      <h1 class=\"mat-headline center-align\">Agendamentos</h1>\r\n    </mat-toolbar>\r\n    <div class=\"cdk-container\">\r\n      <br />\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Igreja\" aria-label=\"Number\" matInput [formControl]=\"myControlIgreja\"\r\n            [matAutocomplete]=\"auto\" [(ngModel)]=\"igrejaValue\" style=\"width: 100%;\">\r\n          <mat-autocomplete #auto=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredIgreja | async\" [value]=\"option.nome\"\r\n              (onSelectionChange)=\"onSelectionChange($event,option)\">\r\n              {{option.nome}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <mat-label>Mês e Ano</mat-label>\r\n          <input matInput [matDatepicker]=\"dp\" [formControl]=\"date\"  readonly required>\r\n          <mat-datepicker-toggle matSuffix [for]=\"dp\"></mat-datepicker-toggle>\r\n          <mat-datepicker #dp startView=\"multi-year\" (yearSelected)=\"chosenYearHandler($event)\"\r\n            (monthSelected)=\"chosenMonthHandler($event, dp)\" panelClass=\"example-month-picker\">\r\n          </mat-datepicker>\r\n        </mat-form-field>\r\n      </div>\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"pesquisar()\">\r\n          <i class=\"material-icons\">search</i>Buscar</button>\r\n      </div>\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"cadastrar()\">\r\n          <i class=\"material-icons\">add_circle</i>Criar Agendamento</button>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"cadastrarCulto()\">\r\n            <i class=\"material-icons\">add_circle</i>Criar Agendamento Culto</button>\r\n      </div>\r\n      <br />\r\n      <mat-card *ngIf=\"agendamentos.length > 0\" >\r\n        <mat-card-header>\r\n          <br />\r\n          <mat-card-title style=\"color:#1d68a5;\"><b>Agenda</b></mat-card-title>\r\n          <mat-card-subtitle style=\"color:#1d68a5;\"><i class=\"col-md material-icons \">wysiwyg</i></mat-card-subtitle>\r\n        </mat-card-header>\r\n        <div *ngFor=\"let group of agendamentos | groupBy:'dataAgendamento'\" >\r\n          <mat-expansion-panel>\r\n            <mat-expansion-panel-header  [ngStyle]=\"{\r\n                                                    'background-color':!existeAgendamento(group)?'#1d68a5':'',\r\n                                                    'color':!existeAgendamento(group)?'#ffffff':''}\">\r\n              <span style=\"font-size: 12px;\"><b>{{group?.key}}</b></span>\r\n            </mat-expansion-panel-header>\r\n            <br />\r\n            <div *ngFor=\"let item of group.value\">\r\n            <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" *ngFor=\"let element of item.agendamentos\"\r\n            [ngStyle]=\"{'background-color':element.statusAgendamento==='P'?'#ffff80':element.statusAgendamento==='A'?'#d9f2d9':''}\">\r\n              <span *ngIf=\"element.id && element.statusAgendamento=='P'\" style=\"color:#ff8000;\" ><i class=\"col-md material-icons \">warning</i></span>\r\n              <span *ngIf=\"element.id && element.statusAgendamento=='A'\" style=\"color:green;\" ><i class=\"col-md material-icons \">done_all</i></span>\r\n              <span>{{ element.nome }}</span>\r\n              <span>{{ element.horaInicio }}</span>\r\n              <span>{{ element.horaFim }}</span>\r\n              <span>{{ element.qtdPessoas }}</span>\r\n              <span style=\"color:blue;\">{{ element.agendamentoPessoa.qtdTotalPessoasAgendamento }}</span>\r\n              <span style=\"color:green;\">{{ element.agendamentoPessoa.totalPresentes }}</span>\r\n              <span style=\"color:red;\">{{ element.agendamentoPessoa.totalNaoPresentes }}</span>\r\n              <span matTooltip=\"{{element.concatPessoas}}\" *ngIf=\"element.concatPessoas\">\r\n                {{(element.concatPessoas.length > 20) ? ((element.concatPessoas).slice(0, 20) + '...') : element.concatPessoas}}</span>\r\n              <span matTooltip=\"{{element.grupoTrabalho.nome}}\" *ngIf=\"element.grupoTrabalho\">\r\n                {{(element.grupoTrabalho.nome.length > 20) ? ((element.grupoTrabalho.nome).slice(0, 20) + '...') : element.grupoTrabalho.nome}}\r\n              </span>\r\n              <span matTooltip=\"Aprovar\" style=\"color:green; cursor: pointer; text-align: right; float: right;\" (click)=\"dialogAprovar(element.id)\" *ngIf=\"element.id && element.statusAgendamento=='PENDENTE'\">\r\n                <i class=\"col-md material-icons \">done</i>\r\n              </span>\r\n              <span matTooltip=\"Reprovar\"  style=\"color:red; cursor: pointer; text-align: right; float: right;\" (click)=\"dialogReprovar(element.id)\" *ngIf=\"element.id && element.statusAgendamento!='APROVADO'\">\r\n                <i class=\"col-md material-icons \">not_interested</i>\r\n              </span>\r\n              <span matTooltip=\"Editar\" class=\"default-botoes\" style=\"text-align: right; float: right;\" *ngIf=\"element.id && element.statusAgendamento!='APROVADO' || element.tipoAgendamento=='CANCELADO'\" (click)=\"editar(element.id,element.tipoAgendamento)\">\r\n                <i class=\"col-md material-icons \">create</i>\r\n              </span>\r\n              <span matTooltip=\"Excluir\" class=\"default-botoes\" style=\"text-align: right; float: right;\" (click)=\"dialogRemover(element.id)\" *ngIf=\"element.id && (element.statusAgendamento=='APROVADO' || element.tipoAgendamento=='CANCELADO')\">\r\n                <i class=\"col-md material-icons \">delete</i>\r\n              </span>\r\n              <span style=\"color:red; cursor: pointer; text-align: right; float: right;\"  *ngIf=\"element.statusAgendamento=='APROVADO'\" class=\"default-botoes\"\r\n              (click)=\"dialogCancelar(element.id)\" matTooltip=\"Cancelar\"><i class=\"col-md material-icons \">event_busy</i></span>\r\n            </div>\r\n          </div>\r\n          </mat-expansion-panel>\r\n        </div>\r\n        <div>\r\n          <br />\r\n          <button mat-raised-button color=\"success\" (click)=\"exportAsXLSX()\"><i\r\n              class=\"material-icons\">vertical_align_bottom</i>Exportar XLSX</button>\r\n        </div>\r\n    </mat-card>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div fxLayout=\"column\" class=\"components-container-gt-xs\" [ngClass.xs]=\"'components-container-xs'\" fxLayoutGap=\"20px\">\r\n  <div fxFlex class=\"cdk-component-holder button-component-holder mat-elevation-z4\">\r\n    <mat-toolbar class=\"cdk-header\">\r\n      <span><i class=\"material-icons\">calendar_today</i></span>\r\n      <h1 class=\"mat-headline center-align\">Agendamentos</h1>\r\n    </mat-toolbar>\r\n    <div class=\"cdk-container\">\r\n      <br />\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Igreja\" aria-label=\"Number\" matInput [formControl]=\"myControlIgreja\"\r\n            [matAutocomplete]=\"auto\" [(ngModel)]=\"igrejaValue\" style=\"width: 100%;\">\r\n          <mat-autocomplete #auto=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredIgreja | async\" [value]=\"option.nome\"\r\n              (onSelectionChange)=\"onSelectionChange($event,option)\">\r\n              {{option.nome}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <mat-label>Mês e Ano</mat-label>\r\n          <input matInput [textMask]=\"{mask: maskDate}\" [(ngModel)]=\"mesAno\">\r\n          <mat-error *ngIf=\"!mesAno\">Campo Obrigatório</mat-error>\r\n        </mat-form-field>\r\n      </div>\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"pesquisar()\">\r\n          <i class=\"material-icons\">search</i>Buscar</button>\r\n      </div>\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"cadastrar()\">\r\n          <i class=\"material-icons\">add_circle</i>Criar Agendamento</button>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"cadastrarCulto()\">\r\n            <i class=\"material-icons\">add_circle</i>Criar Agendamento Culto</button>\r\n      </div>\r\n      <br />\r\n      <mat-card *ngIf=\"agendamentos.length > 0\" >\r\n        <mat-card-header>\r\n          <br />\r\n          <mat-card-title style=\"color:#1d68a5;\"><b>Agenda</b></mat-card-title>\r\n          <mat-card-subtitle style=\"color:#1d68a5;\"><i class=\"col-md material-icons \">wysiwyg</i></mat-card-subtitle>\r\n        </mat-card-header>\r\n        <div *ngFor=\"let group of agendamentos | groupBy:'dataAgendamento'\" >\r\n          <mat-expansion-panel>\r\n            <mat-expansion-panel-header  [ngStyle]=\"{\r\n                                                    'background-color':!existeAgendamento(group)?'#1d68a5':'',\r\n                                                    'color':!existeAgendamento(group)?'#ffffff':''}\">\r\n              <span style=\"font-size: 12px;\"><b>{{group?.key}}</b></span>\r\n            </mat-expansion-panel-header>\r\n            <br />\r\n            <div *ngFor=\"let item of group.value\">\r\n            <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" *ngFor=\"let element of item.agendamentos\"\r\n            [ngStyle]=\"{'background-color':element.statusAgendamento==='P'?'#ffff80':element.statusAgendamento==='A'?'#d9f2d9':''}\">\r\n              <span *ngIf=\"element.id && element.statusAgendamento=='P'\" style=\"color:#ff8000;\" ><i class=\"col-md material-icons \">warning</i></span>\r\n              <span *ngIf=\"element.id && element.statusAgendamento=='A'\" style=\"color:green;\" ><i class=\"col-md material-icons \">done_all</i></span>\r\n              <span>{{ element.nome }}</span>\r\n              <span>{{ element.horaInicio }}</span>\r\n              <span>{{ element.horaFim }}</span>\r\n              <span>{{ element.qtdPessoas }}</span>\r\n              <span style=\"color:blue;\">{{ element.agendamentoPessoa.qtdTotalPessoasAgendamento }}</span>\r\n              <span style=\"color:green;\">{{ element.agendamentoPessoa.totalPresentes }}</span>\r\n              <span style=\"color:red;\">{{ element.agendamentoPessoa.totalNaoPresentes }}</span>\r\n              <span matTooltip=\"{{element.concatPessoas}}\" *ngIf=\"element.concatPessoas\">\r\n                {{(element.concatPessoas.length > 20) ? ((element.concatPessoas).slice(0, 20) + '...') : element.concatPessoas}}</span>\r\n              <span matTooltip=\"{{element.grupoTrabalho.nome}}\" *ngIf=\"element.grupoTrabalho\">\r\n                {{(element.grupoTrabalho.nome.length > 20) ? ((element.grupoTrabalho.nome).slice(0, 20) + '...') : element.grupoTrabalho.nome}}\r\n              </span>\r\n              <span matTooltip=\"Aprovar\" style=\"color:green; cursor: pointer; text-align: right; float: right;\" (click)=\"dialogAprovar(element.id)\" *ngIf=\"element.id && element.statusAgendamento=='PENDENTE'\">\r\n                <i class=\"col-md material-icons \">done</i>\r\n              </span>\r\n              <span matTooltip=\"Reprovar\"  style=\"color:red; cursor: pointer; text-align: right; float: right;\" (click)=\"dialogReprovar(element.id)\" *ngIf=\"element.id && element.statusAgendamento!='APROVADO'\">\r\n                <i class=\"col-md material-icons \">not_interested</i>\r\n              </span>\r\n              <span matTooltip=\"Editar\" class=\"default-botoes\" style=\"text-align: right; float: right;\" *ngIf=\"element.id && element.statusAgendamento!='APROVADO' || element.tipoAgendamento=='CANCELADO'\" (click)=\"editar(element.id,element.tipoAgendamento)\">\r\n                <i class=\"col-md material-icons \">create</i>\r\n              </span>\r\n              <span matTooltip=\"Excluir\" class=\"default-botoes\" style=\"text-align: right; float: right;\" (click)=\"dialogRemover(element.id)\" *ngIf=\"element.id && (element.statusAgendamento=='APROVADO' || element.tipoAgendamento=='CANCELADO')\">\r\n                <i class=\"col-md material-icons \">delete</i>\r\n              </span>\r\n              <span style=\"color:red; cursor: pointer; text-align: right; float: right;\"  *ngIf=\"element.statusAgendamento=='APROVADO'\" class=\"default-botoes\"\r\n              (click)=\"dialogCancelar(element.id)\" matTooltip=\"Cancelar\"><i class=\"col-md material-icons \">event_busy</i></span>\r\n            </div>\r\n          </div>\r\n          </mat-expansion-panel>\r\n        </div>\r\n        <div>\r\n          <br />\r\n          <button mat-raised-button color=\"success\" (click)=\"exportAsXLSX()\"><i\r\n              class=\"material-icons\">vertical_align_bottom</i>Exportar XLSX</button>\r\n        </div>\r\n    </mat-card>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -998,20 +998,19 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
 /* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _angular_material_moment_adapter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material-moment-adapter */ "./node_modules/@angular/material-moment-adapter/fesm5/material-moment-adapter.js");
-/* harmony import */ var _angular_material_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/core */ "./node_modules/@angular/material/esm5/core.es5.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_8___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_8__);
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _model_alert_type__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../model/alert-type */ "./src/app/model/alert-type.ts");
-/* harmony import */ var _service_agendamento_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../service/agendamento.service */ "./src/app/service/agendamento.service.ts");
-/* harmony import */ var _service_emitir_evento_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../service/emitir-evento.service */ "./src/app/service/emitir-evento.service.ts");
-/* harmony import */ var _service_excel_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../service/excel.service */ "./src/app/service/excel.service.ts");
-/* harmony import */ var _service_igreja_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../../service/igreja.service */ "./src/app/service/igreja.service.ts");
-/* harmony import */ var _dialog_dialog_aprovar_reprovar_agendamento_dialog_aprovar_reprovar_agendamento_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.component */ "./src/app/pages/dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.component.ts");
-/* harmony import */ var _dialog_dialog_confirm_agandamento_dialog_confirm_agandamento_component__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ../../dialog/dialog-confirm-agandamento/dialog-confirm-agandamento.component */ "./src/app/pages/dialog/dialog-confirm-agandamento/dialog-confirm-agandamento.component.ts");
+/* harmony import */ var _angular_material_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/core */ "./node_modules/@angular/material/esm5/core.es5.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
+/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_7__);
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _model_alert_type__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../model/alert-type */ "./src/app/model/alert-type.ts");
+/* harmony import */ var _service_agendamento_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../service/agendamento.service */ "./src/app/service/agendamento.service.ts");
+/* harmony import */ var _service_emitir_evento_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../service/emitir-evento.service */ "./src/app/service/emitir-evento.service.ts");
+/* harmony import */ var _service_excel_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../service/excel.service */ "./src/app/service/excel.service.ts");
+/* harmony import */ var _service_igreja_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../service/igreja.service */ "./src/app/service/igreja.service.ts");
+/* harmony import */ var _dialog_dialog_aprovar_reprovar_agendamento_dialog_aprovar_reprovar_agendamento_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.component */ "./src/app/pages/dialog/dialog-aprovar-reprovar-agendamento/dialog-aprovar-reprovar-agendamento.component.ts");
+/* harmony import */ var _dialog_dialog_confirm_agandamento_dialog_confirm_agandamento_component__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ../../dialog/dialog-confirm-agandamento/dialog-confirm-agandamento.component */ "./src/app/pages/dialog/dialog-confirm-agandamento/dialog-confirm-agandamento.component.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -1037,8 +1036,7 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
-var moment = moment__WEBPACK_IMPORTED_MODULE_8__;
+var moment = moment__WEBPACK_IMPORTED_MODULE_7__;
 var MY_FORMATS = {
     parse: {
         dateInput: 'MM/YYYY',
@@ -1062,64 +1060,46 @@ var PesquisarAgendamentosComponent = /** @class */ (function () {
         this._emitirEventoService = _emitirEventoService;
         this._dialog = _dialog;
         this._excelService = _excelService;
-        this.date = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](moment().locale('pt-br'));
         this.pageIndex = 0;
         this.agendamentos = new Array();
         this.myControl = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]();
         this.comboIgrejas = [];
         this.myControlIgreja = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]();
+        this.maskDate = [/\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     }
     PesquisarAgendamentosComponent.prototype.ngOnInit = function () {
         this.carregarIgrejas();
-        this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
         this.getParams();
         this.getEmiter();
-    };
-    PesquisarAgendamentosComponent.prototype.chosenYearHandler = function (normalizedYear) {
-        var ctrlValue = this.date.value;
-        if (ctrlValue) {
-            ctrlValue.year(normalizedYear.year());
-            this.date.setValue(ctrlValue);
-        }
-    };
-    PesquisarAgendamentosComponent.prototype.chosenMonthHandler = function (normalizedMonth, datepicker) {
-        var ctrlValue = this.date.value;
-        ctrlValue.month(normalizedMonth.month());
-        this.date.setValue(ctrlValue);
-        datepicker.close();
-        this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
-        if (this.igrejaSelecionada) {
-            this.pesquisar();
-        }
     };
     PesquisarAgendamentosComponent.prototype.pesquisar = function () {
         var _this = this;
         if (!this.igrejaSelecionada) {
-            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_10__["AlertType"].Error, "Por favor selecione uma igreja!");
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_9__["AlertType"].Error, "Por favor selecione uma igreja!");
         }
-        this._service.getDias(this.obj()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_9__["take"])(1)).subscribe(function (item) {
+        this._service.getDias(this.obj()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["take"])(1)).subscribe(function (item) {
             // console.log(item)
             _this.agendamentos = item;
         }, function (error) {
             console.log(error);
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_10__["AlertType"].Error, error.errors.message);
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_9__["AlertType"].Error, error.errors.message);
         });
     };
     PesquisarAgendamentosComponent.prototype.obj = function () {
         return {
-            dataAgendamento: "01/" + this.competenciaSelecionada,
+            dataAgendamento: "01/" + this.mesAno,
             igreja: { id: this.igrejaSelecionada.id }
         };
     };
     PesquisarAgendamentosComponent.prototype.carregarIgrejas = function () {
         var _this = this;
-        this._igrejaService.getList().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_9__["take"])(1)).subscribe(function (item) {
+        this._igrejaService.getList().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["take"])(1)).subscribe(function (item) {
             _this.comboIgrejas = item;
             // console.log(item);
             _this.filteredIgreja = _this.myControlIgreja.valueChanges
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_9__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_9__["map"])(function (value) { return _this._filterIgreja(value, _this.comboIgrejas); }));
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["map"])(function (value) { return _this._filterIgreja(value, _this.comboIgrejas); }));
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_10__["AlertType"].Error, "Erro ao carregar igrejas sede!");
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_9__["AlertType"].Error, "Erro ao carregar igrejas sede!");
         });
     };
     PesquisarAgendamentosComponent.prototype._filterIgreja = function (value, lista) {
@@ -1176,7 +1156,7 @@ var PesquisarAgendamentosComponent = /** @class */ (function () {
     };
     PesquisarAgendamentosComponent.prototype.setObj = function () {
         return {
-            competenciaSelecionada: this.competenciaSelecionada,
+            mesAno: this.mesAno,
             igrejaSelecionada: this.igrejaSelecionada
         };
     };
@@ -1184,9 +1164,8 @@ var PesquisarAgendamentosComponent = /** @class */ (function () {
         console.log(this._avRoute.snapshot.queryParamMap);
         if (this._avRoute.snapshot.queryParamMap.get("pesquisar")) {
             var obj = JSON.parse(localStorage.getItem("pesquisar"));
-            if (obj.competenciaSelecionada) {
-                this.competenciaSelecionada = obj.competenciaSelecionada;
-                // this.date.patchValue(new Date(this.competenciaSelecionada ));
+            if (obj.mesAno) {
+                this.mesAno = obj.mesAno;
             }
             if (obj.igrejaSelecionada) {
                 this.igrejaSelecionada = obj.igrejaSelecionada;
@@ -1204,7 +1183,7 @@ var PesquisarAgendamentosComponent = /** @class */ (function () {
         }
     };
     PesquisarAgendamentosComponent.prototype.dialogAprovar = function (id) {
-        var dialogRef = this._dialog.open(_dialog_dialog_aprovar_reprovar_agendamento_dialog_aprovar_reprovar_agendamento_component__WEBPACK_IMPORTED_MODULE_15__["DialogAprovarReprovarAgendamentoComponent"], {
+        var dialogRef = this._dialog.open(_dialog_dialog_aprovar_reprovar_agendamento_dialog_aprovar_reprovar_agendamento_component__WEBPACK_IMPORTED_MODULE_14__["DialogAprovarReprovarAgendamentoComponent"], {
             width: '600px',
             data: {
                 id: id,
@@ -1215,7 +1194,7 @@ var PesquisarAgendamentosComponent = /** @class */ (function () {
         });
     };
     PesquisarAgendamentosComponent.prototype.dialogReprovar = function (id) {
-        var dialogRef = this._dialog.open(_dialog_dialog_aprovar_reprovar_agendamento_dialog_aprovar_reprovar_agendamento_component__WEBPACK_IMPORTED_MODULE_15__["DialogAprovarReprovarAgendamentoComponent"], {
+        var dialogRef = this._dialog.open(_dialog_dialog_aprovar_reprovar_agendamento_dialog_aprovar_reprovar_agendamento_component__WEBPACK_IMPORTED_MODULE_14__["DialogAprovarReprovarAgendamentoComponent"], {
             width: '600px',
             data: {
                 id: id,
@@ -1226,7 +1205,7 @@ var PesquisarAgendamentosComponent = /** @class */ (function () {
         });
     };
     PesquisarAgendamentosComponent.prototype.dialogCancelar = function (id) {
-        var dialogRef = this._dialog.open(_dialog_dialog_aprovar_reprovar_agendamento_dialog_aprovar_reprovar_agendamento_component__WEBPACK_IMPORTED_MODULE_15__["DialogAprovarReprovarAgendamentoComponent"], {
+        var dialogRef = this._dialog.open(_dialog_dialog_aprovar_reprovar_agendamento_dialog_aprovar_reprovar_agendamento_component__WEBPACK_IMPORTED_MODULE_14__["DialogAprovarReprovarAgendamentoComponent"], {
             width: '600px',
             data: {
                 id: id,
@@ -1237,7 +1216,7 @@ var PesquisarAgendamentosComponent = /** @class */ (function () {
         });
     };
     PesquisarAgendamentosComponent.prototype.dialogRemover = function (id) {
-        var dialogRef = this._dialog.open(_dialog_dialog_confirm_agandamento_dialog_confirm_agandamento_component__WEBPACK_IMPORTED_MODULE_16__["DialogConfirmAgandamentoComponent"], {
+        var dialogRef = this._dialog.open(_dialog_dialog_confirm_agandamento_dialog_confirm_agandamento_component__WEBPACK_IMPORTED_MODULE_15__["DialogConfirmAgandamentoComponent"], {
             width: '600px',
             data: {
                 id: id,
@@ -1259,7 +1238,7 @@ var PesquisarAgendamentosComponent = /** @class */ (function () {
         var _this = this;
         var agendamentos = [];
         var dados = [];
-        this._service.obterAgendamentosMes(this.obj()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_9__["take"])(1)).subscribe(function (item) {
+        this._service.obterAgendamentosMes(this.obj()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["take"])(1)).subscribe(function (item) {
             agendamentos = item;
             agendamentos.forEach(function (i) {
                 dados.push({
@@ -1273,7 +1252,7 @@ var PesquisarAgendamentosComponent = /** @class */ (function () {
             });
             _this._excelService.exportAsExcelFile(dados, "agendamentos");
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_10__["AlertType"].Error, error.errors.message);
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_9__["AlertType"].Error, error.errors.message);
         });
     };
     __decorate([
@@ -1285,25 +1264,17 @@ var PesquisarAgendamentosComponent = /** @class */ (function () {
             selector: 'app-pesquisar-agendamentos',
             template: __webpack_require__(/*! ./pesquisar-agendamentos.component.html */ "./src/app/pages/agendamentos/pesquisar/pesquisar-agendamentos.component.html"),
             styles: [__webpack_require__(/*! ./pesquisar-agendamentos.component.scss */ "./src/app/pages/agendamentos/pesquisar/pesquisar-agendamentos.component.scss")],
-            providers: [
-                {
-                    provide: _angular_material_core__WEBPACK_IMPORTED_MODULE_5__["DateAdapter"],
-                    useClass: _angular_material_moment_adapter__WEBPACK_IMPORTED_MODULE_4__["MomentDateAdapter"],
-                    deps: [_angular_material_core__WEBPACK_IMPORTED_MODULE_5__["MAT_DATE_LOCALE"], _angular_material_moment_adapter__WEBPACK_IMPORTED_MODULE_4__["MAT_MOMENT_DATE_ADAPTER_OPTIONS"]]
-                },
-                { provide: _angular_material_core__WEBPACK_IMPORTED_MODULE_5__["MAT_DATE_FORMATS"], useValue: MY_FORMATS },
-            ],
         }),
-        __metadata("design:paramtypes", [_angular_material_core__WEBPACK_IMPORTED_MODULE_5__["DateAdapter"],
+        __metadata("design:paramtypes", [_angular_material_core__WEBPACK_IMPORTED_MODULE_4__["DateAdapter"],
             _angular_common__WEBPACK_IMPORTED_MODULE_0__["DatePipe"],
-            _service_agendamento_service__WEBPACK_IMPORTED_MODULE_11__["AgendamentoService"],
-            _service_igreja_service__WEBPACK_IMPORTED_MODULE_14__["IgrejaService"],
-            angular_notifier__WEBPACK_IMPORTED_MODULE_7__["NotifierService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_6__["Router"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_6__["ActivatedRoute"],
-            _service_emitir_evento_service__WEBPACK_IMPORTED_MODULE_12__["EmitirEventoService"],
+            _service_agendamento_service__WEBPACK_IMPORTED_MODULE_10__["AgendamentoService"],
+            _service_igreja_service__WEBPACK_IMPORTED_MODULE_13__["IgrejaService"],
+            angular_notifier__WEBPACK_IMPORTED_MODULE_6__["NotifierService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_5__["ActivatedRoute"],
+            _service_emitir_evento_service__WEBPACK_IMPORTED_MODULE_11__["EmitirEventoService"],
             _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"],
-            _service_excel_service__WEBPACK_IMPORTED_MODULE_13__["ExcelService"]])
+            _service_excel_service__WEBPACK_IMPORTED_MODULE_12__["ExcelService"]])
     ], PesquisarAgendamentosComponent);
     return PesquisarAgendamentosComponent;
 }());

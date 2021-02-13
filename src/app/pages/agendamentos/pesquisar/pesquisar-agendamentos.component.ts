@@ -36,21 +36,11 @@ export const MY_FORMATS = {
   selector: 'app-pesquisar-agendamentos',
   templateUrl: './pesquisar-agendamentos.component.html',
   styleUrls: ['./pesquisar-agendamentos.component.scss'],
-  providers: [
-    {
-      provide: DateAdapter,
-      useClass: MomentDateAdapter,
-      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS]
-    },
-
-    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
-  ],
 })
 
 export class PesquisarAgendamentosComponent implements OnInit {
   public form: FormGroup;
-  public date = new FormControl(moment().locale('pt-br'));
-  public mesAno:any;
+  public mesAno;
   @ViewChild('paginator') paginator: MatPaginator;
   public pageIndex: number = 0;
   public agendamentos = new Array();
@@ -61,8 +51,8 @@ export class PesquisarAgendamentosComponent implements OnInit {
   public igrejaValue: any;
   public statusValue: any;
   public igrejaSelecionada: any;
-  public competenciaSelecionada:any;
   public competencia:any;
+  public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
 
 
 
@@ -79,30 +69,8 @@ export class PesquisarAgendamentosComponent implements OnInit {
 
   ngOnInit() {
     this.carregarIgrejas();
-    this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
     this.getParams();
     this.getEmiter();
-  }
-
-
-  chosenYearHandler(normalizedYear: Moment) {
-    const ctrlValue = this.date.value;
-    if(ctrlValue){
-      ctrlValue.year(normalizedYear.year());
-      this.date.setValue(ctrlValue);
-    }
-  }
-
-  chosenMonthHandler(normalizedMonth: Moment, datepicker: MatDatepicker<Moment>) {
-    const ctrlValue = this.date.value;
-    ctrlValue.month(normalizedMonth.month());
-    this.date.setValue(ctrlValue);
-    datepicker.close();
-    this.competenciaSelecionada = this._datePipe.transform(this.date.value, 'MM/yyyy');
-    if(this.igrejaSelecionada){
-      this.pesquisar();
-    }
-
   }
 
 
@@ -123,7 +91,7 @@ export class PesquisarAgendamentosComponent implements OnInit {
 
   obj(){
     return {
-      dataAgendamento:"01/"+this.competenciaSelecionada,
+      dataAgendamento:"01/"+this.mesAno,
       igreja:{id:this.igrejaSelecionada.id}
     }
   }
@@ -205,7 +173,7 @@ editar(id,tipo) {
 
 setObj(){
   return {
-    competenciaSelecionada: this.competenciaSelecionada,
+    mesAno: this.mesAno,
     igrejaSelecionada:this.igrejaSelecionada
   }
 }
@@ -215,9 +183,8 @@ getParams(): boolean {
   if (this._avRoute.snapshot.queryParamMap.get("pesquisar")) {
     let obj  = JSON.parse(localStorage.getItem("pesquisar"));
 
-    if(obj.competenciaSelecionada){
-      this.competenciaSelecionada = obj.competenciaSelecionada;
-      // this.date.patchValue(new Date(this.competenciaSelecionada ));
+    if(obj.mesAno){
+      this.mesAno = obj.mesAno;
     }
     if(obj.igrejaSelecionada){
       this.igrejaSelecionada = obj.igrejaSelecionada;

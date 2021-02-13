@@ -39,7 +39,7 @@
             <td>{{ i+1}}</td>
             <td matTooltip="{{c.tipo.nome}}">{{ c.tipo.nome}}</td>
             <td  matTooltip="{{c.descricao}}">
-              {{(c.descricao.length > 7) ? ((c.descricao).slice(0, 7) + '...') : c.descricao}}
+              {{(c.descricao.length > 20) ? ((c.descricao).slice(0, 20) + '...') : c.descricao}}
             </td>
 
             <td><img src="./assets/whatsapp.png" width="20px" *ngIf="c.whatsapp">

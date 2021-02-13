@@ -69,7 +69,7 @@ export class EnderecoComponent implements OnInit {
       }
       this.cleanForm();
       this._enderecoService.carregarEndereco(cep).subscribe(item => {
-        // console.log(item);
+        console.log(item);
         this.form.controls['cep'].patchValue(item.cep);
         this.form.controls['logradouro'].patchValue(item.logradouro);
         this.form.controls['localidade'].patchValue(item.localidade);
@@ -237,7 +237,7 @@ export class EnderecoComponent implements OnInit {
       this.endereco.codigo = 1;
     }
 
-    if(!this.endereco.numero){
+    if(this.endereco.numero==null || this.endereco.numero==undefined){
       this._notifierService.notify(AlertType.Error, 'Campo Número é Obrigatório!');
       return false;
     }
@@ -247,13 +247,14 @@ export class EnderecoComponent implements OnInit {
 
 
   dialogAtualizar(item) {
-    console.log(item)
+    // console.log(item)
     const dialogRef = this._dialog.open(DialogAtualizarEnderecoComponent, {
       width: '800px',
       data: {
         item: item,
         tipoEnderecos: this.tipoEnderecos,
         comboEstados: this.comboEstados,
+        tipoEndereco:this.tipoEndereco,
         pessoa: this.pessoa
       }
     });

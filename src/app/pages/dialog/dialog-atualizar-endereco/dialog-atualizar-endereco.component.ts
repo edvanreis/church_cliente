@@ -68,10 +68,17 @@ export class DialogAtualizarEnderecoComponent implements OnInit {
 
   salvar() {
     let obj = this.preencherEndereco();
+    if(obj.numero==null || obj.numero==undefined){
+      this._notifierService.notify(AlertType.Error, 'Campo Número é Obrigatório!');
+      return false;
+    }
+
     if (obj.id) {
-      if(!obj.tipo){
-        this._notifierService.notify(AlertType.Error, 'Tipo de endereço é obrigatório!');
+      if(!obj.tipo && this.data.tipoEndereco){
+          this._notifierService.notify(AlertType.Error, 'Tipo de endereço é obrigatório!');
+        return false;
       }
+
       this.save(obj);
     }
     obj.codigo = this.data.item.codigo;
