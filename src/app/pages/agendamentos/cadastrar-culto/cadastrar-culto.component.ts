@@ -43,6 +43,8 @@ export class CadastrarCultoComponent implements OnInit {
 
   public id;
 
+  public maskDate = [/\d/, /\d/, '/',/\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
+
   constructor(private _notifierService: NotifierService,
     private _service: AgendamentoService,
     private _datePipe: DatePipe,
@@ -54,7 +56,6 @@ export class CadastrarCultoComponent implements OnInit {
     private _dialog: MatDialog) { }
 
   ngOnInit() {
-    this._dateAdapter.setLocale("br");
     this._buildForm();
     this.columns();
     this.carregarIgrejas();
@@ -152,7 +153,7 @@ export class CadastrarCultoComponent implements OnInit {
   obj() {
 
     let agendamento = {} as any;
-    agendamento.dataAgendamento = this._datePipe.transform(this.form.controls['dataAgendamento'].value, 'dd/MM/yyyy');
+    agendamento.dataAgendamento = this.form.controls['dataAgendamento'].value;
     agendamento.nome = this.form.controls['nome'].value;
     agendamento.horaInicio = this.form.controls['horaInicio'].value;
     agendamento.horaFim = this.form.controls['horaFim'].value;
@@ -245,7 +246,7 @@ export class CadastrarCultoComponent implements OnInit {
 
 
   getParams() {
-    console.log(this._avRoute.snapshot.queryParamMap)
+    // console.log(this._avRoute.snapshot.queryParamMap)
     if (this._avRoute.snapshot.queryParamMap.get("id")) {
       this.id = this._avRoute.snapshot.queryParamMap.get("id");
       this.isEditar = true;
@@ -268,7 +269,7 @@ export class CadastrarCultoComponent implements OnInit {
       this.form.controls['horaInicio'].patchValue(item.horaInicio);
       this.form.controls['horaFim'].patchValue(item.horaFim);
       this.form.controls['descricao'].patchValue(item.descricao);
-      this.form.controls['dataAgendamento'].patchValue(new Date(item.dataAgendamentoToDate));
+      this.form.controls['dataAgendamento'].patchValue(item.dataAgendamento);
       this.form.controls['qtdPessoas'].patchValue(item.qtdPessoas);
 
       if(item.igreja){

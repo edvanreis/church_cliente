@@ -25,7 +25,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
 
   public form: FormGroup;
   public formTwo: FormGroup;
-  public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/];
+
   public id: any;
   public igrejaId: any;
   public data: any;
@@ -63,6 +63,11 @@ export class CadastrarAgendamentosComponent implements OnInit {
   public tipoAgendamento = new Array();
 
   public dataAgendamento:any;
+  public maskHorario = [/\d/, /\d/, ':', /\d/, /\d/];
+  public maskDate = [/\d/, /\d/, '/',/\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
+
+
+
 
 
   constructor(private _notifierService: NotifierService,
@@ -70,7 +75,6 @@ export class CadastrarAgendamentosComponent implements OnInit {
     private _datePipe: DatePipe,
     private _avRoute: ActivatedRoute,
     private _router: Router,
-    private _dateAdapter: DateAdapter<Date>,
     private _serviceGruop: GrupoService,
     private _membroService: MembroService,
     private _service: AgendamentoService,
@@ -79,7 +83,6 @@ export class CadastrarAgendamentosComponent implements OnInit {
     private _tipoAgendamentoService:TipoAgendamentoService) { }
 
   ngOnInit() {
-    this._dateAdapter.setLocale("br");
     this.carregarTipoAgendamento();
     this._buildForm();
     this.getParams();
@@ -143,6 +146,9 @@ export class CadastrarAgendamentosComponent implements OnInit {
     if (!this.igrejaId) {
       this.carregarIgrejas();
     }
+    if(!this.isEditar){
+      this.form.controls['qtdDias'].patchValue(1);
+    }
   }
 
   voltar() {
@@ -158,8 +164,13 @@ export class CadastrarAgendamentosComponent implements OnInit {
     if (!this.form.controls['dataInicio'].value) {
       this._notifierService.notify(AlertType.Error, "Por favor selecione a Data de Inicio do agendamento!");
     }
-    let data = this.adicionarDiasData(this.form.controls['qtdDias'].value, this.form.controls['dataInicio'].value);
-    this.form.controls['dataFim'].patchValue(this.transformDate(data));
+    let dataInicio:string = this.form.controls['dataInicio'].value;
+    let array = dataInicio.split("/");
+    dataInicio =  array[2]+"-"+array[1]+"-"+array[0];
+
+      let data = this.adicionarDiasData(this.form.controls['qtdDias'].value, new Date(dataInicio));
+      this.form.controls['dataFim'].patchValue(this.transformDate(data));
+
   }
 
   adicionarDiasData(dias, dataInicio) {
@@ -260,7 +271,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
 
   obj() {
     let agendamento = {} as any;
-    agendamento.dataInicio = this._datePipe.transform(this.form.controls['dataInicio'].value, 'dd/MM/yyyy');
+    agendamento.dataInicio = this.form.controls['dataInicio'].value;
     agendamento.qtdDias = this.form.controls['qtdDias'].value;
     agendamento.horaInicio = this.form.controls['horaInicio'].value;
     agendamento.horaFim = this.form.controls['horaFim'].value;
@@ -284,7 +295,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
 
   setObjToUpdate() {
     let agendamento = {} as any;
-    agendamento.dataAgendamento = this._datePipe.transform(this.form.controls['dataAgendamento'].value, 'dd/MM/yyyy');
+    agendamento.dataAgendamento = this.form.controls['dataAgendamento'].value;
     agendamento.horaInicio = this.form.controls['horaInicio'].value;
     agendamento.horaFim = this.form.controls['horaFim'].value;
     agendamento.descricao = this.form.controls['descricao'].value;
@@ -404,12 +415,12 @@ export class CadastrarAgendamentosComponent implements OnInit {
 
   getAgendamanto(id) {
     this._service.getAgendamento(id).pipe(take(1)).subscribe(item => {
-      console.log(item)
+      // console.log(item)
       this.form.controls['nome'].patchValue(item.nome);
       this.form.controls['horaInicio'].patchValue(item.horaInicio);
       this.form.controls['horaFim'].patchValue(item.horaFim);
       this.form.controls['descricao'].patchValue(item.descricao);
-      this.form.controls['dataAgendamento'].patchValue(new Date(item.dataAgendamentoToDate+1));
+      this.form.controls['dataAgendamento'].patchValue(item.dataAgendamento);
       this.form.controls['qtdPessoas'].patchValue(item.qtdPessoas);
       this.dataAgendamento = item.dataAgendamento;
 
@@ -490,7 +501,7 @@ export class CadastrarAgendamentosComponent implements OnInit {
     }
   }
 
-  changeDateInicio(){
+  blurDateInicio(){
     this.calcularDias();
   }
 

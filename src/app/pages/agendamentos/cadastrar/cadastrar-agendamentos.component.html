@@ -19,12 +19,11 @@
         <div [hidden]="isEditar">
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="full-width-field">
-              <input matInput [matDatepicker]="picker" placeholder="Data Inicio" formControlName="dataInicio" required
-              (dateChange)="changeDateInicio()" readonly>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+              <input matInput [textMask]="{mask: maskDate}"  formControlName="dataInicio"  placeholder="Data Inicio"
+              (blur)="blurDateInicio()" required>
               <mat-error *ngIf="!form.controls.dataInicio.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
+
             <mat-form-field class="full-width-field">
               <input matInput type="number" class="input-upper" placeholder="Quantidade de Dias"
                 formControlName="qtdDias" id="qtdDias" (change)="calcularDias()" required>
@@ -34,10 +33,8 @@
         </div>
         <div [hidden]="!isEditar">
           <mat-form-field class="full-width-field">
-            <input matInput [matDatepicker]="picke" placeholder="Data do agendamento" formControlName="dataAgendamento"
-              required readonly>
-            <mat-datepicker-toggle matSuffix [for]="picke"></mat-datepicker-toggle>
-            <mat-datepicker #picke></mat-datepicker>
+            <input matInput placeholder="Data do agendamento" formControlName="dataAgendamento"
+            [textMask]="{mask: maskDate}" required readonly>
             <mat-error *ngIf="!form.controls.dataAgendamento.valid">Campo Obrigatório</mat-error>
           </mat-form-field>
         </div>

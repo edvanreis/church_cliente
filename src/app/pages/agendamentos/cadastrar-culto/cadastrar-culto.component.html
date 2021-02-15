@@ -18,10 +18,8 @@
         </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px">
             <mat-form-field class="full-width-field">
-              <input matInput [matDatepicker]="picker" placeholder="Data Agendamento" formControlName="dataAgendamento" required
-                readonly>
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+              <input matInput placeholder="Data do agendamento" formControlName="dataAgendamento"
+              [textMask]="{mask: maskDate}" required>
               <mat-error *ngIf="!form.controls.dataAgendamento.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
             <mat-form-field class="full-width-field">

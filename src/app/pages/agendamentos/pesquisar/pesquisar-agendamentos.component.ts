@@ -179,7 +179,7 @@ setObj(){
 }
 
 getParams(): boolean {
-   console.log(this._avRoute.snapshot.queryParamMap);
+  //  console.log(this._avRoute.snapshot.queryParamMap);
   if (this._avRoute.snapshot.queryParamMap.get("pesquisar")) {
     let obj  = JSON.parse(localStorage.getItem("pesquisar"));
 
