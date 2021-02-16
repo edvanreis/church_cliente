@@ -1376,7 +1376,6 @@ var PessoasAgendadasComponent = /** @class */ (function () {
     PessoasAgendadasComponent.prototype.columns = function () {
         this.columnNames = [
             { id: 'nomeCompleto', value: 'Nome' },
-            { id: 'dataNascimento', value: 'Data Nascimento' },
             { id: 'celular', value: 'Celular' },
             { id: 'id', value: 'Presente' },
             { id: 'justificar', value: 'Justificar' }
@@ -1398,7 +1397,6 @@ var PessoasAgendadasComponent = /** @class */ (function () {
     PessoasAgendadasComponent.prototype.obterAgendamentos = function (id) {
         var _this = this;
         this._serviceAgendamento.getAgendamentosIgreja(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
-            console.log(item);
             _this.comboAgendamento = item;
             _this.filteredAgendamento = _this.myControlAgendamento.valueChanges
                 .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (value) { return _this._filterAgendamento(value, _this.comboAgendamento); }));
@@ -1413,7 +1411,6 @@ var PessoasAgendadasComponent = /** @class */ (function () {
     PessoasAgendadasComponent.prototype.getList = function (id) {
         var _this = this;
         this._service.pessoasAgendadas(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
-            console.log(item);
             _this.pessoasAgendadas = item;
             _this.dados = new _angular_material__WEBPACK_IMPORTED_MODULE_8__["MatTableDataSource"](item);
             _this.dados.sort = _this.sort;
@@ -1434,13 +1431,11 @@ var PessoasAgendadasComponent = /** @class */ (function () {
     };
     PessoasAgendadasComponent.prototype.confirmar = function (id, bool) {
         var _this = this;
-        console.log(id, bool);
         var obj = {
             id: id,
             presente: bool
         };
         this._service.marcarPresentePessoa(obj).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
-            // console.log(item)
             _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Success, item.value);
             _this.totalPessoasAgendadas(_this.agendamentoSelecionado.id);
             _this.getList(_this.agendamentoSelecionado.id);
@@ -1452,10 +1447,8 @@ var PessoasAgendadasComponent = /** @class */ (function () {
     PessoasAgendadasComponent.prototype.totalPessoasAgendadas = function (id) {
         var _this = this;
         this._service.totalPessoasAgendadas(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
-            console.log(item);
             _this.cardsTop(item);
         }, function (error) {
-            console.log(error);
             _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, error.errors.message);
         });
     };

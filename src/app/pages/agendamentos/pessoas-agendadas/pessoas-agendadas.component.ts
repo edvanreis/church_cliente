@@ -56,7 +56,6 @@ export class PessoasAgendadasComponent implements OnInit {
   columns() {
     this.columnNames = [
       { id: 'nomeCompleto', value: 'Nome' },
-      { id: 'dataNascimento', value: 'Data Nascimento' },
       { id: 'celular', value: 'Celular' },
       { id: 'id', value: 'Presente' },
       { id: 'justificar', value: 'Justificar' }
@@ -79,7 +78,6 @@ export class PessoasAgendadasComponent implements OnInit {
 
   obterAgendamentos(id){
     this._serviceAgendamento.getAgendamentosIgreja(id).pipe(take(1)).subscribe(item => {
-      console.log(item);
       this.comboAgendamento = item;
       this.filteredAgendamento = this.myControlAgendamento.valueChanges
         .pipe(
@@ -99,7 +97,6 @@ export class PessoasAgendadasComponent implements OnInit {
 
   getList(id) {
     this._service.pessoasAgendadas(id).pipe(take(1)).subscribe(item => {
-      console.log(item)
       this.pessoasAgendadas = item;
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
@@ -124,13 +121,11 @@ export class PessoasAgendadasComponent implements OnInit {
   }
 
   confirmar(id,bool){
-    console.log(id,bool);
     let obj = {
       id:id,
       presente:bool
     }
     this._service.marcarPresentePessoa(obj).pipe(take(1)).subscribe(item => {
-      // console.log(item)
       this._notifierService.notify(AlertType.Success, item.value);
       this.totalPessoasAgendadas(this.agendamentoSelecionado.id);
       this.getList(this.agendamentoSelecionado.id);
@@ -142,10 +137,8 @@ export class PessoasAgendadasComponent implements OnInit {
 
   totalPessoasAgendadas(id){
     this._service.totalPessoasAgendadas(id).pipe(take(1)).subscribe(item => {
-      console.log(item)
       this.cardsTop(item)
     }, error => {
-      console.log(error)
       this._notifierService.notify(AlertType.Error, error.errors.message);
 
     });

@@ -74,15 +74,15 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
   public redeSelecionada: any;
   public redeValue: any;
 
+  public maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/]
+
 
 
   constructor(private _emitirEventoService: EmitirEventoService,
     private _celulaService: CelulaService,
     private _notifierService: NotifierService,
-    private _dateAdapter: DateAdapter<Date>,
     private _membroService: MembroService,
     private _visitanteService: VisitanteService,
-    private _datePipe: DatePipe,
     private _service: ReuniaoCelulaService,
     private _router: Router,
     private _avRoute: ActivatedRoute,
@@ -91,7 +91,6 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
 
 
   ngOnInit() {
-    this._dateAdapter.setLocale("br");
     this._buildForm();
     this.getEmiter();
     this.getComboSemana();
@@ -244,7 +243,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
       celula:{id:celula.id},
       dataReuniaoCelula:dataDaReuniao
     }
-    // console.log(obj)
+    console.log(obj)
     this._visitanteService.getVisitanteCelula(obj).pipe(take(1)).subscribe(item => {
       // console.log(item);
       this.comboVisitante = item;
@@ -319,7 +318,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     this.reuniao.oferta = this.form.controls['oferta'].value;
     this.reuniao.observacao = this.form.controls['observacao'].value;
     this.reuniao.cadeiraBencao = HelperChurch.isBoolean(this.form.controls['cadeiraBencao'].value);
-    this.reuniao.dataDaReuniao = this._datePipe.transform(this.form.controls['dataDaReuniao'].value, 'dd/MM/yyyy');
+    this.reuniao.dataDaReuniao = this.form.controls['dataDaReuniao'].value;
     this.reuniao.diaDaSemana = this.form.controls['diaDaSemana'].value;
     this.reuniao.presencial = HelperChurch.isBoolean(this.form.controls['presencial'].value);
     this.reuniao.visitantes = this.visitantes;
@@ -465,7 +464,7 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     this._service.getReuniao(id).pipe(take(1)).subscribe(item => {
       this.form.controls['horarioInicio'].patchValue(item.horarioInicio);
       this.form.controls['horarioFim'].patchValue(item.horarioFim);
-      this.form.controls['dataDaReuniao'].patchValue(new Date(item.dataDaReuniaoToDate));
+      this.form.controls['dataDaReuniao'].patchValue(item.dataDaReuniao);
       this.form.controls['diaDaSemana'].patchValue(item.diaDaSemana);
       this.form.controls['louvor'].patchValue(item.louvor);
       this.form.controls['observacao'].patchValue(item.observacao);
@@ -622,10 +621,13 @@ export class CadastrarReuniaoCelulaComponent implements OnInit {
     this.carregarCelula(this.redeSelecionada.id);
   }
 
-  onDateChange(element){
-    let dataDaReuniao =  this._datePipe.transform(element.value, 'dd/MM/yyyy');
+  onBlurChange(element){
+    let dataDaReuniao = element.target.value;
     if(this.celulaSelecionada){
       this.carregarVisitante(dataDaReuniao,this.celulaSelecionada);
+    }else{
+      this._notifierService.notify(AlertType.Error, "Por favor Selecione uma Igreja,Rede e Célula!");
+      return false;
     }
   }
 

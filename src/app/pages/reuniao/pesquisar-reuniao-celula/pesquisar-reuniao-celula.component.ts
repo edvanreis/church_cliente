@@ -97,7 +97,6 @@ export class PesquisarReuniaoCelulaComponent implements OnInit {
   columns() {
     this.columnNames = [
       { id: 'celulaNome', value: 'Célula' },
-      { id: 'diaDaSemanaDesc', value: 'Dia da semana' },
       { id: 'dataDaReuniao', value: 'Data da reunião' },
       { id: 'presencialStr', value: 'Presencial' },
       { id: 'id', value: 'Ação' }

@@ -3516,8 +3516,7 @@ var PesquisarAgendamentoComponent = /** @class */ (function () {
         this.columnNames = [
             { id: 'dataAgendamento', value: 'Data Agendamento' },
             { id: 'nome', value: 'Nome' },
-            { id: 'horaInicio', value: 'Inicio' },
-            { id: 'horaFim', value: 'Fim' },
+            { id: 'horaInicio', value: 'Horário ' },
             { id: 'id', value: 'Ação' }
         ];
         this.displayedColumns = this.columnNames.map(function (x) { return x.id; });
@@ -14127,7 +14126,7 @@ var RelatoriosModule = /** @class */ (function () {
 /*! no static exports found */
 /***/ (function(module, exports) {
 
-module.exports = "<div fxLayout=\"column\" class=\"components-container-gt-xs\" [ngClass.xs]=\"'components-container-xs'\" fxLayoutGap=\"20px\">\r\n  <div fxFlex class=\"cdk-component-holder button-component-holder mat-elevation-z4\">\r\n    <mat-toolbar class=\"cdk-header\">\r\n      <span><i class=\"material-icons\">add</i></span>\r\n      <h1 class=\"mat-headline center-align\">Reunião Célula</h1>\r\n    </mat-toolbar>\r\n    <div class=\"cdk-container\">\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n        <i class=\"material-icons\">store</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Relatório semanal da célula</h1>\r\n      </div>\r\n      <app-igrejas></app-igrejas>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Rede\" aria-label=\"Number\" matInput [formControl]=\"myControlRede\"\r\n            [matAutocomplete]=\"a\" [(ngModel)]=\"redeValue\">\r\n          <mat-autocomplete #a=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredRede | async\" [value]=\"option.nome\"\r\n              (onSelectionChange)=\"onSelectionRedeChange($event,option)\">\r\n              {{option.nome}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Celula\" aria-label=\"Number\" matInput [formControl]=\"myControlCelula\"\r\n            [matAutocomplete]=\"au\" [(ngModel)]=\"celulaValue\">\r\n          <mat-autocomplete #au=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredCelula | async\" [value]=\"option.nome\"\r\n              (onSelectionChange)=\"onSelectionCelulaChange($event,option)\">\r\n              {{option.nome}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\"\r\n        *ngIf=\"membros.length > 0\">\r\n        <i class=\"material-icons\">face</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Liderança da célula</h1>\r\n      </div>\r\n      <div class=\"table-responsive\" *ngIf=\"membrosLideres.length > 0\">\r\n        <table>\r\n          <thead class=\"text-primary\">\r\n            <th>Nome</th>\r\n            <th></th>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let m of membrosLideres\">\r\n              <td>{{ m.nomeCompleto}}</td>\r\n              <td>{{ m.tipo}}</td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <br />\r\n      <mat-divider></mat-divider>\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n        <i class=\"material-icons\">class</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Dados da Reunião</h1>\r\n      </div>\r\n      <form form [formGroup]=\"form\">\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input matInput [matDatepicker]=\"picker\" placeholder=\"Data da reunião\" formControlName=\"dataDaReuniao\"\r\n              (dateChange)=\"onDateChange($event)\"  required readonly>\r\n            <mat-error *ngIf=\"!form.controls.dataDaReuniao.valid\">Campo Obrigatório</mat-error>\r\n            <mat-datepicker-toggle matSuffix [for]=\"picker\"></mat-datepicker-toggle>\r\n            <mat-datepicker #picker></mat-datepicker>\r\n\r\n          </mat-form-field>\r\n          <mat-form-field class=\"full-width-field\">\r\n            <mat-label>Dia da semana</mat-label>\r\n            <mat-select formControlName=\"diaDaSemana\" id=\"diaDaSemana\" required>\r\n              <mat-option *ngFor=\"let item of comboSemana | keyValue\" [value]=\"item.key\">\r\n                {{item.value}}\r\n              </mat-option>\r\n            </mat-select>\r\n            <mat-error *ngIf=\"!form.controls.diaDaSemana.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input matInput placeholder=\"Horário de inicio\" [textMask]=\"{mask: maskHorario}\"\r\n              formControlName=\"horarioInicio\" id=\"horario\" required>\r\n            <mat-error *ngIf=\"!form.controls.horarioInicio.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input matInput placeholder=\"Horário de fim\" [textMask]=\"{mask: maskHorario}\" formControlName=\"horarioFim\"\r\n              id=\"horario\" required>\r\n            <mat-error *ngIf=\"!form.controls.horarioFim.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input matInput placeholder=\"Louvor\" formControlName=\"louvor\" id=\"louvor\"\r\n              style=\"text-transform: uppercase;\">\r\n            <mat-error *ngIf=\"!form.controls.louvor.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input id=\"oferta\" matInput placeholder=\"Oferta\" formControlName=\"oferta\"\r\n            currencyMask />\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <label style=\"color:#1d68a5\">Oração da cadeira da Benção?</label>\r\n          <mat-slide-toggle formControlName=\"cadeiraBencao\" id=\"cadeiraBencao\" #cadeiraBencao>\r\n            {{cadeiraBencao.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>\r\n            <label style=\"color:#1d68a5\">A reunião foi presencial?</label>\r\n          <mat-slide-toggle formControlName=\"presencial\" id=\"presencial\" #presencial>\r\n            {{presencial.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <textarea matInput placeholder=\"Nota/Observação\" formControlName=\"observacao\"></textarea>\r\n          </mat-form-field>\r\n        </div>\r\n      </form>\r\n      <app-licao></app-licao>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Palestrantes\" aria-label=\"Number\" matInput\r\n            [formControl]=\"myControlPalestrante\" [matAutocomplete]=\"uto\" [(ngModel)]=\"palestranteValue\" required>\r\n          <mat-autocomplete #uto=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredPalestrante | async\" [value]=\"option.nomeCompleto\"\r\n              (onSelectionChange)=\"onSelectionChangedPalestrantes($event,option)\">\r\n              {{option.nomeCompleto}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"adicionarPalestrante()\">\r\n          <i class=\"material-icons\">add</i>adicionar</button>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" *ngIf=\"palestrantes.length > 0\">\r\n        <div class=\"table-responsive\">\r\n          <table>\r\n            <thead class=\"text-primary\">\r\n              <th></th>\r\n              <th>Nome</th>\r\n              <th>Remover</th>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let item of palestrantes;let i= index\">\r\n                <td>{{ i+1}}</td>\r\n                <td>{{ item.nomeCompleto}}</td>\r\n                <td><span style=\"color: #1d68a5;cursor: pointer\" (click)=\"dialogRemoverPalestrante(i,item)\"><i\r\n                      class=\"material-icons\">delete</i></span></td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n      <br />\r\n      <mat-divider></mat-divider>\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n        <i class=\"material-icons\">person</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Membros da célula</h1>\r\n      </div>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" aria-label=\"Number\" matInput [formControl]=\"myControlMembro\" [matAutocomplete]=\"auto\"\r\n            [(ngModel)]=\"membroValue\" required>\r\n          <mat-autocomplete #auto=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredMembro | async\" [value]=\"option.nomeCompleto\"\r\n              (onSelectionChange)=\"onSelectionChangedMembro($event,option)\">\r\n              {{option.nomeCompleto}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"adicionarMembro()\">\r\n          <i class=\"material-icons\">add</i>adicionar</button>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" *ngIf=\"membros.length > 0\">\r\n        <div class=\"table-responsive\">\r\n          <table>\r\n            <thead class=\"text-primary\">\r\n              <th></th>\r\n              <th>Nome</th>\r\n              <th>Remover</th>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let item of membros;let i= index\">\r\n                <td>{{ i+1}}</td>\r\n                <td>{{ item.nomeCompleto}}</td>\r\n                <td><span style=\"color: #1d68a5;cursor: pointer\" (click)=\"dialogRemoverMembro(i,item)\"><i\r\n                      class=\"material-icons\">delete</i></span></td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n      <br />\r\n      <mat-divider></mat-divider>\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n        <i class=\"material-icons\">person_outline</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Visitantes da célula</h1>\r\n      </div>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" aria-label=\"Number\" matInput [formControl]=\"myControlVisitante\" [matAutocomplete]=\"aut\"\r\n            [(ngModel)]=\"visitanteValue\" required>\r\n          <mat-autocomplete #aut=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredVisitante | async\" [value]=\"option.nomeCompleto\"\r\n              (onSelectionChange)=\"onSelectionChangedVisitante($event,option)\">\r\n              {{option.nomeCompleto}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"adicionarVistantes()\">\r\n          <i class=\"material-icons\">add</i>adicionar</button>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" *ngIf=\"visitantes.length > 0\">\r\n        <div class=\"table-responsive\">\r\n          <table>\r\n            <thead class=\"text-primary\">\r\n              <th></th>\r\n              <th>Nome</th>\r\n              <th>Remover</th>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let item of visitantes;let i= index\">\r\n                <td>{{ i+1}}</td>\r\n                <td>{{ item.nomeCompleto}}</td>\r\n                <td><span style=\"color: #1d68a5;cursor: pointer\" (click)=\"dialogRemoverVisitante(i,item)\"><i\r\n                      class=\"material-icons\">delete</i></span></td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n      <br />\r\n      <mat-divider></mat-divider>\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n        <i class=\"material-icons\">person_outline</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Membros visitantes de outras células</h1>\r\n      </div>\r\n      <app-membro></app-membro>\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"adicionarMembrosVisitantes()\">\r\n          <i class=\"material-icons\">add</i>adicionar</button>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" *ngIf=\"membrosVisitantes.length > 0\">\r\n        <div class=\"table-responsive\">\r\n          <table>\r\n            <thead class=\"text-primary\">\r\n              <th></th>\r\n              <th>Nome</th>\r\n              <th>Remover</th>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let item of membrosVisitantes ;let i= index\">\r\n                <td>{{ i+1}}</td>\r\n                <td>{{ item.nomeCompleto}}</td>\r\n                <td><span style=\" color: #1d68a5;cursor: pointer\" (click)=\"dialogRemoverMembroVisitante(i,item)\"><i\r\n                      class=\"material-icons\">delete</i></span></td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div>\r\n         <form form [formGroup]=\"formTwo\">\r\n          <label class=\"default-font-color\" style=\"font-size:15px;\">A reunião foi realizada em outro endereço ?</label>\r\n          <mat-slide-toggle id=\"outroEndereco\" formControlName=\"outroEndereco\"  #outroEndereco>{{outroEndereco.checked | boolean : ['Sim', 'Não']}}\r\n          </mat-slide-toggle>\r\n        </form>\r\n      </div>\r\n      <br />\r\n      <br />\r\n        <app-endereco [tipoEndereco]=\"false\" [sizeLimitOne]=\"sizeLimitOne\" [hidden]=\"!outroEndereco.checked\"></app-endereco>\r\n      <br />\r\n      <br />\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"salvar()\">\r\n          <i class=\"material-icons\">save</i>Salvar</button>\r\n        <div fxFlex></div>\r\n        <button mat-raised-button color=\"warn\" type=\"submit\" (click)=\"voltar()\">\r\n          <i class=\"material-icons\">reply</i>Voltar</button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
+module.exports = "<div fxLayout=\"column\" class=\"components-container-gt-xs\" [ngClass.xs]=\"'components-container-xs'\" fxLayoutGap=\"20px\">\r\n  <div fxFlex class=\"cdk-component-holder button-component-holder mat-elevation-z4\">\r\n    <mat-toolbar class=\"cdk-header\">\r\n      <span><i class=\"material-icons\">add</i></span>\r\n      <h1 class=\"mat-headline center-align\">Reunião Célula</h1>\r\n    </mat-toolbar>\r\n    <div class=\"cdk-container\">\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n        <i class=\"material-icons\">store</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Relatório semanal da célula</h1>\r\n      </div>\r\n      <app-igrejas></app-igrejas>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Rede\" aria-label=\"Number\" matInput [formControl]=\"myControlRede\"\r\n            [matAutocomplete]=\"a\" [(ngModel)]=\"redeValue\">\r\n          <mat-autocomplete #a=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredRede | async\" [value]=\"option.nome\"\r\n              (onSelectionChange)=\"onSelectionRedeChange($event,option)\">\r\n              {{option.nome}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Celula\" aria-label=\"Number\" matInput [formControl]=\"myControlCelula\"\r\n            [matAutocomplete]=\"au\" [(ngModel)]=\"celulaValue\">\r\n          <mat-autocomplete #au=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredCelula | async\" [value]=\"option.nome\"\r\n              (onSelectionChange)=\"onSelectionCelulaChange($event,option)\">\r\n              {{option.nome}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\"\r\n        *ngIf=\"membros.length > 0\">\r\n        <i class=\"material-icons\">face</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Liderança da célula</h1>\r\n      </div>\r\n      <div class=\"table-responsive\" *ngIf=\"membrosLideres.length > 0\">\r\n        <table>\r\n          <thead class=\"text-primary\">\r\n            <th>Nome</th>\r\n            <th></th>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let m of membrosLideres\">\r\n              <td>{{ m.nomeCompleto}}</td>\r\n              <td>{{ m.tipo}}</td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <br />\r\n      <mat-divider></mat-divider>\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n        <i class=\"material-icons\">class</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Dados da Reunião</h1>\r\n      </div>\r\n      <form form [formGroup]=\"form\">\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input matInput placeholder=\"Data da reunião\" formControlName=\"dataDaReuniao\" [textMask]=\"{mask: maskDate}\"\r\n              (blur)=\"onBlurChange($event)\"  required>\r\n            <mat-error *ngIf=\"!form.controls.dataDaReuniao.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n          <mat-form-field class=\"full-width-field\">\r\n            <mat-label>Dia da semana</mat-label>\r\n            <mat-select formControlName=\"diaDaSemana\" id=\"diaDaSemana\" required>\r\n              <mat-option *ngFor=\"let item of comboSemana | keyValue\" [value]=\"item.key\">\r\n                {{item.value}}\r\n              </mat-option>\r\n            </mat-select>\r\n            <mat-error *ngIf=\"!form.controls.diaDaSemana.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input matInput placeholder=\"Horário de inicio\" [textMask]=\"{mask: maskHorario}\"\r\n              formControlName=\"horarioInicio\" id=\"horario\" required>\r\n            <mat-error *ngIf=\"!form.controls.horarioInicio.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input matInput placeholder=\"Horário de fim\" [textMask]=\"{mask: maskHorario}\" formControlName=\"horarioFim\"\r\n              id=\"horario\" required>\r\n            <mat-error *ngIf=\"!form.controls.horarioFim.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input matInput placeholder=\"Louvor\" formControlName=\"louvor\" id=\"louvor\"\r\n              style=\"text-transform: uppercase;\">\r\n            <mat-error *ngIf=\"!form.controls.louvor.valid\">Campo Obrigatório</mat-error>\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <input id=\"oferta\" matInput placeholder=\"Oferta\" formControlName=\"oferta\"\r\n            currencyMask />\r\n          </mat-form-field>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <label style=\"color:#1d68a5\">Oração da cadeira da Benção?</label>\r\n          <mat-slide-toggle formControlName=\"cadeiraBencao\" id=\"cadeiraBencao\" #cadeiraBencao>\r\n            {{cadeiraBencao.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>\r\n            <label style=\"color:#1d68a5\">A reunião foi presencial?</label>\r\n          <mat-slide-toggle formControlName=\"presencial\" id=\"presencial\" #presencial>\r\n            {{presencial.checked | boolean : ['Sim', 'Não']}}</mat-slide-toggle>\r\n        </div>\r\n        <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\">\r\n          <mat-form-field class=\"full-width-field\">\r\n            <textarea matInput placeholder=\"Nota/Observação\" formControlName=\"observacao\"></textarea>\r\n          </mat-form-field>\r\n        </div>\r\n      </form>\r\n      <app-licao></app-licao>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" placeholder=\"Palestrantes\" aria-label=\"Number\" matInput\r\n            [formControl]=\"myControlPalestrante\" [matAutocomplete]=\"uto\" [(ngModel)]=\"palestranteValue\" required>\r\n          <mat-autocomplete #uto=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredPalestrante | async\" [value]=\"option.nomeCompleto\"\r\n              (onSelectionChange)=\"onSelectionChangedPalestrantes($event,option)\">\r\n              {{option.nomeCompleto}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"adicionarPalestrante()\">\r\n          <i class=\"material-icons\">add</i>adicionar</button>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" *ngIf=\"palestrantes.length > 0\">\r\n        <div class=\"table-responsive\">\r\n          <table>\r\n            <thead class=\"text-primary\">\r\n              <th></th>\r\n              <th>Nome</th>\r\n              <th>Remover</th>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let item of palestrantes;let i= index\">\r\n                <td>{{ i+1}}</td>\r\n                <td>{{ item.nomeCompleto}}</td>\r\n                <td><span style=\"color: #1d68a5;cursor: pointer\" (click)=\"dialogRemoverPalestrante(i,item)\"><i\r\n                      class=\"material-icons\">delete</i></span></td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n      <br />\r\n      <mat-divider></mat-divider>\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n        <i class=\"material-icons\">person</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Membros da célula</h1>\r\n      </div>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" aria-label=\"Number\" matInput [formControl]=\"myControlMembro\" [matAutocomplete]=\"auto\"\r\n            [(ngModel)]=\"membroValue\" required>\r\n          <mat-autocomplete #auto=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredMembro | async\" [value]=\"option.nomeCompleto\"\r\n              (onSelectionChange)=\"onSelectionChangedMembro($event,option)\">\r\n              {{option.nomeCompleto}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"adicionarMembro()\">\r\n          <i class=\"material-icons\">add</i>adicionar</button>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" *ngIf=\"membros.length > 0\">\r\n        <div class=\"table-responsive\">\r\n          <table>\r\n            <thead class=\"text-primary\">\r\n              <th></th>\r\n              <th>Nome</th>\r\n              <th>Remover</th>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let item of membros;let i= index\">\r\n                <td>{{ i+1}}</td>\r\n                <td>{{ item.nomeCompleto}}</td>\r\n                <td><span style=\"color: #1d68a5;cursor: pointer\" (click)=\"dialogRemoverMembro(i,item)\"><i\r\n                      class=\"material-icons\">delete</i></span></td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n      <br />\r\n      <mat-divider></mat-divider>\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n        <i class=\"material-icons\">person_outline</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Visitantes da célula</h1>\r\n      </div>\r\n      <div>\r\n        <mat-form-field class=\"full-width-field\">\r\n          <input type=\"text\" aria-label=\"Number\" matInput [formControl]=\"myControlVisitante\" [matAutocomplete]=\"aut\"\r\n            [(ngModel)]=\"visitanteValue\" required>\r\n          <mat-autocomplete #aut=\"matAutocomplete\">\r\n            <mat-option *ngFor=\"let option of filteredVisitante | async\" [value]=\"option.nomeCompleto\"\r\n              (onSelectionChange)=\"onSelectionChangedVisitante($event,option)\">\r\n              {{option.nomeCompleto}}\r\n            </mat-option>\r\n          </mat-autocomplete>\r\n        </mat-form-field>\r\n      </div>\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"adicionarVistantes()\">\r\n          <i class=\"material-icons\">add</i>adicionar</button>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" *ngIf=\"visitantes.length > 0\">\r\n        <div class=\"table-responsive\">\r\n          <table>\r\n            <thead class=\"text-primary\">\r\n              <th></th>\r\n              <th>Nome</th>\r\n              <th>Remover</th>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let item of visitantes;let i= index\">\r\n                <td>{{ i+1}}</td>\r\n                <td>{{ item.nomeCompleto}}</td>\r\n                <td><span style=\"color: #1d68a5;cursor: pointer\" (click)=\"dialogRemoverVisitante(i,item)\"><i\r\n                      class=\"material-icons\">delete</i></span></td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n      <br />\r\n      <mat-divider></mat-divider>\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" class=\"default-font-color\">\r\n        <i class=\"material-icons\">person_outline</i>\r\n        <h1 class=\"mat-subheading-2 center-align\">Membros visitantes de outras células</h1>\r\n      </div>\r\n      <app-membro></app-membro>\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"adicionarMembrosVisitantes()\">\r\n          <i class=\"material-icons\">add</i>adicionar</button>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div fxLayout=\"row\" fxLayout.lt-sm=\"column\" fxLayoutGap=\"20px\" *ngIf=\"membrosVisitantes.length > 0\">\r\n        <div class=\"table-responsive\">\r\n          <table>\r\n            <thead class=\"text-primary\">\r\n              <th></th>\r\n              <th>Nome</th>\r\n              <th>Remover</th>\r\n            </thead>\r\n            <tbody>\r\n              <tr *ngFor=\"let item of membrosVisitantes ;let i= index\">\r\n                <td>{{ i+1}}</td>\r\n                <td>{{ item.nomeCompleto}}</td>\r\n                <td><span style=\" color: #1d68a5;cursor: pointer\" (click)=\"dialogRemoverMembroVisitante(i,item)\"><i\r\n                      class=\"material-icons\">delete</i></span></td>\r\n              </tr>\r\n            </tbody>\r\n          </table>\r\n        </div>\r\n      </div>\r\n      <br />\r\n      <br />\r\n      <div>\r\n         <form form [formGroup]=\"formTwo\">\r\n          <label class=\"default-font-color\" style=\"font-size:15px;\">A reunião foi realizada em outro endereço ?</label>\r\n          <mat-slide-toggle id=\"outroEndereco\" formControlName=\"outroEndereco\"  #outroEndereco>{{outroEndereco.checked | boolean : ['Sim', 'Não']}}\r\n          </mat-slide-toggle>\r\n        </form>\r\n      </div>\r\n      <br />\r\n      <br />\r\n        <app-endereco [tipoEndereco]=\"false\" [sizeLimitOne]=\"sizeLimitOne\" [hidden]=\"!outroEndereco.checked\"></app-endereco>\r\n      <br />\r\n      <br />\r\n      <div>\r\n        <button mat-raised-button color=\"primary\" type=\"submit\" (click)=\"salvar()\">\r\n          <i class=\"material-icons\">save</i>Salvar</button>\r\n        <div fxFlex></div>\r\n        <button mat-raised-button color=\"warn\" type=\"submit\" (click)=\"voltar()\">\r\n          <i class=\"material-icons\">reply</i>Voltar</button>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n"
 
 /***/ }),
 
@@ -14152,22 +14151,21 @@ module.exports = ""
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "CadastrarReuniaoCelulaComponent", function() { return CadastrarReuniaoCelulaComponent; });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/fesm5/common.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
-/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
-/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
-/* harmony import */ var _helper_helper_church__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../helper/helper.church */ "./src/app/helper/helper.church.ts");
-/* harmony import */ var _model_alert_type__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../model/alert-type */ "./src/app/model/alert-type.ts");
-/* harmony import */ var _service_celula_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../service/celula.service */ "./src/app/service/celula.service.ts");
-/* harmony import */ var _service_emitir_evento_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../service/emitir-evento.service */ "./src/app/service/emitir-evento.service.ts");
-/* harmony import */ var _service_membro_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../service/membro.service */ "./src/app/service/membro.service.ts");
-/* harmony import */ var _service_rede_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../service/rede.service */ "./src/app/service/rede.service.ts");
-/* harmony import */ var _service_reuniao_celula_service__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../../service/reuniao-celula.service */ "./src/app/service/reuniao-celula.service.ts");
-/* harmony import */ var _dialog_dialog_confirm_pessoa_reuniao_dialog_confirm_pessoa_reuniao_component__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ../../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.component */ "./src/app/pages/dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.component.ts");
-/* harmony import */ var _service_visitante_service__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./../../../service/visitante.service */ "./src/app/service/visitante.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm5/forms.js");
+/* harmony import */ var _angular_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material */ "./node_modules/@angular/material/esm5/material.es5.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm5/router.js");
+/* harmony import */ var angular_notifier__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! angular-notifier */ "./node_modules/angular-notifier/esm5/angular-notifier.js");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm5/operators/index.js");
+/* harmony import */ var _helper_helper_church__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../helper/helper.church */ "./src/app/helper/helper.church.ts");
+/* harmony import */ var _model_alert_type__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../model/alert-type */ "./src/app/model/alert-type.ts");
+/* harmony import */ var _service_celula_service__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../service/celula.service */ "./src/app/service/celula.service.ts");
+/* harmony import */ var _service_emitir_evento_service__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../service/emitir-evento.service */ "./src/app/service/emitir-evento.service.ts");
+/* harmony import */ var _service_membro_service__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../../service/membro.service */ "./src/app/service/membro.service.ts");
+/* harmony import */ var _service_rede_service__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../../service/rede.service */ "./src/app/service/rede.service.ts");
+/* harmony import */ var _service_reuniao_celula_service__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../../../service/reuniao-celula.service */ "./src/app/service/reuniao-celula.service.ts");
+/* harmony import */ var _dialog_dialog_confirm_pessoa_reuniao_dialog_confirm_pessoa_reuniao_component__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../../dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.component */ "./src/app/pages/dialog/dialog-confirm-pessoa-reuniao/dialog-confirm-pessoa-reuniao.component.ts");
+/* harmony import */ var _service_visitante_service__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./../../../service/visitante.service */ "./src/app/service/visitante.service.ts");
 var __decorate = (undefined && undefined.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -14192,16 +14190,13 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 
-
 var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
-    function CadastrarReuniaoCelulaComponent(_emitirEventoService, _celulaService, _notifierService, _dateAdapter, _membroService, _visitanteService, _datePipe, _service, _router, _avRoute, _dialog, _serviceRede) {
+    function CadastrarReuniaoCelulaComponent(_emitirEventoService, _celulaService, _notifierService, _membroService, _visitanteService, _service, _router, _avRoute, _dialog, _serviceRede) {
         this._emitirEventoService = _emitirEventoService;
         this._celulaService = _celulaService;
         this._notifierService = _notifierService;
-        this._dateAdapter = _dateAdapter;
         this._membroService = _membroService;
         this._visitanteService = _visitanteService;
-        this._datePipe = _datePipe;
         this._service = _service;
         this._router = _router;
         this._avRoute = _avRoute;
@@ -14210,27 +14205,27 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
         this.maskHorario = [/\d/, /\d/, ':', /\d/, /\d/];
         this.membrosLideres = [];
         this.comboSemana = [];
-        this.myControlPalestrante = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]();
+        this.myControlPalestrante = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]();
         this.reuniao = {};
         this.pesquisa = false;
         this.enderecos = [];
         this.sizeLimitOne = true;
         this.comboPalestrantes = [];
         this.palestrantes = [];
-        this.myControlMembro = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]();
+        this.myControlMembro = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]();
         this.membros = [];
         this.comboMembro = [];
         this.comboVisitante = [];
         this.membrosVisitantes = [];
-        this.myControlVisitante = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]();
+        this.myControlVisitante = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]();
         this.visitantes = [];
-        this.myControlCelula = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]();
+        this.myControlCelula = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]();
         this.comboCelulas = [];
-        this.myControlRede = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]();
+        this.myControlRede = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]();
         this.comboRede = [];
+        this.maskDate = [/\d/, /\d/, '/', /\d/, /\d/, '/', /\d/, /\d/, /\d/, /\d/];
     }
     CadastrarReuniaoCelulaComponent.prototype.ngOnInit = function () {
-        this._dateAdapter.setLocale("br");
         this._buildForm();
         this.getEmiter();
         this.getComboSemana();
@@ -14239,32 +14234,32 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
         this._buildFormTow();
     };
     CadastrarReuniaoCelulaComponent.prototype._buildForm = function () {
-        this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
-            'horarioInicio': new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required),
-            'horarioFim': new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required),
-            'dataDaReuniao': new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required),
-            'diaDaSemana': new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_2__["Validators"].required),
-            'louvor': new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](''),
-            'observacao': new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](''),
-            'oferta': new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](''),
-            'cadeiraBencao': new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](false),
-            'presencial': new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](false),
+        this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({
+            'horarioInicio': new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required),
+            'horarioFim': new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required),
+            'dataDaReuniao': new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required),
+            'diaDaSemana': new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"]('', _angular_forms__WEBPACK_IMPORTED_MODULE_1__["Validators"].required),
+            'louvor': new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](''),
+            'observacao': new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](''),
+            'oferta': new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](''),
+            'cadeiraBencao': new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](false),
+            'presencial': new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](false),
         });
     };
     CadastrarReuniaoCelulaComponent.prototype._buildFormTow = function () {
-        this.formTwo = new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormGroup"]({
-            'outroEndereco': new _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControl"](false),
+        this.formTwo = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({
+            'outroEndereco': new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControl"](false),
         });
     };
     CadastrarReuniaoCelulaComponent.prototype.carregarCelula = function (id) {
         var _this = this;
-        this._celulaService.getCelulaRede(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
+        this._celulaService.getCelulaRede(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1)).subscribe(function (item) {
             _this.comboCelulas = item;
             // console.log(item);
             _this.filteredCelula = _this.myControlCelula.valueChanges
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (value) { return _this._filterCelula(value, _this.comboCelulas); }));
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (value) { return _this._filterCelula(value, _this.comboCelulas); }));
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Erro ao carregar as células!");
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Erro ao carregar as células!");
         });
     };
     CadastrarReuniaoCelulaComponent.prototype._filterCelula = function (value, lista) {
@@ -14308,10 +14303,10 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     };
     CadastrarReuniaoCelulaComponent.prototype.getCelulaPessoa = function (id) {
         var _this = this;
-        this._celulaService.getCelulaPessoa(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
+        this._celulaService.getCelulaPessoa(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1)).subscribe(function (item) {
             _this.membrosLideres = item;
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, error.errors.message);
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, error.errors.message);
         });
     };
     CadastrarReuniaoCelulaComponent.prototype.getComboSemana = function () {
@@ -14323,17 +14318,17 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     };
     CadastrarReuniaoCelulaComponent.prototype.onInputCurrency = function (event) {
         // console.log(event.target.value)
-        this.form.controls['oferta'].patchValue(_helper_helper_church__WEBPACK_IMPORTED_MODULE_7__["HelperChurch"].currencyValue(event.target.value));
+        this.form.controls['oferta'].patchValue(_helper_helper_church__WEBPACK_IMPORTED_MODULE_6__["HelperChurch"].currencyValue(event.target.value));
     };
     CadastrarReuniaoCelulaComponent.prototype.carregarMembro = function (id) {
         var _this = this;
-        this._membroService.getMembroCelula(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
+        this._membroService.getMembroCelula(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1)).subscribe(function (item) {
             // console.log(item);
             _this.comboMembro = item;
             _this.filteredMembro = _this.myControlMembro.valueChanges
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (value) { return _this._filterMembro(value, _this.comboMembro); }));
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (value) { return _this._filterMembro(value, _this.comboMembro); }));
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Erro ao carregar os membros!");
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Erro ao carregar os membros!");
         });
     };
     CadastrarReuniaoCelulaComponent.prototype._filterMembro = function (value, lista) {
@@ -14347,12 +14342,12 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
         var _this = this;
         if (!this.membroSelecionado) {
             console.log(this.membroSelecionado);
-            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Por favor escolha uma membro.!");
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Por favor escolha uma membro.!");
             return false;
         }
         var membroAdicionado = this.membros.find(function (i) { return i.nome == _this.membroSelecionado.nome; });
         if (membroAdicionado && membroAdicionado.nome == this.membroSelecionado.nome) {
-            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Membro já adiocionado.!");
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Membro já adiocionado.!");
             return false;
         }
         this.membroSelecionado.tipo = 'MEMBRO';
@@ -14364,14 +14359,14 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
             celula: { id: celula.id },
             dataReuniaoCelula: dataDaReuniao
         };
-        // console.log(obj)
-        this._visitanteService.getVisitanteCelula(obj).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
+        console.log(obj);
+        this._visitanteService.getVisitanteCelula(obj).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1)).subscribe(function (item) {
             // console.log(item);
             _this.comboVisitante = item;
             _this.filteredVisitante = _this.myControlVisitante.valueChanges
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (value) { return _this._filterVisitante(value, _this.comboVisitante); }));
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (value) { return _this._filterVisitante(value, _this.comboVisitante); }));
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Erro ao carregar os visitantes!");
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Erro ao carregar os visitantes!");
         });
     };
     CadastrarReuniaoCelulaComponent.prototype._filterVisitante = function (value, lista) {
@@ -14382,12 +14377,12 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
         var _this = this;
         if (!this.visitante) {
             console.log(this.visitante);
-            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Por favor escolha uma membro.!");
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Por favor escolha uma membro.!");
             return false;
         }
         var visitanteAdcionado = this.visitantes.find(function (i) { return i.nome == _this.visitante.nome; });
         if (visitanteAdcionado && visitanteAdcionado.nome == this.visitante.nome) {
-            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Membro já adiocionado.!");
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Membro já adiocionado.!");
             return false;
         }
         this.visitantes.push(this.visitante);
@@ -14398,12 +14393,12 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     CadastrarReuniaoCelulaComponent.prototype.adicionarMembrosVisitantes = function () {
         var _this = this;
         if (!this.membroVisitante) {
-            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Por favor escolha uma membro.!");
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Por favor escolha uma membro.!");
             return false;
         }
         var membroVisitanteAdcionado = this.membrosVisitantes.find(function (i) { return i.nome == _this.membroVisitante.nome; });
         if (membroVisitanteAdcionado && membroVisitanteAdcionado.nome == this.membroVisitante.nome) {
-            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Membro já adiocionado.!");
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Membro já adiocionado.!");
             return false;
         }
         this.membroVisitante.tipo = 'V_OUTRAS_CELULAS';
@@ -14413,7 +14408,7 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
         this.preencherObj();
         var mensagem = this.validFields();
         if (mensagem) {
-            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, mensagem);
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, mensagem);
             return false;
         }
         if (!this.id) {
@@ -14430,12 +14425,12 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
         this.reuniao.louvor = this.form.controls['louvor'].value;
         this.reuniao.oferta = this.form.controls['oferta'].value;
         this.reuniao.observacao = this.form.controls['observacao'].value;
-        this.reuniao.cadeiraBencao = _helper_helper_church__WEBPACK_IMPORTED_MODULE_7__["HelperChurch"].isBoolean(this.form.controls['cadeiraBencao'].value);
-        this.reuniao.dataDaReuniao = this._datePipe.transform(this.form.controls['dataDaReuniao'].value, 'dd/MM/yyyy');
+        this.reuniao.cadeiraBencao = _helper_helper_church__WEBPACK_IMPORTED_MODULE_6__["HelperChurch"].isBoolean(this.form.controls['cadeiraBencao'].value);
+        this.reuniao.dataDaReuniao = this.form.controls['dataDaReuniao'].value;
         this.reuniao.diaDaSemana = this.form.controls['diaDaSemana'].value;
-        this.reuniao.presencial = _helper_helper_church__WEBPACK_IMPORTED_MODULE_7__["HelperChurch"].isBoolean(this.form.controls['presencial'].value);
+        this.reuniao.presencial = _helper_helper_church__WEBPACK_IMPORTED_MODULE_6__["HelperChurch"].isBoolean(this.form.controls['presencial'].value);
         this.reuniao.visitantes = this.visitantes;
-        this.reuniao.outroEndereco = _helper_helper_church__WEBPACK_IMPORTED_MODULE_7__["HelperChurch"].isBoolean(this.formTwo.controls['outroEndereco'].value);
+        this.reuniao.outroEndereco = _helper_helper_church__WEBPACK_IMPORTED_MODULE_6__["HelperChurch"].isBoolean(this.formTwo.controls['outroEndereco'].value);
         if (this.licaoSelecionada) {
             this.reuniao.licao = { id: this.licaoSelecionada.id };
         }
@@ -14469,12 +14464,12 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     };
     CadastrarReuniaoCelulaComponent.prototype.getPalestrantes = function () {
         var _this = this;
-        this._membroService.getListMembros().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
+        this._membroService.getListMembros().pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1)).subscribe(function (item) {
             _this.comboPalestrantes = item;
             _this.filteredPalestrante = _this.myControlPalestrante.valueChanges
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (value) { return _this._filterPalestrantes(value, _this.comboPalestrantes); }));
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (value) { return _this._filterPalestrantes(value, _this.comboPalestrantes); }));
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Erro ao carregar os palestrantes!");
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Erro ao carregar os palestrantes!");
         });
     };
     CadastrarReuniaoCelulaComponent.prototype._filterPalestrantes = function (value, lista) {
@@ -14489,12 +14484,12 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
         var _this = this;
         if (!this.palestrante) {
             // console.log(this.palestrante);
-            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Por favor escolha uma palestrante.!");
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Por favor escolha uma palestrante.!");
             return false;
         }
         var palestranteAdicionado = this.palestrantes.find(function (i) { return i.nome == _this.palestrante.nome; });
         if (palestranteAdicionado && palestranteAdicionado.nome == this.palestrante.nome) {
-            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Palestrante já adiocionado.!");
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Palestrante já adiocionado.!");
             return false;
         }
         this.palestrante.tipo = 'PALESTRANTE';
@@ -14503,20 +14498,20 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     CadastrarReuniaoCelulaComponent.prototype.save = function () {
         var _this = this;
         this.preencherObj();
-        this._service.save(this.reuniao).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
+        this._service.save(this.reuniao).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1)).subscribe(function (item) {
             _this.voltar();
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Success, item.value);
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Success, item.value);
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, error.message);
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, error.message);
         });
     };
     CadastrarReuniaoCelulaComponent.prototype.updade = function () {
         var _this = this;
         this.preencherObj();
-        this._service.update(this.reuniao).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Success, item.value);
+        this._service.update(this.reuniao).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1)).subscribe(function (item) {
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Success, item.value);
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, error.message);
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, error.message);
         });
     };
     CadastrarReuniaoCelulaComponent.prototype.voltar = function () {
@@ -14559,10 +14554,10 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     };
     CadastrarReuniaoCelulaComponent.prototype.getReuniao = function (id) {
         var _this = this;
-        this._service.getReuniao(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
+        this._service.getReuniao(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1)).subscribe(function (item) {
             _this.form.controls['horarioInicio'].patchValue(item.horarioInicio);
             _this.form.controls['horarioFim'].patchValue(item.horarioFim);
-            _this.form.controls['dataDaReuniao'].patchValue(new Date(item.dataDaReuniaoToDate));
+            _this.form.controls['dataDaReuniao'].patchValue(item.dataDaReuniao);
             _this.form.controls['diaDaSemana'].patchValue(item.diaDaSemana);
             _this.form.controls['louvor'].patchValue(item.louvor);
             _this.form.controls['observacao'].patchValue(item.observacao);
@@ -14608,13 +14603,13 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     };
     CadastrarReuniaoCelulaComponent.prototype.getCelula = function (id) {
         var _this = this;
-        this._celulaService.getCelula(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
+        this._celulaService.getCelula(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1)).subscribe(function (item) {
             _this.celulaSelecionada = item;
             _this.celulaValue = item.nome;
             _this.getCelulaPessoa(_this.celulaSelecionada.id);
             _this.carregarMembro(_this.celulaSelecionada.id);
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Erro ao carregar as células!");
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Erro ao carregar as células!");
         });
     };
     CadastrarReuniaoCelulaComponent.prototype.emitirLicao = function (item) {
@@ -14628,7 +14623,7 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     };
     CadastrarReuniaoCelulaComponent.prototype.dialogRemoverPalestrante = function (i, item) {
         console.log(item);
-        var dialogRef = this._dialog.open(_dialog_dialog_confirm_pessoa_reuniao_dialog_confirm_pessoa_reuniao_component__WEBPACK_IMPORTED_MODULE_14__["DialogConfirmPessoaReuniaoComponent"], {
+        var dialogRef = this._dialog.open(_dialog_dialog_confirm_pessoa_reuniao_dialog_confirm_pessoa_reuniao_component__WEBPACK_IMPORTED_MODULE_13__["DialogConfirmPessoaReuniaoComponent"], {
             width: '600px',
             data: {
                 id: Number.parseInt(this.id),
@@ -14640,7 +14635,7 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     };
     CadastrarReuniaoCelulaComponent.prototype.dialogRemoverMembro = function (i, item) {
         console.log(item);
-        var dialogRef = this._dialog.open(_dialog_dialog_confirm_pessoa_reuniao_dialog_confirm_pessoa_reuniao_component__WEBPACK_IMPORTED_MODULE_14__["DialogConfirmPessoaReuniaoComponent"], {
+        var dialogRef = this._dialog.open(_dialog_dialog_confirm_pessoa_reuniao_dialog_confirm_pessoa_reuniao_component__WEBPACK_IMPORTED_MODULE_13__["DialogConfirmPessoaReuniaoComponent"], {
             width: '600px',
             data: {
                 id: Number.parseInt(this.id),
@@ -14652,7 +14647,7 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     };
     CadastrarReuniaoCelulaComponent.prototype.dialogRemoverMembroVisitante = function (i, item) {
         console.log(item);
-        var dialogRef = this._dialog.open(_dialog_dialog_confirm_pessoa_reuniao_dialog_confirm_pessoa_reuniao_component__WEBPACK_IMPORTED_MODULE_14__["DialogConfirmPessoaReuniaoComponent"], {
+        var dialogRef = this._dialog.open(_dialog_dialog_confirm_pessoa_reuniao_dialog_confirm_pessoa_reuniao_component__WEBPACK_IMPORTED_MODULE_13__["DialogConfirmPessoaReuniaoComponent"], {
             width: '600px',
             data: {
                 id: Number.parseInt(this.id),
@@ -14664,7 +14659,7 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     };
     CadastrarReuniaoCelulaComponent.prototype.dialogRemoverVisitante = function (i, item) {
         console.log(item);
-        var dialogRef = this._dialog.open(_dialog_dialog_confirm_pessoa_reuniao_dialog_confirm_pessoa_reuniao_component__WEBPACK_IMPORTED_MODULE_14__["DialogConfirmPessoaReuniaoComponent"], {
+        var dialogRef = this._dialog.open(_dialog_dialog_confirm_pessoa_reuniao_dialog_confirm_pessoa_reuniao_component__WEBPACK_IMPORTED_MODULE_13__["DialogConfirmPessoaReuniaoComponent"], {
             width: '600px',
             data: {
                 id: Number.parseInt(this.id),
@@ -14676,13 +14671,13 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
     };
     CadastrarReuniaoCelulaComponent.prototype.carregarRede = function (id) {
         var _this = this;
-        this._serviceRede.getRedeIgreja(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["take"])(1)).subscribe(function (item) {
+        this._serviceRede.getRedeIgreja(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["take"])(1)).subscribe(function (item) {
             _this.comboRede = item;
             // console.log(item);
             _this.filteredRede = _this.myControlRede.valueChanges
-                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_6__["map"])(function (value) { return _this._filterRede(value, _this.comboRede); }));
+                .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["startWith"])(''), Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_5__["map"])(function (value) { return _this._filterRede(value, _this.comboRede); }));
         }, function (error) {
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_8__["AlertType"].Error, "Erro ao carregar as redes!");
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Erro ao carregar as redes!");
         });
     };
     CadastrarReuniaoCelulaComponent.prototype._filterRede = function (value, lista) {
@@ -14693,30 +14688,32 @@ var CadastrarReuniaoCelulaComponent = /** @class */ (function () {
         this.redeSelecionada = option;
         this.carregarCelula(this.redeSelecionada.id);
     };
-    CadastrarReuniaoCelulaComponent.prototype.onDateChange = function (element) {
-        var dataDaReuniao = this._datePipe.transform(element.value, 'dd/MM/yyyy');
+    CadastrarReuniaoCelulaComponent.prototype.onBlurChange = function (element) {
+        var dataDaReuniao = element.target.value;
         if (this.celulaSelecionada) {
             this.carregarVisitante(dataDaReuniao, this.celulaSelecionada);
         }
+        else {
+            this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, "Por favor Selecione uma Igreja,Rede e Célula!");
+            return false;
+        }
     };
     CadastrarReuniaoCelulaComponent = __decorate([
-        Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
+        Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"])({
             selector: 'app-cadastrar-reuniao-celula',
             template: __webpack_require__(/*! ./cadastrar-reuniao-celula.component.html */ "./src/app/pages/reuniao/cadastrar-reuniao-celula/cadastrar-reuniao-celula.component.html"),
             styles: [__webpack_require__(/*! ./cadastrar-reuniao-celula.component.scss */ "./src/app/pages/reuniao/cadastrar-reuniao-celula/cadastrar-reuniao-celula.component.scss")]
         }),
-        __metadata("design:paramtypes", [_service_emitir_evento_service__WEBPACK_IMPORTED_MODULE_10__["EmitirEventoService"],
-            _service_celula_service__WEBPACK_IMPORTED_MODULE_9__["CelulaService"],
-            angular_notifier__WEBPACK_IMPORTED_MODULE_5__["NotifierService"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_3__["DateAdapter"],
-            _service_membro_service__WEBPACK_IMPORTED_MODULE_11__["MembroService"],
-            _service_visitante_service__WEBPACK_IMPORTED_MODULE_15__["VisitanteService"],
-            _angular_common__WEBPACK_IMPORTED_MODULE_0__["DatePipe"],
-            _service_reuniao_celula_service__WEBPACK_IMPORTED_MODULE_13__["ReuniaoCelulaService"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"],
-            _angular_router__WEBPACK_IMPORTED_MODULE_4__["ActivatedRoute"],
-            _angular_material__WEBPACK_IMPORTED_MODULE_3__["MatDialog"],
-            _service_rede_service__WEBPACK_IMPORTED_MODULE_12__["RedeService"]])
+        __metadata("design:paramtypes", [_service_emitir_evento_service__WEBPACK_IMPORTED_MODULE_9__["EmitirEventoService"],
+            _service_celula_service__WEBPACK_IMPORTED_MODULE_8__["CelulaService"],
+            angular_notifier__WEBPACK_IMPORTED_MODULE_4__["NotifierService"],
+            _service_membro_service__WEBPACK_IMPORTED_MODULE_10__["MembroService"],
+            _service_visitante_service__WEBPACK_IMPORTED_MODULE_14__["VisitanteService"],
+            _service_reuniao_celula_service__WEBPACK_IMPORTED_MODULE_12__["ReuniaoCelulaService"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"],
+            _angular_router__WEBPACK_IMPORTED_MODULE_3__["ActivatedRoute"],
+            _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatDialog"],
+            _service_rede_service__WEBPACK_IMPORTED_MODULE_11__["RedeService"]])
     ], CadastrarReuniaoCelulaComponent);
     return CadastrarReuniaoCelulaComponent;
 }());
@@ -14860,7 +14857,6 @@ var PesquisarReuniaoCelulaComponent = /** @class */ (function () {
     PesquisarReuniaoCelulaComponent.prototype.columns = function () {
         this.columnNames = [
             { id: 'celulaNome', value: 'Célula' },
-            { id: 'diaDaSemanaDesc', value: 'Dia da semana' },
             { id: 'dataDaReuniao', value: 'Data da reunião' },
             { id: 'presencialStr', value: 'Presencial' },
             { id: 'id', value: 'Ação' }

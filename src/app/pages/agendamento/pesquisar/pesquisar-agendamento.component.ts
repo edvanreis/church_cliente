@@ -51,8 +51,7 @@ export class PesquisarAgendamentoComponent implements OnInit {
     this.columnNames = [
       { id: 'dataAgendamento', value: 'Data Agendamento' },
       { id: 'nome', value: 'Nome' },
-      { id: 'horaInicio', value: 'Inicio' },
-      { id: 'horaFim', value: 'Fim' },
+      { id: 'horaInicio', value: 'Horário ' },
       { id: 'id', value: 'Ação' }
     ];
     this.displayedColumns = this.columnNames.map(x => x.id);
