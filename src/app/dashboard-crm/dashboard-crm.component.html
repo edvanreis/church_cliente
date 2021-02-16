@@ -40,7 +40,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
             <mat-cell *matCellDef="let element">
               <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
-                {{(element[column.id].length > 15) ? ((element[column.id]).slice(0, 15) + '...') : element[column.id]}}
+                {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}
               </span>
               <span [style.color]="'green'" *ngIf="column.id=='id'" class="default-botoes"
                 (click)="dialogAprovarMembro(element.id)" matTooltip="Aprovar"><i
@@ -73,7 +73,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
             <mat-cell *matCellDef="let element">
               <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
-                {{(element[column.id].length > 15) ? ((element[column.id]).slice(0, 15) + '...') : element[column.id]}}
+                {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}
               </span>
               <span [style.color]="'green'" *ngIf="column.id=='id'" class="default-botoes"
                 (click)="dialogAprovarMembroRep(element.id)" matTooltip="Aprovar"><i
@@ -105,7 +105,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
             <mat-cell *matCellDef="let element">
               <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
-                {{(element[column.id].length > 7) ? ((element[column.id]).slice(0, 7) + '...') : element[column.id]}}
+                {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}
               </span>
               <span [style.color]="'green'" *ngIf="column.id=='id'" class="default-botoes"
                 (click)="dialogAprovarAgendamento(element.id)" matTooltip="Aprovar"><i
@@ -138,7 +138,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
             <mat-cell *matCellDef="let element">
               <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
-                {{(element[column.id].length > 7) ? ((element[column.id]).slice(0, 7) + '...') : element[column.id]}}
+                {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}
               </span>
               <span [style.color]="'red'" *ngIf="column.id=='id'" class="default-botoes"
                 (click)="dialogCancelarAgendamento(element.id)" matTooltip="Cancelar"><i
@@ -170,7 +170,7 @@
             <mat-header-cell *matHeaderCellDef mat-sort-header> {{column.value}} </mat-header-cell>
             <mat-cell *matCellDef="let element">
               <span *ngIf="column.id!='id'" matTooltip="{{element[column.id]}}">
-                {{(element[column.id].length > 10) ? ((element[column.id]).slice(0, 10) + '...') : element[column.id]}}
+                {{(element[column.id].length > 20) ? ((element[column.id]).slice(0, 20) + '...') : element[column.id]}}
               </span>
             </mat-cell>
           </ng-container>
