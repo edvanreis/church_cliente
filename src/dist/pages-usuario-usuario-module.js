@@ -60,8 +60,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var ELEMENT_DATA = [
-    { codigo: 'A', value: 'Ativo' },
-    { codigo: 'I', value: 'Inativo' },
+    { codigo: 'ATIVO', value: 'Ativo' },
+    { codigo: 'INATIVO', value: 'Inativo' },
     { codigo: null, value: 'Todas' },
 ];
 var CadastrarUsuarioComponent = /** @class */ (function () {
@@ -142,7 +142,7 @@ var CadastrarUsuarioComponent = /** @class */ (function () {
             return false;
         }
         this.setObj();
-        console.log(this.obj);
+        // console.log(this.obj)
         this._userService.save(this.obj).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["take"])(1)).subscribe(function (item) {
             _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_5__["AlertType"].Success, item.value);
             _this.voltar();
@@ -162,13 +162,15 @@ var CadastrarUsuarioComponent = /** @class */ (function () {
     CadastrarUsuarioComponent.prototype.getUsuario = function (id) {
         var _this = this;
         this._userService.getUser(id).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["take"])(1)).subscribe(function (item) {
-            //  console.log(item)
             _this.form.controls['login-desable'].patchValue(item.login);
             _this.form.controls['nome'].patchValue(item.nome);
             _this.form.controls['cpf'].patchValue(item.cpf);
             _this.form.controls['status'].patchValue(item.status);
             _this.form.controls['login'].patchValue(item.login);
             _this.perfis = item.perfis;
+            if (item.idMembro) {
+                _this.membro = { id: item.idMembro };
+            }
         }, function (error) {
             _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_5__["AlertType"].Error, error.errors.message);
         });
@@ -325,8 +327,8 @@ var __metadata = (undefined && undefined.__metadata) || function (k, v) {
 
 
 var ELEMENT_DATA = [
-    { codigo: 'A', value: 'Ativo' },
-    { codigo: 'I', value: 'Inativo' },
+    { codigo: 'ATIVO', value: 'Ativo' },
+    { codigo: 'INATIVO', value: 'Inativo' },
     { codigo: null, value: 'Todas' },
 ];
 var PesquisarUsuarioComponent = /** @class */ (function () {
@@ -418,17 +420,15 @@ var PesquisarUsuarioComponent = /** @class */ (function () {
     PesquisarUsuarioComponent.prototype.pesquisar = function () {
         var _this = this;
         this.loading = true;
-        console.log(this.obj());
+        // console.log(this.obj())
         this._userService.pesquisar(this.obj()).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_8__["take"])(1)).subscribe(function (item) {
-            // console.log(item);
             _this.dados = new _angular_material__WEBPACK_IMPORTED_MODULE_2__["MatTableDataSource"](item);
             _this.dados.sort = _this.sort;
             _this.dados.paginator = _this.paginator;
             _this.loading = false;
         }, function (error) {
-            // console.log(error);
             _this.loading = false;
-            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, error.message);
+            _this._notifierService.notify(_model_alert_type__WEBPACK_IMPORTED_MODULE_7__["AlertType"].Error, error.error.message);
         });
     };
     PesquisarUsuarioComponent.prototype.obj = function () {

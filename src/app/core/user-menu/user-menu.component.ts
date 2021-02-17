@@ -33,7 +33,6 @@ export class UserMenuComponent implements OnInit {
 	ngOnInit() {
 		const user = this._userService.currentUser();
 		if( user ){
-      console.log('teste');
       let usuario =  JSON.parse(user);
       let membro = usuario.principal.membro;
       if(membro.nome){

@@ -11,8 +11,8 @@ import { UserService } from '../../../service/user.service';
 import { MembroService } from '../../../service/membro.service';
 
 const ELEMENT_DATA = [
-  { codigo: 'A', value: 'Ativo' },
-  { codigo: 'I', value: 'Inativo' },
+  { codigo: 'ATIVO', value: 'Ativo' },
+  { codigo: 'INATIVO', value: 'Inativo' },
   { codigo: null, value: 'Todas' },
 ];
 
@@ -122,7 +122,7 @@ export class CadastrarUsuarioComponent implements OnInit {
       return false;
     }
     this.setObj();
-    console.log(this.obj)
+    // console.log(this.obj)
     this._userService.save(this.obj).pipe(take(1)).subscribe(item => {
       this._notifierService.notify(AlertType.Success, item.value);
       this.voltar();
@@ -143,13 +143,15 @@ export class CadastrarUsuarioComponent implements OnInit {
 
   getUsuario(id) {
     this._userService.getUser(id).pipe(take(1)).subscribe(item => {
-      //  console.log(item)
       this.form.controls['login-desable'].patchValue(item.login);
       this.form.controls['nome'].patchValue(item.nome);
       this.form.controls['cpf'].patchValue(item.cpf);
       this.form.controls['status'].patchValue(item.status);
       this.form.controls['login'].patchValue(item.login);
       this.perfis = item.perfis;
+      if(item.idMembro){
+          this.membro = {id:item.idMembro};
+      }
     }, error => {
       this._notifierService.notify(AlertType.Error, error.errors.message);
     });

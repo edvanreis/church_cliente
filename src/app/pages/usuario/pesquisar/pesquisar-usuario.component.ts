@@ -11,8 +11,8 @@ import { HelperChurch } from '../../../helper/helper.church';
 
 
 const ELEMENT_DATA = [
-  { codigo: 'A', value: 'Ativo' },
-  { codigo: 'I', value: 'Inativo' },
+  { codigo: 'ATIVO', value: 'Ativo' },
+  { codigo: 'INATIVO', value: 'Inativo' },
   { codigo: null, value: 'Todas' },
 ];
 
@@ -128,17 +128,15 @@ export class PesquisarUsuarioComponent implements OnInit {
 
   pesquisar() {
     this.loading = true;
-    console.log(this.obj())
+    // console.log(this.obj())
     this._userService.pesquisar(this.obj()).pipe(take(1)).subscribe(item => {
-      // console.log(item);
       this.dados = new MatTableDataSource(item);
       this.dados.sort = this.sort;
       this.dados.paginator = this.paginator;
       this.loading = false;
     }, error => {
-      // console.log(error);
       this.loading = false;
-      this._notifierService.notify(AlertType.Error, error.message);
+      this._notifierService.notify(AlertType.Error, error.error.message);
 
     });
   }

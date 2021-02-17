@@ -22,12 +22,12 @@
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px"  *ngIf="!isEsqueceuSenha">
             <mat-form-field>
                 <input type="password"  class="input" placeholder="Senha Atual"
-                formControlName="senhaAtual" required matInput>
+                formControlName="senhaAtual" required matInput maxlength="6">
               <mat-error *ngIf="!form.controls.senhaAtual.valid">Campo Obrigatório</mat-error>
             </mat-form-field>
           </div>
           <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngIf="!isEsqueceuSenha">
-            <mat-form-field><input type="password"  class="input" placeholder="Nova Senha"
+            <mat-form-field><input type="password"  class="input" placeholder="Nova Senha" maxlength="6"
               formControlName="senhaNova" required matInput>
               <mat-error *ngIf="!form.controls.senhaNova.valid">Campo Obrigatório</mat-error>
             </mat-form-field>

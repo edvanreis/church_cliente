@@ -75,7 +75,8 @@ export class AlterarSenhaComponent implements OnInit {
       this.form.reset();
       this._notifierService.notify(AlertType.Success, item.value);
     }, error => {
-      this._notifierService.notify(AlertType.Error, error.message);
+      console.log(error)
+      this._notifierService.notify(AlertType.Error, "CPF ou Senha Atual incorreto!");
     });
   }
 
