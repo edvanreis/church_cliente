@@ -19,7 +19,7 @@ export class DialogConfirmReuniaoComponent implements OnInit {
     private _service: ReuniaoCelulaService) { }
 
   ngOnInit() {
-    console.log(this.data)
+    // console.log(this.data)
   }
 
   close(): void {

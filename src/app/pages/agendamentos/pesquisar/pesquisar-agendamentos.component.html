@@ -52,7 +52,7 @@
             <br />
             <div *ngFor="let item of group.value">
             <div fxLayout="row" fxLayout.lt-sm="column" fxLayoutGap="20px" *ngFor="let element of item.agendamentos"
-            [ngStyle]="{'background-color':element.statusAgendamento==='PENDENTE'?'#ffff80':element.statusAgendamento==='A'?'#d9f2d9':''}">
+            [ngStyle]="{'background-color':element.statusAgendamento==='PENDENTE'?'#ffff80':element.statusAgendamento==='APROVADO'?'#d9f2d9':''}">
               <span *ngIf="element.id && element.statusAgendamento=='PENDENTE'" style="color:#ff8000;" ><i class="col-md material-icons ">warning</i></span>
               <span *ngIf="element.id && element.statusAgendamento=='APROVADO'" style="color:green;" ><i class="col-md material-icons ">done_all</i></span>
               <span>{{ element.nome }}</span>

@@ -8909,7 +8909,7 @@ var DialogConfirmReuniaoComponent = /** @class */ (function () {
         this._service = _service;
     }
     DialogConfirmReuniaoComponent.prototype.ngOnInit = function () {
-        console.log(this.data);
+        // console.log(this.data)
     };
     DialogConfirmReuniaoComponent.prototype.close = function () {
         this.dialogRef.close();
