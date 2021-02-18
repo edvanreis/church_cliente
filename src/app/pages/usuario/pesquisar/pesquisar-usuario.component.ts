@@ -1,3 +1,4 @@
+import { DialogConfirmResetSenhaComponent } from './../../dialog/dialog-confirm-reset-senha/dialog-confirm-reset-senha.component';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatSort, MatTableDataSource, MatPaginator, MatDialog } from '@angular/material';
@@ -160,6 +161,15 @@ export class PesquisarUsuarioComponent implements OnInit {
         status: this.form.controls['status'].value
       },
       skipLocationChange: true
+    });
+  }
+
+  dialogResetarSenha(id) {
+    const dialogRef = this._dialog.open(DialogConfirmResetSenhaComponent, {
+      width: '600px',
+      data: {
+        id: id,
+      }
     });
   }
 

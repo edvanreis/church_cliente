@@ -1,3 +1,4 @@
+import { DialogConfirmResetSenhaModule } from './../dialog/dialog-confirm-reset-senha/dialog-confirm-reset-senha.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PesquisarUsuarioComponent } from './pesquisar/pesquisar-usuario.component';
@@ -35,6 +36,7 @@ const routes: Routes = [
     TextMaskModule,
     MatDatepickerModule,
     MatNativeDateModule,
+    DialogConfirmResetSenhaModule,
     RouterModule.forChild(routes)
   ],
   exports: [

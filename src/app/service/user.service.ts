@@ -106,4 +106,9 @@ export class UserService {
     return JSON.parse(user).principal.membro;
   }
 
+  resetarSenha(id) {
+    return this.http.put(this._url+"resetarSenha", id)
+      .pipe(map((response: any) => response))
+  }
+
 }

@@ -17997,6 +17997,10 @@ var UserService = /** @class */ (function () {
         var user = this.currentUser();
         return JSON.parse(user).principal.membro;
     };
+    UserService.prototype.resetarSenha = function (id) {
+        return this.http.put(this._url + "resetarSenha", id)
+            .pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_3__["map"])(function (response) { return response; }));
+    };
     UserService = __decorate([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"])({
             providedIn: 'root'
