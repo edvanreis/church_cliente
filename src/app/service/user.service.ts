@@ -22,9 +22,15 @@ export class UserService {
   isLogged() {
     const user = this.currentUser();
     if (user) {
-      this.autenticadoEmitter.emit(user);
+      try {
+        const parsedUser = JSON.parse(user);
+        this.autenticadoEmitter.emit(parsedUser);
+        return parsedUser;
+      } catch (e) {
+        this.clear();
+      }
     }
-    return JSON.parse(user);
+    return null;
   }
 
   storeuser(user) {
@@ -38,22 +44,18 @@ export class UserService {
  * @param permissao
  */
   hasPermission(permissao): boolean {
-    const user = this.currentUser();
-
-    let temPermissao = false;
-    if ( user ){
-      const permissoes = this.permissions().authorities;
-      // console.log(permissoes)
-      if( permissoes ){
-        permissoes.forEach(map =>{
-          if( map.authority === permissao){
-            temPermissao = true;
-          }
-        });
-      }
+    if (!permissao) {
+      return false;
     }
 
-    return temPermissao;
+    const permissions = this.permissions();
+    if (!permissions || !Array.isArray(permissions.authorities)) {
+      return false;
+    }
+
+    return permissions.authorities.some(item =>
+      item && item.authority === permissao
+    );
   }
 
   /**
@@ -61,10 +63,14 @@ export class UserService {
  */
   permissions() {
     const user = this.currentUser();
-    if ( user ){
-      return JSON.parse(user);
+    if (user) {
+      try {
+        return JSON.parse(user);
+      } catch (e) {
+        this.clear();
+      }
     }
-    return ;
+    return null;
   }
 
   clear() {
@@ -102,8 +108,11 @@ export class UserService {
   }
 
   getMembroLogado(){
-    const user = this.currentUser();
-    return JSON.parse(user).principal.membro;
+    const user = this.permissions();
+    if (!user || !user.principal) {
+      return null;
+    }
+    return user.principal.membro;
   }
 
   resetarSenha(id) {
