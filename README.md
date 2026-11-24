@@ -11,7 +11,13 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Dependency installation
 
-Run `npm ci` to install the locked dependencies. The project uses Angular 6 and
+Use Node.js 10.24.1, as specified in `.node-version`, then run `npm ci` to install
+the locked dependencies. On Render, remove or update any `NODE_VERSION`
+environment variable that overrides this file. Node.js 10 is end-of-life and no
+longer receives security updates; upgrading Angular and its build dependencies
+is needed to use a supported Node.js release.
+
+The project uses Angular 6 and
 several older packages declare incompatible peer dependency ranges, so `.npmrc`
 enables npm's legacy peer dependency resolution. This does not guarantee those
 packages are compatible; removing this setting requires updating or replacing them.
