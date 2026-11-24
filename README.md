@@ -9,6 +9,13 @@ for bugs use github issue tracker
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.5.0.
 
+## Dependency installation
+
+Run `npm ci` to install the locked dependencies. The project uses Angular 6 and
+several older packages declare incompatible peer dependency ranges, so `.npmrc`
+enables npm's legacy peer dependency resolution. This does not guarantee those
+packages are compatible; removing this setting requires updating or replacing them.
+
 ## Development server
 
 Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
