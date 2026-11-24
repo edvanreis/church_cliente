@@ -22,28 +22,27 @@ export class HasPermissionDirective {
   }
 
   private updateView() {
+    this.viewContainer.clear();
     if (this.checkPermission()) {
       this.viewContainer.createEmbeddedView(this.templateRef);
-    } else {
-      this.viewContainer.clear();
     }
   }
 
 
   private checkPermission() {
-    let hasPermission = false;
-    const permissoes = this.userService.permissions().authorities;
-    let permissoesArray = [];
-    permissoesArray = this.permissao;
-    if( permissoes ){
-      permissoes.forEach(map =>{
-        let item = permissoesArray.find(i=>i==map.authority);
-        if(item){
-          hasPermission =  true;
-        }
-      });
+    if (!Array.isArray(this.permissao) || this.permissao.length === 0) {
+      return false;
     }
-    return hasPermission;
+
+    const permissions = this.userService.permissions();
+    if (!permissions || !Array.isArray(permissions.authorities)) {
+      return false;
+    }
+
+    return permissions.authorities.some(item =>
+      item &&
+      this.permissao.indexOf(item.authority) !== -1
+    );
   }
 
 }
