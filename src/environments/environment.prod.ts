@@ -1,7 +1,7 @@
 export const environment = {
-  url: 'https://churchapi-production.up.railway.app/',
-  urlToken: 'https://churchapi-production.up.railway.app/oauth/token',
-  urlUser: 'https://churchapi-production.up.railway.app/user',
+  url: 'https://churchapi-b1ow.onrender.com//',
+  urlToken: 'https://churchapi-b1ow.onrender.com/oauth/token',
+  urlUser: 'https://churchapi-b1ow.onrender.com/user',
   production: true
 };
 
