@@ -181,6 +181,11 @@
                   </span>
                 </span> -->
                 <span *ngIf="column.id=='id'">
+                  <button mat-icon-button type="button" color="primary"
+                    *ngIf="element.situacao && element.situacao != 'APROVADO' && !(element.membroDaCelula && element.situacao == 'CRIADO_CELULA')"
+                    (click)="dialogAprovarMembro(element.id)" matTooltip="Aprovar membro" aria-label="Aprovar membro">
+                    <i class="material-icons">done</i>
+                  </button>
                   <span class="default-botoes" (click)="editar(element.id)" matTooltip="Editar">
                     <i class="material-icons">create</i>
                   </span>
