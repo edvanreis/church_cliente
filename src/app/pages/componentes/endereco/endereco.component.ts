@@ -223,8 +223,9 @@ export class EnderecoComponent implements OnInit {
   }
 
   adicionar() {
-    if(this.tipoEndereco){
-        this._notifierService.notify(AlertType.Error, 'Por favor escolha um tipo de endereço!');
+    this.carregarEndereco();
+    if (this.tipoEndereco && !this.endereco.tipo) {
+      this._notifierService.notify(AlertType.Error, 'Por favor escolha um tipo de endereço!');
       return false;
     }
     if (this.enderecos.length > 0 && this.sizeLimitOne) {
