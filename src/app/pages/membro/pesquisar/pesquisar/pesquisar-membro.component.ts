@@ -11,6 +11,7 @@ import { EtapaVisaoService } from '../../../../service/etapa-visao.service';
 import { ExcelService } from '../../../../service/excel.service';
 import { MembroService } from '../../../../service/membro.service';
 import { DialogAtivarInativarComponent } from '../../../dialog/dialog-ativar-inativar/dialog-ativar-inativar.component';
+import { DialogAprovarReprovarMembroComponent } from '../../../dialog/dialog-aprovar-reprovar-membro/dialog-aprovar-reprovar-membro.component';
 import { DialogConfirmExcluirPesssoaComponent } from '../../../dialog/dialog-confirm-excluir-pessoa/dialog-confirm-excluir-pessoa.component';
 import { DialogEnviarCartaComponent } from '../../../dialog/dialog-enviar-carta/dialog-enviar-carta.component';
 import { DialogHistoricoPessoaComponent } from '../../../dialog/dialog-historico-pessoa/dialog-historico-pessoa.component';
@@ -143,6 +144,9 @@ export class PesquisarMembroComponent implements OnInit {
         this.pesquisar();
       }
       if (item.type == 'confirm-dialog-excluir-pessoa') {
+        this.pesquisar();
+      }
+      if (item.type == 'dialog-aprovar-reprovar-membro') {
         this.pesquisar();
       }
     });
@@ -289,6 +293,18 @@ export class PesquisarMembroComponent implements OnInit {
         id: id,
         status:status,
         controller: 'pessoa'
+      }
+    });
+  }
+
+  dialogAprovarMembro(id) {
+    this._dialog.open(DialogAprovarReprovarMembroComponent, {
+      width: '600px',
+      data: {
+        id: id,
+        aprovar: true,
+        reprovar: false,
+        aprovarReprovado: false
       }
     });
   }
