@@ -1,7 +1,7 @@
 export const environment = {
-  url: 'https://churchapi-b1ow.onrender.com/',
-  urlToken: 'https://churchapi-b1ow.onrender.com/oauth/token',
-  urlUser: 'https://churchapi-b1ow.onrender.com/user',
+  url: 'https://churchapi-g7cv.onrender.com/',
+  urlToken: 'https://churchapi-g7cv.onrender.com//oauth/token',
+  urlUser: 'https://churchapi-g7cv.onrender.com/user',
   production: true
 };
 
